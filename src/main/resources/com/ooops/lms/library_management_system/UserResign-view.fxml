@@ -26,7 +26,7 @@
                               <TextField fx:id="lastNameText" layoutX="64.0" layoutY="321.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" stylesheets="@../../../../style/ResignStyles.css" />
                               <TextField fx:id="firstNameText" layoutX="64.0" layoutY="377.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
                               <TextField fx:id="emailText" layoutX="64.0" layoutY="489.0" prefHeight="33.0" prefWidth="263.0" styleClass="textbox" />
-                              <Button fx:id="continueButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" text="Tiếp tục" />
+                              <Button fx:id="continueButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onContinueButtonOn" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" text="Tiếp tục" />
                               <ImageView fitHeight="166.0" fitWidth="217.0" layoutX="88.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/resign/logo1.png" />
@@ -48,7 +48,7 @@
                               <TextField fx:id="phoneNumberText" layoutX="64.0" layoutY="377.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
                               <TextField fx:id="rePasswordText" layoutX="64.0" layoutY="489.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
                               <TextField fx:id="passwordText" layoutX="64.0" layoutY="433.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
-                              <Button fx:id="resignButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" stylesheets="@../../../../../style/ResignStyles.css" text="Đăng ký" />
+                              <Button fx:id="resignButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#actionResignButtonOn" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" stylesheets="@../../../../../style/ResignStyles.css" text="Đăng ký" />
                               <ImageView fitHeight="166.0" fitWidth="217.0" layoutX="88.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/resign/logo1.png" />
@@ -61,7 +61,7 @@
                               <Text layoutX="64.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Nhập lại mật khẩu" />
                            </children>
                         </AnchorPane>
-                        <Button fx:id="backStepButton" layoutX="109.0" layoutY="266.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="25.0" style="-fx-background-color: transerpfer;">
+                        <Button fx:id="backStepButton" layoutX="109.0" layoutY="266.0" mnemonicParsing="false" onAction="#onBackStepButtonOn" prefHeight="24.0" prefWidth="25.0" style="-fx-background-color: transparent;">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
