@@ -1,0 +1,93 @@
+@font-face {
+    /* Define the font face correctly */
+    -fx-font-family: 'Cabin';
+    src: url('../font/Cabin_Condensed-Medium.ttf');
+}
+.main-background-resign {
+    -fx-background-image: url("../image/customer/resign/background.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-positsion: center;
+    -fx-background-size: 100% 100%;
+
+}
+.main-rectangle-resign {
+    -fx-background-image: url("../image/customer/resign/MainRes.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-positsion: center;
+    -fx-background-size: 100% 100%;
+
+}
+.main-color {
+    -fx-background-color: #F2E0C9;
+}
+/*------------------------------button resign + continue -----------------------*/
+.button_1
+{
+    -fx-padding:4 15 8 15;
+    -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+    -fx-background-radius: 5.2px;
+    -fx-background-color: #A64F3C;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+    -fx-font-weight: 500;
+    -fx-font-size: 15.84px;
+    -fx-text-fill: white;
+    -fx-font-family: Cabin;
+}
+
+.button_1:hover
+{
+
+    -fx-background-color: #A64F3C;
+}
+
+.button_1:pressed
+{
+    -fx-padding: 5 15 6 15;
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+
+}
+
+
+/*---------------------------visable---------------------------------*/
+.visable {
+    -fx-background-color: transerfer;
+}
+/*------------------------------------------------------------------*/
+
+
+.textbox {
+    -fx-font-family: Cabin;
+    -fx-background-radius: 7px; /* For rounded corners */
+    -fx-background-color: #FFFFFF;/* Background color */
+    -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
+}
+
+.my-element {
+    -fx-background-color: #A64F3C; /* Màu nền */
+    -fx-background-radius: 8; /* Bo tròn */
+}
+
+.body {
+    -fx-fill: #A64F3C;
+    -fx-font-family: Cabin; /* Font chữ */
+    -fx-font-size: 10.56px; /* Kích thước chữ */
+    -fx-font-style: normal; /* Kiểu chữ */
+    -fx-font-weight: 400; /* Độ đậm chữ */
+    -fx-line-height: normal; /* Chiều cao dòng */
+     /* Màu chữ */
+}
+.triangleButton {
+    -fx-background-color: #A64F3C;
+    -fx-padding: 0; /* Bỏ padding */
+    -fx-shape: "M 0 0 L 2 -2 L 1 1 Z"; /* Hình tam giác đều hướng về phía bên phải */
+
+
+}
+
+#triangleButton:hover {
+    -fx-background-color: #d57f78; /* Màu nền khi hover */
+}
+
+
+
+

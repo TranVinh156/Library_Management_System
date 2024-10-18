@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="602.0" prefWidth="893.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminBookManagementStyle.css">
+         <children>
+            <AnchorPane layoutX="36.0" layoutY="66.0" prefHeight="139.0" prefWidth="186.0" styleClass="pane-main">
+               <children>
+                  <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="black-text-Cabin" text="Số sách hiện có" />
+                  <AnchorPane layoutX="16.0" layoutY="22.0" prefHeight="47.0" prefWidth="46.0" style="-fx-background-color: #DCD8D8;" />
+                  <Text fx:id="numberOfBookText" layoutX="71.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="248.0" layoutY="66.0" prefHeight="139.0" prefWidth="186.0" styleClass="pane-main">
+               <children>
+                  <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="black-text-Cabin" text="Số sách đang mượn" />
+                  <AnchorPane layoutX="16.0" layoutY="22.0" prefHeight="47.0" prefWidth="46.0" style="-fx-background-color: #DCD8D8;" />
+                  <Text fx:id="numberOfBorrowText" layoutX="71.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="458.0" layoutY="66.0" prefHeight="139.0" prefWidth="186.0" styleClass="pane-main">
+               <children>
+                  <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="black-text-Cabin" text="Số sách bị mất" />
+                  <AnchorPane layoutX="16.0" layoutY="22.0" prefHeight="47.0" prefWidth="46.0" style="-fx-background-color: #DCD8D8;" />
+                  <Text fx:id="numberOfLostText" layoutX="71.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="671.0" layoutY="66.0" prefHeight="139.0" prefWidth="186.0" styleClass="pane-main">
+               <children>
+                  <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="black-text-Cabin" text="Số vấn đề về sách" />
+                  <AnchorPane layoutX="16.0" layoutY="22.0" prefHeight="47.0" prefWidth="46.0" style="-fx-background-color: #DCD8D8;" />
+                  <Text fx:id="numberOfIssueText" layoutX="71.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="73.0" layoutY="273.0" prefHeight="288.0" prefWidth="748.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main">
+               <children>
+                  <HBox prefHeight="38.0" prefWidth="748.0" styleClass="rounded-top">
+                     <children>
+                        <AnchorPane prefHeight="38.0" prefWidth="945.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top">
+                           <children>
+                              <Label layoutX="57.0" layoutY="12.0" styleClass="black-text-Cabin" text="ISBN" />
+                              <Label layoutX="199.0" layoutY="12.0" styleClass="black-text-Cabin" text="Tên sách" />
+                              <Label layoutX="307.0" layoutY="12.0" styleClass="black-text-Cabin" text="Thể loại" />
+                              <Label layoutX="381.0" layoutY="12.0" styleClass="black-text-Cabin" text="Số lượng" />
+                              <Label layoutX="446.0" layoutY="12.0" styleClass="black-text-Cabin" text="Đang mượn" />
+                              <Label layoutX="525.0" layoutY="12.0" styleClass="black-text-Cabin" text="Bị mất" />
+                              <Label layoutX="609.0" layoutY="12.0" styleClass="black-text-Cabin" text="Nơi để sách" />
+                              <Label layoutX="679.0" layoutY="12.0" styleClass="black-text-Cabin" text="Action" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="39.0" layoutY="223.0" prefHeight="35.0" prefWidth="791.0" style="-fx-background-color: FFFFFF;" styleClass="pane-main">
+               <children>
+                  <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="black-text-Cabin" text="Find:" />
+                  <TextField alignment="CENTER" layoutX="50.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="ISBN">
+                     <styleClass>
+                        <String fx:value="black-text-Cabin" />
+                        <String fx:value="box-information" />
+                     </styleClass>
+                  </TextField>
+                  <TextField alignment="CENTER" layoutX="202.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="Tên sách">
+                     <styleClass>
+                        <String fx:value="gray-text-Cabin" />
+                        <String fx:value="box-information" />
+                     </styleClass>
+                  </TextField>
+                  <TextField alignment="CENTER" layoutX="310.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="Thể loại">
+                     <styleClass>
+                        <String fx:value="gray-text-Cabin" />
+                        <String fx:value="box-information" />
+                     </styleClass>
+                  </TextField>
+                  <TextField alignment="CENTER" layoutX="619.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="Nơi để sách">
+                     <styleClass>
+                        <String fx:value="gray-text-Cabin" />
+                        <String fx:value="box-information" />
+                     </styleClass>
+                  </TextField>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>
