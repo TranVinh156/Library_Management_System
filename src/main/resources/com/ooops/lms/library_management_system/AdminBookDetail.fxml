@@ -14,7 +14,7 @@
    <children>
       <AnchorPane prefHeight="445.0" prefWidth="799.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="bookNameText" layoutX="104.0" layoutY="54.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Lời thì thầm dòng sông">
+            <TextField fx:id="bookNameText" editable="false" layoutX="104.0" layoutY="54.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Lời thì thầm dòng sông">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
@@ -44,7 +44,7 @@
                   <String fx:value="box-information" />
                </styleClass>
             </TextField>
-            <TextField fx:id="publishingHouse" editable="false" layoutX="108.0" layoutY="177.0" text="Đại học Quốc gia Hà Nội">
+            <TextField fx:id="publishingHouseText" editable="false" layoutX="108.0" layoutY="177.0" text="Đại học Quốc gia Hà Nội">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
@@ -94,7 +94,7 @@
             <Button fx:id="saveButton" layoutX="656.0" layoutY="458.0" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="49.0" prefWidth="122.0" styleClass="button_1" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Save" visible="false" AnchorPane.bottomAnchor="7.600000000000044" AnchorPane.rightAnchor="20.80000000000004" />
             <AnchorPane layoutX="584.0" layoutY="43.0" prefHeight="190.0" prefWidth="162.0" style="-fx-background-color: #E4E4E4;" AnchorPane.rightAnchor="52.80000000000004" AnchorPane.topAnchor="43.20000000000002">
                <children>
-                  <ImageView fx:id="bookImageView" fitHeight="185.0" fitWidth="160.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.400000000000006" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.5999999999999943" AnchorPane.topAnchor="0.0" />
+                  <ImageView fx:id="bookImage" fitHeight="185.0" fitWidth="160.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.400000000000006" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.5999999999999943" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
             <HBox layoutX="23.0" layoutY="272.0" prefHeight="175.0" prefWidth="756.0" style="-fx-background-color: FFFFFF;" styleClass="border" AnchorPane.bottomAnchor="68.00000000000006" AnchorPane.leftAnchor="23.200000000000045" AnchorPane.rightAnchor="20.200000000000045" AnchorPane.topAnchor="272.00000000000006">
@@ -114,7 +114,7 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <TextArea fx:id="bookContentText" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" styleClass="text-area-no-border" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999" />
+                        <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" styleClass="text-area-no-border" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999" />
                      </children>
                   </AnchorPane>
                </children>
