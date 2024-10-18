@@ -1,0 +1,64 @@
+/* ------------------------button on Menu Admin-------------------*/
+.menuItem:hover {
+    -fx-background-color: #000000;
+    -fx-border-color: #A64F3C;
+    -fx-border-width: 0px 0px 0px 5px;
+}
+/*--------------------------font------------------------------*/
+@font-face {
+    -fx-font-family: 'Cabin';
+    src: url('font/Cabin_Condensed-Medium.ttf')
+}
+
+.font {
+    color: #734E38;
+    font-family: Cabin;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+/*---------------------button on Menu bar--------------------------------*/
+.menu-bar-button {
+    -fx-background-color: #FFFFFF;
+}
+.menu-bar-button:hover {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #A64F3C;
+    -fx-border-width: 0px 5px 0px 0px;
+}
+/*----------------------dinh dang kieu cho hang trong bang------------------------*/
+.each-row-table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #969696;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+.each-row-table-view:hover {
+    -fx-background-color: #E4E4E4;
+    -fx-border-color: #969696;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+/*-----------------------lam tron 4 goc va co bong cho table------------------------*/
+.rounded-top {
+    -fx-background-color: #f0f0f0; /* Màu nền */
+    -fx-background-radius: 8.5px 8.5px 0 0; /* Bo tròn 2 góc phía trên */
+}
+.rounded {
+    -fx-background-color: #FFF; /* Màu nền trắng */
+    -fx-background-radius: 8.5px 8.5px 8.5px 8.5px; /* Bo tròn góc dưới */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 3.4, 0, 0, 3.4); /* Hiệu ứng drop shadow */
+}
+/*------------------------avata hinh tron--------------------------------*/
+.image-view {
+    -fx-background-radius: 75px; /* Bán kính để tạo hình tròn */
+    -fx-clipping: clip;
+    -fx-opacity: 1.0; /* Đảm bảo độ mờ nếu cần */
+}
+
+/* Đảm bảo container cũng có hình tròn */
+.pane {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 150px;
+    -fx-background-radius: 75px; /* Bán kính bằng một nửa chiều rộng/chiều cao */
+    -fx-background-color: transparent; /* Màu nền trong suốt */
+}

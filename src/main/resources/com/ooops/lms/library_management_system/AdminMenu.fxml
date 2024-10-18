@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane prefHeight="594.0" prefWidth="950.0">
+         <top>
+            <HBox prefHeight="70.0" prefWidth="950.0" style="-fx-background-color: #A64F3C;" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="70.0" prefWidth="286.0">
+                     <children>
+                        <AnchorPane prefHeight="90.0" prefWidth="474.0" HBox.hgrow="NEVER">
+                           <children>
+                              <ImageView fitHeight="51.0" fitWidth="67.0" layoutX="29.7" layoutY="9.24" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../image/admin/menu/logo1%201.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="90.0" prefWidth="564.0" HBox.hgrow="ALWAYS" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="90.0" prefWidth="209.0" HBox.hgrow="NEVER" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </top>
+         <left>
+            <VBox prefHeight="609.0" prefWidth="237.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="325.0" prefWidth="286.0">
+                     <children>
+                        <HBox prefHeight="318.0" prefWidth="287.0">
+                           <children>
+                              <AnchorPane fx:id="menuPiece1Pane" prefHeight="200.0" prefWidth="60.7" style="-fx-background-color: FFFFFF;" HBox.hgrow="NEVER">
+                                 <children>
+                                    <ImageView fx:id="dashboardLogo" fitHeight="34.0" fitWidth="33.15" layoutX="13.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../image/admin/menu/dashboard%20(1)%201.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="issueLogo" fitHeight="28.05" fitWidth="28.05" layoutX="15.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="297.0">
+                                       <image>
+                                          <Image url="@../../../../image/admin/menu/problem-solving%201.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="readerManagementlogo" fitHeight="27.2" fitWidth="27.2" layoutX="16.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="251.0">
+                                       <image>
+                                          <Image url="@../../../../image/admin/menu/user%201.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="bookManagementLogo" fitHeight="28.9" fitWidth="30.6" layoutX="15.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="206.0">
+                                       <image>
+                                          <Image url="@../../../../image/admin/menu/book%201.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="borrowLogo" fitHeight="29.75" fitWidth="29.75" layoutX="15.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="158.0">
+                                       <image>
+                                          <Image url="@../../../../image/admin/menu/right-and-left%201.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="plusMenuPiece2Pane" prefHeight="324.0" prefWidth="225.0" style="-fx-background-color: FFFFFF;" stylesheets="@../../../../style/AdminStyle.css" visible="false" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Button fx:id="borrowButton" alignment="BASELINE_LEFT" layoutY="155.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" text="Mượn sách">
+                                       <styleClass>
+                                          <String fx:value="menu-bar-button" />
+                                          <String fx:value="font" />
+                                       </styleClass>
+                                    </Button>
+                                    <Button fx:id="readerManagementButton" alignment="BASELINE_LEFT" layoutY="244.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" styleClass="menu-bar-button" text="Quản lý người đọc" />
+                                    <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" layoutY="111.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" text="Dashboard">
+                                       <styleClass>
+                                          <String fx:value="menu-bar-button" />
+                                          <String fx:value="font" />
+                                       </styleClass>
+                                    </Button>
+                                    <Button fx:id="bookManagementButton" alignment="BASELINE_LEFT" layoutY="199.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" styleClass="menu-bar-button" text="Quản lý sách" />
+                                    <Button fx:id="issuesButton" alignment="BASELINE_LEFT" layoutY="288.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" styleClass="menu-bar-button" text="Các vấn đề" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="220.0" prefWidth="287.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <AnchorPane fx:id="menuPeice2Pane" prefHeight="185.0" prefWidth="60.7" style="-fx-background-color: FFFFFF;" HBox.hgrow="ALWAYS" />
+                        <AnchorPane fx:id="menuPlusPiece2Pane" layoutX="60.8" layoutY="60.8" prefHeight="185.0" prefWidth="228.0" style="-fx-background-color: FFFFFF;" visible="false" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="90.0" prefWidth="287.0">
+                     <children>
+                        <HBox prefHeight="94.0" prefWidth="287.0" VBox.vgrow="NEVER">
+                           <children>
+                              <AnchorPane fx:id="menuPiece3Pane" minWidth="-Infinity" prefHeight="145.0" prefWidth="61.0" style="-fx-background-color: FFFFFF;">
+                                 <children>
+                                    <ImageView fx:id="settingLogo" fitHeight="27.0" fitWidth="27.0" layoutX="17.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="51.400000000000006">
+                                       <image>
+                                          <Image url="@../../../../image/admin/menu/Vector.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="logoutLogo" fitHeight="21.34" fitWidth="43.02" layoutX="22.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="14.65999984741211">
+                                       <image>
+                                          <Image url="@../../../../image/admin/menu/Vector%20(1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="plusMenuPeice3Pane" prefHeight="90.0" prefWidth="226.0" style="-fx-background-color: FFFFFF;" visible="false">
+                                 <children>
+                                    <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" stylesheets="@../../../../style/AdminStyle.css" text="Setting">
+                                       <styleClass>
+                                          <String fx:value="menu-bar-button" />
+                                          <String fx:value="font" />
+                                       </styleClass>
+                                    </Button>
+                                    <Button fx:id="logoutButton" alignment="BASELINE_LEFT" layoutY="44.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" stylesheets="@../../../../style/AdminStyle.css" text="Logout">
+                                       <styleClass>
+                                          <String fx:value="menu-bar-button" />
+                                          <String fx:value="font" />
+                                       </styleClass>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </left>
+      </BorderPane>
+   </children>
+</StackPane>
