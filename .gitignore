@@ -43,6 +43,9 @@ build/
 # Thư mục build của Maven
 target/
 
+#Thư mục mvn
+.mvn
+
 # Maven Wrapper
 mvnw
 mvnw.cmd
