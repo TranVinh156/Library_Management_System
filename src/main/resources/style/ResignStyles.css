@@ -36,7 +36,6 @@
 
 .button_1:hover
 {
-
     -fx-background-color: #A64F3C;
 }
 
@@ -68,7 +67,7 @@
 }
 
 .body {
-    -fx-fill: #A64F3C;
+    -fx-text-fill: #A64F3C;
     -fx-font-family: Cabin; /* Font chữ */
     -fx-font-size: 10.56px; /* Kích thước chữ */
     -fx-font-style: normal; /* Kiểu chữ */
