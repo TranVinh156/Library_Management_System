@@ -8,56 +8,55 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="821.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane prefHeight="38.0" prefWidth="748.0" styleClass="each-row-table-view" stylesheets="@../../../../style/AdminBookManagementStyle.css">
+      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" prefWidth="821.0" styleClass="each-row-table-view" stylesheets="@../../../../style/AdminBookManagementStyle.css" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="ISBNText" alignment="CENTER" editable="false" layoutX="14.0" layoutY="11.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="903-394-849-439-343">
+            <TextField fx:id="ISBNText" alignment="CENTER" editable="false" layoutY="11.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="168.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="903-394-849-439-343" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="653.6">
                <styleClass>
-                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="black-text-Cabin-size12" />
                   <String fx:value="text-in-row" />
                </styleClass>
             </TextField>
-            <TextField fx:id="bookNameText" alignment="CENTER" editable="false" layoutX="151.0" layoutY="8.0" prefHeight="22.0" prefWidth="150.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Lời thì thầm của dòng sông">
+            <TextField fx:id="bookNameText" alignment="CENTER" editable="false" layoutX="172.0" layoutY="8.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="163.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Lời thì thầm của dòng sông" AnchorPane.leftAnchor="172.0" AnchorPane.rightAnchor="486.40000000000003">
                <styleClass>
-                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="black-text-Cabin-size12" />
                   <String fx:value="text-in-row" />
                </styleClass>
             </TextField>
-            <TextField fx:id="categoryText" alignment="CENTER" editable="false" layoutX="313.0" layoutY="9.0" prefHeight="22.0" prefWidth="66.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Toán">
+            <TextField fx:id="categoryText" alignment="CENTER" editable="false" layoutX="339.0" layoutY="9.0" prefHeight="22.0" prefWidth="72.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Toán" AnchorPane.leftAnchor="339.0" AnchorPane.rightAnchor="411.0">
                <styleClass>
-                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="black-text-Cabin-size12" />
                   <String fx:value="text-in-row" />
                </styleClass>
             </TextField>
-            <TextField fx:id="amountOfBookText" alignment="CENTER" editable="false" layoutX="389.0" layoutY="9.0" prefHeight="22.0" prefWidth="46.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="10">
+            <TextField fx:id="amountOfBookText" alignment="CENTER" editable="false" layoutX="411.0" layoutY="9.0" prefHeight="22.0" prefWidth="72.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="10" AnchorPane.leftAnchor="411.0" AnchorPane.rightAnchor="338.40000000000003">
                <styleClass>
-                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="black-text-Cabin-size12" />
                   <String fx:value="text-in-row" />
                </styleClass>
             </TextField>
-            <TextField fx:id="numberOfBorrowiText" alignment="CENTER" editable="false" layoutX="446.0" layoutY="9.0" prefHeight="22.0" prefWidth="46.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="4">
+            <TextField fx:id="numberOfBorrowiText" alignment="CENTER" editable="false" layoutX="483.0" layoutY="9.0" prefHeight="22.0" prefWidth="78.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="4" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="260.0">
                <styleClass>
-                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="black-text-Cabin-size12" />
                   <String fx:value="text-in-row" />
                </styleClass>
             </TextField>
-            <TextField fx:id="numberOfLostText" alignment="CENTER" editable="false" layoutX="504.0" layoutY="9.0" prefHeight="22.0" prefWidth="46.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="0">
+            <TextField fx:id="numberOfLostText" alignment="CENTER" editable="false" layoutX="561.0" layoutY="9.0" prefHeight="22.0" prefWidth="59.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="0" AnchorPane.leftAnchor="561.0" AnchorPane.rightAnchor="201.60000000000008">
                <styleClass>
-                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="black-text-Cabin-size12" />
                   <String fx:value="text-in-row" />
                </styleClass>
             </TextField>
-            <TextField fx:id="locationText" alignment="CENTER" editable="false" layoutX="562.0" layoutY="9.0" prefHeight="22.0" prefWidth="118.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="C-1-2">
+            <TextField fx:id="locationText" alignment="CENTER" editable="false" layoutX="620.0" layoutY="9.0" prefHeight="22.0" prefWidth="102.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="C-1-2" AnchorPane.leftAnchor="620.0" AnchorPane.rightAnchor="99.20000000000002">
                <styleClass>
-                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="black-text-Cabin-size12" />
                   <String fx:value="text-in-row" />
                </styleClass>
             </TextField>
-            <Button fx:id="editButton" layoutX="703.0" layoutY="4.0" mnemonicParsing="false" onAction="#onEditButtonOn" prefHeight="28.0" prefWidth="26.0" styleClass="text-in-row" stylesheets="@../../../../style/AdminBookManagementStyle.css">
+            <Button fx:id="editButton" layoutX="764.0" layoutY="4.0" mnemonicParsing="false" onAction="#onEditButtonAction" prefHeight="28.0" prefWidth="26.0" styleClass="text-in-row" stylesheets="@../../../../style/AdminBookManagementStyle.css" AnchorPane.leftAnchor="764.0" AnchorPane.rightAnchor="31.200000000000024">
                <graphic>
-                  <ImageView fitHeight="11.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="11.0" fitWidth="14.0" layoutX="764.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../image/admin/Icon/🦆%20icon%20_Edit_.png" />
                      </image>

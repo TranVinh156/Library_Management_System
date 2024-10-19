@@ -11,12 +11,10 @@
 }
 
 .font {
-    color: #734E38;
-    font-family: Cabin;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+    -fx-text-fill: #000;
+    -fx-font-family: 'Cabin'; /* Ensure the font family is applied here */
+    -fx-font-size: 20px;
+    -fx-font-weight: 500;
 }
 /*---------------------button on Menu bar--------------------------------*/
 .menu-bar-button {
@@ -47,18 +45,4 @@
     -fx-background-color: #FFF; /* Màu nền trắng */
     -fx-background-radius: 8.5px 8.5px 8.5px 8.5px; /* Bo tròn góc dưới */
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 3.4, 0, 0, 3.4); /* Hiệu ứng drop shadow */
-}
-/*------------------------avata hinh tron--------------------------------*/
-.image-view {
-    -fx-background-radius: 75px; /* Bán kính để tạo hình tròn */
-    -fx-clipping: clip;
-    -fx-opacity: 1.0; /* Đảm bảo độ mờ nếu cần */
-}
-
-/* Đảm bảo container cũng có hình tròn */
-.pane {
-    -fx-pref-width: 150px;
-    -fx-pref-height: 150px;
-    -fx-background-radius: 75px; /* Bán kính bằng một nửa chiều rộng/chiều cao */
-    -fx-background-color: transparent; /* Màu nền trong suốt */
 }
