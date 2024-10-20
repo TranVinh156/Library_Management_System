@@ -1,0 +1,89 @@
+.Login-Background {
+    -fx-background-image: url("../image/customer/login/LoginBackground.png"); /* Hình nền */
+    -fx-background-position: center; /* Căn giữa hình nền */
+    -fx-background-repeat: no-repeat; /* Không lặp lại hình nền */
+    -fx-background-size: cover; /* Đảm bảo hình nền phủ đầy AnchorPane */
+}
+.button-login
+{
+    -fx-padding:4 15 8 15;
+    -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: #A64F3C;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.3em;
+    -fx-text-fill: white;
+}
+
+.button-login:hover
+{
+    -fx-background-color: #BF6E5D;
+}
+
+.button-login:pressed
+{
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+}
+.button-register
+{
+    -fx-padding:4 15 8 15;
+    -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.3em;
+    -fx-text-fill: #A64F3C;
+    -fx-padding: 10px;
+}
+
+.button-register:hover
+{
+    -fx-background-color: #D6D4D4;
+}
+
+.button-register:pressed
+{
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+}
+.button_transparent {
+    -fx-background-color: transparent; /* Nền trong suốt */
+    -fx-text-fill: #000000; /* Màu văn bản là đen */
+    -fx-font-size: 1em;
+}
+
+.button_transparent:hover {
+    -fx-text-fill: #B2AFAE; /* Màu văn bản thay đổi khi button được nhấn */
+}
+
+.rec1{
+    -fx-background-color: #A64F3C;
+    -fx-arc-width: 20;
+    -fx-arc-height:20;
+}
+
+.rec2{
+    -fx-background-color: #F2E0C9;
+    -fx-arc-width: 20;
+    -fx-arc-height:20;
+}
+.label{
+    -fx-font-size: 13px;
+    -fx-text-fill: #A64F3C;
+}
+.label_forgotPass {
+    -fx-font-size: 2.0em;
+        -fx-text-fill: #A64F3C;
+}
+.textbox {
+    -fx-background-radius: 7px; /* For rounded corners */
+    -fx-background-color: #FFFFFF;/* Background color */
+    -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
+    -fx-font-size: 1.5em;
+    -fx-padding: 10px;
+}
+.textfield {
+    -fx-font-size: 1.5em; /* Kích thước chữ bên trong TextField */
+    -fx-padding: 10px;
+}
