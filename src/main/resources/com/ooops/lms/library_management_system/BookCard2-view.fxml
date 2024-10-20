@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="180.0" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="bookImage" fitHeight="194.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../image/customer/bookCard/Books.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="bookNameLabel" text="Book name">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="authorNameLabel" text="Author name">
+         <font>
+            <Font name="Berlin Sans FB" size="17.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="starImage" fitHeight="41.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../image/customer/bookCard/5Star.png" />
+         </image>
+      </ImageView>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

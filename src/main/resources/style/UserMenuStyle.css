@@ -1,0 +1,72 @@
+.buttonMenu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #A64F3C;
+    -fx-font-size: 16px;
+    -fx-alignment : top-left;
+}
+.label{
+    -fx-font-size: 21px;
+}
+.sidebar {
+    -fx-opacity: 0;
+    -fx-pref-width: 0px; /* Kích thước mặc định */
+    -fx-pref-height: 100%;
+    -fx-overflow-x: hidden;
+    -fx-transition: 0.5s;
+}
+
+.sidebar:hover {
+    -fx-opacity: 1;
+    -fx-pref-width: 200px;
+}
+
+.icon {
+    -fx-background-color: transparent; /* Nếu bạn muốn nền trong suốt */
+    -fx-min-width: 60px;
+    -fx-min-height: 60px;
+    -fx-alignment: center; /* Đặt căn giữa */
+}
+
+.rounded-scrollpane {
+    -fx-background-color: transparent;
+    -fx-border-radius: 15; /* Bo tròn border của ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn background */
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: white; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn các góc bên trong */
+    -fx-border-radius: 15;
+}
+.menu-bar-button {
+    -fx-background-color: #FFFFFF;
+
+}
+.menu-bar-button:hover {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #A64F3C;
+    -fx-border-width: 0px 5px 0px 0px;
+}
+.button-transparent {
+    -fx-background-color: transparent;
+}
+.button-transparent .image-view{
+    -fx-opacity: 1.0;
+}
+.button-transparent:hover .image-view{
+    -fx-opacity: 0.5;
+}
+.button-transparent:pressed .image-view {
+    -fx-opacity: 0.5;
+}
+
+.button:hover
+{
+    -fx-opacity: 0.5;
+}
+
+.button:pressed
+{
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+}
