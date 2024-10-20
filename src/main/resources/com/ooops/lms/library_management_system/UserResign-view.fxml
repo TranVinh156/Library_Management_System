@@ -4,13 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Text?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0" styleClass="main-background-resign" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.UserResignController">
    <children>
@@ -25,40 +25,40 @@
                            <children>
                               <TextField fx:id="lastNameText" layoutX="64.0" layoutY="321.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" stylesheets="@../../../../style/ResignStyles.css" />
                               <TextField fx:id="firstNameText" layoutX="64.0" layoutY="377.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
+                              <DatePicker fx:id="birthDate" layoutX="64.0" layoutY="433.0" prefHeight="33.0" prefWidth="150.0" styleClass="textbox" />
                               <TextField fx:id="emailText" layoutX="64.0" layoutY="489.0" prefHeight="33.0" prefWidth="263.0" styleClass="textbox" />
-                              <Button fx:id="continueButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onContinueButtonOn" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" text="Tiếp tục" />
+                              <ChoiceBox fx:id="genderBox" layoutX="223.0" layoutY="433.0" prefHeight="33.0" prefWidth="105.0" styleClass="textbox" />
+                              <Button fx:id="continueButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onContinueButtonAction" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" text="Tiếp tục" />
                               <ImageView fitHeight="166.0" fitWidth="217.0" layoutX="88.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/resign/logo1.png" />
                                  </image>
                               </ImageView>
-                              <Text layoutX="64.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Họ" />
                               <AnchorPane layoutX="149.0" layoutY="272.0" prefHeight="11.0" prefWidth="94.0" style="-fx-background-color: #A64F3C; -fx-background-radius: 6.8;" />
-                              <DatePicker fx:id="birthDate" layoutX="64.0" layoutY="433.0" prefHeight="33.0" prefWidth="150.0" styleClass="textbox" />
-                              <ChoiceBox fx:id="genderBox" layoutX="223.0" layoutY="433.0" prefHeight="33.0" prefWidth="105.0" styleClass="textbox" />
-                              <Text layoutX="64.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Tên" />
-                              <Text layoutX="64.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Ngày sinh" />
-                              <Text layoutX="64.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Email" />
-                              <Text layoutX="225.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Giới tính" />
+                              <Label layoutX="65.0" layoutY="305.0" styleClass="body" text="Họ" />
+                              <Label layoutX="65.0" layoutY="361.0" styleClass="body" text="Tên" />
+                              <Label layoutX="65.0" layoutY="417.0" styleClass="body" text="Ngày sinh" />
+                              <Label layoutX="223.0" layoutY="417.0" styleClass="body" text="Giới tính" />
+                              <Label layoutX="65.0" layoutY="473.0" styleClass="body" text="Email" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="resignStep2Pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" prefWidth="393.0" stylesheets="@../../../../style/ResignStyles.css" visible="false">
                            <children>
-                              <TextField fx:id="usernameText" layoutX="64.0" layoutY="321.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" stylesheets="@../../../../../style/ResignStyles.css" />
+                              <TextField fx:id="usernameText" layoutX="64.0" layoutY="321.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" stylesheets="@../../../../style/ResignStyles.css" />
                               <TextField fx:id="phoneNumberText" layoutX="64.0" layoutY="377.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
                               <TextField fx:id="rePasswordText" layoutX="64.0" layoutY="489.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
                               <TextField fx:id="passwordText" layoutX="64.0" layoutY="433.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
-                              <Button fx:id="resignButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#actionResignButtonOn" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" stylesheets="@../../../../../style/ResignStyles.css" text="Đăng ký" />
+                              <Button fx:id="resignButton" layoutX="64.0" layoutY="589.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onResignButtonAction" prefHeight="33.0" prefWidth="264.0" styleClass="button_1" stylesheets="@../../../../style/ResignStyles.css" text="Đăng ký" />
                               <ImageView fitHeight="166.0" fitWidth="217.0" layoutX="88.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/resign/logo1.png" />
                                  </image>
                               </ImageView>
-                              <Text layoutX="64.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Username" />
+                              <Label layoutX="65.0" layoutY="305.0" styleClass="body" text="Username" />
                               <AnchorPane layoutX="149.0" layoutY="272.0" prefHeight="11.2" prefWidth="94.4" style="-fx-background-color: #A64F3C; -fx-background-radius: 6.8;" />
-                              <Text layoutX="64.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Số điện thoại" />
-                              <Text layoutX="64.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Mật khẩu" />
-                              <Text layoutX="64.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Nhập lại mật khẩu" />
+                              <Label layoutX="65.0" layoutY="361.0" styleClass="body" text="Số điện thoại" />
+                              <Label layoutX="65.0" layoutY="417.0" styleClass="body" text="Mật khẩu" />
+                              <Label layoutX="65.0" layoutY="473.0" styleClass="body" text="Nhập lại mật khẩu" />
                            </children>
                         </AnchorPane>
                         <Button fx:id="backStepButton" layoutX="109.0" layoutY="266.0" mnemonicParsing="false" onAction="#onBackStepButtonOn" prefHeight="24.0" prefWidth="25.0" style="-fx-background-color: transparent;">
@@ -80,7 +80,7 @@
       <HBox prefHeight="870.0" prefWidth="318.0" HBox.hgrow="ALWAYS" />
    </children>
    <stylesheets>
-      <URL value="@../../../../../style/ResignStyles.css" />
+      <URL value="@../../../../style/ResignStyles.css" />
       <URL value="@../../../../style/ResignStyles.css" />
    </stylesheets>
 </HBox>

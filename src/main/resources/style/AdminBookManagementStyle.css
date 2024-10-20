@@ -28,15 +28,21 @@
 }
 
 .gray-text-Cabin {
-    -fx-fill: #969696; /* Màu chữ */
+    -fx-text-fill: #969696; /* Màu chữ */
    /* -fx-font-family: 'Cabin1';*/
-    -fx-font-size: 10px;
+    -fx-font-size: 13px;
 }
 
 .black-text-Cabin {
-    -fx-fill: #000;             /* Màu chữ */
+    -fx-text-fill: #000;             /* Màu chữ */
     -fx-font-family: 'Cabin1'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
-    -fx-font-size: 10px;
+    -fx-font-size: 13px;
+}
+
+.black-text-Cabin-size12 {
+    -fx-text-fill: #000;             /* Màu chữ */
+    -fx-font-family: 'Cabin1'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    -fx-font-size: 12px;
 }
 
 .box-information {
