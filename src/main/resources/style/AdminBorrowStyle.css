@@ -1,0 +1,58 @@
+@font-face {
+    /* Define the font face correctly */
+    src: url('../font/Cabin.ttf');
+}
+
+.font-Cabin {
+    -fx-text-fill: #000;             /* Màu chữ */
+    -fx-font-family: 'Cabin';        /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    /* Độ đậm của font */
+}
+.border {
+    -fx-border-color: #000;
+    -fx-border-width: 0.85px; /* Simplified to just one value */
+    -fx-border-radius:  3.3px ;
+}
+
+.pane-main {
+    -fx-background-color: #FFF; /* Màu nền trắng */
+    -fx-background-radius: 6.6px 6.6px 6.6px 6.6px; /* Bo tròn góc dưới */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 3.4, 0, 0, 3.4); /* Hiệu ứng drop shadow */
+}
+
+.gray-text-Cabin {
+    -fx-text-fill: #969696; /* Màu chữ */
+    -fx-font-family: 'Cabin';
+    -fx-font-size: 16px;
+}
+
+.black-text-Cabin {
+    -fx-text-fill: #000;             /* Màu chữ */
+    -fx-font-family: 'Cabin'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    -fx-font-size: 16px;
+}
+
+.black-text-Cabin-size12 {
+    -fx-text-fill: #000;             /* Màu chữ */
+    -fx-font-family: 'Cabin1'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    -fx-font-size: 12px;
+}
+
+.box-information {
+    -fx-background-color: transparent;
+}
+
+.rounded-top {
+    -fx-background-radius: 6.6px 6.6px 0 0; /* Bo tròn 2 góc phía trên */
+}
+
+.each-row-table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #969696;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+.each-row-table-view:hover {
+    -fx-background-color: #DDDCDC;
+    -fx-border-color: #969696;
+    -fx-border-width: 0px 0px 1px 0px;
+}
