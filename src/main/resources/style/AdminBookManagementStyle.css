@@ -1,11 +1,11 @@
 @font-face {
     /* Define the font face correctly */
-    -fx-font-family: Cabin1 ;
-    src: url('../font/Cabin_Condensed-Medium.ttf');
+    src: url('../font/Cabin.ttf');
 }
+
 .font-Cabin {
     -fx-text-fill: #000;             /* Màu chữ */
-    -fx-font-family: 'Cabin1';        /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    -fx-font-family: 'Cabin';        /* Đảm bảo tên font được đặt trong dấu nháy đơn */
     /* Độ đậm của font */
 }
 .border {
@@ -29,14 +29,14 @@
 
 .gray-text-Cabin {
     -fx-text-fill: #969696; /* Màu chữ */
-   /* -fx-font-family: 'Cabin1';*/
-    -fx-font-size: 13px;
+    -fx-font-family: 'Cabin';
+    -fx-font-size: 16px;
 }
 
 .black-text-Cabin {
     -fx-text-fill: #000;             /* Màu chữ */
-    -fx-font-family: 'Cabin1'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
-    -fx-font-size: 13px;
+    -fx-font-family: 'Cabin'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    -fx-font-size: 16px;
 }
 
 .black-text-Cabin-size12 {
@@ -119,4 +119,11 @@
     -fx-padding: 5 15 6 15;
     -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
 
+}
+
+.button_page {
+    -fx-background-color: #F8F8F8;
+    -fx-border-radius: 3px 3px 0px 0px;
+    -fx-border-color: #000;
+    -fx-border-width: 0.85px 0.85px 0px 0.85px; /* Simplified to just one value */
 }
