@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.3" prefWidth="821.0" styleClass="each-row-table-view" stylesheets="@../../../../style/AdminBorrowStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="memberIDLabel" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="232012763">
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="memberNameLabel" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Nguyen Van C">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="bookNameLabel" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Lời thì thầm dòng sông">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="barCodeLabel" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="930-494-288-283-93">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="borrowDateLabel" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="20/09/2032">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="statusLabel" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Đang mượn">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="111.0">
+         <children>
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#onEditButtonAction" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../image/icon/🦆%20icon%20_Edit_.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</HBox>
