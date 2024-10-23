@@ -12,72 +12,6 @@
    <children>
       <AnchorPane prefHeight="602.0" prefWidth="893.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminBorrowStyle.css" HBox.hgrow="ALWAYS">
          <children>
-            <AnchorPane layoutX="38.0" layoutY="126.0" prefHeight="437.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="35.19999999999993" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="33.60000000000002" AnchorPane.topAnchor="129.5999999999999">
-               <children>
-                  <HBox prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Member_ID">
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Tên người mượn">
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Tên sách">
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="BarCode">
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Ngày mượn">
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Trạng thái">
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="38.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0">
-                     <children>
-                        <ScrollPane prefHeight="400.0" prefWidth="822.0">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="820.0" />
-                          </content>
-                        </ScrollPane>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
             <HBox layoutX="7.0" layoutY="68.0" prefHeight="45.0" prefWidth="843.0" styleClass="pane-main" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="35.19999999999993">
                <children>
                   <HBox alignment="CENTER" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
@@ -153,6 +87,72 @@
                   </HBox>
                </children>
             </HBox>
+            <AnchorPane layoutX="38.0" layoutY="126.0" prefHeight="437.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="35.19999999999993" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="33.60000000000002" AnchorPane.topAnchor="129.5999999999999">
+               <children>
+                  <HBox prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Member_ID">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Tên người mượn">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Tên sách">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="BarCode">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Ngày mượn">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Trạng thái">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="38.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0">
+                     <children>
+                        <ScrollPane prefHeight="400.0" prefWidth="822.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="820.0" />
+                          </content>
+                        </ScrollPane>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
