@@ -14,13 +14,6 @@
     -fx-border-radius:  3.3px ;
 }
 
-.text-area-no-border {
-    -fx-border-color: transparent; /* Làm viền trong suốt */
-    -fx-background-insets: 0;      /* Xóa khoảng cách giữa viền và nền */
-    -fx-background-color: #ffffff;  /* Màu nền nếu cần (có thể bỏ qua nếu muốn trong suốt) */
-    -fx-padding: 0;                 /* Xóa padding nếu cần */
-
-}
 .pane-main {
     -fx-background-color: #FFF; /* Màu nền trắng */
     -fx-background-radius: 6.6px 6.6px 6.6px 6.6px; /* Bo tròn góc dưới */
@@ -30,13 +23,13 @@
 .gray-text-Cabin {
     -fx-text-fill: #969696; /* Màu chữ */
     -fx-font-family: 'Cabin';
-    -fx-font-size: 16px;
+    -fx-font-size: 15px;
 }
 
 .black-text-Cabin {
     -fx-text-fill: #000;             /* Màu chữ */
     -fx-font-family: 'Cabin'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
-    -fx-font-size: 16px;
+    -fx-font-size: 15px;
 }
 
 .black-text-Cabin-size12 {
@@ -47,10 +40,6 @@
 
 .box-information {
     -fx-background-color: transparent;
-}
-
-.rounded-top {
-    -fx-background-radius: 6.6px 6.6px 0 0; /* Bo tròn 2 góc phía trên */
 }
 
 .each-row-table-view {
@@ -64,66 +53,24 @@
     -fx-border-width: 0px 0px 1px 0px;
 }
 
-
-.text-in-row {
-    -fx-border-color: transparent; /* Làm viền trong suốt */
-    -fx-background-insets: 0;      /* Xóa khoảng cách giữa viền và nền */
-    -fx-background-color: transparent;  /* Màu nền nếu cần (có thể bỏ qua nếu muốn trong suốt) */
-    -fx-padding: 0;
-}
-
-.button_1
+.button-add
 {
     -fx-padding:4 15 8 15;
     -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
-    -fx-background-radius: 6.6px;
+    -fx-background-radius: 8;
     -fx-background-color: #A64F3C;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
-    -fx-font-weight: 500;
-    -fx-font-size: 15.84px;
+    -fx-font-weight: bold;
+    -fx-font-size: 1.3em;
     -fx-text-fill: white;
-    -fx-font-family: Cabin;
 }
 
-.button_1:hover
+.button-add:hover
 {
-    -fx-background-color: #A64F3C;
+    -fx-background-color: #BF6E5D;
 }
 
-.button_1:pressed
+.button-add:pressed
 {
-    -fx-padding: 5 15 6 15;
     -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
-
-}
-
-.button_2
-{
-    -fx-padding:4 15 8 15;
-    -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
-    -fx-background-radius: 6.6px;
-    -fx-background-color: #A64F3C;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
-    -fx-font-weight: 500;
-    -fx-text-fill: white;
-    -fx-font-family: Cabin;
-}
-
-.button_2:hover
-{
-    -fx-background-color: #A64F3C;
-}
-
-.button_2:pressed
-{
-    -fx-padding: 5 15 6 15;
-    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
-
-}
-
-.button_page {
-    -fx-background-color: #F8F8F8;
-    -fx-border-radius: 3px 3px 0px 0px;
-    -fx-border-color: #000;
-    -fx-border-width: 0.85px 0.85px 0px 0.85px; /* Simplified to just one value */
 }
