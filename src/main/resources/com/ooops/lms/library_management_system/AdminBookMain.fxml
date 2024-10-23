@@ -10,78 +10,6 @@
    <children>
       <AnchorPane prefHeight="602.0" prefWidth="893.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminBookManagementStyle.css" HBox.hgrow="ALWAYS">
          <children>
-            <AnchorPane layoutX="36.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main" AnchorPane.leftAnchor="36.0">
-               <children>
-                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
-                  <Label fx:id="totalNumberBookLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
-                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số sách hiện có" />
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="248.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main" AnchorPane.leftAnchor="248.0">
-               <children>
-                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
-                  <Label fx:id="totalNumberBorrowLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
-                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số sách đang mượn" />
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="458.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main" AnchorPane.leftAnchor="458.0">
-               <children>
-                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
-                  <Label fx:id="totalNumberLostLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
-                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số sách bị mất" />
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="671.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main">
-               <children>
-                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
-                  <Label fx:id="totalNumberIssueLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" textFill="RED" />
-                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số vấn đề về sách" />
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="47.0" layoutY="236.0" prefHeight="337.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="28.800000000000068" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="236.0">
-               <children>
-                  <HBox prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="ISBN" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Tên sách" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Tác giả" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Thể loại" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Số lượng" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Nơi để sách" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label styleClass="black-text-Cabin" text="Trạng thái" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
             <HBox layoutX="15.0" layoutY="186.0" prefHeight="35.0" prefWidth="856.0" style="-fx-background-color: FFFF;" styleClass="pane-main" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="22.399999999999977">
                <children>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="34.0" HBox.hgrow="NEVER">
@@ -150,9 +78,81 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER" maxWidth="42.0" prefHeight="35.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
+            <AnchorPane layoutX="36.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main" AnchorPane.leftAnchor="36.0">
+               <children>
+                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
+                  <Label fx:id="totalNumberBookLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
+                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số sách hiện có" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="248.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main" AnchorPane.leftAnchor="248.0">
+               <children>
+                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
+                  <Label fx:id="totalNumberBorrowLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
+                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số sách đang mượn" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="458.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main" AnchorPane.leftAnchor="458.0">
+               <children>
+                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
+                  <Label fx:id="totalNumberLostLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" />
+                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số sách bị mất" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="671.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main">
+               <children>
+                  <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
+                  <Label fx:id="totalNumberIssueLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" textFill="RED" />
+                  <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số vấn đề về sách" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="47.0" layoutY="236.0" prefHeight="337.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="28.800000000000068" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="236.0">
+               <children>
+                  <HBox prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="ISBN" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Tên sách" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Tác giả" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Thể loại" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Số lượng" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Nơi để sách" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Trạng thái" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" maxWidth="42.0" minWidth="42.0" prefHeight="100.0" prefWidth="200.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
