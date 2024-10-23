@@ -64,7 +64,7 @@
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="111.0">
+      <HBox alignment="CENTER" maxWidth="43.0" prefHeight="100.0" prefWidth="111.0">
          <children>
             <Button fx:id="editButton" mnemonicParsing="false" onAction="#onEditButtonAction" style="-fx-background-color: transparent;">
                <graphic>
