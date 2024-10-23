@@ -1,69 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="821.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="821.0" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" prefWidth="821.0" styleClass="each-row-table-view" stylesheets="@../../../../style/AdminBookManagementStyle.css" HBox.hgrow="ALWAYS">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="ISBNText" alignment="CENTER" editable="false" layoutY="11.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="168.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="903-394-849-439-343" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="653.6">
-               <styleClass>
-                  <String fx:value="black-text-Cabin-size12" />
-                  <String fx:value="text-in-row" />
-               </styleClass>
-            </TextField>
-            <TextField fx:id="bookNameText" alignment="CENTER" editable="false" layoutX="172.0" layoutY="8.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="163.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Lời thì thầm của dòng sông" AnchorPane.leftAnchor="172.0" AnchorPane.rightAnchor="486.40000000000003">
-               <styleClass>
-                  <String fx:value="black-text-Cabin-size12" />
-                  <String fx:value="text-in-row" />
-               </styleClass>
-            </TextField>
-            <TextField fx:id="categoryText" alignment="CENTER" editable="false" layoutX="339.0" layoutY="9.0" prefHeight="22.0" prefWidth="72.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Toán" AnchorPane.leftAnchor="339.0" AnchorPane.rightAnchor="411.0">
-               <styleClass>
-                  <String fx:value="black-text-Cabin-size12" />
-                  <String fx:value="text-in-row" />
-               </styleClass>
-            </TextField>
-            <TextField fx:id="amountOfBookText" alignment="CENTER" editable="false" layoutX="411.0" layoutY="9.0" prefHeight="22.0" prefWidth="72.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="10" AnchorPane.leftAnchor="411.0" AnchorPane.rightAnchor="338.40000000000003">
-               <styleClass>
-                  <String fx:value="black-text-Cabin-size12" />
-                  <String fx:value="text-in-row" />
-               </styleClass>
-            </TextField>
-            <TextField fx:id="numberOfBorrowiText" alignment="CENTER" editable="false" layoutX="483.0" layoutY="9.0" prefHeight="22.0" prefWidth="78.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="4" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="260.0">
-               <styleClass>
-                  <String fx:value="black-text-Cabin-size12" />
-                  <String fx:value="text-in-row" />
-               </styleClass>
-            </TextField>
-            <TextField fx:id="numberOfLostText" alignment="CENTER" editable="false" layoutX="561.0" layoutY="9.0" prefHeight="22.0" prefWidth="59.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="0" AnchorPane.leftAnchor="561.0" AnchorPane.rightAnchor="201.60000000000008">
-               <styleClass>
-                  <String fx:value="black-text-Cabin-size12" />
-                  <String fx:value="text-in-row" />
-               </styleClass>
-            </TextField>
-            <TextField fx:id="locationText" alignment="CENTER" editable="false" layoutX="620.0" layoutY="9.0" prefHeight="22.0" prefWidth="102.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="C-1-2" AnchorPane.leftAnchor="620.0" AnchorPane.rightAnchor="99.20000000000002">
-               <styleClass>
-                  <String fx:value="black-text-Cabin-size12" />
-                  <String fx:value="text-in-row" />
-               </styleClass>
-            </TextField>
-            <Button fx:id="editButton" layoutX="764.0" layoutY="4.0" mnemonicParsing="false" onAction="#onEditButtonAction" prefHeight="28.0" prefWidth="26.0" styleClass="text-in-row" stylesheets="@../../../../style/AdminBookManagementStyle.css" AnchorPane.leftAnchor="764.0" AnchorPane.rightAnchor="31.200000000000024">
+            <Label fx:id="ISBNLabel" text="0930-4034-43443">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+         <HBox.margin>
+            <Insets right="5.0" />
+         </HBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="bookNameLabel" text="Loi thi tham ong dong">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="authorNameLabel" text="Nguyen Van C">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="categoryLabel" text="Thể loại">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="88.0" minWidth="88.0" prefHeight="38.0" prefWidth="170.0">
+         <children>
+            <Label fx:id="numberOfBookLabel" text="Số lượng">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="38.0" prefWidth="178.0">
+         <children>
+            <Label fx:id="locationLabel" text="Nơi để sách">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="statusLabel" text="Available">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="42.0" minWidth="42.0" prefHeight="38.0" prefWidth="65.0">
+         <children>
+            <Button fx:id="editButton" maxHeight="-Infinity" mnemonicParsing="false" onAction="#onEditButton" prefHeight="30.0" prefWidth="41.0" style="-fx-background-color: transparent;">
                <graphic>
-                  <ImageView fitHeight="11.0" fitWidth="14.0" layoutX="764.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="21.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../image/admin/Icon/🦆%20icon%20_Edit_.png" />
+                        <Image url="@../../../../image/icon/🦆%20icon%20_Edit_.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
          </children>
-      </AnchorPane>
+      </HBox>
    </children>
 </HBox>
