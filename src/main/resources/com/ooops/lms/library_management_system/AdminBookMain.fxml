@@ -31,62 +31,128 @@
                   <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số sách bị mất" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="671.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main" AnchorPane.leftAnchor="671.0">
+            <AnchorPane layoutX="671.0" layoutY="66.0" prefHeight="100.0" prefWidth="186.0" styleClass="pane-main">
                <children>
                   <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #DCD8D8;" />
                   <Label fx:id="totalNumberIssueLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;" styleClass="black-text-Cabin" text="123233" textFill="RED" />
                   <Label layoutX="16.0" layoutY="67.0" styleClass="black-text-Cabin" text="Số vấn đề về sách" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="15.0" layoutY="185.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="843.0" style="-fx-background-color: FFFFFF;" styleClass="pane-main" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="35.19999999999993">
+            <AnchorPane layoutX="47.0" layoutY="236.0" prefHeight="337.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="28.800000000000068" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="236.0">
                <children>
-                  <Label layoutX="11.0" layoutY="8.0" styleClass="black-text-Cabin" text="Find:" />
-                  <TextField fx:id="ISBNFindText" alignment="CENTER" layoutX="63.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="ISBN" AnchorPane.leftAnchor="63.0">
-                     <styleClass>
-                        <String fx:value="gray-text-Cabin" />
-                        <String fx:value="box-information" />
-                     </styleClass>
-                  </TextField>
-                  <TextField fx:id="bookNameFindText" alignment="CENTER" layoutX="229.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="Tên sách">
-                     <styleClass>
-                        <String fx:value="gray-text-Cabin" />
-                        <String fx:value="box-information" />
-                     </styleClass>
-                  </TextField>
-                  <TextField fx:id="categoryFindText" alignment="CENTER" layoutX="345.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="Thể loại">
-                     <styleClass>
-                        <String fx:value="gray-text-Cabin" />
-                        <String fx:value="box-information" />
-                     </styleClass>
-                  </TextField>
-                  <TextField fx:id="locationFindText" alignment="CENTER" layoutX="646.0" layoutY="4.0" prefHeight="26.0" prefWidth="100.0" text="Nơi để sách">
-                     <styleClass>
-                        <String fx:value="gray-text-Cabin" />
-                        <String fx:value="box-information" />
-                     </styleClass>
-                  </TextField>
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="37.0" layoutY="235.0" prefHeight="337.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="29.599999999999966" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="35.200000000000045" AnchorPane.topAnchor="235.0">
-               <children>
-                  <HBox prefHeight="38.0" prefWidth="821.0" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <HBox prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <AnchorPane prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="12.0" prefHeight="19.0" prefWidth="168.0" styleClass="black-text-Cabin" text="ISBN" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="653.6" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="172.0" layoutY="12.0" prefWidth="163.0" styleClass="black-text-Cabin" text="Tên sách" AnchorPane.leftAnchor="172.0" AnchorPane.rightAnchor="486.40000000000003" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="339.0" layoutY="12.0" prefWidth="72.0" styleClass="black-text-Cabin" text="Thể loại" AnchorPane.leftAnchor="339.0" AnchorPane.rightAnchor="411.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="411.0" layoutY="12.0" prefWidth="72.0" styleClass="black-text-Cabin" text="Số lượng" AnchorPane.leftAnchor="411.0" AnchorPane.rightAnchor="338.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="483.0" layoutY="12.0" prefWidth="78.0" styleClass="black-text-Cabin" text="Đang mượn" AnchorPane.leftAnchor="483.0" AnchorPane.rightAnchor="260.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="561.0" layoutY="12.0" prefWidth="59.0" styleClass="black-text-Cabin" text="Bị mất" AnchorPane.leftAnchor="561.0" AnchorPane.rightAnchor="201.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="620.0" layoutY="12.0" prefWidth="102.0" styleClass="black-text-Cabin" text="Nơi để sách" AnchorPane.leftAnchor="620.0" AnchorPane.rightAnchor="99.0" />
-                              <Label alignment="CENTER" layoutX="728.0" layoutY="12.0" prefHeight="19.0" prefWidth="84.0" styleClass="black-text-Cabin" text="Action" AnchorPane.leftAnchor="728.0" AnchorPane.rightAnchor="0.0" />
+                              <Label styleClass="black-text-Cabin" text="ISBN" />
                            </children>
-                        </AnchorPane>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Tên sách" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Tác giả" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Thể loại" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Số lượng" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Nơi để sách" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="black-text-Cabin" text="Trạng thái" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
+            <HBox layoutX="15.0" layoutY="186.0" prefHeight="35.0" prefWidth="856.0" style="-fx-background-color: FFFF;" styleClass="pane-main" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="22.399999999999977">
+               <children>
+                  <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="34.0" HBox.hgrow="NEVER">
+                     <children>
+                        <Label style="-fx-font-size: 13;" styleClass="black-text-Cabin" text="Find:" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="98.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="ISBNFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" text="ISBN">
+                           <styleClass>
+                              <String fx:value="gray-text-Cabin" />
+                              <String fx:value="box-information" />
+                           </styleClass>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="98.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="bookNameFindTExt" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" text="Tên sách">
+                           <styleClass>
+                              <String fx:value="gray-text-Cabin" />
+                              <String fx:value="box-information" />
+                           </styleClass>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="89.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="authorFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" text="Tác giả">
+                           <styleClass>
+                              <String fx:value="gray-text-Cabin" />
+                              <String fx:value="box-information" />
+                           </styleClass>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="96.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="categoryText" alignment="CENTER" prefHeight="34.0" prefWidth="117.0" text="Thể loại">
+                           <styleClass>
+                              <String fx:value="gray-text-Cabin" />
+                              <String fx:value="box-information" />
+                           </styleClass>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="96.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="114.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="locationText" alignment="CENTER" prefHeight="34.0" prefWidth="138.0" text="Nơi để sách">
+                           <styleClass>
+                              <String fx:value="gray-text-Cabin" />
+                              <String fx:value="box-information" />
+                           </styleClass>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="88.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="stausText" alignment="CENTER" prefHeight="34.0" prefWidth="138.0" text="Trạng thái">
+                           <styleClass>
+                              <String fx:value="gray-text-Cabin" />
+                              <String fx:value="box-information" />
+                           </styleClass>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </children>
