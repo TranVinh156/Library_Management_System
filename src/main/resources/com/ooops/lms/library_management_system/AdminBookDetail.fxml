@@ -27,7 +27,7 @@
                   <String fx:value="box-information" />
                </styleClass>
             </TextField>
-            <TextField fx:id="categoryText" editable="false" layoutX="444.0" layoutY="132.0" text="Học thuật">
+            <TextField fx:id="categoryText" editable="false" layoutX="444.0" layoutY="132.0" prefHeight="33.0" prefWidth="130.0" text="Học thuật">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
@@ -121,25 +121,7 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="black-text-Cabin" text="Copy_ID">
-                                             <font>
-                                                <Font size="10.5" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="black-text-Cabin" text="Member_ID mượn lần cuối">
-                                             <font>
-                                                <Font size="10.5" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="black-text-Cabin" text="Tên member">
+                                          <Label styleClass="black-text-Cabin" text="BarCode">
                                              <font>
                                                 <Font size="10.5" />
                                              </font>
@@ -149,6 +131,15 @@
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label styleClass="black-text-Cabin" text="Status">
+                                             <font>
+                                                <Font size="10.5" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="black-text-Cabin" text="Note">
                                              <font>
                                                 <Font size="10.5" />
                                              </font>
@@ -170,6 +161,12 @@
                </font>
             </Label>
             <Label layoutX="25.0" layoutY="58.0" style="-fx-font-size: 20;" styleClass="gray-text-Cabin" text="Tên sách:" />
+            <Label layoutX="42.0" layoutY="102.0" styleClass="gray-text-Cabin" text="ISBN:">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="388.0" layoutY="102.0" styleClass="gray-text-Cabin" text="Vị trí:" />
             <Label layoutX="42.0" layoutY="138.0" styleClass="gray-text-Cabin" text="Tác giả:" />
             <Label layoutX="388.0" layoutY="138.0" styleClass="gray-text-Cabin" text="Thể loại:" />
             <Label layoutX="42.0" layoutY="174.0" styleClass="gray-text-Cabin" text="Nhà xuất bản:" />
@@ -177,11 +174,12 @@
             <Label layoutX="42.0" layoutY="210.0" styleClass="gray-text-Cabin" text="Tổng số sách:" />
             <Label layoutX="183.0" layoutY="209.0" styleClass="gray-text-Cabin" text="Tổng số đang mượn:" />
             <Label layoutX="388.0" layoutY="209.0" styleClass="gray-text-Cabin" text="Tổng số bị mất:" />
-            <Label layoutX="42.0" layoutY="102.0" styleClass="gray-text-Cabin" text="ISBN:">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
+            <TextField fx:id="locationText" editable="false" layoutX="422.0" layoutY="96.0" prefHeight="34.0" prefWidth="150.0" text="23234">
+               <styleClass>
+                  <String fx:value="black-text-Cabin" />
+                  <String fx:value="box-information" />
+               </styleClass>
+            </TextField>
          </children>
       </AnchorPane>
    </children>
