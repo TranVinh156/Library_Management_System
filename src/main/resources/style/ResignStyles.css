@@ -1,7 +1,6 @@
 @font-face {
     /* Define the font face correctly */
-    -fx-font-family: 'Cabin';
-    src: url('../font/Cabin_Condensed-Medium.ttf');
+    src: url('../font/Cabin.ttf');
 }
 .main-background-resign {
     -fx-background-image: url("../image/customer/resign/background.png");
@@ -31,7 +30,7 @@
     -fx-font-weight: 500;
     -fx-font-size: 15.84px;
     -fx-text-fill: white;
-    -fx-font-family: Cabin;
+    -fx-font-family: 'Cabin';
 }
 
 .button_1:hover
@@ -47,15 +46,9 @@
 }
 
 
-/*---------------------------visable---------------------------------*/
-.visable {
-    -fx-background-color: transerfer;
-}
-/*------------------------------------------------------------------*/
-
 
 .textbox {
-    -fx-font-family: Cabin;
+    -fx-font-family: 'Cabin';
     -fx-background-radius: 7px; /* For rounded corners */
     -fx-background-color: #FFFFFF;/* Background color */
     -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
@@ -68,11 +61,10 @@
 
 .body {
     -fx-text-fill: #A64F3C;
-    -fx-font-family: Cabin; /* Font chữ */
+    -fx-font-family: 'Cabin'; /* Font chữ */
     -fx-font-size: 10.56px; /* Kích thước chữ */
-    -fx-font-style: normal; /* Kiểu chữ */
     -fx-font-weight: 400; /* Độ đậm chữ */
-    -fx-line-height: normal; /* Chiều cao dòng */
+
      /* Màu chữ */
 }
 .triangleButton {
@@ -83,7 +75,7 @@
 
 }
 
-#triangleButton:hover {
+.triangleButton:hover {
     -fx-background-color: #d57f78; /* Màu nền khi hover */
 }
 
