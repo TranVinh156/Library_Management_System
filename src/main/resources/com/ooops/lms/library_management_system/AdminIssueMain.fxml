@@ -33,7 +33,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="borrowerFindText" alignment="CENTER" text="Họ và tên" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="memberNameFindText" alignment="CENTER" text="Họ và tên" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -43,7 +43,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="bookNameFindText" alignment="CENTER" text="Vấn đề">
+                              <TextField fx:id="issueFindText" alignment="CENTER" text="Vấn đề">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -54,7 +54,7 @@
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="borrowDateFindText" alignment="CENTER" text="Email">
+                              <TextField fx:id="emailFindText" alignment="CENTER" text="Email">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -108,7 +108,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="black-text-Cabin" text="Text">
+                              <Label styleClass="black-text-Cabin" text="Detail">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></Label>
