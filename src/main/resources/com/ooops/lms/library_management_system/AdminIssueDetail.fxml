@@ -68,20 +68,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Label styleClass="gray-text-Cabin" text="Vấn đề về:">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <Label fx:id="issueRealatedLabel" styleClass="black-text-Cabin" text="Sách">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                           </children>
-                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                            <children>
                               <Label prefHeight="22.0" prefWidth="43.0" styleClass="gray-text-Cabin" text="Email:">
@@ -142,12 +129,18 @@
                <children>
                   <AnchorPane layoutX="17.0" prefHeight="209.0" prefWidth="460.0" style="-fx-background-color: FFF;" styleClass="border" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane layoutX="1.0" layoutY="13.0" prefHeight="22.0" prefWidth="460.0" style="-fx-background-color: #F8F8F8;">
+                        <AnchorPane layoutX="1.0" layoutY="13.0" prefHeight="22.0" prefWidth="460.0" style="-fx-background-color: #F8F8F8;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.599999999999966">
                            <children>
-                              <Label layoutX="13.0" layoutY="1.0" style="-fx-background-size: 11;" styleClass="black-text-Cabin" text="Nội dung chi tiết" />
+                              <Label layoutX="13.0" layoutY="1.0" style="-fx-background-size: 11;" styleClass="black-text-Cabin" text="Tiêu đề:" />
+                              <Label fx:id="titelLabel" layoutX="72.0" layoutY="1.0" prefHeight="19.0" prefWidth="390.0" text="Em làm mất sách" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="-3.0">
+                                 <styleClass>
+                                    <String fx:value="black-text-Cabin" />
+                                    <String fx:value="box-information" />
+                                 </styleClass>
+                              </Label>
                            </children>
                         </AnchorPane>
-                        <TextArea fx:id="detailIssueText" editable="false" layoutX="1.0" layoutY="35.0" prefHeight="172.0" prefWidth="460.0" styleClass="box-information" />
+                        <TextArea fx:id="detailIssueText" editable="false" layoutX="1.0" layoutY="35.0" prefHeight="172.0" prefWidth="460.0" styleClass="box-information" AnchorPane.bottomAnchor="2.5999999999999943" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.599999999999966" AnchorPane.topAnchor="34.39999999999998" />
                      </children>
                   </AnchorPane>
                </children>
