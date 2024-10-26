@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -49,25 +52,16 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="35.0" prefWidth="96.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField fx:id="categoryText" alignment="CENTER" prefHeight="34.0" prefWidth="117.0" text="Thể loại">
+                        <Button fx:id="categoryFindButton" mnemonicParsing="false" onAction="#onCategoryFindButton" prefHeight="26.0" prefWidth="106.0" text="Thể loại">
                            <styleClass>
                               <String fx:value="gray-text-Cabin" />
                               <String fx:value="box-information" />
                            </styleClass>
-                        </TextField>
+                        </Button>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="96.0" HBox.hgrow="ALWAYS" />
-                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="114.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <TextField fx:id="locationText" alignment="CENTER" prefHeight="34.0" prefWidth="138.0" text="Nơi để sách">
-                           <styleClass>
-                              <String fx:value="gray-text-Cabin" />
-                              <String fx:value="box-information" />
-                           </styleClass>
-                        </TextField>
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="110.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="114.0" />
                   <HBox alignment="CENTER" prefHeight="35.0" prefWidth="88.0" HBox.hgrow="ALWAYS">
                      <children>
                         <TextField fx:id="stausText" alignment="CENTER" prefHeight="34.0" prefWidth="138.0" text="Trạng thái">
@@ -151,6 +145,15 @@
                         <HBox alignment="CENTER" maxWidth="42.0" minWidth="42.0" prefHeight="100.0" prefWidth="200.0" />
                      </children>
                   </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="categoryList" layoutX="401.0" layoutY="214.0" prefHeight="222.0" prefWidth="134.0" visible="false">
+               <children>
+                  <ScrollPane prefHeight="222.0" prefWidth="134.0">
+                     <content>
+                        <ListView prefHeight="223.0" prefWidth="118.0" />
+                     </content>
+                  </ScrollPane>
                </children>
             </AnchorPane>
          </children>
