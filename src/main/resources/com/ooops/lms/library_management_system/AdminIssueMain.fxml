@@ -41,16 +41,7 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <TextField fx:id="issueFindText" alignment="CENTER" text="Vấn đề">
-                                 <styleClass>
-                                    <String fx:value="box-information" />
-                                    <String fx:value="gray-text-Cabin" />
-                                 </styleClass>
-                              </TextField>
-                           </children>
-                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
                            <children>
@@ -100,7 +91,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="black-text-Cabin" text="Vấn đề">
+                              <Label styleClass="black-text-Cabin" text="Title">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></Label>
