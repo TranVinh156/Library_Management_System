@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.84" prefWidth="950.4" styleClass="Login-Background" stylesheets="@../../../../style/LoginStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.84" prefWidth="950.4" styleClass="Login-Background" stylesheets="@../../../../style/LoginStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.LoginController">
    <children>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.84" prefWidth="950.4">
          <children>
@@ -44,7 +44,7 @@
                         </Button>
                         <StackPane prefHeight="110.0" prefWidth="268.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <ImageView fitHeight="118.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+                              <ImageView fx:id="imageStatus" fitHeight="118.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
                                  <image>
                                     <Image url="@../../../../image/customer/login/User.gif" />
                                  </image>
@@ -57,7 +57,7 @@
                               <AnchorPane prefHeight="69.0" prefWidth="109.0">
                                  <children>
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a64f3c" height="27.0" layoutY="26.0" stroke="#a64f3c" strokeType="INSIDE" styleClass="rec1" width="110.0" />
-                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="27.0" layoutX="55.0" layoutY="26.0" stroke="WHITE" strokeType="INSIDE" styleClass="rec1" width="55.0" />
+                                    <Rectangle fx:id="switchBar" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="27.0" layoutX="55.0" layoutY="26.0" stroke="WHITE" strokeType="INSIDE" styleClass="rec1" width="55.0" />
                                     <Button fx:id="swichButton" layoutY="25.0" mnemonicParsing="false" onAction="#onSwitchButtonAction" prefHeight="27.0" prefWidth="110.0" style="-fx-background-color: transparent;" />
                                  </children>
                               </AnchorPane>
