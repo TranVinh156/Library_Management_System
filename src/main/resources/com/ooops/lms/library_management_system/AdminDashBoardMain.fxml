@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<AnchorPane prefHeight="606.0" prefWidth="891.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.library_management_system.fxml.AdminDashBoardMain">
+   <children>
+      <AnchorPane layoutX="38.0" layoutY="63.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main">
+         <children>
+            <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số người đọc" />
+            <Label fx:id="totalReaderLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="38.0" layoutY="176.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main">
+         <children>
+            <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số vấn đề" />
+            <Label fx:id="totalIssueLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="268.0" layoutY="63.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main">
+         <children>
+            <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Tổng số sách" />
+            <Label fx:id="totalBookLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="268.0" layoutY="176.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main">
+         <children>
+            <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số sách cho mượn" />
+            <Label fx:id="totalBorrowLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="506.0" layoutY="63.0" prefHeight="206.0" prefWidth="353.0" styleClass="pane-main" AnchorPane.leftAnchor="506.0" AnchorPane.rightAnchor="31.0">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" styleClass="black-text-Cabin" text="Top book" />
+            <ScrollPane layoutX="7.0" layoutY="36.0" prefHeight="168.0" prefWidth="200.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.400000000000006" />
+         </children>
+      </AnchorPane>
+      <HBox layoutX="38.0" layoutY="303.0" prefHeight="270.0" prefWidth="826.0" AnchorPane.bottomAnchor="32.400000000000034" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="26.200000000000045" AnchorPane.topAnchor="303.0">
+         <children>
+            <HBox prefHeight="270.0" prefWidth="474.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <AnchorPane prefHeight="270.0" prefWidth="541.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <AnchorPane prefHeight="270.0" prefWidth="517.0" styleClass="pane-main" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.3999999999999773" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" styleClass="black-text-Cabin" text="Biểu đồ sách cho mượn" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                              <LineChart layoutX="-6.0" layoutY="38.0" prefHeight="228.0" prefWidth="518.0" AnchorPane.bottomAnchor="3.9999999999999716" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="4.800000000000068" AnchorPane.topAnchor="38.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <AnchorPane prefHeight="270.0" prefWidth="294.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <AnchorPane layoutX="14.0" prefHeight="270.0" prefWidth="326.0" styleClass="pane-main" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="4.800000000000068" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ScrollPane layoutX="20.0" layoutY="42.0" prefHeight="228.0" prefWidth="327.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="42.0" />
+                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="327.0" style="-fx-background-color: #DDDCDC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="black-text-Cabin" text="ID_User" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label styleClass="black-text-Cabin" text="Titel" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label styleClass="black-text-Cabin" text="Status" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
