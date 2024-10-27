@@ -49,6 +49,8 @@
 
 .textbox {
     -fx-font-family: 'Cabin';
+    -fx-font-size: 12px; /* Kích thước chữ */
+    -fx-font-weight: 400; /* Độ đậm chữ */
     -fx-background-radius: 7px; /* For rounded corners */
     -fx-background-color: #FFFFFF;/* Background color */
     -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
