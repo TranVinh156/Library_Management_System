@@ -28,8 +28,8 @@ public class AccountDAO {
             "Insert into Users (username, password, member_ID) values (?, ?, ?)";
 
     private static final String INSERT_MEMBER =
-            "Insert into Members (first_name, last_name, image_path, birth_date, gender, email, phone) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "Insert into Members (first_name, last_name, birth_date, gender, email, phone) " +
+            "VALUES (?, ?, ?, ?, ?, ?)";
 
     private static final String GET_RESET_PASSWORD_USER
             = "Select * from Users u Join Members m On u.member_ID = m.member_ID where u.username = ? and m.email = ?";
