@@ -285,9 +285,8 @@ public class BookDAO implements DatabaseQuery<Book> {
                 preparedStatement.setString(4, entity.getPlaceAt());
                 preparedStatement.setLong(5, entity.getISBN());
 
-                int rowsDeleted = preparedStatement.executeUpdate();
                 database.getConnection().commit();
-                return rowsDeleted > 0;
+                return true;
             }
 
         } catch (SQLException e) {
