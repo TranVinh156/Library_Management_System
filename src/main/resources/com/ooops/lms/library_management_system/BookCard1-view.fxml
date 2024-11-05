@@ -8,26 +8,26 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="hBox" alignment="CENTER" onMouseClicked="#onBookMouseClicked" prefHeight="140.0" prefWidth="332.0" spacing="15.0" styleClass="rounded-box" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.BookCard1Controller">
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="bookImage" fitHeight="106.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bookImage" fitHeight="145.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../image/customer/bookCard/Books.png" />
          </image>
       </ImageView>
-      <VBox alignment="CENTER_LEFT" prefHeight="111.0" prefWidth="207.0">
+      <VBox alignment="CENTER_LEFT" prefHeight="175.0" prefWidth="269.0">
          <children>
-            <Label fx:id="bookNameLabel" prefHeight="39.0" prefWidth="174.0" text="Book name">
+            <Label fx:id="bookNameLabel" text="Book name">
                <font>
-                  <Font name="Berlin Sans FB Bold" size="28.0" />
+                  <Font name="Berlin Sans FB Bold" size="31.0" />
                </font>
             </Label>
             <Label fx:id="authorNameLabel" text="Author name">
                <font>
-                  <Font name="Berlin Sans FB" size="18.0" />
+                  <Font name="Berlin Sans FB" size="19.0" />
                </font>
             </Label>
-            <ImageView fx:id="starImage" fitHeight="21.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="starImage" fitHeight="25.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../image/customer/bookCard/5Star.png" />
                </image>

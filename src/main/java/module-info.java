@@ -12,13 +12,6 @@ module com.ooops.lms.library_management_system {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires java.desktop;
-    requires com.google.zxing.javase;
-    requires opencv;
-    requires com.google.zxing;
-    requires annotations;
-    requires mysql.connector.j;
-    requires java.mail;
-    requires com.google.api.services.books;
 
     opens com.ooops.lms.library_management_system to javafx.fxml;
     opens com.ooops.lms.controller to javafx.fxml;
