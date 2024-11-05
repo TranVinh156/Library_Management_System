@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.84" prefWidth="950.4" styleClass="Login-Background" stylesheets="@../../../../style/LoginStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0" styleClass="Login-Background" stylesheets="@../../../../style/LoginStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminLoginController">
    <children>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.84" prefWidth="950.4">
          <children>
@@ -58,7 +58,7 @@
                                  <children>
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a64f3c" height="27.0" layoutY="26.0" stroke="#a64f3c" strokeType="INSIDE" styleClass="rec1" width="110.0" />
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="27.0" layoutX="55.0" layoutY="26.0" stroke="WHITE" strokeType="INSIDE" styleClass="rec1" width="55.0" />
-                                    <Button fx:id="swichButton" layoutY="25.0" mnemonicParsing="false" onAction="#onSwitchButtonAction" prefHeight="27.0" prefWidth="110.0" style="-fx-background-color: transparent;" />
+                                    <Button fx:id="switchButton" layoutY="25.0" mnemonicParsing="false" onAction="#onSwitchButtonAction" prefHeight="27.0" prefWidth="110.0" style="-fx-background-color: transparent;" />
                                  </children>
                               </AnchorPane>
                               <VBox prefHeight="56.0" prefWidth="83.0" HBox.hgrow="ALWAYS" />
