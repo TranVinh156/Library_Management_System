@@ -8,10 +8,18 @@ public abstract class Account {
     private String password;
     private Person person;
     private AccountStatus status;
-
+    private String createdDate;
     public Account(String username, String password, Person person) {
         this.username = username;
         this.password = password;
+        this.person = person;
+    }
+
+    public Account(String username, String password, AccountStatus status, String createdDate, Person person) {
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.createdDate = createdDate;
         this.person = person;
     }
 
