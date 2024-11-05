@@ -74,7 +74,7 @@
 }
 .label_forgotPass {
     -fx-font-size: 2.0em;
-        -fx-text-fill: #A64F3C;
+    -fx-text-fill: #A64F3C;
 }
 .textbox {
     -fx-background-radius: 7px; /* For rounded corners */
