@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="settingBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="567.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.SettingController">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox alignment="CENTER" prefHeight="329.0" prefWidth="567.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Circle fill="#d9b2ff" radius="77.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label styleClass="label-2" text="UserName" textFill="#ff2de6" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Cambria Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="848.0" spacing="50.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="label-2" text="Đang mượn" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="label-2" text="Trạng thái tài khoản" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="label-2" text="Đã đặt trước" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="848.0" spacing="130.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="label-1" text="0" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="label-1" text="active" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="label-1" text="0" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="background" VBox.vgrow="ALWAYS">
+         <children>
+            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInfomationButtonAction" styleClass="button-2" text="Thông tin cá nhân">
+               <padding>
+                  <Insets bottom="5.0" left="20.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onHistoryButtonAction" styleClass="button-2" text="Lịch sử mượn sách">
+               <padding>
+                  <Insets bottom="5.0" left="20.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInterfaceSettingButtonAction" styleClass="button-2" text="Tính năng gì đó">
+               <padding>
+                  <Insets bottom="5.0" left="20.0" top="5.0" />
+               </padding>
+            </Button>
+         </children>
+         <padding>
+            <Insets left="50.0" right="50.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>

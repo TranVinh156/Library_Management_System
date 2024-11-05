@@ -1,0 +1,45 @@
+.BookView-Background {
+    -fx-background-image: url("../image/customer/book/vintageBackground.png"); /* Hình nền */
+    -fx-background-position: center; /* Căn giữa hình nền */
+    -fx-background-repeat: no-repeat; /* Không lặp lại hình nền */
+    -fx-background-size: cover; /* Đảm bảo hình nền phủ đầy AnchorPane */
+}
+.image {
+    -fx-height: 100%;
+    -fx-width: 100%;
+}
+.label1 {
+    -fx-background-color: #DFC87D;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-font-size: 13;
+    -fx-padding:8 15 8 15;
+}
+
+.label2{
+    -fx-font-weight: bold;
+    -fx-background-color: #839500;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 10;
+    -fx-padding:5 10 5 10;
+}
+
+.button{
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-font-size: 13;
+    -fx-padding:5 10 5 10;
+}
+
+.rounded-scrollpane {
+    -fx-background-color: transparent;
+    -fx-border-radius: 15; /* Bo tròn border của ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn background */
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+.scroll-pane .viewport {
+    -fx-background-color: white; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn các góc bên trong */
+    -fx-border-radius: 15;
+}
