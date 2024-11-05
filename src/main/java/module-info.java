@@ -21,6 +21,7 @@ module com.ooops.lms.library_management_system {
     requires java.sql;
     requires mysql.connector.j;
     requires org.json;
+    requires com.google.api.services.books;
 
 
     opens com.ooops.lms.library_management_system to javafx.fxml;

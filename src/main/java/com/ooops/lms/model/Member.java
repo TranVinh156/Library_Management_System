@@ -14,10 +14,6 @@ public class Member extends Account {
         super(username, password, status, createdDate, person);
     }
 
-    public Member(Person person) {
-        super();
-
-    }
 
     public int getTotalBooksCheckOut() {
         return totalBooksCheckOut;
