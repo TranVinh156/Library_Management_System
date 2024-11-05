@@ -32,7 +32,7 @@ public class AccountDAO {
             "VALUES (?, ?, ?, ?, ?, ?)";
 
     private static final String GET_RESET_PASSWORD_USER
-            = "Select * from Users u Join Members m On u.member_ID = m.member_ID where u.username = ? and m.email = ?";
+            = "Select * from Members where email = ?";
 
     private static final String GET_USER_BY_USERNAME =
             "Select * from Users where username = ?";
@@ -153,8 +153,7 @@ public class AccountDAO {
     public boolean resetPassword(String username, String email) throws SQLException {
         // Kiểm tra tên dăng nhập và email có trùng khớp
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_RESET_PASSWORD_USER)) {
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, email);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) { //Nếu trùng khớp
@@ -189,6 +188,7 @@ public class AccountDAO {
         }
     }
 
+    @NotNull
     private String generateOTP() {
         Random random = new Random();
         int password = 100000 + random.nextInt(900000);
