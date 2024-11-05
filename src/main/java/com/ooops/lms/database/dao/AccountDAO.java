@@ -188,6 +188,7 @@ public class AccountDAO {
         }
     }
 
+    @NotNull
     private String generateOTP() {
         Random random = new Random();
         int password = 100000 + random.nextInt(900000);
