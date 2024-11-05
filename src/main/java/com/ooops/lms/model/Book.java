@@ -1,10 +1,17 @@
 package com.ooops.lms.model;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.ooops.lms.database.dao.CommentDAO;
 import com.ooops.lms.model.Category;
 
 public class Book {
-    private int ISBN;
+    public static final String DEFAULT_IMAGE_PATH = "image//book//default.png";
+    private long ISBN;
     private String title;
     private String imagePath;
     private String description;
@@ -12,28 +19,84 @@ public class Book {
     private int quantity;
     private int numberOfLoanedBooks;
     private int numberOfLostBooks;
+    private int numberOfReservedBooks;
+    private int rate;
     private List<Author> authors;
     private List<Category> categories;
-    private List<Comment> comments;
 
     public Book() {
-
+        authors = new ArrayList<Author>();
+        categories = new ArrayList<>();
     }
 
-    public Book(int ISBN, String title, String description
-            , String placeAt, int quantity, int numberOfLoanedBooks, int numberOfLostBooks , List<Author> authors, List<Category> categories) {
+    public Book(Book book) {
+        this.ISBN = book.getISBN();
+        this.title = book.getTitle();
+        this.imagePath = book.getImagePath();
+        this.description = book.getDescription();
+        this.placeAt = book.getPlaceAt();
+        this.quantity = book.getQuantity();
+        this.numberOfLoanedBooks = book.getNumberOfLoanedBooks();
+        this.numberOfLostBooks = book.getNumberOfLostBooks();
+        this.authors = book.getAuthors();
+        this.categories = book.getCategories();
+    }
+
+    // có image_path khi nhập sách
+    public Book(long ISBN, String title, String imagePath, String description
+            , String placeAt, List<Author> authors, List<Category> categories, int quantity) {
         this.ISBN = ISBN;
         this.title = title;
         this.description = description;
+        this.imagePath = imagePath;
         this.placeAt = placeAt;
+        this.authors = authors;
+        this.categories = categories;
         this.quantity = quantity;
-        this.numberOfLoanedBooks = numberOfLoanedBooks;
-        this.numberOfLostBooks = numberOfLostBooks;
+    }
+
+    // Không có image_path khi nhập sách
+    public Book(long ISBN, String title, String description
+            , String placeAt, List<Author> authors, List<Category> categories, int quantity) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.description = description;
+        this.imagePath = DEFAULT_IMAGE_PATH;
+        this.placeAt = placeAt;
+        this.authors = authors;
+        this.categories = categories;
+        this.quantity = quantity;
+    }
+
+    // có image_path
+    public Book(long ISBN, String title, String imagePath, String description
+            , String placeAt, List<Author> authors, List<Category> categories) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.placeAt = placeAt;
+        this.numberOfLoanedBooks = 0;
+        this.numberOfLostBooks = 0;
         this.authors = authors;
         this.categories = categories;
     }
 
-    public int getISBN() {
+    // Không có image_path
+    public Book(long ISBN, String title, String description
+            , String placeAt, List<Author> authors, List<Category> categories) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.description = description;
+        this.imagePath = DEFAULT_IMAGE_PATH;
+        this.placeAt = placeAt;
+        this.numberOfLoanedBooks = 0;
+        this.numberOfLostBooks = 0;
+        this.authors = authors;
+        this.categories = categories;
+    }
+
+    public long getISBN() {
         return ISBN;
     }
 
@@ -73,11 +136,15 @@ public class Book {
         return categories;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public int getNumberOfReservedBooks() {
+        return numberOfReservedBooks;
     }
 
-    public void setISBN(int ISBN) {
+    public int getRate() {
+        return rate;
+    }
+
+    public void setISBN(long ISBN) {
         this.ISBN = ISBN;
     }
 
@@ -117,7 +184,11 @@ public class Book {
         this.categories = categories;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public void setNumberOfReservedBooks(int numberOfReservedBooks) {
+        this.numberOfReservedBooks = numberOfReservedBooks;
     }
 }

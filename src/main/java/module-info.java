@@ -10,15 +10,18 @@ module com.ooops.lms.library_management_system {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.sql;
     requires java.desktop;
-    requires com.google.zxing.javase;
-    requires opencv;
-    requires com.google.zxing;
     requires annotations;
-    requires mysql.connector.j;
     requires java.mail;
-    requires com.google.api.services.books;
+    requires com.google.zxing.javase;
+    requires com.google.zxing;
+    requires opencv;
+    requires java.net.http;
+    requires com.google.gson;
+    requires java.sql;
+    requires mysql.connector.j;
+    requires org.json;
+
 
     opens com.ooops.lms.library_management_system to javafx.fxml;
     opens com.ooops.lms.controller to javafx.fxml;
