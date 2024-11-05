@@ -198,12 +198,12 @@ public class BookDAO implements DatabaseQuery<Book> {
     /**
      * Thêm các sách bản sao.
      * @param ISBN
-     * @param quanlity số lượng bản sao.
+     * @param quantity số lượng bản sao.
      * @throws SQLException
      */
-    private void insertBookItem(long ISBN, String placeAt, int quanlity) throws SQLException {
+    private void insertBookItem(long ISBN, String placeAt, int quantity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_NEW_BOOKITEM)) {
-            for (int i = 0; i < quanlity; i++) {
+            for (int i = 0; i < quantity; i++) {
                 preparedStatement.setLong(1, ISBN);
                 preparedStatement.executeUpdate();
             }
@@ -223,10 +223,6 @@ public class BookDAO implements DatabaseQuery<Book> {
      */
     @Override
     public void add(@NotNull Book entity) throws SQLException {
-        if (find(entity.getISBN()) != null) {
-            throw new SQLException("Book exsits");
-        }
-
         database.getConnection().setAutoCommit(false);
 
         try {
