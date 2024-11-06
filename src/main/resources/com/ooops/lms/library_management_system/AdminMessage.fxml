@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.18" prefWidth="174.9" styleClass="pane-main" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.library_management_system.AdminMessage">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.18" prefWidth="174.9" styleClass="pane-main" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminMessageController">
    <children>
       <Label layoutX="18.0" layoutY="13.0" style="-fx-font-size: 16;" styleClass="black-text-Cabin" text="Message" />
       <TextField fx:id="toText" layoutX="13.0" layoutY="38.0" minWidth="-Infinity" prefHeight="19.0" prefWidth="144.0" promptText="To" style="-fx-border-radius: 0; -fx-background-radius: 0;" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="18.099999999999994" />
