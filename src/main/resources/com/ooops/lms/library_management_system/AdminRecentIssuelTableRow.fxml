@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="245.0" styleClass="each-row-table-view" stylesheets="@../../../../style/AdminStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="idMemberLabel" styleClass="black-text-Cabin" text="ID" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="titleLabel" styleClass="black-text-Cabin" text="Title" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="black-text-Cabin" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="statusLabel" text="Status" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+</HBox>
