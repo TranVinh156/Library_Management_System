@@ -8,12 +8,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="756.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="737.0" styleClass="each-row-table-view" stylesheets="@../../../../style/AdminBookManagementStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBookCopyRowController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="barcodeText">
+            <TextField fx:id="barcodeText" alignment="CENTER" text="Test" HBox.hgrow="ALWAYS">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
@@ -26,7 +25,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="statusText">
+            <TextField fx:id="statusText" alignment="CENTER" text="Testttt">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
@@ -39,7 +38,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="noteText">
+            <TextField fx:id="noteText" alignment="CENTER" text="Tessstsst">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
