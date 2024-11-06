@@ -13,7 +13,7 @@
    <children>
       <AnchorPane prefHeight="679.0" prefWidth="950.0">
          <children>
-            <AnchorPane fx:id="mainPane" layoutX="68.0" layoutY="63.2" prefHeight="608.0" prefWidth="894.0" style="-fx-background-color: FFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.20000000000005" />
+            <AnchorPane fx:id="mainPane" layoutX="68.0" layoutY="63.2" prefHeight="603.0" prefWidth="894.0" style="-fx-background-color: FFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.20000000000005" />
             <VBox fx:id="menuBar" layoutY="71.0" prefHeight="604.0" prefWidth="49.0" style="-fx-background-color: FFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="71.0">
                <children>
                   <VBox prefHeight="326.0" prefWidth="49.0">
@@ -74,7 +74,7 @@
                   </VBox>
                </children>
             </VBox>
-            <VBox fx:id="menuBarPlus" layoutX="60.0" layoutY="70.0" prefHeight="604.0" prefWidth="226.0" visible="false" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="70.0">
+            <VBox fx:id="menuBarPlus" layoutX="52.8" layoutY="70.0" prefHeight="604.0" prefWidth="206.0" visible="false" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="70.0">
                <children>
                   <VBox prefHeight="331.0" prefWidth="222.0">
                      <children>
