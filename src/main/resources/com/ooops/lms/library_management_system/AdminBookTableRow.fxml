@@ -1,92 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<HBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="821.0" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminBookManagementStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="mainRowHbox" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="806.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBookTableRowController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+      <GridPane HBox.hgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="84.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Label fx:id="ISBNLabel" text="0930-4034-43443">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
+            <Label fx:id="ISBNLabel" text="0930-4034-43443" />
+            <Label fx:id="bookNameLabel" text="Loi thi tham ong dong" GridPane.columnIndex="1" />
+            <Label fx:id="authorNameLabel" text="Nguyen Van C" GridPane.columnIndex="2" />
+            <Label fx:id="categoryLabel" text="Thể loại" GridPane.columnIndex="3" />
+            <Label fx:id="numberOfBookLabel" text="Số lượng" GridPane.columnIndex="4" />
+            <Label fx:id="locationLabel" text="Nơi để sách" GridPane.columnIndex="5" />
+            <Label fx:id="statusLabel" text="Available" GridPane.columnIndex="6" />
          </children>
-         <HBox.margin>
-            <Insets right="5.0" />
-         </HBox.margin>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="bookNameLabel" text="Loi thi tham ong dong">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="authorNameLabel" text="Nguyen Van C">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="categoryLabel" text="Thể loại">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" maxWidth="88.0" minWidth="88.0" prefHeight="38.0" prefWidth="170.0">
-         <children>
-            <Label fx:id="numberOfBookLabel" text="Số lượng">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="38.0" prefWidth="178.0">
-         <children>
-            <Label fx:id="locationLabel" text="Nơi để sách">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="statusLabel" text="Available">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" maxWidth="42.0" minWidth="42.0" prefHeight="38.0" prefWidth="65.0">
-         <children>
-            <Button fx:id="editButton" maxHeight="-Infinity" mnemonicParsing="false" onAction="#onEditButton" prefHeight="30.0" prefWidth="41.0" style="-fx-background-color: transparent;">
-               <graphic>
-                  <ImageView fitHeight="21.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../image/icon/🦆%20icon%20_Edit_.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </HBox>
+      </GridPane>
    </children>
+   <styleClass>
+      <String fx:value="black-text-Cabin" />
+      <String fx:value="each-row-table-view" />
+   </styleClass>
 </HBox>
