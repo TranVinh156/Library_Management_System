@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminIssueTableController">
+   <children>
+      <AnchorPane fx:id="mainPane" prefHeight="602.0" prefWidth="893.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminIssuelStyle.css" HBox.hgrow="ALWAYS">
+         <children>
+            <HBox layoutX="7.0" layoutY="68.0" prefHeight="45.0" prefWidth="843.0" styleClass="pane-main" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="35.19999999999993">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
+                     <children>
+                        <Label styleClass="black-text-Cabin" text="Find:" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="46.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="115.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="memeberIDFindText" alignment="CENTER" promptText="Member_ID" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="box-information" />
+                                    <String fx:value="gray-text-Cabin" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="memberNameFindText" alignment="CENTER" promptText="Họ và tên" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="box-information" />
+                                    <String fx:value="gray-text-Cabin" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="emailFindText" alignment="CENTER" promptText="Email">
+                                 <styleClass>
+                                    <String fx:value="box-information" />
+                                    <String fx:value="gray-text-Cabin" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="statusFindText" alignment="CENTER" prefHeight="29.0" prefWidth="134.0" promptText="Trạng thái">
+                                 <styleClass>
+                                    <String fx:value="box-information" />
+                                    <String fx:value="gray-text-Cabin" />
+                                 </styleClass>
+                              </TextField>
+                              <Label styleClass="gray-text-Cabin" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="35.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFindButtonAction" HBox.hgrow="SOMETIMES">
+                                 <graphic>
+                                    <ImageView fitHeight="61.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../image/icon/search_20dp_5F6368_FILL0_wght400_GRAD0_opsz20%201.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <AnchorPane layoutX="38.0" layoutY="126.0" prefHeight="437.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="35.19999999999993" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="33.60000000000002" AnchorPane.topAnchor="129.5999999999999">
+               <children>
+                  <HBox prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <HBox minWidth="807.0" prefHeight="100.0" prefWidth="807.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="black-text-Cabin" text="Member_ID">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="black-text-Cabin" text="Họ và tên">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="black-text-Cabin" text="Title">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="black-text-Cabin" text="Detail">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="black-text-Cabin" text="Email">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="black-text-Cabin" text="Trạng thái">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" maxWidth="14.0" minWidth="14.0" prefHeight="38.0" prefWidth="14.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.799999999999955">
+                     <children>
+                        <ScrollPane fx:id="scrollPane" prefHeight="400.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="issueTableVbox" prefHeight="406.0" prefWidth="807.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>

@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.google.api.services.books.v1.model.Volume;
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.Gender;
@@ -20,7 +21,8 @@ import java.sql.SQLException;
 
 import static com.almasb.fxgl.app.GameApplication.launch;
 
-public class ResignController {
+
+public class ResignController extends BasicController {
 
     @FXML
     private Button backStepButton;
@@ -107,11 +109,11 @@ public class ResignController {
 
 
                 if(accountDAO.registerMember(person, username, password)) {
-                    System.out.println("Đăng ký tài khoản thành công");
+                    CustomerAlter.showMessage("Đăng ký tài khoản thành công.");
                     openLoginView();
                 }
             } else {
-                System.out.println("Vui lòng kiểm tra thông tin đã nhập.");
+                CustomerAlter.showMessage("Vui lòng kiểm tra thông tin đã nhập.");
             }
         } catch (SQLException e) {
             handleSQLException(e);
@@ -134,30 +136,30 @@ public class ResignController {
 
             // Kiểm tra tên
             if (firstName.isEmpty()) {
-                showAlert("Thông báo", "Tên không được để trống.");
+                CustomerAlter.showMessage("Tên không được để trống.");
                 return false;
             }
 
             if (lastName.isEmpty()) {
-                showAlert("Thông báo", "Họ không được để trống.");
+                CustomerAlter.showMessage("Họ không được để trống.");
                 return false;
             }
 
             // Kiểm tra ngày sinh
             if (birth.isEmpty()) {
-                showAlert("Thông báo", "Ngày sinh không được để trống.");
+                CustomerAlter.showMessage( "Ngày sinh không được để trống.");
                 return false;
             }
 
             // Kiểm tra giới tính
             if (gender == null) {
-                showAlert("Thông báo", "Vui lòng chọn giới tính.");
+                CustomerAlter.showMessage("Vui lòng chọn giới tính.");
                 return false;
             }
 
             // Kiểm tra email
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { // Biểu thức chính quy cho email
-                showAlert("Thông báo", "Email không hợp lệ.");
+                CustomerAlter.showMessage("Email không hợp lệ.");
                 return false;
             }
 
@@ -172,25 +174,25 @@ public class ResignController {
 
             // Kiểm tra tên người dùng
             if (username.isEmpty()) {
-                showAlert("Thông báo", "Tên người dùng không được để trống.");
+                CustomerAlter.showMessage("Tên người dùng không được để trống.");
                 return false;
             }
 
             // Kiểm tra số điện thoại
             if (phoneNumber.isEmpty() || !phoneNumber.matches("\\d{10}")) { // Giả sử số điện thoại có 10 chữ số
-                showAlert("Thông báo", "Số điện thoại không hợp lệ (cần có 10 chữ số).");
+                CustomerAlter.showMessage("Số điện thoại không hợp lệ (cần có 10 chữ số).");
                 return false;
             }
 
             // Kiểm tra mật khẩu
             if (password.isEmpty()) {
-                showAlert("Thông báo", "Mật khẩu không được để trống.");
+                CustomerAlter.showMessage("Mật khẩu không được để trống.");
                 return false;
             }
 
             // Kiểm tra xác nhận mật khẩu
             if (!password.equals(rePassword)) {
-                showAlert("Thông báo", "Mật khẩu và xác nhận mật khẩu không khớp.");
+                CustomerAlter.showMessage ("Mật khẩu và xác nhận mật khẩu không khớp.");
                 return false;
             }
             return true;
@@ -213,7 +215,7 @@ public class ResignController {
         String message = e.getMessage().equals("User already exists") ?
                 "Tài khoản đã tồn tại. Vui lòng chọn tên đăng nhập khác." :
                 "Đã xảy ra lỗi: " + e.getMessage();
-        showAlert("Lỗi", message);
+        CustomerAlter.showMessage(message);
     }
 
     private void switchToStep1() {
@@ -246,14 +248,6 @@ public class ResignController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
 }

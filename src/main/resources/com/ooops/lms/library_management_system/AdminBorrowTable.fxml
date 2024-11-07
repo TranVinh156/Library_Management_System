@@ -2,13 +2,17 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBorrowTableController">
    <children>
       <AnchorPane prefHeight="602.0" prefWidth="893.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminBorrowStyle.css" HBox.hgrow="ALWAYS">
          <children>
@@ -16,14 +20,14 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
                      <children>
-                        <Label styleClass="black-text-Cabin" text="Find:" />
+                        <Label styleClass="black-text-Cabin" text="Filter:" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="46.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
+                  <HBox prefHeight="46.0" prefWidth="714.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="115.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="memeberIDFindText" alignment="CENTER" text="Member_ID" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="memeberIDFindText" alignment="CENTER" promptText="Member_ID" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -31,9 +35,9 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="borrowerFindText" alignment="CENTER" text="Tên người mượn" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="borrowerFindText" alignment="CENTER" promptText="Tên người mượn" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -41,9 +45,9 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="bookNameFindText" alignment="CENTER" text="Tên sách">
+                              <TextField fx:id="bookNameFindText" alignment="CENTER" promptText="Tên sách">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -51,9 +55,9 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="barCodeFindText" alignment="CENTER" text="BarCode">
+                              <TextField fx:id="barCodeFindText" alignment="CENTER" promptText="BarCode">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -61,9 +65,9 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="borrowDateFindText" alignment="CENTER" text="Ngày mượn">
+                              <TextField fx:id="borrowDateFindText" alignment="CENTER" promptText="Ngày mượn">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -71,9 +75,9 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="statusFindText" alignment="CENTER" text="Trạng thái">
+                              <TextField fx:id="statusFindText" alignment="CENTER" promptText="Trạng thái">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -82,14 +86,29 @@
                               <Label styleClass="gray-text-Cabin" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="46.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="27.0">
+                     <children>
+                        <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFindButtonAction">
+                           <graphic>
+                              <ImageView fitHeight="47.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../image/icon/search_20dp_5F6368_FILL0_wght400_GRAD0_opsz20%201.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="2.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                   </HBox>
                </children>
             </HBox>
-            <AnchorPane layoutX="38.0" layoutY="126.0" prefHeight="437.0" prefWidth="821.0" style="-fx-background-color: FFF; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="35.19999999999993" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="33.60000000000002" AnchorPane.topAnchor="129.5999999999999">
+            <AnchorPane layoutX="38.0" layoutY="126.0" prefHeight="437.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC; -fx-background-radius: 6.6;" styleClass="pane-main" AnchorPane.bottomAnchor="35.19999999999993" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="33.60000000000002" AnchorPane.topAnchor="129.5999999999999">
                <children>
-                  <HBox prefHeight="38.0" prefWidth="821.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <HBox prefHeight="38.0" prefWidth="810.0" style="-fx-background-color: #DDDCDC;" styleClass="rounded-top" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="12.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
@@ -139,20 +158,20 @@
                                  </HBox.margin></Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="38.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0">
+                  <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0" AnchorPane.bottomAnchor="5.684341886080802E-14" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0">
                      <children>
-                        <ScrollPane prefHeight="400.0" prefWidth="822.0">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="820.0" />
-                          </content>
+                        <ScrollPane fx:id="scrollPane" prefHeight="400.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="tableVbox" prefHeight="399.0" prefWidth="805.0" />
+                           </content>
                         </ScrollPane>
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonAction" style="-fx-font-size: 25;" styleClass="circle_button" stylesheets="@../../../../style/AdminStyle.css" text="+" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="20.0" />
          </children>
       </AnchorPane>
    </children>

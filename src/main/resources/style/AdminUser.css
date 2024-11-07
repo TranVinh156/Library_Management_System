@@ -34,7 +34,7 @@
 
 .black-text-Cabin-size12 {
     -fx-text-fill: #000;             /* Màu chữ */
-    -fx-font-family: 'Cabin1'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    -fx-font-family: 'Cabin'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
     -fx-font-size: 12px;
 }
 
