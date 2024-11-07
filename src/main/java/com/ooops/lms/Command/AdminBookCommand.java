@@ -1,6 +1,6 @@
 package com.ooops.lms.Command;
 
-public class AdminBookCommand implements Command {
+public class AdminBookCommand {
     private String action;
     private Object data;
 
@@ -9,7 +9,6 @@ public class AdminBookCommand implements Command {
         this.data = data;
     }
 
-    @Override
     public void execute() {
         switch (action) {
             case "add":
