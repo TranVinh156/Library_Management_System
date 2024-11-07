@@ -3,6 +3,7 @@ module com.ooops.lms.library_management_system {
     requires javafx.fxml;
     requires javafx.web;
 
+
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
@@ -25,5 +26,13 @@ module com.ooops.lms.library_management_system {
 
     opens com.ooops.lms.library_management_system to javafx.fxml;
     opens com.ooops.lms.controller to javafx.fxml;
+    opens com.ooops.lms to javafx.fxml;
     exports com.ooops.lms.library_management_system;
+    exports com.ooops.lms;
+    exports com.ooops.lms.controller;
+    exports com.ooops.lms.model;
+    exports com.ooops.lms.Command;
+    opens com.ooops.lms.Command to javafx.fxml;
+    exports com.ooops.lms.Alter;
+    opens com.ooops.lms.Alter to javafx.fxml;
 }
