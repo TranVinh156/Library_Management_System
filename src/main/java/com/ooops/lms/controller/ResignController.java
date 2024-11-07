@@ -21,6 +21,7 @@ import java.sql.SQLException;
 
 import static com.almasb.fxgl.app.GameApplication.launch;
 
+
 public class ResignController extends BasicController {
 
     @FXML
@@ -248,6 +249,5 @@ public class ResignController extends BasicController {
             e.printStackTrace();
         }
     }
-
 
 }

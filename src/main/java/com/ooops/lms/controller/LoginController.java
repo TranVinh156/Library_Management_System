@@ -1,5 +1,6 @@
 package com.ooops.lms.controller;
 
+
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.AccountDAO;
 import javafx.animation.TranslateTransition;
@@ -24,6 +25,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
+
 
 public class LoginController extends  BasicController {
 
@@ -78,7 +80,6 @@ public class LoginController extends  BasicController {
                 handleAdminLogin(username, password);
             }
         } catch (SQLException e) {
-            System.out.println("Đã xảy ra lỗi: " + e.getMessage());
             CustomerAlter.showMessage("Đã xảy ra lỗi\n" + e.getMessage());
         }
     }
@@ -88,7 +89,6 @@ public class LoginController extends  BasicController {
             System.out.println("Login Successful");
             openUser();
         } else {
-            System.out.println("Thông tin đăng nhập không chính xác.");
             CustomerAlter.showMessage("Thông tin đăng nhập không chính xác.");
         }
     }
