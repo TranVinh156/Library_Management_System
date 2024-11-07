@@ -107,7 +107,6 @@ public class ResignController extends BasicController {
                 String username = usernameText.getText();
                 String password = passwordText.getText();
 
-
                 if(accountDAO.registerMember(person, username, password)) {
                     CustomerAlter.showMessage("Đăng ký tài khoản thành công.");
                     openLoginView();
