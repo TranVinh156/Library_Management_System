@@ -223,6 +223,10 @@ public class BookDAO implements DatabaseQuery<Book> {
      */
     @Override
     public void add(@NotNull Book entity) throws SQLException {
+         if (find(entity.getISBN()) != null) {
+             throw new SQLException("Book is exsit");
+         }
+
         database.getConnection().setAutoCommit(false);
 
         try {
@@ -390,7 +394,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                     bookCache.put(String.valueOf(keywords), bookList);
                     return book;
                 } else {
-                    throw new SQLException("No book found");
+                    return null;
                 }
             }
         }
@@ -405,7 +409,6 @@ public class BookDAO implements DatabaseQuery<Book> {
     @Override
     public List<Book> searchByCriteria(Map<String, Object> criteria) throws SQLException {
         String keywords = generateKeywords(criteria);
-
 
         if (bookCache.containsKey(keywords)) {
             return bookCache.get(keywords);

@@ -1,5 +1,7 @@
 package com.ooops.lms.controller;
 
+
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.AccountDAO;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -24,7 +26,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
 
-public class LoginController {
+
+public class LoginController extends  BasicController {
 
     @FXML
     private Button forgotPasswordButton;
@@ -77,7 +80,7 @@ public class LoginController {
                 handleAdminLogin(username, password);
             }
         } catch (SQLException e) {
-            System.out.println("Đã xảy ra lỗi: " + e.getMessage());
+            CustomerAlter.showMessage("Đã xảy ra lỗi\n" + e.getMessage());
         }
     }
 
@@ -86,16 +89,17 @@ public class LoginController {
             System.out.println("Login Successful");
             openUser();
         } else {
-            System.out.println("Thông tin đăng nhập không chính xác.");
+            CustomerAlter.showMessage("Thông tin đăng nhập không chính xác.");
         }
     }
 
     private void handleAdminLogin(String username, String password) throws SQLException {
         if (accountDAO.validateAdminLogin(username, password)) {
-            System.out.println("Login Successful");
+            CustomerAlter.showMessage("Login Successful.");
             openAdmin();
         } else {
             System.out.println("Thông tin đăng nhập không chính xác.");
+            CustomerAlter.showMessage("Thông tin đăng nhập không chính xác.");
         }
     }
 
