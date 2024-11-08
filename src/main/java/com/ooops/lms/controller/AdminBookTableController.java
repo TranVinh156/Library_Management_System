@@ -1,5 +1,6 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class AdminBookTableController extends BasicBookController {
@@ -73,7 +75,7 @@ public class AdminBookTableController extends BasicBookController {
 
     private Book book;
     private BookDAO bookDAO;
-
+    Map<String, Object> criteria = new HashMap<>();
     private ObservableList<Book> bookList;
     private AdminBookPageController mainController;
 
@@ -120,29 +122,52 @@ public class AdminBookTableController extends BasicBookController {
                 new Category(6, "Biography")
         );
 
-        setCategoryList();
-
+        setCategoryList(categoryFindButton,mainPane,categoryTable,categoryList);
         setVboxFitWithScrollPane();
 
         bookDAO = new BookDAO();
     }
 
     private void loadData() {
-        bookTableVbox.getChildren().clear();
-        for(Book book: bookList) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_TABLE_ROW_FMXL));
-                HBox row = loader.load();
+        bookList.clear();
+        try {
 
-                AdminBookTableRowController rowController = loader.getController();
-                rowController.setMainController(mainController);
-                rowController.setBook(book);
-                childFitWidthParent(row,rowController);
-                bookTableVbox.getChildren().add(row);
-            } catch (IOException e) {
-                e.printStackTrace();
+            bookList.addAll(bookDAO.searchByCriteria(criteria));
+
+            bookTableVbox.getChildren().clear();
+            for (Book book : bookList) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_TABLE_ROW_FMXL));
+                    HBox row = loader.load();
+
+                    AdminBookTableRowController rowController = loader.getController();
+                    rowController.setMainController(mainController);
+                    rowController.setBook(book);
+                    childFitWidthParent(row, rowController);
+                    bookTableVbox.getChildren().add(row);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (SQLException e) {
+            CustomerAlter.showAlter(e.getMessage());
         }
+    }
+
+    private void getCriteria() {
+
+        if (!ISBNFindText.getText().isEmpty()) {
+            criteria.put("ISBN", ISBNFindText.getText());
+        }
+
+        if (!authorFindText.getText().isEmpty()) {
+            criteria.put("author", authorFindText.getText());
+        }
+
+        if (!bookNameFindTExt.getText().isEmpty()) {
+            criteria.put("book_name", bookNameFindTExt.getText());
+        }
+
     }
 
     private void setVboxFitWithScrollPane() {
@@ -153,22 +178,7 @@ public class AdminBookTableController extends BasicBookController {
     @FXML
     void onCategoryFindButton(ActionEvent event) {
         categoryTable.setVisible(!categoryTable.isVisible());
-        updateCategoryTablePosition();
-    }
-
-
-    @FXML
-    private void onCategorySelected(ActionEvent event) {
-        CheckBox selectedCheckBox = (CheckBox) event.getSource();
-        String categoryName = selectedCheckBox.getText();
-
-        if (selectedCheckBox.isSelected()) {
-            System.out.println("Chọn danh mục: " + categoryName);
-            // Thêm logic để hiển thị hoặc xử lý sách theo danh mục được chọn
-        } else {
-            System.out.println("Bỏ chọn danh mục: " + categoryName);
-            // Thêm logic để ẩn hoặc xử lý sách khi danh mục không còn được chọn
-        }
+        updateCategoryTablePosition(mainPane,categoryFindButton,categoryTable);
     }
 
     @FXML
@@ -178,57 +188,7 @@ public class AdminBookTableController extends BasicBookController {
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
-
+        mainController.alterPage();
     }
-
-    private void setCategoryList() {
-        // Đặt sự kiện chuột cho vùng chứa chính
-        mainPane.setOnMouseClicked(event -> {
-            // Kiểm tra xem có nhấn vào danh sách danh mục không
-            if (categoryTable.isVisible() && !categoryList.getBoundsInLocal().contains(event.getX(), event.getY())) {
-                categoryTable.setVisible(false); // Ẩn danh mục nếu bấm ngoài
-            }
-        });
-
-        // Thêm listener để điều chỉnh vị trí của categoryTable theo categoryFindButton
-        categoryFindButton.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
-            updateCategoryTablePosition();
-        });
-
-        // Tạo danh sách danh mục từ một nguồn dữ liệu
-        List<String> categories = List.of("Danh Mục 1", "Danh Mục 2", "Danh Mục 3");
-        for (String category : categories) {
-            CheckBox categoryCheckBox = new CheckBox(category);
-            categoryCheckBox.setOnAction(this::onCategorySelected); // Gọi sự kiện khi nhấn checkbox
-            categoryList.getChildren().add(categoryCheckBox);
-        }
-    }
-
-    private void updateCategoryTablePosition() {
-        // Lấy tọa độ X,Y của categoryFindButton trong hệ tọa độ scene
-        Point2D buttonCoords = categoryFindButton.localToScene(0, 0);
-        double buttonSceneX = buttonCoords.getX(); // tọa độ X của button trong không gian cảnh
-        double buttonSceneY = buttonCoords.getY(); // tọa độ Y của button trong không gian cảnh
-
-        // Lấy tọa độ X,Y của mainPane trong hệ tọa độ scene
-        Point2D mainPaneCoords = mainPane.localToScene(0, 0);
-        double mainPaneSceneX = mainPaneCoords.getX(); // tọa độ X của mainPane trong không gian cảnh
-        double mainPaneSceneY = mainPaneCoords.getY(); // tọa độ Y của mainPane trong không gian cảnh
-
-        // Tính toán tọa độ X của categoryFindButton so với mainPane
-        double buttonRelativeX = buttonSceneX - mainPaneSceneX;
-        double buttonRelativeY = buttonSceneY - mainPaneSceneY; // nếu cần tính tọa độ Y, có thể thêm
-
-        // In ra tọa độ X và Y tương đối
-        System.out.println("Tọa độ X của categoryFindButton so với mainPane: " + buttonRelativeX);
-        System.out.println("Tọa độ Y của categoryFindButton so với mainPane: " + buttonRelativeY);
-
-        // Cập nhật vị trí cho categoryTable (nếu cần)
-        categoryTable.setLayoutX(buttonRelativeX);
-        // Nếu cần cập nhật vị trí Y, có thể thêm:
-        categoryTable.setLayoutY(buttonRelativeY+33);
-    }
-
-
 
 }
