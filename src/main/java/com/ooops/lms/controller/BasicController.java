@@ -1,5 +1,8 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Command.CommandInvoker;
+import com.ooops.lms.database.dao.BookDAO;
+import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Category;
 import javafx.fxml.FXMLLoader;
@@ -66,6 +69,9 @@ public class BasicController  {
     protected static final FXMLLoader bookPagePaneLoader;
     protected static final Node bookPagePane;
 
+    protected CommandInvoker commandInvoker = new CommandInvoker();
+    protected BookDAO bookDAO = new BookDAO();
+    protected MemberDAO memberDAO = new MemberDAO();
 
     static {
         //load login

@@ -7,9 +7,10 @@ public class CommandInvoker {
         this.command = command;
     }
 
-    public void executeCommand() {
+    public boolean executeCommand() {
         if (command != null) {
-            command.execute();
+            return command.execute();
         }
+        return false;
     }
 }

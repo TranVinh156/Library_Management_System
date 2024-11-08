@@ -19,7 +19,7 @@ public class LoginCommand implements Command {
     private String username;
     private Stage stage;
 
-    public LoginCommand(Stage stage,Role role, String username, String password) {
+    public LoginCommand(Stage stage, Role role, String username, String password) {
         this.role = role;
         this.username = username;
         this.password = password;
@@ -27,18 +27,20 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         try {
-            if(username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty()) {
                 System.out.println("Username or password is empty");
             }
-            if (isAuthenticated()){
+            if (isAuthenticated()) {
                 openMenu();
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        return false;
     }
 
 
@@ -59,8 +61,9 @@ public class LoginCommand implements Command {
         CustomerAlter.showAlter("Thông tin đăng nhập không chính xác.");
         return false;
     }
+
     private void openMenu() {
-        if(role.equals(Role.ADMIN)) {
+        if (role.equals(Role.ADMIN)) {
             loadView("/com/ooops/lms/library_management_system/AdminMenu.fxml");
         } else if (role.equals(Role.NONE)) {
             loadView("/com/ooops/lms/library_management_system/UserMenu-view.fxml");

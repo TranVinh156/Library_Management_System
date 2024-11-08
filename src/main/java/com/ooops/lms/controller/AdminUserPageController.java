@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class AdminUserPageController extends BasicUserController{
@@ -23,7 +24,7 @@ public class AdminUserPageController extends BasicUserController{
     private AdminUserDetailController adminUserDetailController;
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, SQLException {
         userTableLocationPane.getChildren().add(userTablePane);
         adminUserTableController = userTablePaneLoader.getController();
         adminUserTableController.setMainController(this);
