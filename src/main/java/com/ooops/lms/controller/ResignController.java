@@ -86,7 +86,7 @@ public class ResignController extends BasicController {
     public void initialize() {
         isStep1 = true;
         setSwitchBar();
-        genderBox.getItems().addAll(Gender.Male, Gender.Female, Gender.Other);
+        genderBox.getItems().addAll(Gender.MALE, Gender.FEMALE, Gender.OTHER);
     }
 
     @FXML
