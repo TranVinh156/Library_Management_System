@@ -80,21 +80,21 @@
                      <children>
                         <AnchorPane fx:id="plusMenuPiece1Pane" prefHeight="331.0" prefWidth="217.0" style="-fx-background-color: FFFFFF;" stylesheets="@../../../../style/AdminStyle.css">
                            <children>
-                              <Button fx:id="borrowButton" alignment="BASELINE_LEFT" layoutY="155.0" mnemonicParsing="false" onAction="#onBorrowButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" text="Mượn sách">
+                              <Button fx:id="borrowButton" alignment="BASELINE_LEFT" layoutY="155.0" mnemonicParsing="false" onAction="#onBorrowButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" text="Mượn sách">
                                  <styleClass>
                                     <String fx:value="menu-bar-button" />
                                     <String fx:value="font" />
                                  </styleClass>
                               </Button>
-                              <Button fx:id="readerManagementButton" alignment="BASELINE_LEFT" layoutY="244.0" mnemonicParsing="false" onAction="#onReaderManagementButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" styleClass="menu-bar-button" text="Quản lý người đọc" />
-                              <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" layoutY="111.0" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" text="Dashboard">
+                              <Button fx:id="readerManagementButton" alignment="BASELINE_LEFT" layoutY="244.0" mnemonicParsing="false" onAction="#onReaderManagementButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" styleClass="menu-bar-button" text="Quản lý người đọc" />
+                              <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" layoutY="111.0" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" text="Dashboard">
                                  <styleClass>
                                     <String fx:value="menu-bar-button" />
                                     <String fx:value="font" />
                                  </styleClass>
                               </Button>
-                              <Button fx:id="bookManagementButton" alignment="BASELINE_LEFT" layoutY="199.0" mnemonicParsing="false" onAction="#onBookManagmentButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" styleClass="menu-bar-button" text="Quản lý sách" />
-                              <Button fx:id="issuesButton" alignment="BASELINE_LEFT" layoutY="288.0" mnemonicParsing="false" onAction="#onIssuesButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" styleClass="menu-bar-button" text="Các vấn đề" />
+                              <Button fx:id="bookManagementButton" alignment="BASELINE_LEFT" layoutY="199.0" mnemonicParsing="false" onAction="#onBookManagmentButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" styleClass="menu-bar-button" text="Quản lý sách" />
+                              <Button fx:id="issuesButton" alignment="BASELINE_LEFT" layoutY="288.0" mnemonicParsing="false" onAction="#onIssuesButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" styleClass="menu-bar-button" text="Các vấn đề" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -110,13 +110,13 @@
                            <children>
                               <AnchorPane fx:id="plusMenuPeice3Pane" prefHeight="87.0" prefWidth="242.0" style="-fx-background-color: FFFFFF;">
                                  <children>
-                                    <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" stylesheets="@../../../../style/AdminStyle.css" text="Setting">
+                                    <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" stylesheets="@../../../../style/AdminStyle.css" text="Setting">
                                        <styleClass>
                                           <String fx:value="menu-bar-button" />
                                           <String fx:value="font" />
                                        </styleClass>
                                     </Button>
-                                    <Button fx:id="logoutButton" alignment="BASELINE_LEFT" layoutY="44.0" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500; -fx-line-spacing: normal;" stylesheets="@../../../../style/AdminStyle.css" text="Logout">
+                                    <Button fx:id="logoutButton" alignment="BASELINE_LEFT" layoutY="44.0" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="43.0" prefWidth="225.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" stylesheets="@../../../../style/AdminStyle.css" text="Logout">
                                        <styleClass>
                                           <String fx:value="menu-bar-button" />
                                           <String fx:value="font" />
