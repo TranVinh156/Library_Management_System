@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 public class AdminUserTableController extends BasicUserController {
-
-
     @FXML
     private Button addButton;
 
@@ -39,26 +37,12 @@ public class AdminUserTableController extends BasicUserController {
     @FXML
     private VBox userTableVbox;
 
-    private AccountDAO accountDAO;
     private MemberDAO memberDAO = new MemberDAO();
-    ;
     private ObservableList<Member> membersList = FXCollections.observableArrayList();
-
     private AdminUserPageController mainController;
-
-    public void addMember(Member member) {
-        membersList.add(member);
-        System.out.println("đã thêm");
-        loadRows();
-    }
 
     @FXML
     public void initialize() {
-        memberDAO = new MemberDAO();
-        membersList = FXCollections.observableArrayList();
-        membersList.add(new Member("user1", "password1", new Person("John", "Doe", null, Gender.MALE, "1990-01-01", "john.doe@example.com", "0123456788")));
-        membersList.add(new Member("user2", "password2", new Person("Johny", "Doee", null, Gender.FEMALE, "1990-02-01", "johny.doee@example.com", "0123556789")));
-        membersList.add(new Member("user3", "password3", new Person("Johnny", "Doeee", null, Gender.OTHER, "1990-03-01", "johnny.doeee@example.com", "0223456789")));
 
     }
 
@@ -67,35 +51,57 @@ public class AdminUserTableController extends BasicUserController {
         mainController.loadAddPane();
     }
 
+    /**
+     * Hàm để set mainController (PageController).
+     * Sau khi có mainController thì mới được tải hàng Row.
+     * Để tránh cho set mainController cho các Row bị rỗng.
+     * @param controller là PageController truyền vào
+     */
     public void setMainController(AdminUserPageController controller) throws SQLException {
         this.mainController = controller;
         loadData();
         setVboxFitWithScrollPane();
     }
 
-    private void loadData() {
+    /**
+     * Hàm load lại Data cho Table.
+     */
+    public void loadData() {
         try {
-            System.out.println("1111");
             membersList.clear();
             membersList.addAll(memberDAO.selectAll());
-            System.out.println("3333");
             loadRows();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Load lại các row.
+     * Lấy các member ra từ memberList và tạo row cho member đẩy.
+     * Sau đó đẩy các row vào bảng.
+     */
     public void loadRows() {
+        //Xóa hết các row cũ trong bảng
         userTableVbox.getChildren().clear();
+
+        //Tạo các row cho mỗi member và đẩy vào bảng
         for (Member member : membersList) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(USER_TABLE_ROW_FXML)); // Use the actual path
+                //Tạp row cho member
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(USER_TABLE_ROW_FXML));
                 HBox row = loader.load();
 
+                //Xử lý gán mainController(PageController) cho Row
                 AdminUserTableRowController rowController = loader.getController();
                 rowController.setMainController(mainController);
+
+                //Gán member của row
                 rowController.setMember(member);
+
+                //Làm cho row chiều ngang resize theo Table
                 childFitWidthParent(row, scrollPane);
+                //Đẩy row vào Table
                 userTableVbox.getChildren().add(row);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -105,6 +111,9 @@ public class AdminUserTableController extends BasicUserController {
         }
     }
 
+    /**
+     * Làm cho Vbox nằm trong ScrollPane resize theo ScrollPane
+     */
     private void setVboxFitWithScrollPane() {
         childFitWidthParent(userTableVbox, scrollPane);
         childFitHeightParent(userTableVbox, scrollPane);
