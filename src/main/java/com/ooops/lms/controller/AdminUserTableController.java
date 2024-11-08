@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +56,9 @@ public class AdminUserTableController extends BasicUserController {
     public void initialize() {
         memberDAO = new MemberDAO();
         membersList = FXCollections.observableArrayList();
-        membersList.add(new Member("user1", "password1", new Person("John", "Doe", null, Gender.Male, "1990-01-01", "john.doe@example.com", "0123456788")));
-        membersList.add(new Member("user2", "password2", new Person("Johny", "Doee", null, Gender.Female, "1990-02-01", "johny.doee@example.com", "0123556789")));
-        membersList.add(new Member("user3", "password3", new Person("Johnny", "Doeee", null, Gender.Other, "1990-03-01", "johnny.doeee@example.com", "0223456789")));
+        membersList.add(new Member("user1", "password1", new Person("John", "Doe", null, Gender.MALE, "1990-01-01", "john.doe@example.com", "0123456788")));
+        membersList.add(new Member("user2", "password2", new Person("Johny", "Doee", null, Gender.FEMALE, "1990-02-01", "johny.doee@example.com", "0123556789")));
+        membersList.add(new Member("user3", "password3", new Person("Johnny", "Doeee", null, Gender.OTHER, "1990-03-01", "johnny.doeee@example.com", "0223456789")));
 
     }
 
@@ -76,17 +77,11 @@ public class AdminUserTableController extends BasicUserController {
         try {
             System.out.println("1111");
             membersList.clear();
-
-            Map<String, Object> criteria = new HashMap<>();
-            criteria.put("member_id", "40000000");
-            System.out.println("2222");
-            List<Member> memberData = memberDAO.searchByCriteria(criteria);
+            membersList.addAll(memberDAO.selectAll());
             System.out.println("3333");
-            membersList.addAll(memberData);
-
             loadRows();
         } catch (SQLException e) {
-            CustomerAlter.showMessage(e.getMessage());
+            e.printStackTrace();
         }
     }
 
