@@ -46,13 +46,13 @@ public class LoginCommand implements Command {
 
     private boolean isAuthenticated() throws SQLException {
         if (role.equals(Role.NONE)) {
-            if (accountDAO.validateMemberLogin(username, password)) {
+            if (accountDAO.validateMemberLogin(username, password) != 0) {
                 CustomerAlter.showAlter("Đăng nhập thành công");
                 openMenu();
                 return true;
             }
         } else if (role.equals(Role.ADMIN)) {
-            if (accountDAO.validateAdminLogin(username, password)) {
+            if (accountDAO.validateAdminLogin(username, password)!=0) {
                 CustomerAlter.showAlter("Đăng nhập thành công");
                 openMenu();
                 return true;
