@@ -43,7 +43,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
 
     // find
     private static final String FIND_MEMBER
-            = "Select * from members m join users u on m.member_ID = u.member_ID where member_ID = ?";
+            = "Select * from members m join users u on m.member_ID = u.member_ID where m.member_ID = ?";
 
     // select all
     private static final String SELECT_ALL = "Select * from members m join Users u on m.member_ID = u.member_ID";
@@ -203,7 +203,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
         boolean flag = false;
         for (String key : criteria.keySet()) {
             if (key.equals("member_id")) {
-                findMemberByCriteria.append(key).append(" = ?").append(" OR ");
+                findMemberByCriteria.append("m.").append(key).append(" = ?").append(" OR ");
                 flag = true;
             } else {
                 findMemberByCriteria.append(key).append(" like ?").append(" OR ");
