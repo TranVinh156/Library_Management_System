@@ -10,10 +10,13 @@ public class Member extends Account {
         super(username, password, person);
     }
 
-    public Member(String username, String password, AccountStatus status, String createdDate, Person person) {
-        super(username, password, status, createdDate, person);
+    public Member(int accountId, String username, String password, AccountStatus status, String createdDate, Person person) {
+        super(accountId, username, password, status, createdDate, person);
     }
 
+    public Member(Person person) {
+        super(person);
+    }
 
     public int getTotalBooksCheckOut() {
         return totalBooksCheckOut;

@@ -2,45 +2,145 @@ package com.ooops.lms.database.dao;
 
 import com.ooops.lms.database.Database;
 import com.ooops.lms.model.BookReservation;
+import com.ooops.lms.model.enums.BookReservationStatus;
+import org.jetbrains.annotations.NotNull;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class BookReservationDAO implements DatabaseQuery<BookReservation> {
     private Database database;
+    private MemberDAO memberDAO;
+    private BookItemDAO bookItemDAO;
 
     public BookReservationDAO() {
         database = Database.getInstance();
+        memberDAO = new MemberDAO();
+        bookItemDAO = new BookItemDAO();
+    }
+
+    // add
+    private static final String ADD_BOOK_RESERVATION
+            = "Insert into BookReservation(member_ID, barcode, creation_date, due_date) values (?, ?, ?, ?)";
+
+    // update
+    private static final String UPDATE_BOOK_RESERVATION
+            = "Update BookReservation set member_ID = ?, barcode = ?, creation_date = ?, due_date = ?, status = ? where reservation_ID = ?";
+
+    // delete
+    private static final String DELETE_BOOK_RESERVATION
+            = "Delete BookReservation where reservation_ID = ?";
+
+    // find
+    private static final String FIND_BOOK_RESERVATION = "Select * from BookReservation where reservation_ID = ?";
+
+    // select all
+    private static final String SELECT_ALL = "Select * from BookReservation";
+
+    @Override
+    public void add(@NotNull BookReservation entity) throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_BOOK_RESERVATION)) {
+            preparedStatement.setInt(1, entity.getMember().getPerson().getId());
+            preparedStatement.setInt(2, entity.getBookItem().getBarcode());
+            preparedStatement.setString(3, entity.getCreatedDate());
+            preparedStatement.setString(4, entity.getDueDate());
+
+            preparedStatement.executeUpdate();
+        }
     }
 
     @Override
-    public void add(BookReservation entity) throws SQLException {
+    public boolean update(@NotNull BookReservation entity) throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_BOOK_RESERVATION)) {
+            preparedStatement.setInt(1, entity.getMember().getPerson().getId());
+            preparedStatement.setInt(2, entity.getBookItem().getBarcode());
+            preparedStatement.setString(3, entity.getCreatedDate());
+            preparedStatement.setString(4, entity.getDueDate());
+            preparedStatement.setString(5, entity.getStatus().name());
+            preparedStatement.setInt(6, entity.getReservationId());
 
+            return preparedStatement.executeUpdate() > 0;
+        }
     }
 
     @Override
-    public boolean update(BookReservation entity) throws SQLException {
-        return false;
+    public boolean delete(@NotNull BookReservation entity) throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_RESERVATION)) {
+            preparedStatement.setInt(1, entity.getReservationId());
+            return preparedStatement.executeUpdate() > 0;
+        }
     }
 
     @Override
-    public boolean delete(BookReservation entity) throws SQLException {
-        return false;
-    }
-
-    @Override
-    public BookReservation find(Number keywords) throws SQLException {
+    public BookReservation find(@NotNull Number keywords) throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_RESERVATION)) {
+            preparedStatement.setInt(1, keywords.intValue());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    BookReservation bookReservation = new BookReservation(resultSet.getInt("reservation_ID")
+                            , memberDAO.find(resultSet.getInt("member_ID"))
+                            , bookItemDAO.find(resultSet.getInt("barcode"))
+                            , resultSet.getString("creation_date")
+                            , resultSet.getString("due_date")
+                            , BookReservationStatus.valueOf(resultSet.getString("status")));
+                    return bookReservation;
+                }
+            }
+        }
         return null;
     }
 
     @Override
-    public List<BookReservation> searchByCriteria(Map<String, Object> criteria) throws SQLException {
-        return List.of();
+    public List<BookReservation> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
+        StringBuilder findBookReservationByCriteria = new StringBuilder("Select * from BookReservation where ");
+
+        for (String key : criteria.keySet()) {
+            findBookReservationByCriteria.append(key).append(" like ?").append(" and ");;
+        }
+
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookReservationByCriteria.toString())) {
+            int index = 1;
+
+            for (Object value : criteria.values()) {
+                preparedStatement.setString(index++, "%" + value.toString() + "%");
+            }
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<BookReservation> bookReservations = new ArrayList<>();
+                while (resultSet.next()) {
+                    BookReservation bookReservation = new BookReservation(resultSet.getInt("reservation_ID")
+                            , memberDAO.find(resultSet.getInt("member_ID"))
+                            , bookItemDAO.find(resultSet.getInt("barcode"))
+                            , resultSet.getString("creation_date")
+                            , resultSet.getString("due_date")
+                            , BookReservationStatus.valueOf(resultSet.getString("status")));
+                    bookReservations.add(bookReservation);
+                }
+                return bookReservations;
+            }
+        }
     }
 
     @Override
     public List<BookReservation> selectAll() throws SQLException {
-        return List.of();
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<BookReservation> bookReservations = new ArrayList<>();
+                while (resultSet.next()) {
+                    BookReservation bookReservation = new BookReservation(resultSet.getInt("reservation_ID")
+                            , memberDAO.find(resultSet.getInt("member_ID"))
+                            , bookItemDAO.find(resultSet.getInt("barcode"))
+                            , resultSet.getString("creation_date")
+                            , resultSet.getString("due_date")
+                            , BookReservationStatus.valueOf(resultSet.getString("status")));
+                    bookReservations.add(bookReservation);
+                }
+                return bookReservations;
+            }
+        }
     }
 }
