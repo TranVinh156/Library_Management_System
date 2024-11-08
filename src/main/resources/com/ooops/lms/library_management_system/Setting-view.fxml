@@ -12,7 +12,7 @@
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" prefHeight="329.0" prefWidth="567.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" prefHeight="329.0" prefWidth="567.0" styleClass="background-part" HBox.hgrow="ALWAYS">
                <children>
                   <Circle fill="#d9b2ff" radius="77.0" stroke="BLACK" strokeType="INSIDE" />
                   <Label styleClass="label-2" text="UserName" textFill="#ff2de6" VBox.vgrow="ALWAYS">
@@ -88,4 +88,7 @@
          </padding>
       </VBox>
    </children>
+   <padding>
+      <Insets right="40.0" />
+   </padding>
 </VBox>

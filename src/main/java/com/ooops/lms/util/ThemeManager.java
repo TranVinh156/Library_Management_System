@@ -13,6 +13,7 @@ public class ThemeManager {
     private static final String DEFAULT_THEME = "/style/UserMenuStyle.css";
     private static final String DARK_THEME = "/style/UserMenuDarkStyle.css";
     private static final String PINK_THEME = "/style/UserMenuPinkStyle.css";
+    private static final String GOLD_THEME = "/style/UserMenuGoldStyle.css";
 
     private static final List<Pane> panes = new ArrayList<>();
 
@@ -44,6 +45,9 @@ public class ThemeManager {
                 break;
             case "pink" :
                 currentTheme = PINK_THEME;
+                break;
+            case "gold" :
+                currentTheme = GOLD_THEME;
                 break;
             default:
                 currentTheme = DEFAULT_THEME;

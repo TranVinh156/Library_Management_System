@@ -1,35 +1,34 @@
 .topBackground {
-    -fx-background-color: #000000;
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37);
 }
 
 .sideBackground {
-    -fx-background-color: #E1E1E1;
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37);
 }
 
 .background {
-    -fx-background-color: #5A5A5A;
+    -fx-background-color: #ffffff;
 }
 
 .background-part {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 20;
+    -fx-background-color: #F9FF4E;
 }
 
 .label-1{
-    -fx-text-fill : #000000;
+    -fx-text-fill : #EFBF04;
     -fx-font-weight : bold;
     -fx-background-radius : 20;
-    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.5), 8, 0, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
 }
 .label-2{
-    -fx-text-fill : #000000;
+    -fx-text-fill : #EFBF04;
     -fx-background-radius : 20;
 }
 .label-3{
-    -fx-text-fill : #000000;
+    -fx-text-fill : #ffffff;
 }
 .textField {
-    -fx-text-fill : #000000;
+    -fx-text-fill : #EFBF04;
     -fx-font-size : 20;
     -fx-font-weight : bold;
     -fx-background-radius : 20;
@@ -37,7 +36,7 @@
 }
 .choiceBox {
     -fx-background-radius: 10;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #EFBF04;
 }
 .rounded-box {
     -fx-background-color: transparent;
@@ -85,8 +84,8 @@
     -fx-text-fill: #734E38;
 }
 .menu-bar-button:hover {
-    -fx-background-color: #000000;
-    -fx-border-color: #ffffff;
+    -fx-background-color: #EFBF04;
+    -fx-border-color: #EFBF04;
     -fx-border-width: 0px 5px 0px 0px;
 }
 
@@ -117,25 +116,25 @@
     -fx-padding:4 15 8 15;
         -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
         -fx-background-radius: 15;
-        -fx-background-color: #9E9A9A;
+        -fx-background-color: #000080;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
         -fx-font-weight: bold;
         -fx-font-size: 1.3em;
-        -fx-text-fill: #000000;
+        -fx-text-fill: white;
 }
 .button-2{
     -fx-padding:4 15 8 15;
         -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
         -fx-background-radius: 8;
-        -fx-background-color: #000000;
+        -fx-background-color: #000080;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
         -fx-font-weight: bold;
         -fx-font-size: 1.3em;
-        -fx-text-fill: #ffffff;
+        -fx-text-fill: #EFBF04;
 }
 .buttonMenu {
     -fx-background-color: transparent;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #EFBF04;
     -fx-font-size: 16px;
     -fx-alignment : top-left;
 }

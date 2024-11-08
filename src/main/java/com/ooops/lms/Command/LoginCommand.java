@@ -39,6 +39,7 @@ public class LoginCommand implements Command {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return false;
     }
 

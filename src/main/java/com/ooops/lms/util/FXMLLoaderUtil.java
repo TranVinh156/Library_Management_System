@@ -33,11 +33,14 @@ public class FXMLLoaderUtil {
     }
 
     public static FXMLLoaderUtil getInstance(VBox container) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new FXMLLoaderUtil(container);
+        } else {
+            instance.container = container;  // Đảm bảo cập nhật container nếu instance đã tồn tại
         }
         return instance;
     }
+
 
     public static <T> T loadAndGetController(String fxmlPath) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();

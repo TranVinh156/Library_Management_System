@@ -97,4 +97,9 @@ public class ForgotPasswordController extends BasicController {
         }
     }
 
+    public void onToLoginButtonAction(ActionEvent actionEvent) {
+    }
+
+    public void onToEmailButtonAction(ActionEvent actionEvent) {
+    }
 }

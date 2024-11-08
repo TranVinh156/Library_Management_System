@@ -6,12 +6,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import com.ooops.lms.database.dao.BookDAO;
+import com.ooops.lms.model.Book;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.util.*;
 
 public class DashBoardController implements Initializable {
     @FXML
@@ -21,13 +24,15 @@ public class DashBoardController implements Initializable {
     @FXML
     private HBox latestHBox;
 
+    private BookDAO bookDAO = new BookDAO();
+
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
 
     private static final String MORE_BOOK_FXML = "/com/ooops/lms/library_management_system/MoreBook-view.fxml";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard1-view.fxml"));

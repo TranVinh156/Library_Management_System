@@ -7,6 +7,10 @@
 }
 
 .background {
+    -fx-background-color: #ffffff;
+}
+
+.background-part {
     -fx-background-color: #FFD5D5;
 }
 

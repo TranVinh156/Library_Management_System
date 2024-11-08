@@ -69,31 +69,31 @@
             </HBox>
          </top>
          <left>
-            <VBox prefHeight="605.0" prefWidth="58.0" styleClass="sideBackground" BorderPane.alignment="CENTER">
+            <VBox fx:id="menuBar" prefHeight="605.0" prefWidth="58.0" styleClass="sideBackground" BorderPane.alignment="CENTER">
                <children>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="220.0" prefWidth="58.0">
                      <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button mnemonicParsing="false" onAction="#onDashboardButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo3" fitHeight="32.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="dashboardLogo3" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/menu.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button mnemonicParsing="false" onAction="#onBookmarkButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo13" fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="dashboardLogo13" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/bookmark.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button mnemonicParsing="false" onAction="#onBookRankingButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo21" fitHeight="35.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="dashboardLogo21" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/ranking.png" />
                                  </image>
@@ -105,20 +105,20 @@
                   <HBox prefHeight="261.0" prefWidth="58.0" VBox.vgrow="ALWAYS" />
                   <VBox prefHeight="90.0" prefWidth="58.0">
                      <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button mnemonicParsing="false" onAction="#onSettingButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo12" fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="dashboardLogo12" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../image/customer/menu/setting.png" />
+                                    <Image url="@../../../../image/admin/menu/Vector.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="39.0" prefWidth="49.0" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo11" fitHeight="30.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="dashboardLogo11" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../image/customer/menu/logout.png" />
+                                    <Image url="@../../../../image/admin/menu/Vector%20(1).png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -126,12 +126,15 @@
                      </children>
                   </VBox>
                </children>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
             </VBox>
          </left>
          <center>
             <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER">
                <children>
-                  <VBox prefHeight="605.0" prefWidth="179.0" styleClass="sideBackground" HBox.hgrow="NEVER">
+                  <VBox fx:id="menuBarPlus" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="605.0" prefWidth="0.0" styleClass="sideBackground" visible="false" HBox.hgrow="NEVER">
                      <children>
                         <VBox alignment="BOTTOM_LEFT" prefHeight="227.0" prefWidth="165.0">
                            <children>
@@ -154,7 +157,8 @@
                               </VBox>
                            </children>
                         </VBox>
-                     </children></VBox>
+                     </children>
+                  </VBox>
                   <VBox fx:id="contentBox" alignment="CENTER" prefHeight="625.0" prefWidth="567.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>

@@ -33,7 +33,7 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </HBox>
-      <VBox alignment="CENTER" prefHeight="556.0" prefWidth="850.0" spacing="5.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20;">
+      <VBox alignment="CENTER" prefHeight="556.0" prefWidth="850.0" spacing="5.0" style="-fx-background-radius: 20;" styleClass="background-part">
          <padding>
             <Insets left="50.0" />
          </padding>
@@ -54,9 +54,10 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Circle fill="#ffe2b1" onMouseClicked="#onBeigeColorMouseClicked" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fill="#ffe2b1" onMouseClicked="#onBeigeColorMouseClicked" radius="32.0" stroke="#ffe2b1" strokeType="INSIDE" />
                   <Circle onMouseClicked="#onBlackColorMouseClicked" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fill="#ff7595" onMouseClicked="#onPinkColorMouseClicked" radius="32.0" stroke="#ff4fde" strokeType="INSIDE" />
+                  <Circle fill="#ff7595" onMouseClicked="#onPinkColorMouseClicked" radius="32.0" stroke="#ff7595" strokeType="INSIDE" />
+                  <Circle fill="GOLD" onMouseClicked="#onGoldColorMouseClicked" radius="32.0" stroke="GOLD" strokeType="INSIDE" />
                </children>
             </HBox>
          </children>
