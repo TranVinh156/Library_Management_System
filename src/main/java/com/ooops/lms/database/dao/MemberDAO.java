@@ -43,7 +43,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
 
     // find
     private static final String FIND_MEMBER
-            = "Select * from members m join users u on m.member_ID = u.member_ID where member_ID = ?";
+            = "Select * from members m join users u on m.member_ID = u.member_ID where m.member_ID = ?";
 
     // select all
     private static final String SELECT_ALL = "Select * from members m join Users u on m.member_ID = u.member_ID";
@@ -178,10 +178,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     Person person = new Person(resultSet.getInt("member_id")
                             , resultSet.getString("first_name")
                             , resultSet.getString("last_name")
+                            , resultSet.getString("image_path")
                             , Gender.valueOf(resultSet.getString("gender"))
                             , resultSet.getString("birth_date")
-                            , resultSet.getString("phone")
-                            , resultSet.getString("image_path"));
+                            , resultSet.getString("email")
+                            , resultSet.getString("phone"));
                     Member member = new Member(resultSet.getInt("user_ID")
                             , resultSet.getString("username")
                             , resultSet.getString("password")
@@ -203,7 +204,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
         boolean flag = false;
         for (String key : criteria.keySet()) {
             if (key.equals("member_id")) {
-                findMemberByCriteria.append(key).append(" = ?").append(" OR ");
+                findMemberByCriteria.append("m.").append(key).append(" = ?").append(" OR ");
                 flag = true;
             } else {
                 findMemberByCriteria.append(key).append(" like ?").append(" OR ");
@@ -229,10 +230,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     Person person = new Person(resultSet.getInt("member_id")
                             , resultSet.getString("first_name")
                             , resultSet.getString("last_name")
+                            , resultSet.getString("image_path")
                             , Gender.valueOf(resultSet.getString("gender"))
                             , resultSet.getString("birth_date")
-                            , resultSet.getString("phone")
-                            , resultSet.getString("image_path"));
+                            , resultSet.getString("email")
+                            , resultSet.getString("phone"));
                     Member member = new Member(resultSet.getInt("user_ID")
                             , resultSet.getString("username")
                             , resultSet.getString("password")
@@ -255,10 +257,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     Person person = new Person(resultSet.getInt("member_id")
                             , resultSet.getString("first_name")
                             , resultSet.getString("last_name")
+                            , resultSet.getString("image_path")
                             , Gender.valueOf(resultSet.getString("gender"))
                             , resultSet.getString("birth_date")
-                            , resultSet.getString("phone")
-                            , resultSet.getString("image_path"));
+                            , resultSet.getString("email")
+                            , resultSet.getString("phone"));
                     Member member = new Member(resultSet.getInt("user_ID")
                             , resultSet.getString("username")
                             , resultSet.getString("password")
