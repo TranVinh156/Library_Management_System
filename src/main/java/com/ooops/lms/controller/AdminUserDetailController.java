@@ -193,6 +193,7 @@ public class AdminUserDetailController extends BasicUserController {
             if (getNewMemberInfomation()) {
                 if (confirmYes) {
                     //nhớ thêm hàm save thông tin ở đây
+
                     Command editCommand = new AdminCommand("edit", this.member);
                     commandInvoker.setCommand(editCommand);
 
@@ -227,10 +228,10 @@ public class AdminUserDetailController extends BasicUserController {
         memberIDText.setText(String.valueOf(member.getPerson().getId()));
         memberNameText.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName());
         numberOfBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
-        numberOfLostText.setText("0");
+        numberOfLostText.setText("Chua co");
         phoneNumberText.setText(member.getPerson().getPhone());
         birthText.setText(member.getPerson().getDateOfBirth().toString());
-        resignDateText.setText("01.01.09");
+        resignDateText.setText(member.getCreatedDate());
         statusBox.setValue(member.getStatus());
         if (member.getPerson().getImagePath() != null && isValidImagePath(member.getPerson().getImagePath())) {
             userImage.setImage(new Image(member.getPerson().getImagePath()));
