@@ -205,7 +205,7 @@ public class AccountDAO {
 
     public boolean changePassword(String username, String oldPassword, String newPassword) throws SQLException {
         try {
-            if (validateMemberLogin(username, oldPassword)) {
+            if (validateMemberLogin(username, oldPassword) != 0) {
                 try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_USER)) {
                     preparedStatement.setString(1, newPassword);
                     preparedStatement.setString(2, username);
