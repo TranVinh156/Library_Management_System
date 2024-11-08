@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -32,6 +33,9 @@ public class AdvancedSearchController implements Initializable {
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
 
+    @FXML
+    private ChoiceBox<String> categoryChoiceBox;
+
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
         if (content != null) {
@@ -44,6 +48,9 @@ public class AdvancedSearchController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        categoryChoiceBox.getItems().addAll("tất cả","hot nhất", "mới nhất", "dở nhất", "tác giả","không phải sách","210");
+
+        categoryChoiceBox.setValue("tất cả");
         try {
             for(int i = 0;i<2;i++) {
                 try {

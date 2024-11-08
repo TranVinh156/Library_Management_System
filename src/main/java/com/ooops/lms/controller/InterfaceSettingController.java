@@ -36,4 +36,9 @@ public class InterfaceSettingController {
         ThemeManager.getInstance().changeTheme("pink");
         ThemeManager.getInstance().applyTheme(interfaceSettingBox);
     }
+
+    public void onGoldColorMouseClicked(MouseEvent mouseEvent) {
+        ThemeManager.getInstance().changeTheme("gold");
+        ThemeManager.getInstance().applyTheme(interfaceSettingBox);
+    }
 }
