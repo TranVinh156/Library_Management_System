@@ -31,6 +31,9 @@ public class AdminCommand implements Command {
             switch (action) {
                 case "add":
                     if (object instanceof Book) {
+                        if(object != null) {
+                            System.out.println("Book add iss not null");
+                        }
                         bookDAO.add((Book) object);
                     } else if (object instanceof Member) {
                         memberDAO.add((Member) object);
@@ -67,7 +70,7 @@ public class AdminCommand implements Command {
                     return false;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            CustomerAlter.showAlter(e.getMessage());
             return false; // Thất bại
         }
     }
