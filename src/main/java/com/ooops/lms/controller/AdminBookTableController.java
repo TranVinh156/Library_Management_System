@@ -73,15 +73,15 @@ public class AdminBookTableController extends BasicBookController {
     @FXML
     private Label totalNumberLostLabel;
 
-    private Book book;
-    private BookDAO bookDAO;
+    private BookDAO bookDAO = new BookDAO();
     Map<String, Object> criteria = new HashMap<>();
-    private ObservableList<Book> bookList;
+    private ObservableList<Book> bookList = FXCollections.observableArrayList();;
     private AdminBookPageController mainController;
 
     public void registerNewItem(Book book) {
         addBook(book);
     }
+
     private void addBook(Book book) {
         bookList.add(book);
     }
@@ -93,48 +93,52 @@ public class AdminBookTableController extends BasicBookController {
 
     @FXML
     public void initialize() {
-        bookList = FXCollections.observableArrayList();
-
-        // Tạo danh sách tác giả cho các quyển sách
-        List<Author> authors1 = Arrays.asList(
-                new Author(1, "John Doe"),
-                new Author(2, "Jane Smith")
-        );
-        List<Author> authors2 = Arrays.asList(
-                new Author(3, "Alice Johnson"),
-                new Author(4, "Bob Brown")
-        );
-        List<Author> authors3 = Arrays.asList(
-                new Author(5, "Chris White")
-        );
-
-        // Tạo danh sách thể loại cho các quyển sách
-        List<Category> categories1 = Arrays.asList(
-                new Category(1, "Programming"),
-                new Category(2, "Technology")
-        );
-        List<Category> categories2 = Arrays.asList(
-                new Category(3, "Science Fiction"),
-                new Category(4, "Adventure")
-        );
-        List<Category> categories3 = Arrays.asList(
-                new Category(5, "History"),
-                new Category(6, "Biography")
-        );
-
-        setCategoryList(categoryFindButton,mainPane,categoryTable,categoryList);
+        setCategoryList(categoryFindButton, mainPane, categoryTable, categoryList);
         setVboxFitWithScrollPane();
 
-        bookDAO = new BookDAO();
     }
 
     private void loadData() {
         bookList.clear();
-        try {
+        bookTableVbox.getChildren().clear();
 
-            bookList.addAll(bookDAO.searchByCriteria(criteria));
+        bookList.add(new Book(
+                1234567890123L,
+                "Effective Java",
+                "/images/effective_java.jpg",
+                "A comprehensive guide to programming in Java.",
+                "Shelf A1",
+                Arrays.asList(new Author("Joshua Bloch")),
+                Arrays.asList(new Category("Programming")),
+                10
+        ));
 
-            bookTableVbox.getChildren().clear();
+        bookList.add(new Book(
+                2345678901234L,
+                "Clean Code",
+                "/images/clean_code.jpg",
+                "A handbook of agile software craftsmanship.",
+                "Shelf B2",
+                Arrays.asList(new Author("Robert C. Martin")),
+                Arrays.asList(new Category("Programming")),
+                8
+        ));
+
+        bookList.add(new Book(
+                3456789012345L,
+                "Design Patterns",
+                "/images/design_patterns.jpg",
+                "Elements of reusable object-oriented software.",
+                "Shelf C3",
+                Arrays.asList(new Author("Erich Gamma"),new Author( "Richard Helm"), new Author("Ralph Johnson")),
+                Arrays.asList(new Category("Software Engineering")),
+                12
+        ));
+            try {
+                bookList.addAll(bookDAO.selectAll());
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
             for (Book book : bookList) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_TABLE_ROW_FMXL));
@@ -149,9 +153,6 @@ public class AdminBookTableController extends BasicBookController {
                     e.printStackTrace();
                 }
             }
-        } catch (SQLException e) {
-            CustomerAlter.showAlter(e.getMessage());
-        }
     }
 
     private void getCriteria() {
@@ -171,14 +172,14 @@ public class AdminBookTableController extends BasicBookController {
     }
 
     private void setVboxFitWithScrollPane() {
-        childFitWidthParent(bookTableVbox,scrollPane);
-        childFitHeightParent(bookTableVbox,scrollPane);
+        childFitWidthParent(bookTableVbox, scrollPane);
+        childFitHeightParent(bookTableVbox, scrollPane);
     }
 
     @FXML
     void onCategoryFindButton(ActionEvent event) {
         categoryTable.setVisible(!categoryTable.isVisible());
-        updateCategoryTablePosition(mainPane,categoryFindButton,categoryTable);
+        updateCategoryTablePosition(mainPane, categoryFindButton, categoryTable);
     }
 
     @FXML
@@ -188,7 +189,7 @@ public class AdminBookTableController extends BasicBookController {
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
-        mainController.alterPage();
+        mainController.loadAddPane();
     }
 
 }
