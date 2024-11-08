@@ -21,9 +21,7 @@ public class BarcodeScanner extends JPanel {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Tải thư viện OpenCV
     }
 
-
     // camera
-
     private BufferedImage drawScanningFrame(BufferedImage image, int scanLineY) {
         Graphics2D g = image.createGraphics();
 
