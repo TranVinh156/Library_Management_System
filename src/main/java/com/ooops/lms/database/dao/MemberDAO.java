@@ -19,6 +19,10 @@ import java.util.Random;
 public class MemberDAO implements DatabaseQuery<Member> {
     private Database database;
 
+    public MemberDAO() {
+        database = Database.getInstance();
+    }
+
     // add member
     private static final String INSERT_MEMBER =
             "Insert into Members (first_name, last_name, birth_date, gender, email, phone, image_path) "
@@ -31,7 +35,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             "set first_name = ?, last_name = ?, birth_date = ?, gender = ?, email = ?, phone = ?, image_path = ?" +
             "where member_ID = ?";
 
-    private static final String UPDATE_ACCOUNT = "Update Users set status = ? where member_ID = ?";
+    private static final String UPDATE_ACCOUNT = "Update Users set status = ? where user_ID = ?";
 
     // delete
     private static final String DELETE_MEMBER = "Delete from members where member_ID = ?";
@@ -42,11 +46,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             = "Select * from members m join users u on m.member_ID = u.member_ID where member_ID = ?";
 
     // select all
-    private static final String SELECT_ALL = "Select * from members";
-
-    public MemberDAO() {
-        database = Database.getInstance();
-    }
+    private static final String SELECT_ALL = "Select * from members m join Users u on m.member_ID = u.member_ID";
 
     private boolean insertUser(String username, String password, int memberID) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_USER)) {
@@ -87,7 +87,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     String password = generatePassword();
                     if (insertUser(entity.getPerson().getPhone(), password, memberId)) {
                         EmailUtil.sendAsyncEmail(entity.getPerson().getEmail()
-                                , "TÀI KHOẢN", "Tài khoản: " + entity.getPerson().getEmail()
+                                , "TÀI KHOẢN", "Tài khoản: " + entity.getPerson().getPhone()
                                         + ", Mật khẩu: " + password);
                     } else {
                         throw new SQLException("Failed to insert member");
@@ -127,7 +127,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
 
             try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_ACCOUNT)) {
                 preparedStatement.setString(1, entity.getStatus().name());
-                preparedStatement.setInt(2, entity.getPerson().getId());
+                preparedStatement.setInt(2, entity.getAccountId());
 
                 preparedStatement.executeUpdate();
             }
@@ -182,7 +182,8 @@ public class MemberDAO implements DatabaseQuery<Member> {
                             , resultSet.getString("birth_date")
                             , resultSet.getString("phone")
                             , resultSet.getString("image_path"));
-                    Member member = new Member(resultSet.getString("username")
+                    Member member = new Member(resultSet.getInt("user_ID")
+                            , resultSet.getString("username")
                             , resultSet.getString("password")
                             , AccountStatus.valueOf(resultSet.getString("status"))
                             , resultSet.getString("added_at_timestamp"), person);
@@ -232,7 +233,8 @@ public class MemberDAO implements DatabaseQuery<Member> {
                             , resultSet.getString("birth_date")
                             , resultSet.getString("phone")
                             , resultSet.getString("image_path"));
-                    Member member = new Member(resultSet.getString("username")
+                    Member member = new Member(resultSet.getInt("user_ID")
+                            , resultSet.getString("username")
                             , resultSet.getString("password")
                             , AccountStatus.valueOf(resultSet.getString("status"))
                             , resultSet.getString("added_at_timestamp"), person);
@@ -257,7 +259,8 @@ public class MemberDAO implements DatabaseQuery<Member> {
                             , resultSet.getString("birth_date")
                             , resultSet.getString("phone")
                             , resultSet.getString("image_path"));
-                    Member member = new Member(resultSet.getString("username")
+                    Member member = new Member(resultSet.getInt("user_ID")
+                            , resultSet.getString("username")
                             , resultSet.getString("password")
                             , AccountStatus.valueOf(resultSet.getString("status"))
                             , resultSet.getString("added_at_timestamp"), person);
