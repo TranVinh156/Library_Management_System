@@ -5,6 +5,7 @@ import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Member;
+import com.ooops.lms.model.enums.AccountStatus;
 
 import java.sql.SQLException;
 
@@ -19,9 +20,14 @@ public class AdminCommand implements Command {
         this.object = object;
     }
 
+    /**
+     * các command người dùng muốn thực thi.
+     * Hiện tại có các lệnh add,delete,edit.
+     *
+     * @return true - thành công, false - thất bại
+     */
     public boolean execute() {
         try {
-            System.out.println(action + "neeeeee");
             switch (action) {
                 case "add":
                     if (object instanceof Book) {
@@ -29,25 +35,39 @@ public class AdminCommand implements Command {
                     } else if (object instanceof Member) {
                         memberDAO.add((Member) object);
                     }
-                    return true; // Thành công
+                    return true;
                 case "delete":
-                    // Thêm logic cho delete nếu cần
+                    if (object instanceof Book) {
+                        bookDAO.delete((Book) object);
+                    }
+                    if (object instanceof Member) {
+                        memberDAO.delete((Member) object);
+                    }
                     return true;
                 case "edit":
                     if (object instanceof Book) {
                         bookDAO.update((Book) object);
                     }
                     if (object instanceof Member) {
-                        System.out.println("thememmmem");
                         memberDAO.update((Member) object);
                     }
                     return true;
+                case "block":
+                    if (object instanceof Member) {
+                        Member member = (Member) object;
+                        member.setStatus(AccountStatus.BLOCKED);
+                    }
+                    return true;
+                case "unblock":
+                    if (object instanceof Member) {
+                        Member member = (Member) object;
+                        member.setStatus(AccountStatus.ACTIVE);
+                    }
                 default:
                     return false;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            CustomerAlter.showMessage(e.getMessage());
             return false; // Thất bại
         }
     }
