@@ -4,18 +4,25 @@ import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.AccountStatus;
 
 public abstract class Account {
-    private String username;
-    private String password;
-    private Person person;
-    private AccountStatus status;
-    private String createdDate;
+    protected int accountId;
+    protected String username;
+    protected String password;
+    protected Person person;
+    protected AccountStatus status;
+    protected String createdDate;
+
+    public Account(Person person) {
+        this.person = person;
+    }
+
     public Account(String username, String password, Person person) {
         this.username = username;
         this.password = password;
         this.person = person;
     }
 
-    public Account(String username, String password, AccountStatus status, String createdDate, Person person) {
+    public Account(int acoountId, String username, String password, AccountStatus status, String createdDate, Person person) {
+        this.accountId = acoountId;
         this.username = username;
         this.password = password;
         this.status = status;
@@ -61,5 +68,21 @@ public abstract class Account {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 }
