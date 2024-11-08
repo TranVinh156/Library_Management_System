@@ -1,20 +1,15 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.util.FXMLLoaderUtil;
-import com.ooops.lms.util.ThemeManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.ooops.lms.model.Book;
 
 public class BookCard1Controller {
     private  FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
@@ -41,6 +36,14 @@ public class BookCard1Controller {
         //bookImage.setImage(image);
         bookNameLabel.setText("book name");
         authorNameLabel.setText("author");
+        hBox.setStyle("-fx-background-color: #" + colors[(int)(Math.random() * colors.length)]);
+    }
+
+    public void setData(Book book) {
+        Image image = new Image(getClass().getResourceAsStream(book.getImagePath()));
+        bookImage.setImage(image);
+        bookNameLabel.setText(book.getTitle());
+        authorNameLabel.setText(book.getAuthors().get(0).getAuthorName());
         hBox.setStyle("-fx-background-color: #" + colors[(int)(Math.random() * colors.length)]);
     }
 

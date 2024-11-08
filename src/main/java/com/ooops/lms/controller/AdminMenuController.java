@@ -170,7 +170,7 @@ public class AdminMenuController extends BasicController {
 
 
     private void setupHoverMenuBar() {
-        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.2));
         menuBar.setOnMouseEntered(event -> {
             pauseTransition.play();
             isMouseOverMenuBar = true;

@@ -120,43 +120,6 @@ public class AdminBookTableController extends BasicBookController {
                 new Category(6, "Biography")
         );
 
-        // Thêm 3 quyển sách vào danh sách
-        bookList.add(new Book(
-                123456,                              // ISBN
-                "Java Programming",                  // title
-                "A comprehensive guide to Java.",    // description
-                "Shelf A3",                          // placeAt
-                10,                                  // quantity
-                2,                                   // numberOfLoanedBooks
-                1,                                   // numberOfLostBooks
-                authors1,                            // authors
-                categories1                          // categories
-        ));
-
-        bookList.add(new Book(
-                789012,                              // ISBN
-                "The Future of AI",                  // title
-                "An exploration of artificial intelligence.", // description
-                "Shelf B1",                          // placeAt
-                7,                                   // quantity
-                1,                                   // numberOfLoanedBooks
-                0,                                   // numberOfLostBooks
-                authors2,                            // authors
-                categories2                          // categories
-        ));
-
-        bookList.add(new Book(
-                345678,                              // ISBN
-                "World War II: A History",           // title
-                "An in-depth look at WWII.",         // description
-                "Shelf C2",                          // placeAt
-                5,                                   // quantity
-                0,                                   // numberOfLoanedBooks
-                2,                                   // numberOfLostBooks
-                authors3,                            // authors
-                categories3                          // categories
-        ));
-
         setCategoryList();
 
         setVboxFitWithScrollPane();

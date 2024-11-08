@@ -2,7 +2,11 @@ package com.ooops.lms.controller;
 
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.Command;
+import com.ooops.lms.Command.CommandInvoker;
+import com.ooops.lms.Command.LoginCommand;
 import com.ooops.lms.database.dao.AccountDAO;
+import com.ooops.lms.model.enums.Role;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,12 +59,21 @@ public class LoginController extends  BasicController {
     @FXML
     private StackPane mainPane;
 
-    private boolean isUser = true;
+    private CommandInvoker commandInvoker = new CommandInvoker();
+    private Role role = Role.NONE;
     private AccountDAO accountDAO = new AccountDAO();
 
     public void initialize() {
         setSwitchBar();
         setImageStatus();
+    }
+
+    private void switchRole() {
+        if(role.equals(Role.ADMIN)) {
+            role = Role.NONE;
+        } else if (role.equals(Role.NONE)) {
+            role = Role.ADMIN;
+        }
     }
 
     @FXML
@@ -72,34 +85,15 @@ public class LoginController extends  BasicController {
     void onLoginButtonAction(ActionEvent event) {
         String username = usernameText.getText();
         String password = passwordText.getText();
+        if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
+            Stage stage = (Stage) registerButton.getScene().getWindow();
 
-        try {
-            if (isUser) {
-                handleUserLogin(username, password);
-            } else {
-                handleAdminLogin(username, password);
-            }
-        } catch (SQLException e) {
-            CustomerAlter.showMessage("Đã xảy ra lỗi\n" + e.getMessage());
-        }
-    }
+            Command loginCommand = new LoginCommand(stage, role, username, password);
+            commandInvoker.setCommand(loginCommand);
+            commandInvoker.executeCommand();
 
-    private void handleUserLogin(String username, String password) throws SQLException {
-        if (accountDAO.validateMemberLogin(username, password)) {
-            System.out.println("Login Successful");
-            openUser();
         } else {
-            CustomerAlter.showMessage("Thông tin đăng nhập không chính xác.");
-        }
-    }
-
-    private void handleAdminLogin(String username, String password) throws SQLException {
-        if (accountDAO.validateAdminLogin(username, password)) {
-            CustomerAlter.showMessage("Login Successful.");
-            openAdmin();
-        } else {
-            System.out.println("Thông tin đăng nhập không chính xác.");
-            CustomerAlter.showMessage("Thông tin đăng nhập không chính xác.");
+            CustomerAlter.showMessage("Không được để trống!");
         }
     }
 
@@ -110,7 +104,7 @@ public class LoginController extends  BasicController {
 
     @FXML
     void onSwitchButtonAction(ActionEvent event) {
-        isUser = !isUser;
+        switchRole();
         setSwitchBar();
         setImageStatus();
     }
@@ -118,24 +112,7 @@ public class LoginController extends  BasicController {
     private void openForgotPasswordView() {
         loadView("/com/ooops/lms/library_management_system/ForgotPassword-view.fxml",false);
     }
-
-    private void openAdmin() {
-        try {
-            // Tải cửa sổ đăng ký
-            Stage stage = (Stage) registerButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
-            stage.setResizable(true);
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void openUser() {
-
-    }
-
+    
     private void openRegisterView() {
         loadView("/com/ooops/lms/library_management_system/UserResign-view.fxml",false);
     }
@@ -158,13 +135,22 @@ public class LoginController extends  BasicController {
         TranslateTransition transition = new TranslateTransition();
         transition.setNode(switchBar);
         transition.setDuration(Duration.seconds(0.5));
-        transition.setToX(isUser ? 0 : -55); // Vị trí cho chế độ
+        if(role.equals(Role.ADMIN)) {
+            transition.setToX(-55);
+        } else {
+            transition.setToX(0);
+        }
         transition.play();
     }
 
     private void setImageStatus() {
-        String imagePath = isUser ? "file:src/main/resources/image/customer/login/User.gif" : "file:src/main/resources/image/customer/login/Admin.gif";
-        imageStatus.setImage(new Image(imagePath));
+        if(role.equals(Role.ADMIN)) {
+            String imagePath = "file:src/main/resources/image/customer/login/Admin.gif";
+            imageStatus.setImage(new Image(imagePath));
+        } else if(role.equals(Role.NONE)) {
+            String imagePath = "file:src/main/resources/image/customer/login/User.gif";
+            imageStatus.setImage(new Image(imagePath));
+        }
     }
 
 }

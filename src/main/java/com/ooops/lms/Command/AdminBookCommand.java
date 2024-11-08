@@ -1,6 +1,6 @@
 package com.ooops.lms.Command;
 
-public class AdminBookCommand {
+public class AdminBookCommand implements Command {
     private String action;
     private Object data;
 
