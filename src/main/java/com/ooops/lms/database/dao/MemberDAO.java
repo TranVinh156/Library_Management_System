@@ -178,10 +178,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     Person person = new Person(resultSet.getInt("member_id")
                             , resultSet.getString("first_name")
                             , resultSet.getString("last_name")
+                            , resultSet.getString("image_path")
                             , Gender.valueOf(resultSet.getString("gender"))
                             , resultSet.getString("birth_date")
-                            , resultSet.getString("phone")
-                            , resultSet.getString("image_path"));
+                            , resultSet.getString("email")
+                            , resultSet.getString("phone"));
                     Member member = new Member(resultSet.getInt("user_ID")
                             , resultSet.getString("username")
                             , resultSet.getString("password")
@@ -229,10 +230,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     Person person = new Person(resultSet.getInt("member_id")
                             , resultSet.getString("first_name")
                             , resultSet.getString("last_name")
+                            , resultSet.getString("image_path")
                             , Gender.valueOf(resultSet.getString("gender"))
                             , resultSet.getString("birth_date")
-                            , resultSet.getString("phone")
-                            , resultSet.getString("image_path"));
+                            , resultSet.getString("email")
+                            , resultSet.getString("phone"));
                     Member member = new Member(resultSet.getInt("user_ID")
                             , resultSet.getString("username")
                             , resultSet.getString("password")
@@ -255,10 +257,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     Person person = new Person(resultSet.getInt("member_id")
                             , resultSet.getString("first_name")
                             , resultSet.getString("last_name")
+                            , resultSet.getString("image_path")
                             , Gender.valueOf(resultSet.getString("gender"))
                             , resultSet.getString("birth_date")
-                            , resultSet.getString("phone")
-                            , resultSet.getString("image_path"));
+                            , resultSet.getString("email")
+                            , resultSet.getString("phone"));
                     Member member = new Member(resultSet.getInt("user_ID")
                             , resultSet.getString("username")
                             , resultSet.getString("password")
