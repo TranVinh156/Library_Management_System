@@ -2,9 +2,14 @@ package com.ooops.lms.controller;
 
 import com.google.api.services.books.v1.model.Volume;
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.Command;
+import com.ooops.lms.Command.CommandInvoker;
+import com.ooops.lms.Command.LoginCommand;
+import com.ooops.lms.Command.ResignCommand;
 import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.Gender;
+import com.ooops.lms.model.enums.Role;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,13 +80,13 @@ public class ResignController extends BasicController {
     private TextField usernameText;
 
     private boolean isStep1;
-    private AccountDAO accountDAO = new AccountDAO();
+    private CommandInvoker commandInvoker = new CommandInvoker();
 
     @FXML
     public void initialize() {
         isStep1 = true;
         setSwitchBar();
-        genderBox.getItems().addAll(Gender.Male, Gender.Female, Gender.Other);
+        genderBox.getItems().addAll(Gender.MALE, Gender.FEMALE, Gender.OTHER);
     }
 
     @FXML
@@ -100,28 +105,36 @@ public class ResignController extends BasicController {
 
     @FXML
     private void onResignButtonAction(ActionEvent event) {
-        try {
             if (checkInformation()) {
 
                 Person person = createPersonFromInput();
                 String username = usernameText.getText();
                 String password = passwordText.getText();
 
-                if(accountDAO.registerMember(person, username, password)) {
-                    CustomerAlter.showMessage("Đăng ký tài khoản thành công.");
-                    openLoginView();
+                Stage stage = (Stage) resignButton.getScene().getWindow();
+                Command resignCommand = new ResignCommand(stage,person,username, password);
+                commandInvoker.setCommand(resignCommand);
+                if(commandInvoker.executeCommand()) {
+                       openLoginView();
                 }
-            } else {
-                CustomerAlter.showMessage("Vui lòng kiểm tra thông tin đã nhập.");
+
             }
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
+
     }
 
     @FXML
     void onReturnLoginButtonAction(ActionEvent event) {
         openLoginView();
+    }
+
+    private void openLoginView() {
+        try {
+            Stage stage = (Stage) resignStep1Pane.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/com/ooops/lms/library_management_system/UserLogin.fxml"));
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean checkInformation() {
@@ -210,13 +223,6 @@ public class ResignController extends BasicController {
         return person;
     }
 
-    private void handleSQLException(SQLException e) {
-        String message = e.getMessage().equals("User already exists") ?
-                "Tài khoản đã tồn tại. Vui lòng chọn tên đăng nhập khác." :
-                "Đã xảy ra lỗi: " + e.getMessage();
-        CustomerAlter.showMessage(message);
-    }
-
     private void switchToStep1() {
         resignStep1Pane.setVisible(true);
         resignStep2Pane.setVisible(false);
@@ -239,14 +245,5 @@ public class ResignController extends BasicController {
         transition.play();
     }
 
-    private void openLoginView() {
-        try {
-            Stage stage = (Stage) resignButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/ooops/lms/library_management_system/UserLogin.fxml"));
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

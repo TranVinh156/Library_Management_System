@@ -61,7 +61,6 @@ public class LoginController extends  BasicController {
 
     private CommandInvoker commandInvoker = new CommandInvoker();
     private Role role = Role.NONE;
-    private AccountDAO accountDAO = new AccountDAO();
 
     public void initialize() {
         setSwitchBar();
@@ -112,7 +111,7 @@ public class LoginController extends  BasicController {
     private void openForgotPasswordView() {
         loadView("/com/ooops/lms/library_management_system/ForgotPassword-view.fxml",false);
     }
-    
+
     private void openRegisterView() {
         loadView("/com/ooops/lms/library_management_system/UserResign-view.fxml",false);
     }

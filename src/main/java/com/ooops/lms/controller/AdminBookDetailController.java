@@ -2,15 +2,18 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.Category;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdminBookDetailController extends BasicBookController {
 
@@ -36,7 +39,13 @@ public class AdminBookDetailController extends BasicBookController {
     private TextField bookNameText;
 
     @FXML
-    private TextField categoryText;
+    private Label categoryLabel;
+
+    @FXML
+    private VBox categoryList;
+
+    @FXML
+    private AnchorPane categoryTable;
 
     @FXML
     private AnchorPane copyBookPane;
@@ -80,8 +89,10 @@ public class AdminBookDetailController extends BasicBookController {
     @FXML
     private ScrollPane scrollPane;
 
-    private AdminBookPageController mainController;
+    @FXML
+    private HBox mainPane;
 
+    private AdminBookPageController mainController;
     private Book book;
 
     private boolean editMode = false;
@@ -94,14 +105,27 @@ public class AdminBookDetailController extends BasicBookController {
 
     @FXML
     private void initialize() {
-
+        setCategoryList(categoryLabel,mainPane,categoryTable,categoryList);
     }
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
+        if(checkInformation()) {
+            Book book = createBookFromInput();
+        }
+    }
+
+    private Book createBookFromInput() {
+        String ISBN = ISBNText.getText();
+        String authorName = authorNameText.getText();
+
+        return null;
 
     }
 
+    private boolean checkInformation() {
+        return true;
+    }
     @FXML
     void onDeleteButtonAction(ActionEvent event) {
 
@@ -185,7 +209,7 @@ public class AdminBookDetailController extends BasicBookController {
         bookNameText.setText(book.getTitle());
         ISBNText.setText(String.valueOf(book.getISBN()));
         authorNameText.setText(getAuthors(book.getAuthors()));
-        categoryText.setText(getCategories(book.getCategories()));
+        categoryLabel.setText(getCategories(book.getCategories()));
         publishingHouseText.setText("chua co");
         numberOfBookText.setText("khong co");
         numberOfBorrowText.setText(String.valueOf(book.getNumberOfLoanedBooks()));
@@ -218,7 +242,7 @@ public class AdminBookDetailController extends BasicBookController {
         bookNameText.setEditable(edit);
         locationText.setEditable(edit);
         authorNameText.setEditable(edit);
-        categoryText.setEditable(edit);
+        //categoryText.setEditable(edit);
         publishingHouseText.setEditable(edit);
         numberOfBookText.setEditable(edit);
 
@@ -235,7 +259,7 @@ public class AdminBookDetailController extends BasicBookController {
         bookNameText.setEditable(add);
         locationText.setEditable(add);
         authorNameText.setEditable(add);
-        categoryText.setEditable(add);
+        //categoryText.setEditable(add);
         publishingHouseText.setEditable(add);
         numberOfBookText.setEditable(add);
         if(addMode) {
@@ -243,7 +267,7 @@ public class AdminBookDetailController extends BasicBookController {
             bookNameText.setText(null);
             locationText.setText(null);
             authorNameText.setText(null);
-            categoryText.setText(null);
+            //categoryText.setText(null);
             publishingHouseText.setText(null);
             numberOfBookText.setText(null);
         }

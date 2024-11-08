@@ -1,9 +1,12 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.AdminCommand;
+import com.ooops.lms.Command.Command;
 import com.ooops.lms.model.Admin;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.datatype.Person;
+import com.ooops.lms.model.enums.AccountStatus;
 import com.ooops.lms.model.enums.Gender;
 import com.ooops.lms.model.enums.MemberStatus;
 import javafx.event.ActionEvent;
@@ -64,13 +67,13 @@ public class AdminUserDetailController extends BasicUserController {
     private Button deleteButton;
 
     @FXML
-    private ChoiceBox<MemberStatus> statusBox;
+    private ChoiceBox<AccountStatus> statusBox;
 
     @FXML
     private ImageView userImage;
 
     private Member member;
-    private Person person;
+    private Person person = new Person();
     private String imagePath;
 
     private AdminUserPageController mainController;
@@ -80,7 +83,7 @@ public class AdminUserDetailController extends BasicUserController {
     @FXML
     void initialize() {
         genderBox.getItems().addAll(Gender.values());
-        statusBox.getItems().addAll(MemberStatus.ACTIVE, MemberStatus.BLOCKED);
+        statusBox.getItems().addAll(AccountStatus.values());
     }
 
     @FXML
@@ -98,7 +101,7 @@ public class AdminUserDetailController extends BasicUserController {
     @FXML
     void onChoiceImageButtonAction(ActionEvent event) {
         person.setImagePath(getImagePath());
-        if(person.getImagePath() != null) {
+        if (person.getImagePath() != null) {
             Image image = new Image(person.getImagePath());
             userImage.setImage(image);
         }
@@ -159,30 +162,47 @@ public class AdminUserDetailController extends BasicUserController {
             numberOfLostText.setText(null);
             phoneNumberText.setText(null);
             resignDateText.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yy")));
-            statusBox.setValue(MemberStatus.ACTIVE);
+            statusBox.setValue(AccountStatus.ACTIVE);
+        } else {
+            if(member != null) {
+                memberIDText.setText(String.valueOf(member.getPerson().getId()));
+            }
         }
     }
 
     @FXML
     void onSaveButtonAction(ActionEvent event) {
         if (addMode) {
-            if(getNewMemberInfomation()) {
-                boolean confirmYes = CustomerAlter.showAlter("Lưu?");
+            if (getNewMemberInfomation()) {
+                boolean confirmYes = CustomerAlter.showAlter("Thêm bạn đọc mới?");
                 if (confirmYes) {
-                    mainController.registerNewMember(member);
-                    System.out.println("Đã lưu thay đổi");
-                    setAddMode(false);
+                    //thêm người dùng vào CSDL
+                    Command addCommand = new AdminCommand("add", this.member);
+                    commandInvoker.setCommand(addCommand);
+                    if (commandInvoker.executeCommand()) {
+                        mainController.registerNewMember(member);
+                        System.out.println("Đã lưu thay đổi");
+                        setAddMode(false);
+                    }
                 }
-            }
-            else {
+            } else {
                 System.out.println("Tiếp tục edit");
             }
         } else {
             boolean confirmYes = CustomerAlter.showAlter("Bạn có muốn lưu thay đổi này không?");
-            if (confirmYes) {
-                //nhớ thêm hàm save thông tin ở đây
-                setEditMode(false);
-                System.out.println("Đã lưu thay đổi");
+            if (getNewMemberInfomation()) {
+                if (confirmYes) {
+                    //nhớ thêm hàm save thông tin ở đây
+
+                    Command editCommand = new AdminCommand("edit", this.member);
+                    commandInvoker.setCommand(editCommand);
+
+                    if (commandInvoker.executeCommand()) {
+                        setEditMode(false);
+                        System.out.println("Đã lưu thay đổi");
+                    }
+
+                }
             } else {
                 System.out.println("Tiếp tục edit");
             }
@@ -205,14 +225,15 @@ public class AdminUserDetailController extends BasicUserController {
         this.member = member;
         emailText.setText(member.getPerson().getEmail());
         genderBox.setValue(member.getPerson().getGender());
-        memberIDText.setText("Chua co");
+        memberIDText.setText(String.valueOf(member.getPerson().getId()));
         memberNameText.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName());
         numberOfBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
-        numberOfLostText.setText("0");
+        numberOfLostText.setText("Chua co");
         phoneNumberText.setText(member.getPerson().getPhone());
         birthText.setText(member.getPerson().getDateOfBirth().toString());
-        resignDateText.setText("01.01.09");
-        if(member.getPerson().getImagePath() != null && isValidImagePath(member.getPerson().getImagePath())) {
+        resignDateText.setText(member.getCreatedDate());
+        statusBox.setValue(member.getStatus());
+        if (member.getPerson().getImagePath() != null && isValidImagePath(member.getPerson().getImagePath())) {
             userImage.setImage(new Image(member.getPerson().getImagePath()));
         } else {
             userImage.setImage(defaultUserImage);
@@ -222,7 +243,7 @@ public class AdminUserDetailController extends BasicUserController {
 
     public boolean getNewMemberInfomation() {
         String memberName = memberNameText.getText();
-        if(memberName!=null) {
+        if (memberName != null) {
             String[] nameParts = memberName.trim().split("\\s+");
             person.setFirstName(nameParts[0]); // Tên đầu tiên
             person.setLastName(nameParts.length > 1 ? nameParts[nameParts.length - 1] : "");
@@ -234,10 +255,18 @@ public class AdminUserDetailController extends BasicUserController {
         person.setGender(genderBox.getValue());
         person.setPhone(phoneNumberText.getText());
         person.setGender(genderBox.getValue());
-        person.setDateOfBirth(birthText.getText());
-        //person.setStatus
+
+        // đổi kiểu ngay từ dd/MM/yyyy thành yyyy-MM-dd
+        String birthDate = birthText.getText();
+        String reformattedDate = reformatDate(birthDate);
+        person.setDateOfBirth(reformattedDate);
+
         if (checkInformation(person)) {
+            if (person.getImagePath() == null) {
+                person.setImagePath(Person.DEFAULT_IMAGE_PATH);
+            }
             this.member = new Member(null, null, person);
+            member.setStatus(statusBox.getValue());
             return true;
         } else {
             return false;
@@ -282,8 +311,25 @@ public class AdminUserDetailController extends BasicUserController {
 
     }
 
+    public static String reformatDate(String dateStr) {
+        // Định dạng ban đầu
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+        // Định dạng mong muốn
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            // Chuyển chuỗi thành đối tượng Date theo định dạng đầu vào
+            Date date = inputFormat.parse(dateStr);
+            // Định dạng lại đối tượng Date theo định dạng đầu ra
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null; // Trả về null nếu có lỗi
+        }
+    }
+
     private boolean isValidDate(String dateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false); // Không cho phép ngày không hợp lệ
 
         try {
@@ -304,7 +350,7 @@ public class AdminUserDetailController extends BasicUserController {
 
     public void loadStartStatus() {
         person = new Person();
-        member = new Member(null,null,null);
+        member = new Member(null, null, null);
         setAddMode(false);
         setEditMode(false);
     }
@@ -318,9 +364,9 @@ public class AdminUserDetailController extends BasicUserController {
     }
 
     public String getMode() {
-        if(addMode) {
+        if (addMode) {
             return "addMode";
-        } else if(editMode) {
+        } else if (editMode) {
             return "editMode";
         } else {
             return "noneMode";
