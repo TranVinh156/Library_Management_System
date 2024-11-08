@@ -38,6 +38,7 @@ public class AdminUserPageController extends BasicUserController{
     }
 
     public void loadDetail(Member member) {
+        System.out.println("jdisjdijid");
         if(Objects.equals(adminUserDetailController.getMode(), "addMode")) {
             boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang thêm sẽ bị mất");
             if(confirmYes) {
@@ -55,7 +56,9 @@ public class AdminUserPageController extends BasicUserController{
                 }
             }
         } else if(Objects.equals(adminUserDetailController.getMode(), "noneMode")) {
+            System.out.println("hdshud");
             adminUserDetailController.loadStartStatus();
+            System.out.println("djsid");
             adminUserDetailController.setMember(member);
         } else {
             adminUserDetailController.setMember(member);
@@ -74,8 +77,8 @@ public class AdminUserPageController extends BasicUserController{
         }
     }
 
-    public void registerNewMember(Member member) {
-        adminUserTableController.addMember(member);
+    public void loadData() {
+        adminUserTableController.loadData();
     }
 
 }
