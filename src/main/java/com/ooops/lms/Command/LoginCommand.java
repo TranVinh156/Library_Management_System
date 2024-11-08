@@ -27,18 +27,19 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         try {
             if(username.isEmpty() || password.isEmpty()) {
                 System.out.println("Username or password is empty");
             }
             if (isAuthenticated()){
                 openMenu();
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return false;
     }
 
 
