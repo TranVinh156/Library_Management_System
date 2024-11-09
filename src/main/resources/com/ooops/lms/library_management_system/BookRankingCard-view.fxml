@@ -35,7 +35,7 @@
                <font>
                   <Font size="15.0" />
                </font></Label>
-            <ImageView fitHeight="45.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+            <ImageView fx:id="starImage" fitHeight="45.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                <image>
                   <Image url="@../../../../image/customer/bookCard/5Star.png" />
                </image>
@@ -45,7 +45,6 @@
       <VBox alignment="CENTER" prefHeight="150.0" prefWidth="114.0">
          <children>
             <Button mnemonicParsing="false" onAction="#onReadButtonAction" prefHeight="25.0" prefWidth="85.0" text="Đọc" />
-            <Label text="view" />
          </children>
       </VBox>
    </children>

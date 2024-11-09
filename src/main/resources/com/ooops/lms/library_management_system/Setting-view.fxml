@@ -14,8 +14,8 @@
          <children>
             <VBox alignment="CENTER" prefHeight="329.0" prefWidth="567.0" styleClass="background-part" HBox.hgrow="ALWAYS">
                <children>
-                  <Circle fill="#d9b2ff" radius="77.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Label styleClass="label-2" text="UserName" textFill="#ff2de6" VBox.vgrow="ALWAYS">
+                  <Circle fx:id="avaImage" fill="#d9b2ff" radius="77.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label fx:id="nameLabel" styleClass="label-2" text="UserName" textFill="#ff2de6" VBox.vgrow="ALWAYS">
                      <font>
                         <Font name="Cambria Bold" size="32.0" />
                      </font>
@@ -41,17 +41,17 @@
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="848.0" spacing="130.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label styleClass="label-1" text="0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="borrowingLabel" styleClass="label-1" text="0" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label styleClass="label-1" text="active" HBox.hgrow="ALWAYS">
+                        <Label fx:id="statusLabel" styleClass="label-1" text="active" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label styleClass="label-1" text="0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="reservedLabel" styleClass="label-1" text="0" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>

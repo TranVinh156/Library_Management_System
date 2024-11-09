@@ -1,5 +1,10 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Command.Command;
+import com.ooops.lms.Command.CommandInvoker;
+import com.ooops.lms.Command.LoginCommand;
+import com.ooops.lms.database.dao.MemberDAO;
+import com.ooops.lms.model.Member;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import com.ooops.lms.util.ThemeManager;
 import javafx.animation.PauseTransition;
@@ -10,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -18,6 +24,7 @@ import javafx.scene.Node;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 
 import com.ooops.lms.database.dao.AccountDAO;
@@ -43,7 +50,10 @@ public class UserMenuController implements Initializable {
 
     private  FXMLLoaderUtil fxmlLoaderUtil;
 
-    private AccountDAO accountDAO;
+    private int memberID=0;
+    private MemberDAO memberDAO = new MemberDAO();
+    protected static Member member;
+
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
     private static final String ADVANCED_SEARCH_FXML = "/com/ooops/lms/library_management_system/AdvancedSearch-view.fxml";
@@ -149,5 +159,28 @@ public class UserMenuController implements Initializable {
         });
     }
 
+    private void findMember() {
+        try {
+            System.out.println(memberID);
+            member = memberDAO.find(memberID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(member != null) {
+            userNameLabel.setText(member.getPerson().getFirstName());
+            String imagePath = member.getPerson().getImagePath();
 
+            imagePath = imagePath.replace("//", "/");
+            avatarImage.setImage(new Image(getClass().getResourceAsStream("/" + imagePath)));
+        }
+        else {
+            System.err.println("khong tim thay member");
+        }
+    }
+
+    public void setMemberID(int memberID) {
+        this.memberID = memberID;
+        System.out.println("MemberID được thiết lập: " + memberID);
+        findMember();
+    }
 }
