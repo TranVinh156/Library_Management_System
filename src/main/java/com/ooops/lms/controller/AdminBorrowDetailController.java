@@ -4,6 +4,7 @@ import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.model.Admin;
+import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Member;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -84,6 +85,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     private AdminBorrowPageController mainController;
     private boolean addMode;
     private Member member;
+    private Book book;
 
     @FXML
     public void initialize() {
@@ -157,6 +159,11 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         } else {
             System.out.println("Lỗi truy vấn");
         }
+    }
+
+    private void loadBookFindData(String newValue) {
+        book = new Book();
+
     }
 
     public void loadStartStatus() {
