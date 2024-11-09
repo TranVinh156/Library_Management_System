@@ -42,19 +42,19 @@
                   <String fx:value="box-information" />
                </styleClass>
             </TextField>
-            <TextField fx:id="numberOfBookText" editable="false" layoutX="133.0" layoutY="204.0" prefWidth="44.0" text="12">
+            <TextField fx:id="numberOfBookText" editable="false" layoutX="133.0" layoutY="204.0" prefHeight="34.0" prefWidth="58.0" text="12">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
                </styleClass>
             </TextField>
-            <TextField fx:id="numberOfBorrowText" editable="false" layoutX="321.0" layoutY="203.0" prefHeight="27.0" prefWidth="44.0" text="12">
+            <TextField fx:id="numberOfBorrowText" editable="false" layoutX="329.0" layoutY="203.0" prefHeight="34.0" prefWidth="58.0" text="12">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
                </styleClass>
             </TextField>
-            <TextField fx:id="numberOfLostText" editable="false" layoutX="491.0" layoutY="203.0" prefHeight="27.0" prefWidth="44.0" text="12">
+            <TextField fx:id="numberOfLostText" editable="false" layoutX="491.0" layoutY="203.0" prefHeight="33.0" prefWidth="68.0" text="12">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
@@ -107,7 +107,11 @@
                                     </AnchorPane>
                                  </children>
                               </HBox>
-                              <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" styleClass="text-area-no-border" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999" />
+                              <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999">
+                                 <styleClass>
+                                    <String fx:value="text-area-no-border" />
+                                    <String fx:value="black-text-Cabin" />
+                                 </styleClass></TextArea>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="copyBookPane" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -177,7 +181,7 @@
             <Label layoutX="388.0" layoutY="138.0" styleClass="gray-text-Cabin" text="Thể loại:" />
             <Label layoutX="42.0" layoutY="174.0" styleClass="gray-text-Cabin" text="Nhà xuất bản:" />
             <Label layoutX="42.0" layoutY="210.0" styleClass="gray-text-Cabin" text="Tổng số sách:" />
-            <Label layoutX="183.0" layoutY="209.0" styleClass="gray-text-Cabin" text="Tổng số đang mượn:" />
+            <Label layoutX="191.0" layoutY="209.0" styleClass="gray-text-Cabin" text="Tổng số đang mượn:" />
             <Label layoutX="388.0" layoutY="209.0" styleClass="gray-text-Cabin" text="Tổng số bị mất:" />
             <Button fx:id="choiceImageButton" layoutX="630.0" layoutY="238.0" mnemonicParsing="false" onAction="#onChoiceImageButtonAction" prefHeight="26.0" prefWidth="68.0" stylesheets="@../../../../style/AdminStyle.css" text="Chọn ảnh" visible="false" />
             <TextField fx:id="categoryText" layoutX="444.0" layoutY="132.0" prefHeight="34.0" prefWidth="122.0" style="-fx-background-color: transparent;" styleClass="black-text-Cabin" text="Lich SU, hoa hoc, toan hoc" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="233.0" />
