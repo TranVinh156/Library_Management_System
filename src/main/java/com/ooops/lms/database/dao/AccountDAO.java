@@ -61,7 +61,7 @@ public class AccountDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                return resultSet.getInt("user_id");
+                return resultSet.getInt("member_id");
             } else {
                 return 0;
             }
