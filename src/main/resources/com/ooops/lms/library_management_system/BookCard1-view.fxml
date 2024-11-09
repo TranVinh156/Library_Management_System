@@ -8,28 +8,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="hBox" alignment="CENTER" onMouseClicked="#onBookMouseClicked" prefHeight="140.0" prefWidth="332.0" spacing="15.0" styleClass="rounded-box" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.BookCard1Controller">
+<HBox fx:id="hBox" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onBookMouseClicked" prefHeight="140.0" prefWidth="278.0" spacing="15.0" styleClass="rounded-box" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.BookCard1Controller">
    <children>
-      <ImageView fx:id="bookImage" fitHeight="106.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bookImage" fitHeight="124.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
          <image>
             <Image url="@../../../../image/customer/bookCard/Books.png" />
          </image>
       </ImageView>
-      <VBox alignment="CENTER_LEFT" prefHeight="111.0" prefWidth="207.0">
+      <VBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="110.0" prefWidth="171.0" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="bookNameLabel" prefHeight="39.0" prefWidth="174.0" text="Book name">
+            <Label fx:id="bookNameLabel" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="155.0" text="Book name">
                <font>
                   <Font name="Berlin Sans FB Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="authorNameLabel" text="Author name">
+            <Label fx:id="authorNameLabel" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="158.0" text="Author name">
                <font>
                   <Font name="Berlin Sans FB" size="18.0" />
                </font>
             </Label>
-            <ImageView fx:id="starImage" fitHeight="21.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="starImage" fitHeight="24.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../image/customer/bookCard/5Star.png" />
+                  <Image url="@../../../../image/book/5Star.png" />
                </image>
             </ImageView>
          </children>
