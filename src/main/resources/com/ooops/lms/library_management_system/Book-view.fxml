@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox fx:id="bookBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="567.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.BookController">
    <children>
@@ -44,12 +43,12 @@
             </StackPane>
             <VBox prefHeight="306.0" prefWidth="443.0" spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="bookNameText" text="Tên Sách" textFill="#ff920c">
+                  <Label fx:id="bookNameLabel" text="Tên Sách" textFill="#ff920c">
                      <font>
                         <Font name="System Bold" size="29.0" />
                      </font>
                   </Label>
-                  <Label fx:id="authorNameText" text="Tên tác giả" textFill="#ff920c">
+                  <Label fx:id="authorNameLabel" text="Tên tác giả" textFill="#ff920c">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -99,7 +98,7 @@
                   <Label maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="362.0" styleClass="label1" stylesheets="@../../../../style/BookStyle.css" text="Nội dung" VBox.vgrow="ALWAYS" />
                   <ScrollPane prefHeight="125.0" prefWidth="253.0" style="-fx-background-color: #ffffff;" stylesheets="@../../../../style/BookStyle.css">
                      <content>
-                        <Text fx:id="contentText" strokeType="OUTSIDE" strokeWidth="0.0" text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" wrappingWidth="254.13677978515625" />
+                        <Label fx:id="contentText" text="Label" />
                      </content>
                   </ScrollPane>
                </children>
@@ -109,11 +108,14 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="319.0" prefWidth="342.0" spacing="5.0" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="195.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="195.0" styleClass="commentLabel">
                      <children>
-                        <Label prefHeight="35.0" prefWidth="212.0" styleClass="label1" stylesheets="@../../../../style/BookStyle.css" text="Bình luận" />
-                        <ChoiceBox fx:id="starChoiceBox" prefWidth="150.0" styleClass="choiceBox" />
+                        <Label maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="212.0" text="Bình luận" HBox.hgrow="ALWAYS" />
+                        <ChoiceBox fx:id="starChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="67.0" style="-fx-background-color: transparent;" />
                      </children>
+                     <padding>
+                        <Insets left="20.0" right="5.0" />
+                     </padding>
                   </HBox>
                   <ScrollPane maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" styleClass="rounded-scrollpane" stylesheets="@../../../../style/BookStyle.css">
                      <content>

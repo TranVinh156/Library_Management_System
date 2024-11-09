@@ -18,34 +18,40 @@
                <font>
                   <Font size="28.0" />
                </font></Label>
-            <ImageView fitHeight="28.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../image/customer/menu/hot.png" />
                </image>
+               <HBox.margin>
+                  <Insets bottom="6.0" />
+               </HBox.margin>
             </ImageView>
          </children>
       </HBox>
       <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0" styleClass="rounded-scrollpane">
          <content>
-            <HBox fx:id="popularHBox" prefHeight="190.0" prefWidth="565.0" />
+            <HBox fx:id="popularHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="565.0">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></HBox>
          </content>
       </ScrollPane>
       <HBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="691.0" spacing="10.0">
          <children>
-            <Label styleClass="label-1" text="Mới nhất">
+            <Label styleClass="label-1" text="Được yêu thích">
                <font>
                   <Font size="28.0" />
                </font></Label>
             <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../image/customer/menu/new.png" />
+                  <Image url="@../../../../image/customer/menu/love.png" />
                </image>
             </ImageView>
          </children>
       </HBox>
       <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0" styleClass="rounded-scrollpane">
          <content>
-            <HBox fx:id="latestHBox" prefHeight="190.0" prefWidth="553.0">
+            <HBox fx:id="highRankHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="553.0">
                <padding>
                   <Insets top="10.0" />
                </padding></HBox>

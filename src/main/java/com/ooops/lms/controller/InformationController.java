@@ -1,17 +1,35 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.model.Member;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ChoiceBox;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class InformationController {
     @FXML
     private VBox contentBox;
+
+    @FXML
+    private TextField nameText;
+
+    @FXML
+    private TextField phoneText;
+
+    @FXML
+    private TextField emailText;
+
+    @FXML
+    private DatePicker birthDate;
 
     @FXML
     private ChoiceBox<String> genderChoiceBox;
@@ -28,9 +46,21 @@ public class InformationController {
     }
 
     public void initialize() {
-        genderChoiceBox.getItems().addAll("nam", "nữ", "đoán xem");
+        genderChoiceBox.getItems().addAll("FEMALE", "MALE", "OTHER");
+        showInfo();
+    }
 
-        genderChoiceBox.setValue("không biết");
+    private void showInfo() {
+        nameText.setText(UserMenuController.member.getPerson().getLastName() + " "
+                + UserMenuController.member.getPerson().getFirstName());
+        phoneText.setText(UserMenuController.member.getPerson().getPhone());
+        emailText.setText(UserMenuController.member.getPerson().getEmail());
+        genderChoiceBox.setValue(UserMenuController.member.getPerson().getGender().toString());
+        String dateString = UserMenuController.member.getPerson().getDateOfBirth();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate parsedDate = LocalDate.parse(dateString, formatter);
+        birthDate.setValue(parsedDate);
     }
 
 }

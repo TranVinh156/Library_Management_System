@@ -14,6 +14,11 @@
     -fx-background-color: #ffffff;
 }
 
+.commentLabel{
+     -fx-background-color: #DFC87D;
+     -fx-background-radius: 10;
+}
+
 .label-1{
     -fx-text-fill : #A64F3C;
     -fx-font-weight : bold;
