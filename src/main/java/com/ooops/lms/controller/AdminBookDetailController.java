@@ -3,10 +3,15 @@ package com.ooops.lms.controller;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
+import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Category;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,8 +20,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AdminBookDetailController extends BasicBookController {
@@ -100,6 +108,8 @@ public class AdminBookDetailController extends BasicBookController {
     private boolean editMode = false;
     private boolean addMode = false;
     private boolean isPage1 = true;
+    private ObservableList<BookItem> bookItemList = FXCollections.observableArrayList();
+    private BookItemDAO bookItemDAO = new BookItemDAO();
 
     public void setMainController(AdminBookPageController mainController) {
         this.mainController = mainController;
@@ -242,6 +252,39 @@ public class AdminBookDetailController extends BasicBookController {
 
     }
 
+    private void loadData() {
+        bookItemList.clear();
+        copyBookTableVbox.getChildren().clear();
+
+        try{
+            Map<String, Object> searchCriteria = new HashMap<>();
+            searchCriteria.put("ISBN", book.getISBN());
+            bookItemList.addAll(bookItemDAO.searchByCriteria(searchCriteria));
+        }catch (Exception e) {
+            System.out.println("Lỗi bookItemList addAll:" + e.getMessage());
+        }
+
+        for(BookItem bookItem: bookItemList) {
+            try {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_COPY_ROW_FXML));
+                    HBox row = loader.load();
+
+                    AdminBookTableRowController rowController = loader.getController();
+                    rowController.setMainController(mainController);
+                    rowController.setBook(bookItem);
+                    childFitWidthParent(row, rowController);
+                    copyBookTableVbox.getChildren().add(row);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     public void setItem(Book book) {
         this.book = book;
 
@@ -250,11 +293,13 @@ public class AdminBookDetailController extends BasicBookController {
         authorNameText.setText(getAuthors(book.getAuthors()));
         categoryText.setText(getCategories(book.getCategories()));
         publishingHouseText.setText("chua co");
-        numberOfBookText.setText("khong co");
+        numberOfBookText.setText("0");
         numberOfBorrowText.setText(String.valueOf(book.getNumberOfLoanedBooks()));
         numberOfLostText.setText(String.valueOf(book.getNumberOfLostBooks()));
         locationText.setText(book.getPlaceAt());
         bookContentText.setText(book.getDescription());
+
+        loadData();
     }
 
     public Book getItem() {
@@ -281,6 +326,7 @@ public class AdminBookDetailController extends BasicBookController {
         bookNameText.setEditable(edit);
         locationText.setEditable(edit);
         authorNameText.setEditable(edit);
+        bookContentText.setEditable(edit);
         //categoryText.setEditable(edit);
         publishingHouseText.setEditable(edit);
         numberOfBookText.setEditable(edit);
@@ -353,6 +399,7 @@ public class AdminBookDetailController extends BasicBookController {
             }
         }
     }
+
 
 
 }
