@@ -41,6 +41,7 @@ public class AdminBookPageController extends BasicBookController {
     }
 
     public void loadDetail(Book book) {
+        adminBookDetailController.setItem(book);
         alterPage();
     }
 
