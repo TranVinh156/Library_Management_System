@@ -76,7 +76,7 @@ public class AdminBookTableController extends BasicBookController {
     private BookDAO bookDAO = new BookDAO();
     Map<String, Object> criteria = new HashMap<>();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
-    ;
+
     private AdminBookPageController mainController;
 
     public void registerNewItem(Book book) {
@@ -142,7 +142,7 @@ public class AdminBookTableController extends BasicBookController {
             List<Book> result = bookDAO.searchByCriteria(searchCriteria);
             bookList.addAll(result);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Lỗi khi addBook:"+e.getMessage());
         }
 
         for (Book book : bookList) {
