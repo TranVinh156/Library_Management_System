@@ -123,6 +123,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
                 preparedStatement.setString(7, entity.getPerson().getImagePath());
 
                 preparedStatement.setInt(8, entity.getPerson().getId());
+                preparedStatement.executeUpdate();
             }
 
             try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_ACCOUNT)) {
@@ -149,12 +150,14 @@ public class MemberDAO implements DatabaseQuery<Member> {
         try {
             database.getConnection().setAutoCommit(false);
 
-            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_MEMBER)) {
-                preparedStatement.setInt(1, entity.getPerson().getId());
-            }
-
             try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_USER)) {
                 preparedStatement.setInt(1, entity.getPerson().getId());
+                preparedStatement.executeUpdate();
+            }
+
+            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_MEMBER)) {
+                preparedStatement.setInt(1, entity.getPerson().getId());
+                preparedStatement.executeUpdate();
             }
 
             database.getConnection().commit();
