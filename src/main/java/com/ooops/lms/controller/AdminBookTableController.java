@@ -99,51 +99,20 @@ public class AdminBookTableController extends BasicBookController {
 
     }
 
-    private void loadData() {
+    public void loadData() {
         bookList.clear();
         bookTableVbox.getChildren().clear();
-
-        bookList.add(new Book(
-                1234567890123L,
-                "Effective Java",
-                "/images/effective_java.jpg",
-                "A comprehensive guide to programming in Java.",
-                "Shelf A1",
-                Arrays.asList(new Author("Joshua Bloch")),
-                Arrays.asList(new Category("Programming")),
-                10
-        ));
-
-        bookList.add(new Book(
-                2345678901234L,
-                "Clean Code",
-                "/images/clean_code.jpg",
-                "A handbook of agile software craftsmanship.",
-                "Shelf B2",
-                Arrays.asList(new Author("Robert C. Martin")),
-                Arrays.asList(new Category("Programming")),
-                8
-        ));
-
-        bookList.add(new Book(
-                3456789012345L,
-                "Design Patterns",
-                "/images/design_patterns.jpg",
-                "Elements of reusable object-oriented software.",
-                "Shelf C3",
-                Arrays.asList(new Author("Erich Gamma"), new Author("Richard Helm"), new Author("Ralph Johnson")),
-                Arrays.asList(new Category("Software Engineering")),
-                12
-        ));
-
         try{
+
             Map<String, Object> searchCriteria = new HashMap<>();
             searchCriteria.put("title", "Les Miserables");
-            List<Book> result = bookDAO.searchByCriteria(searchCriteria);
-            bookList.addAll(result);
+            //bookList.addAll( bookDAO.find(9780140444308L));
+            bookList.addAll(bookDAO.selectAll());
         } catch (SQLException e) {
             System.out.println("Lỗi khi addBook:"+e.getMessage());
         }
+
+        setNumberBookTotal();
 
         for (Book book : bookList) {
             try {
@@ -159,6 +128,12 @@ public class AdminBookTableController extends BasicBookController {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setNumberBookTotal() {
+        totalNumberBookLabel.setText(String.valueOf(bookList.size()));
+        
+
     }
 
     private void getCriteria() {
