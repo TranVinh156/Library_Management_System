@@ -10,7 +10,7 @@ import com.ooops.lms.database.dao.CommentDAO;
 import com.ooops.lms.model.Category;
 
 public class Book {
-    public static final String DEFAULT_IMAGE_PATH = "image//book//default.png";
+    public static final String DEFAULT_IMAGE_PATH = "image/book/default.png";
     private long ISBN;
     private String title;
     private String imagePath;

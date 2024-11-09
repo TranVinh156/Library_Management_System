@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class BasicBookController extends BasicController {
+    protected static final String DEFAULT_BOOK_IMAGE = "/image/book/default.png";
+
     private static final String BOOK_TABLE_FXML = "/com/ooops/lms/library_management_system/AdminBookTable.fxml";
     private static final String BOOK_DETAIL_FXML = "/com/ooops/lms/library_management_system/AdminBookDetail.fxml";
     protected static final String BOOK_TABLE_ROW_FMXL = "/com/ooops/lms/library_management_system/AdminBookTableRow.fxml";
@@ -25,8 +28,10 @@ public class BasicBookController extends BasicController {
     protected static final Node bookTablePane;
     protected static final FXMLLoader bookDetailPaneLoader;
     protected static final Node bookDetailPane;
+    protected static Image defaultBookImage;
 
     static {
+        defaultBookImage = new Image(BasicBookController.class.getResource(DEFAULT_BOOK_IMAGE).toExternalForm());
         bookDetailPaneLoader = loadFXML(BOOK_DETAIL_FXML, BasicBookController.class);
         bookDetailPane = loadPane(bookDetailPaneLoader, BasicBookController.class);
 

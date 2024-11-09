@@ -8,16 +8,23 @@ import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.AccountStatus;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminCommand implements Command {
     private String action;
     private Object object;
     private BookDAO bookDAO = new BookDAO();
     private MemberDAO memberDAO = new MemberDAO();
+    private Member memberResult;
 
     public AdminCommand(String action, Object object) {
         this.action = action;
         this.object = object;
+    }
+
+    public Member getMemberResult() {
+        return memberResult;
     }
 
     /**
@@ -31,6 +38,9 @@ public class AdminCommand implements Command {
             switch (action) {
                 case "add":
                     if (object instanceof Book) {
+                        if(object != null) {
+                            System.out.println("Book add iss not null");
+                        }
                         bookDAO.add((Book) object);
                     } else if (object instanceof Member) {
                         memberDAO.add((Member) object);
@@ -63,11 +73,18 @@ public class AdminCommand implements Command {
                         Member member = (Member) object;
                         member.setStatus(AccountStatus.ACTIVE);
                     }
+                    return true;
+                case "find":
+                    if (object instanceof Member) {
+                        Member member = (Member) object;
+                        this.memberResult = memberDAO.find(member.getAccountId());
+                    }
+                    return true;
                 default:
                     return false;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            CustomerAlter.showAlter(e.getMessage());
             return false; // Thất bại
         }
     }

@@ -17,7 +17,7 @@
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../image/icon/Vector%20(2).png" />
+                              <Image url="@../../../../image/icon/back.png" />
                            </image>
                         </ImageView>
                      </graphic>
