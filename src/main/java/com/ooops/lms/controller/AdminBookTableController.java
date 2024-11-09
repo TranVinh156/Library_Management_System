@@ -75,7 +75,8 @@ public class AdminBookTableController extends BasicBookController {
 
     private BookDAO bookDAO = new BookDAO();
     Map<String, Object> criteria = new HashMap<>();
-    private ObservableList<Book> bookList = FXCollections.observableArrayList();;
+    private ObservableList<Book> bookList = FXCollections.observableArrayList();
+    ;
     private AdminBookPageController mainController;
 
     public void registerNewItem(Book book) {
@@ -130,29 +131,34 @@ public class AdminBookTableController extends BasicBookController {
                 "/images/design_patterns.jpg",
                 "Elements of reusable object-oriented software.",
                 "Shelf C3",
-                Arrays.asList(new Author("Erich Gamma"),new Author( "Richard Helm"), new Author("Ralph Johnson")),
+                Arrays.asList(new Author("Erich Gamma"), new Author("Richard Helm"), new Author("Ralph Johnson")),
                 Arrays.asList(new Category("Software Engineering")),
                 12
         ));
-            try {
-                bookList.addAll(bookDAO.selectAll());
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-            for (Book book : bookList) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_TABLE_ROW_FMXL));
-                    HBox row = loader.load();
 
-                    AdminBookTableRowController rowController = loader.getController();
-                    rowController.setMainController(mainController);
-                    rowController.setBook(book);
-                    childFitWidthParent(row, rowController);
-                    bookTableVbox.getChildren().add(row);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        try{
+            Map<String, Object> searchCriteria = new HashMap<>();
+            searchCriteria.put("title", "Les Miserables");
+            List<Book> result = bookDAO.searchByCriteria(searchCriteria);
+            bookList.addAll(result);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        for (Book book : bookList) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_TABLE_ROW_FMXL));
+                HBox row = loader.load();
+
+                AdminBookTableRowController rowController = loader.getController();
+                rowController.setMainController(mainController);
+                rowController.setBook(book);
+                childFitWidthParent(row, rowController);
+                bookTableVbox.getChildren().add(row);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
     }
 
     private void getCriteria() {
