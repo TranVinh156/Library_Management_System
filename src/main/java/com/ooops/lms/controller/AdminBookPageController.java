@@ -41,13 +41,23 @@ public class AdminBookPageController extends BasicBookController {
     }
 
     public void loadDetail(Book book) {
-        System.out.println("load Detail");
+        adminBookDetailController.setItem(book);
         alterPage();
     }
 
-    public void alterPage() {
+    public void loadAddPane() {
+        adminBookDetailController.loadStartStatus();
+        adminBookDetailController.setAddMode(true);
+        alterPage();
+    }
+
+    private void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+    }
+
+    public void loadData() {
+
     }
 
 }

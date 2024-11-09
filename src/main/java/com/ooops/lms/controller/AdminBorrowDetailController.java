@@ -1,8 +1,13 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.AdminCommand;
+import com.ooops.lms.Command.Command;
+import com.ooops.lms.model.Admin;
+import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Member;
-import com.ooops.lms.model.datatype.Person;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AdminBorrowDetailController {
+public class AdminBorrowDetailController extends BasicBorrowController {
 
     @FXML
     private Button addButotn;
@@ -79,6 +84,23 @@ public class AdminBorrowDetailController {
 
     private AdminBorrowPageController mainController;
     private boolean addMode;
+    private Member member;
+    private Book book;
+
+    @FXML
+    public void initialize() {
+        // Lắng nghe sự thay đổi trong TextField tìm kiếm
+        memberIDText.textProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                loadMemberFindData(newValue);
+            }
+        });
+        barCodeText.textProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                loadBookFindData(newValue);
+            }
+        });
+    }
 
     void setMainController(AdminBorrowPageController mainController) {
         this.mainController = mainController;
@@ -95,7 +117,8 @@ public class AdminBorrowDetailController {
     @FXML
     void onAddButtonAction(ActionEvent event) {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thêm người này?");
-        if (confirmYes) {}
+        if (confirmYes) {
+        }
         setAddMode(false);
     }
 
@@ -114,6 +137,32 @@ public class AdminBorrowDetailController {
 
     @FXML
     void onScanButtonAction(ActionEvent event) {
+
+    }
+
+    private void loadMemberFindData(String newValue) {
+        // Khi người dùng nhập vào, lọc lại dữ liệu và hiển thị kết quả
+        member = new Member(null, null, null);
+        member.setAccountId(Integer.parseInt(newValue));
+        System.out.println(newValue);
+        Command findMemberCommand = new AdminCommand("find", member);
+        commandInvoker.setCommand(findMemberCommand);
+        if (commandInvoker.executeCommand()) {
+            AdminCommand adminCommand = (AdminCommand) findMemberCommand;
+            member = adminCommand.getMemberResult();
+            if (member != null) {
+                setMember(member);
+                System.out.println("Người đọc tồn tại");
+            } else {
+                System.out.println("Người đọc không tồn tại");
+            }
+        } else {
+            System.out.println("Lỗi truy vấn");
+        }
+    }
+
+    private void loadBookFindData(String newValue) {
+        book = new Book();
 
     }
 
@@ -141,7 +190,7 @@ public class AdminBorrowDetailController {
         scanBookButton.setMouseTransparent(!add);
         scanMemberButton.setMouseTransparent(!add);
 
-        if(add) {
+        if (add) {
             saveButton.setVisible(!add);
             savePane.setVisible(!add);
 
@@ -183,4 +232,14 @@ public class AdminBorrowDetailController {
         scanMemberButton.setMouseTransparent(edit);
     }
 
+    public void setMember(Member member) {
+        this.member = member;
+        memberIDText.setText(String.valueOf(member.getPerson().getId()));
+        memberNameText.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName());
+        phoneNumberText.setText(member.getPerson().getPhone());
+        emailText.setText(member.getPerson().getEmail());
+        genderText.setText(member.getPerson().getGender().toString());
+        totalOFBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
+        totalOfLostText.setText("chua co");
+    }
 }

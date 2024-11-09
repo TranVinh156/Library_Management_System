@@ -3,6 +3,7 @@ package com.ooops.lms.Command;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.model.Account;
+import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.Role;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +19,7 @@ public class LoginCommand implements Command {
     private String password;
     private String username;
     private Stage stage;
+    private int resultMemberID;
 
     public LoginCommand(Stage stage, Role role, String username, String password) {
         this.role = role;
@@ -47,6 +49,7 @@ public class LoginCommand implements Command {
     private boolean isAuthenticated() throws SQLException {
         if (role.equals(Role.NONE)) {
             if (accountDAO.validateMemberLogin(username, password) != 0) {
+                this.resultMemberID = accountDAO.validateMemberLogin(username,password);
                 CustomerAlter.showAlter("Đăng nhập thành công");
                 openMenu();
                 return true;
@@ -82,4 +85,7 @@ public class LoginCommand implements Command {
         }
     }
 
+    public int getResultMemberID() {
+        return resultMemberID;
+    }
 }
