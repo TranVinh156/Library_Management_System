@@ -6,6 +6,8 @@ import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.Gender;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,7 +45,14 @@ public class AdminUserTableController extends BasicUserController {
 
     @FXML
     public void initialize() {
-
+        // Lắng nghe sự thay đổi trong TextField tìm kiếm
+        searchText.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Khi người dùng nhập vào, lọc lại dữ liệu và hiển thị kết quả
+                loadFindData(newValue);
+            }
+        });
     }
 
     @FXML
@@ -55,12 +64,31 @@ public class AdminUserTableController extends BasicUserController {
      * Hàm để set mainController (PageController).
      * Sau khi có mainController thì mới được tải hàng Row.
      * Để tránh cho set mainController cho các Row bị rỗng.
+     *
      * @param controller là PageController truyền vào
      */
     public void setMainController(AdminUserPageController controller) throws SQLException {
         this.mainController = controller;
         loadData();
         setVboxFitWithScrollPane();
+    }
+
+    public void loadFindData(String name) {
+        try {
+            membersList.clear();
+            Map<String, Object> searchCriteria = new HashMap<>();
+            searchCriteria.put("phone", name);
+            membersList.addAll(memberDAO.searchByCriteria(searchCriteria));
+            Map<String, Object> searchCriteria2 = new HashMap<>();
+            searchCriteria2.put("first_name", name);
+            membersList.addAll(memberDAO.searchByCriteria(searchCriteria2));
+            Map<String, Object> searchCriteria3 = new HashMap<>();
+            searchCriteria3.put("last_name", name);
+            membersList.addAll(memberDAO.searchByCriteria(searchCriteria3));
+            loadRows();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -72,7 +100,7 @@ public class AdminUserTableController extends BasicUserController {
             membersList.addAll(memberDAO.selectAll());
             loadRows();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
