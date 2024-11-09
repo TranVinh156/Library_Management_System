@@ -420,6 +420,8 @@ public class BookDAO implements DatabaseQuery<Book> {
                 findBookByCriteria.append(key).append(" LIKE ? AND ");
             }
 
+            findBookByCriteria.setLength(findBookByCriteria.length() - 5);
+
             try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookByCriteria.toString())) {
                 int index = 1;
 
