@@ -1,8 +1,5 @@
 package com.ooops.lms.controller;
 
-import com.ooops.lms.Command.Command;
-import com.ooops.lms.Command.CommandInvoker;
-import com.ooops.lms.Command.LoginCommand;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.util.FXMLLoaderUtil;
@@ -23,11 +20,12 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
-
-import com.ooops.lms.database.dao.AccountDAO;
 
 public class UserMenuController implements Initializable {
     @FXML
@@ -51,9 +49,8 @@ public class UserMenuController implements Initializable {
     private  FXMLLoaderUtil fxmlLoaderUtil;
 
     private int memberID=0;
-    private MemberDAO memberDAO = new MemberDAO();
+    protected static MemberDAO memberDAO = new MemberDAO();
     protected static Member member;
-
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
     private static final String ADVANCED_SEARCH_FXML = "/com/ooops/lms/library_management_system/AdvancedSearch-view.fxml";
@@ -66,6 +63,7 @@ public class UserMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupHoverMenuBar();
         fxmlLoaderUtil = FXMLLoaderUtil.getInstance(contentBox);
+        fxmlLoaderUtil.addUserMenuController(this);
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
@@ -112,6 +110,7 @@ public class UserMenuController implements Initializable {
 
     public void onLogoutButtonAction(ActionEvent event) {
         try {
+            fxmlLoaderUtil.deleteAllInCache();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource(USER_LOGIN_FXML));
             Scene scene = new Scene(root);
@@ -158,20 +157,37 @@ public class UserMenuController implements Initializable {
             pause.play();
         });
     }
+    public void showInfo() {
+        userNameLabel.setText(member.getPerson().getFirstName());
+        String imagePath = member.getPerson().getImagePath();
+
+        imagePath = imagePath.replace("//", "/");
+        if (imagePath.contains("image/avatar/default.png")) {
+            avatarImage.setImage(new Image(getClass().getResourceAsStream("/" + imagePath)));
+        } else {
+            try {
+                File imageFile = new File(imagePath);
+                if (imageFile.exists()) {
+                    avatarImage.setImage(new Image(new FileInputStream(imageFile)));
+                } else {
+                    System.out.println("File not found: " + imagePath);
+                    avatarImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));  // Hiển thị ảnh mặc định nếu không tìm thấy ảnh
+                }
+            } catch (IOException e) {
+                System.out.println("Error loading image: " + e.getMessage());
+                avatarImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));  // Hiển thị ảnh mặc định nếu có lỗi
+            }
+        }
+    }
 
     private void findMember() {
         try {
-            System.out.println(memberID);
             member = memberDAO.find(memberID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         if(member != null) {
-            userNameLabel.setText(member.getPerson().getFirstName());
-            String imagePath = member.getPerson().getImagePath();
-
-            imagePath = imagePath.replace("//", "/");
-            avatarImage.setImage(new Image(getClass().getResourceAsStream("/" + imagePath)));
+            showInfo();
         }
         else {
             System.err.println("khong tim thay member");
@@ -182,5 +198,21 @@ public class UserMenuController implements Initializable {
         this.memberID = memberID;
         System.out.println("MemberID được thiết lập: " + memberID);
         findMember();
+    }
+
+    public static Member getMember() {
+        return member;
+    }
+
+    public static void updateMember() {
+        try{
+            if(memberDAO.update(member)) {
+                System.out.println("update succesfully");
+            } else {
+                System.out.println("fail to update");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

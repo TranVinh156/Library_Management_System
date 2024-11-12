@@ -2,6 +2,7 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.BookMark;
+import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +43,7 @@ public class BookCard1Controller {
     private ImageView starImage;
 
     private String [] colors = {"FFFFFF"};
-
+    private BookReservation bookReservation;
     public void setData() {
         bookNameLabel.setText("book name");
         authorNameLabel.setText("author");
