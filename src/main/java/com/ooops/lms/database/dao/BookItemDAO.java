@@ -32,7 +32,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
 
     // find
     private static final String FIND_BOOK_ITEM
-            = "SELECT * FROM BookItem bi join Books on bi.ISBN = b.ISBN WHERE barcode = ?";
+            = "SELECT * FROM BookItem bi join Books b on bi.ISBN = b.ISBN WHERE barcode = ?";
 
     // update
     private static final String UPDATE_BOOK_ITEM
@@ -90,7 +90,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
                 if (resultSet.next()) {
                     BookItem bookItem = new BookItem(resultSet.getInt("barcode")
                             , BookItemStatus.valueOf(resultSet.getString("status"))
-                            , resultSet.getString("note"), bookDAO.find(resultSet.getInt("ISBN")));
+                            , resultSet.getString("note"), bookDAO.find(resultSet.getLong("ISBN")));
 
                     List<BookItem> bookItemList = new ArrayList<>();
                     bookItemList.add(bookItem);

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -97,16 +98,25 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
     @Override
     public List<BookReservation> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         StringBuilder findBookReservationByCriteria = new StringBuilder("Select * from BookReservation where ");
+        Iterator<String> iterator = criteria.keySet().iterator();
 
-        for (String key : criteria.keySet()) {
-            findBookReservationByCriteria.append(key).append(" like ?").append(" and ");;
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            findBookReservationByCriteria.append(key).append(" LIKE ?");
+            if (iterator.hasNext()) {
+                findBookReservationByCriteria.append(" AND ");
+            }
         }
 
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookReservationByCriteria.toString())) {
             int index = 1;
 
             for (Object value : criteria.values()) {
-                preparedStatement.setString(index++, "%" + value.toString() + "%");
+                if (value != null) {
+                    preparedStatement.setString(index++, "%" + value.toString() + "%");
+                } else {
+                    preparedStatement.setString(index++, "%");
+                }
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {

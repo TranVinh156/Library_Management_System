@@ -1,19 +1,24 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.database.dao.CommentDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.Comment;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class BookController{
@@ -45,10 +50,46 @@ public class BookController{
     @FXML
     private ImageView starImage;
 
+    @FXML
+    private VBox commentsVBox;
+
+    @FXML
+    TextField commentTextfield;
+
+    private List<Comment> comments;
+    private CommentDAO commentDAO;
+
+
     public void initialize() {
         starChoiceBox.getItems().addAll("tất cả","5 sao", "4 sao", "3 sao", "2 sao","1 sao");
 
         starChoiceBox.setValue("tất cả");
+
+        commentDAO = new CommentDAO();
+        commentTextfield.setOnAction(event -> {
+            commentTextfield.clear();
+        });
+
+        try {
+            comments = commentDAO.selectAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < comments.size(); i++) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/Comment-view.fxml"));
+                VBox cardBox = fxmlLoader.load();
+                CommentController cardController = fxmlLoader.getController();
+                cardController.setData(comments.get(i));
+                commentsVBox.getChildren().add(cardBox);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (i == 9) {
+                break;
+            }
+        }
     }
 
     public void setData() {
