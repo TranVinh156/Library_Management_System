@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -84,33 +85,43 @@ public class ReportDAO implements DatabaseQuery<Report> {
 
     @Override
     public List<Report> searchByCriteria(Map<String, Object> criteria) throws SQLException {
-        StringBuilder findReportByCriteria = new StringBuilder("Select * from reports where ");
+        StringBuilder findReportByCriteria = new StringBuilder("SELECT * FROM reports WHERE ");
+        Iterator<String> iterator = criteria.keySet().iterator();
 
-        for (String key : criteria.keySet()) {
-            findReportByCriteria.append(key).append(" like ?").append(" and ");
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            findReportByCriteria.append(key).append(" LIKE ?");
+            if (iterator.hasNext()) {
+                findReportByCriteria.append(" AND ");
+            }
         }
 
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findReportByCriteria.toString())) {
             int index = 1;
 
             for (Object value : criteria.values()) {
-                preparedStatement.setString(index++, "%" + value.toString() + "%");
+                if (value != null) {
+                    preparedStatement.setString(index++, "%" + value.toString() + "%");
+                } else {
+                    preparedStatement.setString(index++, "%"); // Hoặc giá trị mặc định
+                }
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Report> reports = new ArrayList<>();
                 while (resultSet.next()) {
-                    Report report = new Report(resultSet.getInt("report_ID")
-                            , memberDAO.find(resultSet.getInt("member_ID"))
-                            , resultSet.getString("title")
-                            , resultSet.getString("content")
-                            , ReportStatus.valueOf(resultSet.getString("status")));
+                    Report report = new Report(resultSet.getInt("report_ID"),
+                            memberDAO.find(resultSet.getInt("member_ID")),
+                            resultSet.getString("title"),
+                            resultSet.getString("content"),
+                            ReportStatus.valueOf(resultSet.getString("status")));
                     reports.add(report);
                 }
                 return reports;
             }
         }
     }
+
 
     @Override
     public List<Report> selectAll() throws SQLException {

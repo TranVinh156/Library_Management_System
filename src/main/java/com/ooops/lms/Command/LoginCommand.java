@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
+import com.ooops.lms.controller.UserMenuController;
 public class LoginCommand implements Command {
     private Role role;
     private AccountDAO accountDAO = new AccountDAO();
@@ -69,7 +69,20 @@ public class LoginCommand implements Command {
         if (role.equals(Role.ADMIN)) {
             loadView("/com/ooops/lms/library_management_system/AdminMenu.fxml");
         } else if (role.equals(Role.NONE)) {
-            loadView("/com/ooops/lms/library_management_system/UserMenu-view.fxml");
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/UserMenu-view.fxml"));
+                Parent root = fxmlLoader.load();
+
+                UserMenuController userMenu = fxmlLoader.getController();
+
+                userMenu.setMemberID(resultMemberID);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
