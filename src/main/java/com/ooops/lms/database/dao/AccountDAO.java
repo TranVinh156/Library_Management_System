@@ -16,7 +16,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class AccountDAO {
-    private Database database = Database.getInstance();
+    private Database database;
+    private static AccountDAO accountDAO;
+
+    private AccountDAO() {
+        database = Database.getInstance();
+    }
+
+    public static AccountDAO getInstance() {
+        if (accountDAO == null) {
+            accountDAO = new AccountDAO();
+        }
+        return accountDAO;
+    }
 
     private static final String GET_ACCOUNT_ADMIN =
             "Select * from Admins where username = ? and password = ?";
