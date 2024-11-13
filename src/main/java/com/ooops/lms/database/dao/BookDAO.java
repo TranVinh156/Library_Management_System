@@ -17,9 +17,16 @@ import java.util.Map;
 
 public class BookDAO implements DatabaseQuery<Book> {
     private Database database;
-
-    public BookDAO() {
+    private static BookDAO bookDAO;
+    private BookDAO() {
         database = Database.getInstance();
+    }
+
+    public static BookDAO getInstance() {
+         if (bookDAO == null) {
+             bookDAO = new BookDAO();
+         }
+         return bookDAO;
     }
 
     //cache

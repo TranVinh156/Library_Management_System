@@ -14,14 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 public class BookReservationDAO implements DatabaseQuery<BookReservation> {
+    private static BookReservationDAO bookReservationDAO;
+
     private Database database;
     private MemberDAO memberDAO;
     private BookItemDAO bookItemDAO;
 
-    public BookReservationDAO() {
+    private BookReservationDAO() {
         database = Database.getInstance();
-        memberDAO = new MemberDAO();
-        bookItemDAO = new BookItemDAO();
+        memberDAO = MemberDAO.getInstance();
+        bookItemDAO = BookItemDAO.getInstance();
+    }
+
+    public static BookReservationDAO getInstance() {
+        if (bookReservationDAO == null) {
+            bookReservationDAO = new BookReservationDAO();
+        }
+        return bookReservationDAO;
     }
 
     // add
