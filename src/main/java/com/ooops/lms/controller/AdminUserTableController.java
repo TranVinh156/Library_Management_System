@@ -39,7 +39,6 @@ public class AdminUserTableController extends BasicUserController {
     @FXML
     private VBox userTableVbox;
 
-    private MemberDAO memberDAO = new MemberDAO();
     private ObservableList<Member> membersList = FXCollections.observableArrayList();
     private AdminUserPageController mainController;
 
@@ -78,13 +77,13 @@ public class AdminUserTableController extends BasicUserController {
             membersList.clear();
             Map<String, Object> searchCriteria = new HashMap<>();
             searchCriteria.put("phone", name);
-            membersList.addAll(memberDAO.searchByCriteria(searchCriteria));
+            membersList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
             Map<String, Object> searchCriteria2 = new HashMap<>();
             searchCriteria2.put("first_name", name);
-            membersList.addAll(memberDAO.searchByCriteria(searchCriteria2));
+            membersList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria2));
             Map<String, Object> searchCriteria3 = new HashMap<>();
             searchCriteria3.put("last_name", name);
-            membersList.addAll(memberDAO.searchByCriteria(searchCriteria3));
+            membersList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria3));
             loadRows();
         } catch (Exception e) {
             System.out.println(e.getMessage());
