@@ -12,14 +12,23 @@ import java.util.List;
 import java.util.Map;
 
 public class BookMarkDAO implements DatabaseQuery<BookMark> {
+    private static BookMarkDAO bookMarkDAO;
+
     private Database database;
     private MemberDAO memberDAO;
     private BookDAO bookDAO;
 
-    public BookMarkDAO() {
+    private BookMarkDAO() {
         database = Database.getInstance();
-        memberDAO = new MemberDAO();
-        bookDAO = new BookDAO();
+        memberDAO = MemberDAO.getInstance();
+        bookDAO = BookDAO.getInstance();
+    }
+
+    public static BookMarkDAO getInstance() {
+        if (bookMarkDAO == null) {
+            bookMarkDAO = new BookMarkDAO();
+        }
+        return bookMarkDAO;
     }
 
     // add
