@@ -12,12 +12,21 @@ import java.util.List;
 import java.util.Map;
 
 public class CommentDAO implements DatabaseQuery<Comment> {
+    private static CommentDAO commentDAO;
+
     private Database database;
     private MemberDAO memberDAO;
 
-    public CommentDAO() {
+    private CommentDAO() {
         database = Database.getInstance();
-        memberDAO = new MemberDAO();
+        memberDAO = MemberDAO.getInstance();
+    }
+
+    public static CommentDAO getInstance() {
+        if (commentDAO == null) {
+            commentDAO = new CommentDAO();
+        }
+        return commentDAO;
     }
 
     // add

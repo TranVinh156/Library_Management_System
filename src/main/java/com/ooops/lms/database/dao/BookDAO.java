@@ -17,9 +17,16 @@ import java.util.Map;
 
 public class BookDAO implements DatabaseQuery<Book> {
     private Database database;
-
-    public BookDAO() {
+    private static BookDAO bookDAO;
+    private BookDAO() {
         database = Database.getInstance();
+    }
+
+    public static BookDAO getInstance() {
+         if (bookDAO == null) {
+             bookDAO = new BookDAO();
+         }
+         return bookDAO;
     }
 
     //cache
@@ -414,7 +421,12 @@ public class BookDAO implements DatabaseQuery<Book> {
             return bookCache.get(keywords);
         } else {
             List<Book> bookList = new ArrayList<>();
-            StringBuilder findBookByCriteria = new StringBuilder("Select * from Books where ");
+            StringBuilder findBookByCriteria = new StringBuilder("SELECT *\n" +
+                    "FROM Books\n" +
+                    "JOIN Books_Authors ON Books.ISBN = Books_Authors.ISBN\n" +
+                    "JOIN Authors ON Books_Authors.author_ID = Authors.author_ID\n" +
+                    "JOIN Books_Category ON Books.ISBN = Books_Category.ISBN\n" +
+                    "JOIN Category ON Books_Category.category_ID = Category.category_ID where ");
 
             for (String key : criteria.keySet()) {
                 findBookByCriteria.append(key).append(" LIKE ? AND ");

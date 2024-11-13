@@ -16,12 +16,19 @@ import java.util.function.Predicate;
 
 public class BookItemDAO implements DatabaseQuery<BookItem> {
     private Database database;
-
     private BookDAO bookDAO;
+    private static BookItemDAO bookItemDAO;
 
-    public BookItemDAO() {
+    private BookItemDAO() {
         database = Database.getInstance();
-        bookDAO = new BookDAO();
+        bookDAO = BookDAO.getInstance();
+    }
+
+    public static BookItemDAO getInstance() {
+        if (bookItemDAO == null) {
+            bookItemDAO = new BookItemDAO();
+        }
+        return bookItemDAO;
     }
     //cahce
     private static final int MAX_CACHE_SIZE = 100;
