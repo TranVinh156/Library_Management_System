@@ -15,14 +15,23 @@ import java.util.List;
 import java.util.Map;
 
 public class BookIssueDAO implements DatabaseQuery<BookIssue> {
+    private static BookIssueDAO bookIssueDAO;
+
     private Database database;
     private BookItemDAO bookItemDAO;
     private MemberDAO memberDAO;
 
-    public BookIssueDAO() {
+    private BookIssueDAO() {
         database = Database.getInstance();
-        bookItemDAO = new BookItemDAO();
-        memberDAO = new MemberDAO();
+        bookItemDAO = BookItemDAO.getInstance();
+        memberDAO = MemberDAO.getInstance();
+    }
+
+    public static BookIssueDAO getInstance() {
+        if (bookIssueDAO == null) {
+            bookIssueDAO = new BookIssueDAO();
+        }
+        return bookIssueDAO;
     }
 
     // add
