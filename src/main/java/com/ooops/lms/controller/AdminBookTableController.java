@@ -73,7 +73,6 @@ public class AdminBookTableController extends BasicBookController {
     @FXML
     private Label totalNumberLostLabel;
 
-    private BookDAO bookDAO = new BookDAO();
     Map<String, Object> criteria = new HashMap<>();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
@@ -107,7 +106,7 @@ public class AdminBookTableController extends BasicBookController {
             Map<String, Object> searchCriteria = new HashMap<>();
             searchCriteria.put("title", "Les Miserables");
             //bookList.addAll( bookDAO.find(9780140444308L));
-            bookList.addAll(bookDAO.selectAll());
+            bookList.addAll(BookDAO.getInstance().selectAll());
         } catch (SQLException e) {
             System.out.println("Lỗi khi addBook:"+e.getMessage());
         }
