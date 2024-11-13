@@ -13,11 +13,21 @@ import java.util.List;
 import java.util.Map;
 
 public class ReportDAO implements DatabaseQuery<Report> {
+    private static ReportDAO reportDAO;
+
     private Database database;
     private MemberDAO memberDAO;
-    public ReportDAO() {
+
+    private ReportDAO() {
         database = Database.getInstance();
-        memberDAO = new MemberDAO();
+        memberDAO = MemberDAO.getInstance();
+    }
+
+    public static ReportDAO getInstance() {
+        if (reportDAO == null) {
+            reportDAO = new ReportDAO();
+        }
+        return reportDAO;
     }
 
     // add
