@@ -17,7 +17,6 @@ public class ResignCommand implements Command {
     private Person person;
     private String username;
     private String password;
-    private AccountDAO accountDAO = new AccountDAO();
     public ResignCommand(Stage stage, Person person, String username, String password) {
         this.stage = stage;
         this.person = person;
@@ -28,7 +27,7 @@ public class ResignCommand implements Command {
     @Override
     public boolean execute() {
         try {
-            if (accountDAO.registerMember(person, username, password)) {
+            if (AccountDAO.getInstance().registerMember(person, username, password)) {
                 CustomerAlter.showMessage("Đăng ký tài khoản thành công.");
                 return true;
             }
