@@ -109,7 +109,6 @@ public class AdminBookDetailController extends BasicBookController {
     private boolean addMode = false;
     private boolean isPage1 = true;
     private ObservableList<BookItem> bookItemList = FXCollections.observableArrayList();
-    private BookItemDAO bookItemDAO = new BookItemDAO();
 
     public void setMainController(AdminBookPageController mainController) {
         this.mainController = mainController;
@@ -152,6 +151,7 @@ public class AdminBookDetailController extends BasicBookController {
         book.setTitle(bookNameText.getText());
         book.setPlaceAt(locationText.getText());
         book.setImagePath(Book.DEFAULT_IMAGE_PATH);
+        book.setQuantity(Integer.parseInt(numberOfBookText.getText()));
         //book.setPublishingHouse
         book.setDescription(bookContentText.getText());
         if(book.getImagePath() == null) {
@@ -257,9 +257,9 @@ public class AdminBookDetailController extends BasicBookController {
         copyBookTableVbox.getChildren().clear();
 
         try{
-            Map<String, Object> searchCriteria = new HashMap<>();
-            searchCriteria.put("ISBN", book.getISBN());
-            bookItemList.addAll(bookItemDAO.searchByCriteria(searchCriteria));
+            Map<String, Object> criteria = new HashMap<>();
+            criteria.put("ISBN", 123123);
+            bookItemList.addAll(BookItemDAO.getInstance().selectAll());
         }catch (Exception e) {
             System.out.println("Lỗi bookItemList addAll:" + e.getMessage());
         }

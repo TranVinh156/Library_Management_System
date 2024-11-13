@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import com.ooops.lms.controller.UserMenuController;
 public class LoginCommand implements Command {
     private Role role;
-    private AccountDAO accountDAO = new AccountDAO();
     private String password;
     private String username;
     private Stage stage;
@@ -48,14 +47,14 @@ public class LoginCommand implements Command {
 
     private boolean isAuthenticated() throws SQLException {
         if (role.equals(Role.NONE)) {
-            if (accountDAO.validateMemberLogin(username, password) != 0) {
-                this.resultMemberID = accountDAO.validateMemberLogin(username,password);
+            if(AccountDAO.getInstance().validateMemberLogin(username, password) != 0) {
+                this.resultMemberID = AccountDAO.getInstance().validateMemberLogin(username,password);
                 CustomerAlter.showAlter("Đăng nhập thành công");
                 openMenu();
                 return true;
             }
         } else if (role.equals(Role.ADMIN)) {
-            if (accountDAO.validateAdminLogin(username, password)!=0) {
+            if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
                 CustomerAlter.showAlter("Đăng nhập thành công");
                 openMenu();
                 return true;
