@@ -17,10 +17,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class MemberDAO implements DatabaseQuery<Member> {
+    private static MemberDAO memberDAO;
+
     private Database database;
 
-    public MemberDAO() {
+    private MemberDAO() {
         database = Database.getInstance();
+    }
+
+    public static MemberDAO getInstance() {
+        if (memberDAO == null) {
+            memberDAO = new MemberDAO();
+        }
+        return memberDAO;
     }
 
     // add member
