@@ -14,26 +14,19 @@
 
 <VBox fx:id="contentBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.InformationController">
    <children>
-      <HBox prefHeight="17.0" prefWidth="850.0" spacing="50.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="31.0" prefWidth="42.0" styleClass="button-transparent" HBox.hgrow="ALWAYS">
-               <graphic>
-                  <ImageView fitHeight="22.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../image/customer/general/arrowBrown.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-         <padding>
-            <Insets left="10.0" top="10.0" />
-         </padding>
-      </HBox>
       <HBox prefHeight="497.0" prefWidth="850.0" VBox.vgrow="ALWAYS">
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="497.0" prefWidth="551.0" spacing="5.0" HBox.hgrow="ALWAYS">
                <children>
+                  <Button mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="31.0" prefWidth="42.0" styleClass="button-transparent">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../image/customer/general/arrowBrown.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Label styleClass="label-2" text="Thông tin cá nhân" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="27.0" />
@@ -44,7 +37,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField styleClass="textField" />
+                  <TextField fx:id="nameText" styleClass="textField" />
                   <Label styleClass="label-2" text="Giới tính" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -56,25 +49,19 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <DatePicker prefHeight="31.0" prefWidth="174.0" />
+                  <DatePicker fx:id="birthDate" prefHeight="31.0" prefWidth="174.0" />
                   <Label styleClass="label-2" text="Số điện thoại" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField styleClass="textField" />
+                  <TextField fx:id="phoneText" styleClass="textField" />
                   <Label styleClass="label-2" text="email" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField styleClass="textField" />
-                  <Label styleClass="label-2" text="Địa chỉ" textFill="#a64f3c">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField styleClass="textField" />
+                  <TextField fx:id="emailText" styleClass="textField" />
                </children>
                <padding>
                   <Insets left="50.0" />

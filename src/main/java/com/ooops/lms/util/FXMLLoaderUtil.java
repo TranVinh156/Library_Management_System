@@ -1,8 +1,8 @@
 package com.ooops.lms.util;
 
+import com.ooops.lms.controller.UserMenuController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class FXMLLoaderUtil {
     private static FXMLLoaderUtil instance = null;
     private Map<String, Pane> fxmlCache = new HashMap<>();
-
+    private Map<String, Object> controllerCache = new HashMap<>();
     private VBox container;
 
     private FXMLLoaderUtil() {
@@ -33,11 +33,14 @@ public class FXMLLoaderUtil {
     }
 
     public static FXMLLoaderUtil getInstance(VBox container) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new FXMLLoaderUtil(container);
+        } else {
+            instance.container = container;  // Đảm bảo cập nhật container nếu instance đã tồn tại
         }
         return instance;
     }
+
 
     public static <T> T loadAndGetController(String fxmlPath) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -53,17 +56,20 @@ public class FXMLLoaderUtil {
             if (fxmlCache.containsKey(fxmlPath)) {
                 return fxmlCache.get(fxmlPath);
             }
-
-            Pane newContent = javafx.fxml.FXMLLoader.load(getClass().getResource(fxmlPath));
-            ThemeManager.getInstance().addPane(newContent);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL resource = FXMLLoaderUtil.class.getResource(fxmlPath);
+            fxmlLoader.setLocation(resource);
+            Pane newContent = fxmlLoader.load();
+            controllerCache.put(fxmlPath, fxmlLoader.getController());
             fxmlCache.put(fxmlPath, newContent);
+            ThemeManager.getInstance().addPane(newContent);
             return newContent;
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
 
     public VBox getContainer() {
         return container;
@@ -74,5 +80,18 @@ public class FXMLLoaderUtil {
         container.getChildren().clear();
         VBox.setVgrow(content, Priority.ALWAYS);
         container.getChildren().add(content);
+    }
+
+    public <T> T getController(String fxmlPath) throws IOException {
+        return (T) controllerCache.get(fxmlPath); // Trả về controller đã lưu trong cache
+    }
+
+    public void addUserMenuController(UserMenuController userMenuController) {
+        controllerCache.put("/com/ooops/lms/library_management_system/UserMenuController-view.fxml",userMenuController);
+    }
+
+    public void deleteAllInCache() {
+        controllerCache.clear();
+        fxmlCache.clear();
     }
 }

@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,13 +13,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="500.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminIssuelStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="527.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminIssuelStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminIssueDetailController">
    <children>
       <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" VBox.vgrow="ALWAYS">
          <children>
             <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
                <children>
-                  <GridPane layoutX="17.0" layoutY="49.0" prefHeight="195.0" prefWidth="446.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="49.0">
+                  <GridPane layoutX="17.0" layoutY="49.0" prefHeight="194.0" prefWidth="490.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="49.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="259.800048828125" />
                       <ColumnConstraints hgrow="ALWAYS" maxWidth="218.199951171875" minWidth="10.0" prefWidth="186.199951171875" />
@@ -31,8 +30,8 @@
                         <RowConstraints maxHeight="40.0" minHeight="-Infinity" prefHeight="29.400000000000006" vgrow="ALWAYS" />
                       <RowConstraints maxHeight="40.0" minHeight="-Infinity" prefHeight="24.799999999999997" vgrow="ALWAYS" />
                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="1.0" vgrow="ALWAYS" />
-                        <RowConstraints maxHeight="45.0" minHeight="-Infinity" prefHeight="28.79999389648438" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="-Infinity" prefHeight="32.00000610351563" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="9.799981689453134" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="170.0" minHeight="-Infinity" prefHeight="56.000018310546864" vgrow="ALWAYS" />
                     </rowConstraints>
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="18.0" prefWidth="446.0" GridPane.columnSpan="2">
@@ -69,20 +68,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Label styleClass="gray-text-Cabin" text="Vấn đề về:">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <Label fx:id="issueRealatedLabel" styleClass="black-text-Cabin" text="Sách">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                           </children>
-                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                            <children>
                               <Label prefHeight="22.0" prefWidth="43.0" styleClass="gray-text-Cabin" text="Email:">
@@ -107,36 +93,8 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="230.0" styleClass="up-border" GridPane.rowIndex="5">
-                           <children>
-                              <Label maxWidth="-Infinity" prefHeight="22.0" prefWidth="179.0" styleClass="gray-text-Cabin" text="Người giải quyết:" HBox.hgrow="NEVER">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <TextField fx:id="sloverLabel" editable="false" prefHeight="29.0" prefWidth="217.0" text="Linhhhne" HBox.hgrow="ALWAYS">
-                                 <styleClass>
-                                    <String fx:value="black-text-Cabin" />
-                                    <String fx:value="box-information" />
-                                 </styleClass>
-                              </TextField>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="up-border" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                           <children>
-                              <Label styleClass="gray-text-Cabin" text="Barcode:">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <TextField fx:id="barCodeLabel" editable="false" prefHeight="29.0" prefWidth="116.0" HBox.hgrow="ALWAYS">
-                                 <styleClass>
-                                    <String fx:value="black-text-Cabin" />
-                                    <String fx:value="box-information" />
-                                 </styleClass>
-                              </TextField>
-                           </children>
-                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="230.0" styleClass="up-border" GridPane.rowIndex="5" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="up-border" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <HBox prefHeight="28.0" prefWidth="446.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
                            <children>
                               <Label prefHeight="19.0" prefWidth="60.0" styleClass="gray-text-Cabin" text="Ghi chú:">
@@ -144,9 +102,9 @@
                                     <Insets top="5.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextArea fx:id="noteText" editable="false" prefHeight="29.0" prefWidth="393.0" HBox.hgrow="ALWAYS">
+                              <TextArea fx:id="noteText" editable="false" mouseTransparent="true" prefHeight="29.0" prefWidth="393.0" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
-                                    <Insets bottom="5.0" right="2.0" top="8.0" />
+                                    <Insets bottom="5.0" right="3.0" top="8.0" />
                                  </HBox.margin>
                               </TextArea>
                            </children>
@@ -154,7 +112,7 @@
                      </children>
                   </GridPane>
                   <Button fx:id="editButton" layoutX="171.0" layoutY="14.0" mnemonicParsing="false" onAction="#onEditButtonAction" style="-fx-background-color: #A64F3C; -fx-text-fill: FFF; -fx-background-radius: 0;" text="Edit" />
-                  <ChoiceBox fx:id="statusBox" layoutX="326.0" layoutY="14.0" prefWidth="150.0" AnchorPane.rightAnchor="23.599999999999994">
+                  <ChoiceBox fx:id="statusBox" layoutX="326.0" layoutY="14.0" mouseTransparent="true" prefWidth="150.0" AnchorPane.rightAnchor="23.599999999999994">
                      <styleClass>
                         <String fx:value="box-information" />
                         <String fx:value="border" />
@@ -171,12 +129,18 @@
                <children>
                   <AnchorPane layoutX="17.0" prefHeight="209.0" prefWidth="460.0" style="-fx-background-color: FFF;" styleClass="border" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane layoutX="1.0" layoutY="13.0" prefHeight="22.0" prefWidth="460.0" style="-fx-background-color: #F8F8F8;">
+                        <AnchorPane layoutX="1.0" layoutY="13.0" prefHeight="22.0" prefWidth="460.0" style="-fx-background-color: #F8F8F8;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.599999999999966">
                            <children>
-                              <Label layoutX="13.0" layoutY="1.0" style="-fx-background-size: 11;" styleClass="black-text-Cabin" text="Nội dung chi tiết" />
+                              <Label layoutX="13.0" layoutY="1.0" style="-fx-background-size: 11;" styleClass="black-text-Cabin" text="Tiêu đề:" />
+                              <Label fx:id="titelLabel" layoutX="72.0" layoutY="1.0" prefHeight="19.0" prefWidth="390.0" text="Em làm mất sách" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="-3.0">
+                                 <styleClass>
+                                    <String fx:value="black-text-Cabin" />
+                                    <String fx:value="box-information" />
+                                 </styleClass>
+                              </Label>
                            </children>
                         </AnchorPane>
-                        <TextArea fx:id="detailIssueText" editable="false" layoutX="1.0" layoutY="35.0" prefHeight="172.0" prefWidth="460.0" styleClass="box-information" />
+                        <TextArea fx:id="detailIssueText" editable="false" layoutX="1.0" layoutY="35.0" mouseTransparent="true" prefHeight="172.0" prefWidth="460.0" styleClass="box-information" AnchorPane.bottomAnchor="2.5999999999999943" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.599999999999966" AnchorPane.topAnchor="34.39999999999998" />
                      </children>
                   </AnchorPane>
                </children>

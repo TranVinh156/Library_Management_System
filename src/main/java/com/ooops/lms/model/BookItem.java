@@ -32,6 +32,10 @@ public class BookItem extends Book {
         return barcode;
     }
 
+    public void setBarcode(int barcode) {
+        this.barcode = barcode;
+    }
+
     public BookItemStatus getStatus() {
         return status;
     }

@@ -23,9 +23,9 @@ public class EmailUtil implements Runnable {
     }
 
     public void sendEmail() {
-        String from = "tranvanvinhab2005@gmail.com";
+        String from = "ooopslibrary@gmail.com";
         String host = "smtp.gmail.com";
-        String password = "ukqv qagj wpea izvs";
+        String password = "yzjk najp pweb vvon";
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.auth", "true");

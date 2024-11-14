@@ -6,8 +6,9 @@
 }
 /*--------------------------font------------------------------*/
 @font-face {
-    -fx-font-family: 'Cabin';
-    src: url('font/Cabin_Condensed-Medium.ttf')
+    /* Define the font face correctly */
+    src: url('../font/Cabin.ttf');
+    src: url('../font/Cabin_Condensed-Bold.ttf')
 }
 
 .font {
@@ -22,7 +23,7 @@
 }
 .menu-bar-button:hover {
     -fx-background-color: #FFFFFF;
-    -fx-border-color: #A64F3C;
+    -fx-border-color: #FFF;
     -fx-border-width: 0px 5px 0px 0px;
 }
 /*----------------------dinh dang kieu cho hang trong bang------------------------*/
@@ -45,4 +46,83 @@
     -fx-background-color: #FFF; /* Màu nền trắng */
     -fx-background-radius: 8.5px 8.5px 8.5px 8.5px; /* Bo tròn góc dưới */
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 3.4, 0, 0, 3.4); /* Hiệu ứng drop shadow */
+}
+
+.pane-main {
+    -fx-background-color: #FFF; /* Màu nền trắng */
+    -fx-background-radius: 6.6px 6.6px 6.6px 6.6px; /* Bo tròn góc dưới */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 3.4, 0, 0, 3.4); /* Hiệu ứng drop shadow */
+}
+
+
+.gray-text-Cabin {
+    -fx-text-fill: #969696; /* Màu chữ */
+    -fx-font-family: 'Cabin';
+    -fx-font-size: 16px;
+}
+
+.black-text-Cabin {
+    -fx-text-fill: #000;             /* Màu chữ */
+    -fx-font-family: 'Cabin'; /* Đảm bảo tên font được đặt trong dấu nháy đơn */
+    -fx-font-size: 16px;
+}
+
+.white-button {
+    -fx-font-family: 'Cabin Condensed';
+    -fx-font-size: 16;
+    -fx-text-fill: #A64F3C;
+    -fx-font-weight: bold;
+    -fx-background-color: #FFF;
+    -fx-border-color: #A64F3C;
+    -fx-border-radius: 4.8px;
+    -fx-effect: dropshadow(gaussian, rgba(115, 78, 56, 0.50), 2.4, 0, 0, 2.4);
+}
+.white-button:pressed
+{
+    -fx-padding: 5 15 6 15;
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+
+}
+
+.brown_button
+{
+    -fx-font-family: 'Cabin Condensed';
+    -fx-font-weight: bold;
+    -fx-padding:4 15 8 15;
+    -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+    -fx-background-radius: 6.6px;
+    -fx-background-color: #A64F3C;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+    -fx-font-size: 16;
+    -fx-text-fill: white;
+}
+
+.brown_button:hover
+{
+    -fx-background-color: #A64F3C;
+}
+
+.brown_button:pressed
+{
+    -fx-padding: 5 15 6 15;
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+}
+
+.black-text-Cabin-bold {
+    -fx-font-family: 'Cabin Condensed';
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+.circle_button {
+    -fx-background-color: rgb(221, 220, 220); /* Màu nền */
+    -fx-text-fill: #7C7A7A; /* Màu chữ */
+    -fx-background-radius: 50; /* Để tạo hình tròn */
+    -fx-min-width: 56; /* Đặt chiều rộng tối thiểu */
+    -fx-min-height: 56 ; /* Đặt chiều cao tối thiểu */
+    -fx-effect: dropshadow(gaussian, rgba(115, 78, 56, 0.50), 2.4, 0, 0, 2.4);
+}
+
+.circle_button:hover {
+    -fx-background-color: #c5c4c4;
 }

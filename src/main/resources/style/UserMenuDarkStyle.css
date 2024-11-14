@@ -10,6 +10,11 @@
     -fx-background-color: #5A5A5A;
 }
 
+.background-part {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+}
+
 .label-1{
     -fx-text-fill : #000000;
     -fx-font-weight : bold;

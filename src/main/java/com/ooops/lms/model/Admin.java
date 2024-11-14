@@ -1,5 +1,6 @@
 package com.ooops.lms.model;
 
+import com.ooops.lms.controller.BasicController;
 import com.ooops.lms.model.datatype.Person;
 
 public class Admin extends Account {
@@ -25,6 +26,10 @@ public class Admin extends Account {
 
     public static boolean unblockMember(Member member) {
         return false;
+    }
+
+    public static boolean addMember(Member member) {
+    return false;
     }
 
     public static boolean addIssueBook(Book book, Member member) {

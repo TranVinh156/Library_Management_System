@@ -16,7 +16,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class AccountDAO {
-    private Database database = Database.getInstance();
+    private Database database;
+    private static AccountDAO accountDAO;
+
+    private AccountDAO() {
+        database = Database.getInstance();
+    }
+
+    public static AccountDAO getInstance() {
+        if (accountDAO == null) {
+            accountDAO = new AccountDAO();
+        }
+        return accountDAO;
+    }
 
     private static final String GET_ACCOUNT_ADMIN =
             "Select * from Admins where username = ? and password = ?";
@@ -54,13 +66,17 @@ public class AccountDAO {
      * @return true nếu trùng khowps và ngược lại
      * @throws SQLException
      */
-    public boolean validateMemberLogin(String username, String password) throws SQLException {
+    public int validateMemberLogin(String username, String password) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            return resultSet.next();
+            if (resultSet.next()) {
+                return resultSet.getInt("member_id");
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -72,13 +88,17 @@ public class AccountDAO {
      * @return true nếu trùng khớp và ngược lại
      * @throws SQLException
      */
-    public boolean validateAdminLogin(String username, String password) throws SQLException {
+    public int validateAdminLogin(String username, String password) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_ADMIN)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            return resultSet.next();
+            if (resultSet.next()) {
+                return resultSet.getInt("admin_id");
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -197,7 +217,7 @@ public class AccountDAO {
 
     public boolean changePassword(String username, String oldPassword, String newPassword) throws SQLException {
         try {
-            if (validateMemberLogin(username, oldPassword)) {
+            if (validateMemberLogin(username, oldPassword) != 0) {
                 try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_USER)) {
                     preparedStatement.setString(1, newPassword);
                     preparedStatement.setString(2, username);

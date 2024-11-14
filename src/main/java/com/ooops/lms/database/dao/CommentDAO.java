@@ -2,6 +2,7 @@ package com.ooops.lms.database.dao;
 
 import com.ooops.lms.database.Database;
 import com.ooops.lms.model.Comment;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +12,21 @@ import java.util.List;
 import java.util.Map;
 
 public class CommentDAO implements DatabaseQuery<Comment> {
-    private Database database;
+    private static CommentDAO commentDAO;
 
-    public CommentDAO() {
+    private Database database;
+    private MemberDAO memberDAO;
+
+    private CommentDAO() {
         database = Database.getInstance();
+        memberDAO = MemberDAO.getInstance();
+    }
+
+    public static CommentDAO getInstance() {
+        if (commentDAO == null) {
+            commentDAO = new CommentDAO();
+        }
+        return commentDAO;
     }
 
     // add
@@ -27,9 +39,9 @@ public class CommentDAO implements DatabaseQuery<Comment> {
     private static final String DELETE_COMMENT = "DELETE FROM Comments WHERE comment_ID = ?";
 
     @Override
-    public void add(Comment entity) throws SQLException {
+    public void add(@NotNull Comment entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_COMMENT)) {
-            preparedStatement.setInt(1, entity.getMemberId());
+            preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setInt(2, entity.getISBN());
             preparedStatement.setString(3, entity.getTitle());
             preparedStatement.setString(4, entity.getContent());
@@ -46,7 +58,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
     }
 
     @Override
-    public boolean delete(Comment entity) throws SQLException {
+    public boolean delete(@NotNull Comment entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_COMMENT)) {
             preparedStatement.setInt(1, entity.getCommentId());
 
@@ -56,13 +68,26 @@ public class CommentDAO implements DatabaseQuery<Comment> {
 
     // không cần tìm theo id
     @Override
-    public Comment find(Number keywords) throws SQLException {
+    public Comment find(@NotNull Number keywords) throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_COMMENT)) {
+            preparedStatement.setInt(1, keywords.intValue());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Comment comment = new Comment(resultSet.getInt("comment_ID")
+                            , resultSet.getString("title")
+                            , resultSet.getString("content")
+                            , Integer.valueOf(resultSet.getString("rate"))
+                            , memberDAO.find(resultSet.getInt("member_ID"))
+                            , resultSet.getInt("ISBN"));
+                }
+            }
+        }
         return null;
     }
 
     // chỉ có tìm kiếm theo ISBN và rate
     @Override
-    public List<Comment> searchByCriteria(Map<String, Object> criteria) throws SQLException {
+    public List<Comment> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         StringBuilder findCommentByCriteria = new StringBuilder("SELECT * FROM Comments WHERE ");
 
         for (String key : criteria.keySet()) {
@@ -80,7 +105,12 @@ public class CommentDAO implements DatabaseQuery<Comment> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Comment> commentList = new ArrayList<>();
                 while (resultSet.next()) {
-                    commentList.add(new Comment(resultSet.getInt("comment_ID"), resultSet.getString("title"), resultSet.getString("content"), Integer.valueOf(resultSet.getString("rate")), resultSet.getInt("member_ID"), resultSet.getInt("ISBN")));
+                    commentList.add(new Comment(resultSet.getInt("comment_ID")
+                            , resultSet.getString("title")
+                            , resultSet.getString("content")
+                            , Integer.valueOf(resultSet.getString("rate"))
+                            , memberDAO.find(resultSet.getInt("member_ID"))
+                            , resultSet.getInt("ISBN")));
                 }
                 return commentList;
             }

@@ -1,9 +1,15 @@
 package com.ooops.lms.controller;
 
 import com.google.api.services.books.v1.model.Volume;
+import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.Command;
+import com.ooops.lms.Command.CommandInvoker;
+import com.ooops.lms.Command.LoginCommand;
+import com.ooops.lms.Command.ResignCommand;
 import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.Gender;
+import com.ooops.lms.model.enums.Role;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,7 +26,8 @@ import java.sql.SQLException;
 
 import static com.almasb.fxgl.app.GameApplication.launch;
 
-public class ResignController {
+
+public class ResignController extends BasicController {
 
     @FXML
     private Button backStepButton;
@@ -73,13 +80,13 @@ public class ResignController {
     private TextField usernameText;
 
     private boolean isStep1;
-    private AccountDAO accountDAO = new AccountDAO();
+    private CommandInvoker commandInvoker = new CommandInvoker();
 
     @FXML
     public void initialize() {
         isStep1 = true;
         setSwitchBar();
-        genderBox.getItems().addAll(Gender.Male, Gender.Female, Gender.Other);
+        genderBox.getItems().addAll(Gender.MALE, Gender.FEMALE, Gender.OTHER);
     }
 
     @FXML
@@ -98,29 +105,36 @@ public class ResignController {
 
     @FXML
     private void onResignButtonAction(ActionEvent event) {
-        try {
             if (checkInformation()) {
 
                 Person person = createPersonFromInput();
                 String username = usernameText.getText();
                 String password = passwordText.getText();
 
-
-                if(accountDAO.registerMember(person, username, password)) {
-                    System.out.println("Đăng ký tài khoản thành công");
-                    openLoginView();
+                Stage stage = (Stage) resignButton.getScene().getWindow();
+                Command resignCommand = new ResignCommand(stage,person,username, password);
+                commandInvoker.setCommand(resignCommand);
+                if(commandInvoker.executeCommand()) {
+                       openLoginView();
                 }
-            } else {
-                System.out.println("Vui lòng kiểm tra thông tin đã nhập.");
+
             }
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
+
     }
 
     @FXML
     void onReturnLoginButtonAction(ActionEvent event) {
         openLoginView();
+    }
+
+    private void openLoginView() {
+        try {
+            Stage stage = (Stage) resignStep1Pane.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/com/ooops/lms/library_management_system/UserLogin.fxml"));
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean checkInformation() {
@@ -134,30 +148,30 @@ public class ResignController {
 
             // Kiểm tra tên
             if (firstName.isEmpty()) {
-                showAlert("Thông báo", "Tên không được để trống.");
+                CustomerAlter.showMessage("Tên không được để trống.");
                 return false;
             }
 
             if (lastName.isEmpty()) {
-                showAlert("Thông báo", "Họ không được để trống.");
+                CustomerAlter.showMessage("Họ không được để trống.");
                 return false;
             }
 
             // Kiểm tra ngày sinh
             if (birth.isEmpty()) {
-                showAlert("Thông báo", "Ngày sinh không được để trống.");
+                CustomerAlter.showMessage( "Ngày sinh không được để trống.");
                 return false;
             }
 
             // Kiểm tra giới tính
             if (gender == null) {
-                showAlert("Thông báo", "Vui lòng chọn giới tính.");
+                CustomerAlter.showMessage("Vui lòng chọn giới tính.");
                 return false;
             }
 
             // Kiểm tra email
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { // Biểu thức chính quy cho email
-                showAlert("Thông báo", "Email không hợp lệ.");
+                CustomerAlter.showMessage("Email không hợp lệ.");
                 return false;
             }
 
@@ -172,25 +186,25 @@ public class ResignController {
 
             // Kiểm tra tên người dùng
             if (username.isEmpty()) {
-                showAlert("Thông báo", "Tên người dùng không được để trống.");
+                CustomerAlter.showMessage("Tên người dùng không được để trống.");
                 return false;
             }
 
             // Kiểm tra số điện thoại
             if (phoneNumber.isEmpty() || !phoneNumber.matches("\\d{10}")) { // Giả sử số điện thoại có 10 chữ số
-                showAlert("Thông báo", "Số điện thoại không hợp lệ (cần có 10 chữ số).");
+                CustomerAlter.showMessage("Số điện thoại không hợp lệ (cần có 10 chữ số).");
                 return false;
             }
 
             // Kiểm tra mật khẩu
             if (password.isEmpty()) {
-                showAlert("Thông báo", "Mật khẩu không được để trống.");
+                CustomerAlter.showMessage("Mật khẩu không được để trống.");
                 return false;
             }
 
             // Kiểm tra xác nhận mật khẩu
             if (!password.equals(rePassword)) {
-                showAlert("Thông báo", "Mật khẩu và xác nhận mật khẩu không khớp.");
+                CustomerAlter.showMessage ("Mật khẩu và xác nhận mật khẩu không khớp.");
                 return false;
             }
             return true;
@@ -207,13 +221,6 @@ public class ResignController {
         person.setEmail(emailText.getText());
         person.setPhone(phoneNumberText.getText());
         return person;
-    }
-
-    private void handleSQLException(SQLException e) {
-        String message = e.getMessage().equals("User already exists") ?
-                "Tài khoản đã tồn tại. Vui lòng chọn tên đăng nhập khác." :
-                "Đã xảy ra lỗi: " + e.getMessage();
-        showAlert("Lỗi", message);
     }
 
     private void switchToStep1() {
@@ -238,22 +245,5 @@ public class ResignController {
         transition.play();
     }
 
-    private void openLoginView() {
-        try {
-            Stage stage = (Stage) resignButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/ooops/lms/library_management_system/UserLogin.fxml"));
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
 }

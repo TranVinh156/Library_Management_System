@@ -1,0 +1,140 @@
+.topBackground {
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37);
+}
+
+.sideBackground {
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37);
+}
+
+.background {
+    -fx-background-color: #ffffff;
+}
+
+.background-part {
+    -fx-background-color: #F9FF4E;
+}
+
+.label-1{
+    -fx-text-fill : #EFBF04;
+    -fx-font-weight : bold;
+    -fx-background-radius : 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
+}
+.label-2{
+    -fx-text-fill : #EFBF04;
+    -fx-background-radius : 20;
+}
+.label-3{
+    -fx-text-fill : #ffffff;
+}
+.textField {
+    -fx-text-fill : #EFBF04;
+    -fx-font-size : 20;
+    -fx-font-weight : bold;
+    -fx-background-radius : 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
+}
+.choiceBox {
+    -fx-background-radius: 10;
+    -fx-background-color: #EFBF04;
+}
+.rounded-box {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15;
+}
+
+/*-----imageview--------*/
+.circular-image {
+    -fx-background-radius: 50%;     /* Làm tròn vùng nền */
+    -fx-shape: "M 0 0 L 1 0 L 1 1 L 0 1 Z"; /* Tạo khung hình cho ImageView */
+    -fx-clip: "M 0 0 L 1 0 L 1 1 L 0 1 Z";
+}
+
+/*-----sidebar--------*/
+.sidebar {
+    -fx-opacity: 0;
+    -fx-pref-width: 0px; /* Kích thước mặc định */
+    -fx-pref-height: 100%;
+    -fx-overflow-x: hidden;
+    -fx-transition: 0.5s;
+}
+
+.sidebar:hover {
+    -fx-opacity: 1;
+    -fx-pref-width: 200px;
+}
+/*-----scrollpane--------*/
+.rounded-scrollpane {
+    -fx-background-color: transparent;
+    -fx-border-radius: 15; /* Bo tròn border của ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn background */
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: white; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn các góc bên trong */
+    -fx-border-radius: 15;
+}
+/*-----button-menu-bar--------*/
+.menu-bar-button {
+    -fx-background-color: transparent;
+    -fx-font-size: 20.4;
+    -fx-alignment : top-left;
+    -fx-text-fill: #734E38;
+}
+.menu-bar-button:hover {
+    -fx-background-color: #EFBF04;
+    -fx-border-color: #EFBF04;
+    -fx-border-width: 0px 5px 0px 0px;
+}
+
+/*-----button--------*/
+.button-transparent {
+    -fx-background-color: transparent;
+}
+.button-transparent .image-view{
+    -fx-opacity: 1.0;
+}
+.button-transparent:hover .image-view{
+    -fx-opacity: 0.5;
+}
+.button-transparent:pressed .image-view {
+    -fx-opacity: 0.5;
+}
+
+.button:hover
+{
+    -fx-opacity: 0.5;
+}
+
+.button:pressed
+{
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+}
+.button-1{
+    -fx-padding:4 15 8 15;
+        -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+        -fx-background-radius: 15;
+        -fx-background-color: #000080;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+        -fx-font-weight: bold;
+        -fx-font-size: 1.3em;
+        -fx-text-fill: white;
+}
+.button-2{
+    -fx-padding:4 15 8 15;
+        -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+        -fx-background-radius: 8;
+        -fx-background-color: #000080;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+        -fx-font-weight: bold;
+        -fx-font-size: 1.3em;
+        -fx-text-fill: #EFBF04;
+}
+.buttonMenu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #EFBF04;
+    -fx-font-size: 16px;
+    -fx-alignment : top-left;
+}
