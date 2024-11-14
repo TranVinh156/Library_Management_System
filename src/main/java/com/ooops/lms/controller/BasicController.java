@@ -1,10 +1,12 @@
 package com.ooops.lms.controller;
 
+import com.google.api.services.books.v1.model.Volumeseriesinfo;
 import com.ooops.lms.Command.CommandInvoker;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.database.dao.MemberDAO;
-import com.ooops.lms.model.Author;
-import com.ooops.lms.model.Category;
+import com.ooops.lms.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -70,6 +72,11 @@ public class BasicController  {
     protected static final Node bookPagePane;
 
     protected CommandInvoker commandInvoker = new CommandInvoker();
+    protected ObservableList<Book> bookList = FXCollections.observableArrayList();
+    protected ObservableList<BookItem> borrowBookList = FXCollections.observableArrayList();
+    protected ObservableList<BookItem> lostBookList = FXCollections.observableArrayList();
+    protected ObservableList<BookItem> bookItemList = FXCollections.observableArrayList();
+    protected ObservableList<BookItem> reverserBookList = FXCollections.observableArrayList();
 
     static {
         //load login
