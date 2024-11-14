@@ -12,9 +12,6 @@ public class AdminBookCopyRowController {
     private TextField barcodeText;
 
     @FXML
-    private Button editButton;
-
-    @FXML
     private TextField noteText;
 
     @FXML
@@ -23,15 +20,14 @@ public class AdminBookCopyRowController {
     private AdminBookPageController mainController;
     private BookItem bookItem;
 
-    @FXML
-    void onEditButtonAction(ActionEvent event) {
-
-    }
-
     public void setMainController(AdminBookPageController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Hàm để set các thông tin các trường và bookItem của row này.
+     * @param bookItem
+     */
     public void setBookItem(BookItem bookItem) {
         this.bookItem = bookItem;
         barcodeText.setText(String.valueOf(bookItem.getBarcode()));
