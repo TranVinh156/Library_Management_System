@@ -70,8 +70,6 @@ public class BasicController  {
     protected static final Node bookPagePane;
 
     protected CommandInvoker commandInvoker = new CommandInvoker();
-    protected BookDAO bookDAO = new BookDAO();
-    protected MemberDAO memberDAO = new MemberDAO();
 
     static {
         //load login

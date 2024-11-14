@@ -96,7 +96,7 @@ public class AdminUserTableController extends BasicUserController {
     public void loadData() {
         try {
             membersList.clear();
-            membersList.addAll(memberDAO.selectAll());
+            membersList.addAll(MemberDAO.getInstance().selectAll());
             loadRows();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

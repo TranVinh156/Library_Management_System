@@ -37,6 +37,7 @@ public class AdminBookPageController extends BasicBookController {
 
     @FXML
     void onReturnButton(ActionEvent event) {
+        loadData();
         alterPage();
     }
 
@@ -57,7 +58,7 @@ public class AdminBookPageController extends BasicBookController {
     }
 
     public void loadData() {
-
+        adminBookTableController.loadData();
     }
 
 }
