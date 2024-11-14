@@ -99,14 +99,13 @@ public class AdminBookTableController extends BasicBookController {
     }
 
     public void loadData() {
+        System.out.println("Load lại các hàng trong bảng sách!");
         bookList.clear();
         bookTableVbox.getChildren().clear();
-        try{
 
-            Map<String, Object> searchCriteria = new HashMap<>();
-            searchCriteria.put("title", "Les Miserables");
-            //bookList.addAll( bookDAO.find(9780140444308L));
+        try{
             bookList.addAll(BookDAO.getInstance().selectAll());
+            System.out.println("Lấy các quyển sách!");
         } catch (SQLException e) {
             System.out.println("Lỗi khi addBook:"+e.getMessage());
         }
