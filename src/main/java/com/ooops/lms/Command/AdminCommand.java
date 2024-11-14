@@ -14,8 +14,6 @@ import java.util.Map;
 public class AdminCommand implements Command {
     private String action;
     private Object object;
-    private BookDAO bookDAO = new BookDAO();
-    private MemberDAO memberDAO = new MemberDAO();
     private Member memberResult;
 
     public AdminCommand(String action, Object object) {
@@ -41,25 +39,25 @@ public class AdminCommand implements Command {
                         if(object != null) {
                             System.out.println("Book add iss not null");
                         }
-                        bookDAO.add((Book) object);
+                        BookDAO.getInstance().add((Book) object);
                     } else if (object instanceof Member) {
-                        memberDAO.add((Member) object);
+                        MemberDAO.getInstance().add((Member) object);
                     }
                     return true;
                 case "delete":
                     if (object instanceof Book) {
-                        bookDAO.delete((Book) object);
+                        BookDAO.getInstance().delete((Book) object);
                     }
                     if (object instanceof Member) {
-                        memberDAO.delete((Member) object);
+                        MemberDAO.getInstance().delete((Member) object);
                     }
                     return true;
                 case "edit":
                     if (object instanceof Book) {
-                        bookDAO.update((Book) object);
+                        BookDAO.getInstance().update((Book) object);
                     }
                     if (object instanceof Member) {
-                        memberDAO.update((Member) object);
+                        MemberDAO.getInstance().update((Member) object);
                     }
                     return true;
                 case "block":
@@ -77,7 +75,7 @@ public class AdminCommand implements Command {
                 case "find":
                     if (object instanceof Member) {
                         Member member = (Member) object;
-                        this.memberResult = memberDAO.find(member.getAccountId());
+                        this.memberResult = MemberDAO.getInstance().find(member.getAccountId());
                     }
                     return true;
                 default:
