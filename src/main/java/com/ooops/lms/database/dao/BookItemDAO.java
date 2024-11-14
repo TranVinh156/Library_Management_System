@@ -114,7 +114,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     public List<BookItem> searchByCriteria(Map<String, Object> criteria) throws SQLException {
         String keywords = generateKeywords(criteria);
 
-        StringBuilder findBookByCriteria = new StringBuilder("Select * from book_item where ");
+        StringBuilder findBookByCriteria = new StringBuilder("Select * from bookitem where ");
 
         if (bookItemCache.containsKey(keywords)) {
             return bookItemCache.get(keywords);

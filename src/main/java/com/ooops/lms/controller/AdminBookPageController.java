@@ -52,7 +52,7 @@ public class AdminBookPageController extends BasicBookController {
         alterPage();
     }
 
-    private void alterPage() {
+    public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
     }

@@ -1,5 +1,6 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.model.BookItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,9 +20,26 @@ public class AdminBookCopyRowController {
     @FXML
     private TextField statusText;
 
+    private AdminBookPageController mainController;
+    private BookItem bookItem;
+
     @FXML
     void onEditButtonAction(ActionEvent event) {
 
     }
 
+    public void setMainController(AdminBookPageController mainController) {
+        this.mainController = mainController;
+    }
+
+    public void setBookItem(BookItem bookItem) {
+        this.bookItem = bookItem;
+        barcodeText.setText(String.valueOf(bookItem.getBarcode()));
+        if(bookItem.getNote() != null) {
+            noteText.setText(String.valueOf(bookItem.getNote()));
+        } else {
+            noteText.setText("-");
+        }
+        statusText.setText(String.valueOf(bookItem.getStatus()));
+    }
 }
