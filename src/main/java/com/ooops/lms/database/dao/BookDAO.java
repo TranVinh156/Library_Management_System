@@ -18,15 +18,16 @@ import java.util.Map;
 public class BookDAO implements DatabaseQuery<Book> {
     private Database database;
     private static BookDAO bookDAO;
+
     private BookDAO() {
         database = Database.getInstance();
     }
 
     public static BookDAO getInstance() {
-         if (bookDAO == null) {
-             bookDAO = new BookDAO();
-         }
-         return bookDAO;
+        if (bookDAO == null) {
+            bookDAO = new BookDAO();
+        }
+        return bookDAO;
     }
 
     //cache
@@ -77,6 +78,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     //
     private static final String SELECT_ALL = "Select * from Books";
+
     /**
      * Thêm book vào csdl.
      *
@@ -96,6 +98,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Chèn tac giả vào csdl.
+     *
      * @param author
      * @return trả về id tác giả
      * @throws SQLException
@@ -117,6 +120,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Kiểm tra hoặc tạo tác giả.
+     *
      * @param author
      * @return id tác giả
      * @throws SQLException
@@ -136,6 +140,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Liên kết sách và tác giả.
+     *
      * @param ISBN
      * @param authorID
      * @throws SQLException
@@ -150,6 +155,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Thêm category vào csdl.
+     *
      * @param category thể loại
      * @return category id
      * @throws SQLException
@@ -171,6 +177,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Kiểm tra thể loại có trong csdl không.
+     *
      * @param category thể loại
      * @return category id
      * @throws SQLException
@@ -190,7 +197,8 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Liên kết sách với thể loại.
-     * @param ISBN ISBN
+     *
+     * @param ISBN       ISBN
      * @param categoryID category id
      * @throws SQLException
      */
@@ -204,6 +212,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Thêm các sách bản sao.
+     *
      * @param ISBN
      * @param quantity số lượng bản sao.
      * @throws SQLException
@@ -225,14 +234,15 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Thêm sách mới.
+     *
      * @param entity new book
      * @throws SQLException
      */
     @Override
     public void add(@NotNull Book entity) throws SQLException {
-         if (find(entity.getISBN()) != null) {
-             throw new SQLException("Book is exsit");
-         }
+        if (find(entity.getISBN()) != null) {
+            throw new SQLException("Book is exsit");
+        }
 
         database.getConnection().setAutoCommit(false);
 
@@ -262,6 +272,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Cập nhập sách.
+     *
      * @param entity sách sau khi sửa thông tin
      * @return True nếu thành công và ngược lại
      * @throws SQLException
@@ -291,7 +302,8 @@ public class BookDAO implements DatabaseQuery<Book> {
                 preparedStatement.setString(3, entity.getDescription());
                 preparedStatement.setString(4, entity.getPlaceAt());
                 preparedStatement.setLong(5, entity.getISBN());
-
+                preparedStatement.executeUpdate();
+                
                 database.getConnection().commit();
                 return true;
             }
@@ -349,16 +361,13 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Tìm book theo mã.
+     *
      * @param keywords mã
      * @return sách
      * @throws SQLException
      */
     @Override
     public Book find(Number keywords) throws SQLException {
-        if (bookCache.containsKey(String.valueOf(keywords))) {
-            return bookCache.get(String.valueOf(keywords)).get(0);
-        }
-
         List<Author> authorList = new ArrayList<>();
         List<Category> categoryList = new ArrayList<>();
         List<Book> bookList = new ArrayList<>();
@@ -398,7 +407,6 @@ public class BookDAO implements DatabaseQuery<Book> {
                     bookList.add(book);
 
                     // Lưu vào bộ nhớ đệm
-                    bookCache.put(String.valueOf(keywords), bookList);
                     return book;
                 } else {
                     return null;
@@ -409,60 +417,53 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * Tìm kiếm theo tiêu chí.
+     *
      * @param criteria danh sách tiêu chí
      * @return danh sách sách
      * @throws SQLException
      */
     @Override
     public List<Book> searchByCriteria(Map<String, Object> criteria) throws SQLException {
-        String keywords = generateKeywords(criteria);
 
-        if (bookCache.containsKey(keywords)) {
-            return bookCache.get(keywords);
-        } else {
-            List<Book> bookList = new ArrayList<>();
-            StringBuilder findBookByCriteria = new StringBuilder("SELECT *\n" +
-                    "FROM Books\n" +
-                    "JOIN Books_Authors ON Books.ISBN = Books_Authors.ISBN\n" +
-                    "JOIN Authors ON Books_Authors.author_ID = Authors.author_ID\n" +
-                    "JOIN Books_Category ON Books.ISBN = Books_Category.ISBN\n" +
-                    "JOIN Category ON Books_Category.category_ID = Category.category_ID where ");
+        List<Book> bookList = new ArrayList<>();
+        StringBuilder findBookByCriteria = new StringBuilder("SELECT *\n" +
+                "FROM Books\n" +
+                "JOIN Books_Authors ON Books.ISBN = Books_Authors.ISBN\n" +
+                "JOIN Authors ON Books_Authors.author_ID = Authors.author_ID\n" +
+                "JOIN Books_Category ON Books.ISBN = Books_Category.ISBN\n" +
+                "JOIN Category ON Books_Category.category_ID = Category.category_ID where ");
 
-            for (String key : criteria.keySet()) {
-                findBookByCriteria.append(key).append(" LIKE ? AND ");
+        for (String key : criteria.keySet()) {
+            findBookByCriteria.append(key).append(" LIKE ? AND ");
+        }
+
+        findBookByCriteria.setLength(findBookByCriteria.length() - 5);
+
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookByCriteria.toString())) {
+            int index = 1;
+
+            for (Object value : criteria.values()) {
+                preparedStatement.setString(index++, "%" + value + "%");
             }
 
-            findBookByCriteria.setLength(findBookByCriteria.length() - 5);
-
-            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookByCriteria.toString())) {
-                int index = 1;
-
-                for (Object value : criteria.values()) {
-                    preparedStatement.setString(index++, "%" + value + "%");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    bookList.add(find(resultSet.getInt("ISBN")));
                 }
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    while (resultSet.next()) {
-                        bookList.add(find(resultSet.getInt("ISBN")));
-                    }
-                    bookCache.put(keywords, bookList);
-                }
+                return bookList;
             }
         }
-        return List.of();
+
     }
 
     /**
      * Lấy tất cả sách.
+     *
      * @return danh sách book
      * @throws SQLException
      */
     @Override
     public List<Book> selectAll() throws SQLException {
-        if (bookCache.containsKey("ALL")) {
-            return bookCache.get("ALL");
-        }
-
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Book> bookList = new ArrayList<>();
@@ -470,7 +471,6 @@ public class BookDAO implements DatabaseQuery<Book> {
                     bookList.add(find(resultSet.getLong("ISBN")));
                 }
 
-                bookCache.put("ALL", bookList);
                 return bookList;
             }
         }
@@ -478,6 +478,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     /**
      * danh sách tiêu chí.
+     *
      * @param criteria danh sách tiêu chí
      * @return keywords
      */
