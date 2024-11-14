@@ -3,8 +3,10 @@ package com.ooops.lms.Command;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.database.dao.BookDAO;
+import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.AccountStatus;
 
@@ -18,6 +20,8 @@ public class AdminCommand implements Command {
     private Member memberResult;
     private Book bookResult;
     private BookDAO bookDAO;
+    private BookItem bookItemResult;
+
     public AdminCommand(String action, Object object) {
         this.action = action;
         this.object = object;
@@ -30,6 +34,10 @@ public class AdminCommand implements Command {
 
     public Book getBookResult() {
         return bookResult;
+    }
+
+    public BookItem getBookItemResult() {
+        return bookItemResult;
     }
 
     /**
@@ -82,6 +90,10 @@ public class AdminCommand implements Command {
                         Member member = (Member) object;
                         this.memberResult = MemberDAO.getInstance().find(member.getAccountId());
                     }
+                    if(object instanceof BookItem) {
+                        BookItem bookItem = (BookItem) object;
+                        this.bookItemResult = BookItemDAO.getInstance().find(bookItem.getBarcode());
+                    }
                     return true;
                 case "findAPI":
                     if (object instanceof Book) {
@@ -93,7 +105,7 @@ public class AdminCommand implements Command {
                     return false;
             }
         } catch (SQLException e) {
-            CustomerAlter.showAlter(e.getMessage());
+            System.out.println("Lỗi AdminCommand:" + e.getMessage());
             return false; // Thất bại
         }
     }
