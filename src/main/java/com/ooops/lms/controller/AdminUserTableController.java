@@ -21,10 +21,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AdminUserTableController extends BasicUserController {
     @FXML
@@ -48,8 +45,13 @@ public class AdminUserTableController extends BasicUserController {
         searchText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Khi người dùng nhập vào, lọc lại dữ liệu và hiển thị kết quả
-                loadFindData(newValue);
+                if (newValue != null && !newValue.trim().isEmpty()) {
+                    // Khi người dùng nhập vào, lọc lại dữ liệu và hiển thị kết quả
+                    loadFindData(newValue);
+                } else {
+                    // Nếu trường tìm kiếm rỗng, tải lại toàn bộ dữ liệu
+                    loadData();
+                }
             }
         });
     }
@@ -75,15 +77,32 @@ public class AdminUserTableController extends BasicUserController {
     public void loadFindData(String name) {
         try {
             membersList.clear();
+            // Sử dụng Map với key là ID của Member
+            Map<Integer, Member> uniqueMembersMap = new HashMap<>();
+
+            // Tìm kiếm theo phone
             Map<String, Object> searchCriteria = new HashMap<>();
             searchCriteria.put("phone", name);
-            membersList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
-            Map<String, Object> searchCriteria2 = new HashMap<>();
-            searchCriteria2.put("first_name", name);
-            membersList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria2));
-            Map<String, Object> searchCriteria3 = new HashMap<>();
-            searchCriteria3.put("last_name", name);
-            membersList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria3));
+            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                uniqueMembersMap.put(member.getPerson().getId(), member);
+            }
+
+            // Tìm kiếm theo first_name
+            searchCriteria.clear();
+            searchCriteria.put("first_name", name);
+            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                uniqueMembersMap.put(member.getPerson().getId(), member);
+            }
+
+            // Tìm kiếm theo last_name
+            searchCriteria.clear();
+            searchCriteria.put("last_name", name);
+            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                uniqueMembersMap.put(member.getPerson().getId(), member);
+            }
+
+            // Thêm tất cả các giá trị unique vào membersList
+            membersList.addAll(uniqueMembersMap.values());
             loadRows();
         } catch (Exception e) {
             System.out.println(e.getMessage());
