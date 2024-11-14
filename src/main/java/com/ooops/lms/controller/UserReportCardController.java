@@ -2,6 +2,7 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.database.dao.ReportDAO;
 import com.ooops.lms.model.Report;
+import com.ooops.lms.model.enums.ReportStatus;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -28,6 +29,11 @@ public class UserReportCardController {
         this.report =report;
         reportTitleText.setText(report.getTitle());
         statusText.setText(report.getStatus().toString());
+        if(statusText.getText() == "PENDING") {
+            reportCardBox.setStyle("-fx-background-color: #FF7878;-fx-background-radius: 20;");
+        } else {
+            reportCardBox.setStyle("-fx-background-color: #AFFF84;-fx-background-radius: 20;");
+        }
     }
 
     public void editReport(Report report) {

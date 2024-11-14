@@ -24,16 +24,13 @@ public class BookmarkController implements Initializable {
     private HBox bookmarkHBox;
 
     private BookManager bookManager = BookManager.getInstance();
-
-    private BookMarkDAO bookMarkDAO = new BookMarkDAO();
-
     private List<BookMark> markedBook;
     private List<Book> popularBooks;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            markedBook = bookMarkDAO.findAllBookMark(UserMenuController.member);
+            markedBook = BookMarkDAO.getInstance().findAllBookMark(UserMenuController.member);
         } catch (SQLException e) {
             e.printStackTrace();
         }

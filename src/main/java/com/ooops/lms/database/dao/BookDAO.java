@@ -443,7 +443,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                        bookList.add(find(resultSet.getInt("ISBN")));
+                        bookList.add(find(resultSet.getLong("ISBN")));
                     }
                     bookCache.put(keywords, bookList);
                 }

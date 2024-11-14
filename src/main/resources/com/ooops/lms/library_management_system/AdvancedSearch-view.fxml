@@ -37,10 +37,7 @@
       </HBox>
       <VBox alignment="CENTER" prefHeight="527.0" prefWidth="467.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10;">
          <children>
-            <HBox fx:id="hBox1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="140.0" prefWidth="664.0" VBox.vgrow="ALWAYS" />
-            <HBox fx:id="hBox2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="140.0" prefWidth="664.0" VBox.vgrow="ALWAYS" />
-            <HBox fx:id="hBox3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="140.0" prefWidth="664.0" VBox.vgrow="ALWAYS" />
-            <Pagination prefHeight="18.0" prefWidth="467.0" />
+            <Pagination fx:id="pagination" maxPageIndicatorCount="7" pageCount="1" prefHeight="425.0" prefWidth="467.0" />
          </children>
          <VBox.margin>
             <Insets />

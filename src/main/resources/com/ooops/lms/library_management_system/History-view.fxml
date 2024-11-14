@@ -7,6 +7,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -59,11 +60,17 @@
                   </VBox>
                </children>
             </HBox>
-            <Label styleClass="label-1" text="Bộ sưu tập sách đã mượn:" VBox.vgrow="ALWAYS">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="750.0" spacing="10.0">
+               <children>
+                  <Label styleClass="label-1" text="Bộ sưu tập sách đã mượn:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#onRatingButtonAction" styleClass="button-2" text="Đánh giá sách đã mượn" />
+               </children>
+            </HBox>
             <ScrollPane prefHeight="246.0" prefWidth="750.0" styleClass="rounded-box" VBox.vgrow="ALWAYS">
                <content>
                   <HBox fx:id="borrowedHBox" alignment="CENTER_LEFT" prefHeight="239.0" prefWidth="718.0" />

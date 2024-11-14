@@ -1,9 +1,12 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.database.dao.BookMarkDAO;
+import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.database.dao.CommentDAO;
-import com.ooops.lms.model.Author;
-import com.ooops.lms.model.Book;
-import com.ooops.lms.model.Comment;
+import com.ooops.lms.model.*;
+
+import com.ooops.lms.database.dao.CommentDAO;
+import com.ooops.lms.model.enums.BookItemStatus;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +22,11 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookController{
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
@@ -36,60 +43,24 @@ public class BookController{
     private Label authorNameLabel;
 
     @FXML
-    private ImageView bookImage;
+    private ImageView bookImage,starImage;
 
     @FXML
-    private Label bookNameLabel;
-
-    @FXML
-    private HBox hBox;
-
-    @FXML
-    private Label contentText;
-
-    @FXML
-    private ImageView starImage;
+    private Label bookNameLabel,contentText;
 
     @FXML
     private VBox commentsVBox;
 
-    @FXML
-    TextField commentTextfield;
-
-    private List<Comment> comments;
-    private CommentDAO commentDAO;
-
+    private List<Comment> comments = new ArrayList<>();
 
     public void initialize() {
         starChoiceBox.getItems().addAll("tất cả","5 sao", "4 sao", "3 sao", "2 sao","1 sao");
 
         starChoiceBox.setValue("tất cả");
+    }
 
-        commentDAO = new CommentDAO();
-        commentTextfield.setOnAction(event -> {
-            commentTextfield.clear();
-        });
-
-        try {
-            comments = commentDAO.selectAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        for (int i = 0; i < comments.size(); i++) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/Comment-view.fxml"));
-                VBox cardBox = fxmlLoader.load();
-                CommentController cardController = fxmlLoader.getController();
-                cardController.setData(comments.get(i));
-                commentsVBox.getChildren().add(cardBox);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (i == 9) {
-                break;
-            }
-        }
+    public void addComment() {
+//        Comment comment = new Comment()
     }
 
     public void setData() {
@@ -106,6 +77,27 @@ public class BookController{
         authorNameLabel.setText(author);
         starImage.setImage(starImage(book.getRate()));
         contentText.setText(book.getDescription());
+
+        //comment
+        try {
+            Map<String, Object> criteria = new HashMap<>();
+            criteria.put("ISBN", book.getISBN());
+            comments = CommentDAO.getInstance().searchByCriteria(criteria);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < comments.size(); i++) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/Comment-view.fxml"));
+                VBox cardBox = fxmlLoader.load();
+                CommentController cardController = fxmlLoader.getController();
+                cardController.setData(comments.get(i));
+                commentsVBox.getChildren().add(cardBox);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void onBackButtonAction(ActionEvent event) {
@@ -120,9 +112,25 @@ public class BookController{
     }
 
     public void onReserveBookButtonAction(ActionEvent actionEvent) {
+//        BookItem bookItem = new BookItem((int) book.getISBN(), BookItemStatus.RESERVED,"");
+//        BookReservation bookReservation = new BookReservation(UserMenuController.member
+//                ,bookItem, LocalDate.now().toString(),LocalDate.now().plusDays(10).toString());
+//        try {
+//            bookReservationDAO.add(bookReservation);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public void onBookmarkButtonAction(ActionEvent actionEvent) {
+        BookItem bookItem = new BookItem((int) book.getISBN(), BookItemStatus.RESERVED,"");
+        BookMark bookReservation = new BookMark(UserMenuController.member
+                ,bookItem);
+        try {
+            BookMarkDAO.getInstance().add(bookReservation);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Image starImage(int numOfStar) {
