@@ -1,5 +1,9 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.model.BookItem;
+import com.ooops.lms.model.Category;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +33,8 @@ public class BasicBookController extends BasicController {
     protected static final FXMLLoader bookDetailPaneLoader;
     protected static final Node bookDetailPane;
     protected static Image defaultBookImage;
+
+    protected ObservableList<Category> categoriesList = FXCollections.observableArrayList();
 
     static {
         defaultBookImage = new Image(BasicBookController.class.getResource(DEFAULT_BOOK_IMAGE).toExternalForm());
