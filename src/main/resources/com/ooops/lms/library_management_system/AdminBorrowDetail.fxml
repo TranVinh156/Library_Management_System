@@ -132,9 +132,9 @@
                                                 </AnchorPane>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER" prefHeight="200.0" prefWidth="108.0" HBox.hgrow="ALWAYS">
+                                          <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="105.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Pane prefHeight="200.0" prefWidth="105.0" HBox.hgrow="NEVER">
+                                                <Pane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="105.0" HBox.hgrow="NEVER">
                                                    <children>
                                                       <ImageView fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                          <image>
@@ -180,8 +180,8 @@
                                                          <children>
                                                             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                                                                <children>
-                                                                  <Label style="-fx-font-size: 13;" styleClass="gray-text-Cabin" text="BarCode:" />
-                                                                  <TextField fx:id="barCodeText" editable="false" prefHeight="33.0" prefWidth="124.0" style="-fx-font-size: 12;" text="049-499-949-949-34" HBox.hgrow="ALWAYS">
+                                                                  <Label styleClass="gray-text-Cabin" text="BarCode:" />
+                                                                  <TextField fx:id="barCodeText" editable="false" prefHeight="33.0" prefWidth="124.0" text="049-499-949-949-34" HBox.hgrow="ALWAYS">
                                                                      <styleClass>
                                                                         <String fx:value="black-text-Cabin" />
                                                                         <String fx:value="box-information" />
@@ -230,9 +230,9 @@
                                                 </AnchorPane>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="NEVER">
+                                          <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="105.0" HBox.hgrow="NEVER">
                                              <children>
-                                                <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="NEVER">
+                                                <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="105.0" HBox.hgrow="NEVER">
                                                    <children>
                                                       <ImageView fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                          <image>
