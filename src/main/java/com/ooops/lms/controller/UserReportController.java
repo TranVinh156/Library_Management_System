@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.database.dao.ReportDAO;
+import com.ooops.lms.model.Member;
 import com.ooops.lms.model.Report;
 import com.ooops.lms.model.enums.ReportStatus;
 import com.ooops.lms.util.FXMLLoaderUtil;
@@ -34,26 +35,15 @@ public class UserReportController {
     private TextArea reportContentText;
 
     private List<Report> reports = new ArrayList<>();
-    private ReportDAO reportDAO;
     private Report currentReport;
     private UserReportCardController userReportCardController;
 
     public void initialize() {
-        reportDAO = new ReportDAO();
         Map<String, Object> criteria = new HashMap<>();
         criteria.put("member_ID", UserMenuController.member.getPerson().getId());
 
-        reportContentText.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Cập nhật chiều cao dựa trên số dòng
-                double lineHeight = reportContentText.getParagraphs().size(); // Chiều cao của 1 dòng
-                int rowCount = reportContentText.getText().split("\n").length; // Đếm số dòng
-                reportContentText.setPrefHeight(lineHeight * rowCount + 10); // Tính chiều cao mới
-            }
-        });
         try {
-            reports = reportDAO.searchByCriteria(criteria);
+            reports = ReportDAO.getInstance().searchByCriteria(criteria);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -71,20 +61,25 @@ public class UserReportController {
     }
 
     public void onAddReportButtonAction(ActionEvent actionEvent) {
-//        ReportStatus status = ReportStatus.PENDING;
-//        currentReport = new Report(UserMenuController.member,"","",status);
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader();
-//            fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/UserReportCard-view.fxml"));
-//            HBox cardBox = fxmlLoader.load();
-//            userReportCardController = fxmlLoader.getController();
-//            userReportCardController.setData(currentReport);
-//            reportsBox.getChildren().add(cardBox);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        reportContentText.setText("");
-//        reportTitleText.setText("");
+        currentReport = new Report(UserMenuController.member,"","");
+        currentReport.setStatus(ReportStatus.PENDING);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/UserReportCard-view.fxml"));
+            HBox cardBox = fxmlLoader.load();
+            userReportCardController = fxmlLoader.getController();
+            userReportCardController.setData(currentReport);
+            reportsBox.getChildren().add(cardBox);
+            try {
+                ReportDAO.getInstance().add(currentReport);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        reportContentText.setText("");
+        reportTitleText.setText("");
     }
 
     public void showIssueContent(Report report,UserReportCardController userReportCardController) {
@@ -100,12 +95,11 @@ public class UserReportController {
             currentReport.setTitle(reportTitleText.getText());
             userReportCardController.editReport(currentReport);
             try {
-                reportDAO.update(currentReport);
+                ReportDAO.getInstance().update(currentReport);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     public void loadReport(Report report) {

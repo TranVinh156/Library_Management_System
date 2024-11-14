@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -110,9 +111,14 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
     @Override
     public List<BookIssue> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         StringBuilder findBookIssueByCriteria = new StringBuilder("Select * from BookIssue where ");
+        Iterator<String> iterator = criteria.keySet().iterator();
 
-        for (String key : criteria.keySet()) {
-            findBookIssueByCriteria.append(key).append(" like ?").append(" and ");;
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            findBookIssueByCriteria.append(key).append(" LIKE ?");
+            if (iterator.hasNext()) {
+                findBookIssueByCriteria.append(" AND ");
+            }
         }
 
         try (PreparedStatement preparedStatement

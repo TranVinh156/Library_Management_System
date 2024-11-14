@@ -16,11 +16,9 @@ public class BookManager {
     private List<Book> popularBooks ;
     private List<Book> highRankBooks;
 
-    private BookDAO bookDAO = new BookDAO();
-
     private BookManager() {
         try {
-            allBooks = bookDAO.selectAll();
+            allBooks = BookDAO.getInstance().selectAll();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi truy vấn dữ liệu sách từ cơ sở dữ liệu", e);

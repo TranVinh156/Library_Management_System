@@ -48,8 +48,7 @@ public class CommentController {
         this.comment = comment;
         Image image = new Image(new File(UserMenuController.member.getPerson().getImagePath()).toURI().toString());
         avatarImage.setFill(new ImagePattern((image)));
-        String author = "";
-        nameLabel.setText(author);
+        nameLabel.setText(comment.getMember().getUsername());
         starImage.setImage(starImage(comment.getRate()));
         commentText.setText(comment.getContent());
     }
