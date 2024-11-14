@@ -49,7 +49,6 @@ public class UserMenuController implements Initializable {
     private  FXMLLoaderUtil fxmlLoaderUtil;
 
     private int memberID=0;
-    protected static MemberDAO memberDAO = new MemberDAO();
     protected static Member member;
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
@@ -182,7 +181,7 @@ public class UserMenuController implements Initializable {
 
     private void findMember() {
         try {
-            member = memberDAO.find(memberID);
+            member = MemberDAO.getInstance().find(memberID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -206,7 +205,7 @@ public class UserMenuController implements Initializable {
 
     public static void updateMember() {
         try{
-            if(memberDAO.update(member)) {
+            if(MemberDAO.getInstance().update(member)) {
                 System.out.println("update succesfully");
             } else {
                 System.out.println("fail to update");

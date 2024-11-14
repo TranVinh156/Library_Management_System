@@ -1,5 +1,6 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,8 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.Image;
-
-import java.io.FileInputStream;
 
 public class SettingController {
     @FXML
@@ -36,13 +35,13 @@ public class SettingController {
     private static final String INFORMATION_FXML = "/com/ooops/lms/library_management_system/Information-view.fxml";
     private static final String HISTORY_FXML = "/com/ooops/lms/library_management_system/History-view.fxml";
     private static final String INTERFACE_SETTING_FXML = "/com/ooops/lms/library_management_system/InterfaceSetting-view.fxml";
-    private static final String USER_ISSUE_FXML = "/com/ooops/lms/library_management_system/UserReport-view.fxml";
+    private static final String USER_REPORT_FXML = "/com/ooops/lms/library_management_system/UserReport-view.fxml";
 
     public void initialize() {
         showInfo();
     }
 
-    public void showInfo() {
+    private void showInfo() {
         // Set user name
         nameLabel.setText(UserMenuController.member.getPerson().getLastName() + " " +
                 UserMenuController.member.getPerson().getFirstName());
@@ -52,12 +51,8 @@ public class SettingController {
             String imagePath = UserMenuController.member.getPerson().getImagePath();
             if (imagePath != null) {
                 imagePath = imagePath.replace("//", "/");
-                if(imagePath.contains("image/avatar/default.png")) {
-                    Image image = new Image(getClass().getResourceAsStream("/" + imagePath));
-                    avaImage.setFill(new ImagePattern(image));
-                } else {
-                    avaImage.setFill(new ImagePattern(new Image(new FileInputStream(imagePath))));
-                }
+                Image image = new Image(getClass().getResourceAsStream("/" + imagePath));
+                avaImage.setFill(new ImagePattern(image));
             } else {
                 avaImage.setFill(Color.GRAY);
             }
@@ -99,12 +94,12 @@ public class SettingController {
         }
     }
 
-    public void onUserIssueButtonAction(ActionEvent actionEvent) {
-        VBox content = (VBox) fxmlLoaderUtil.loadFXML(USER_ISSUE_FXML);
+    public void onReportButtonAction(ActionEvent actionEvent) {
+        VBox content = (VBox) fxmlLoaderUtil.loadFXML(USER_REPORT_FXML);
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
         } else {
-            System.err.println("Failed to load UserIssue-view.fxml");
+            System.err.println("Failed to load InterfaceSetting-view.fxml");
         }
     }
 }

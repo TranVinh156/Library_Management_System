@@ -1,6 +1,6 @@
 package com.ooops.lms.util;
 
-import com.ooops.lms.controller.SettingController;
+import com.ooops.lms.controller.UserMenuController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Pane;
@@ -11,18 +11,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import com.ooops.lms.controller.UserMenuController;
 
 public class FXMLLoaderUtil {
-
     private static FXMLLoaderUtil instance = null;
     private Map<String, Pane> fxmlCache = new HashMap<>();
     private Map<String, Object> controllerCache = new HashMap<>();
     private VBox container;
-
-    private static final String USER_MENU_FXML = "/com/ooops/lms/library_management_system/UserMenu-view.fxml";
-    private static final String SETTING_FXML = "/com/ooops/lms/library_management_system/Setting-view.fxml";
-
 
     private FXMLLoaderUtil() {
     }
@@ -76,9 +70,6 @@ public class FXMLLoaderUtil {
         }
     }
 
-    public void addUserMenuController(Object o) {
-        controllerCache.put(USER_MENU_FXML,o);
-    }
 
     public VBox getContainer() {
         return container;
@@ -91,28 +82,16 @@ public class FXMLLoaderUtil {
         container.getChildren().add(content);
     }
 
-    public void deleteAllInCache() {
-        fxmlCache.clear();
-        controllerCache.clear();
-    }
-
-    public void updateInfo() {
-        try {
-            UserMenuController menuController = getController(USER_MENU_FXML);
-            menuController.showInfo();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            SettingController settingController = getController(SETTING_FXML);
-            settingController.showInfo();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public <T> T getController(String fxmlPath) throws IOException {
-        return (T) controllerCache.get(fxmlPath);
+        return (T) controllerCache.get(fxmlPath); // Trả về controller đã lưu trong cache
     }
 
+    public void addUserMenuController(UserMenuController userMenuController) {
+        controllerCache.put("/com/ooops/lms/library_management_system/UserMenuController-view.fxml",userMenuController);
+    }
+
+    public void deleteAllInCache() {
+        controllerCache.clear();
+        fxmlCache.clear();
+    }
 }

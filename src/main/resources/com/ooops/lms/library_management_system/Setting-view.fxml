@@ -77,12 +77,12 @@
                   <Insets bottom="5.0" left="20.0" top="5.0" />
                </padding>
             </Button>
-            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUserIssueButtonAction" styleClass="button-2" text="Vấn đề của em">
+            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onReportButtonAction" styleClass="button-2" text="Báo cáo của em">
                <padding>
                   <Insets bottom="5.0" left="20.0" top="5.0" />
                </padding>
             </Button>
-            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInterfaceSettingButtonAction" styleClass="button-2" text="Ngựa ngựa">
+            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInterfaceSettingButtonAction" styleClass="button-2" text="Tính năng gì đó">
                <padding>
                   <Insets bottom="5.0" left="20.0" top="5.0" />
                </padding>
