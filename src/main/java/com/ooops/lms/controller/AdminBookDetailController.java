@@ -7,6 +7,8 @@ import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Category;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -91,9 +93,6 @@ public class AdminBookDetailController extends BasicBookController {
     private Button page2Button;
 
     @FXML
-    private TextField publishingHouseText;
-
-    @FXML
     private Button saveButton;
 
     @FXML
@@ -116,7 +115,20 @@ public class AdminBookDetailController extends BasicBookController {
 
     @FXML
     private void initialize() {
-
+        childFitWidthParent(copyBookTableVbox,scrollPane);
+        ISBNText.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Loại bỏ các ký tự không phải số
+                String isbnNumbers = newValue.replaceAll("[^0-9]", "");
+                // Chỉ tìm kiếm khi đủ 10 hoặc 13 số
+                if (isbnNumbers.length() == 13 && !isbnNumbers.equals(String.valueOf(book.getISBN()))) {
+                    System.out.println(isbnNumbers);
+                    System.out.println(book.getISBN());
+                    loadBookFindAPI(isbnNumbers);
+                }
+            }
+        });
     }
 
     @FXML
@@ -140,21 +152,43 @@ public class AdminBookDetailController extends BasicBookController {
     public void onChoiceImageButtonAction(ActionEvent event) {
         book.setImagePath(getImagePath());
 
-        if(book.getImagePath() != null) {
+        if (book.getImagePath() != null) {
             Image image = new Image(book.getImagePath());
             bookImage.setImage(image);
         }
     }
 
+    private void loadBookFindAPI(String newValue) {
+        if (addMode) {
+            String isbnString = newValue;
+            book.setISBN(Long.parseLong(isbnString));
+            Command findCommand = new AdminCommand("findAPI", book);
+            commandInvoker.setCommand(findCommand);
+            if (commandInvoker.executeCommand()) {
+                AdminCommand adminCommand = (AdminCommand) findCommand;
+                book = adminCommand.getBookResult();
+                if (book != null) {
+                    setItem(book);
+                    System.out.println("Sách tồn tại");
+                } else {
+                    System.out.println("Sách không tồn tại");
+                }
+            } else {
+                System.out.println("Lỗi truy vấn");
+            }
+        }
+    }
+
     private boolean getNewBookInformation() {
-        book.setISBN(Long.parseLong(ISBNText.getText()));
+        String isbnText = ISBNText.getText().replaceAll("[^0-9]", "");
+        book.setISBN(Long.parseLong(isbnText));
+
         book.setTitle(bookNameText.getText());
         book.setPlaceAt(locationText.getText());
         book.setImagePath(Book.DEFAULT_IMAGE_PATH);
         book.setQuantity(Integer.parseInt(numberOfBookText.getText()));
-        //book.setPublishingHouse
         book.setDescription(bookContentText.getText());
-        if(book.getImagePath() == null) {
+        if (book.getImagePath() == null) {
             book.setImagePath(Book.DEFAULT_IMAGE_PATH);
         }
         if (checkInformation(book)) {
@@ -165,8 +199,7 @@ public class AdminBookDetailController extends BasicBookController {
     }
 
     private boolean checkInformation(Book book) {
-        System.out.println("DANG KIEM TRA");
-        String isbnText = ISBNText.getText().trim();
+        String isbnText = String.valueOf(book.getISBN());
         try {
             // Parse ISBN only if it's a valid long number
             if (!isbnText.isEmpty()) {
@@ -194,6 +227,21 @@ public class AdminBookDetailController extends BasicBookController {
 
     @FXML
     void onDeleteButtonAction(ActionEvent event) {
+        boolean confrimYes = CustomerAlter.showAlter("Bạn muốn xóa quyển sách này?");
+        if (confrimYes) {
+            Command deleteCommand = new AdminCommand("delete", this.book);
+            commandInvoker.setCommand(deleteCommand);
+            if (commandInvoker.executeCommand()) {
+                mainController.loadData();
+                mainController.alterPage();
+                loadStartStatus();
+                System.out.println("Đã xóa sách");
+            } else {
+                CustomerAlter.showMessage("Xóa sách thất bại");
+            }
+        } else {
+            System.out.println("Tiếp tục edit");
+        }
 
     }
 
@@ -223,56 +271,49 @@ public class AdminBookDetailController extends BasicBookController {
     @FXML
     void onSaveButtonAction(ActionEvent event) {
         boolean confirmYes = CustomerAlter.showAlter("Bạn có muốn lưu thay đổi này không?");
-        if (confirmYes) {
-            //nhớ thêm hàm save thông tin ở đây
-            setEditMode(false);
-            System.out.println("Đã lưu thay đổi");
+        if (getNewBookInformation()) {
+            if (confirmYes) {
+                // sửa người dùng trong CSDL
+                Command editCommand = new AdminCommand("edit", this.book);
+                commandInvoker.setCommand(editCommand);
+                if (commandInvoker.executeCommand()) {
+                    mainController.loadData();
+                    setEditMode(false);
+                    System.out.println("Đã lưu thay đổi");
+                }
+
+            }
         } else {
             System.out.println("Tiếp tục edit");
         }
     }
-
-    private boolean getItemInfomation() {
-        book.setTitle(bookNameText.getText());
-        //book.setAuthors(authorNameText.getText());
-        //book.setISBN(ISBNText.getText());
-        book.setDescription(bookContentText.getText());
-        book.setPlaceAt(locationText.getText());
-
-        if (checkInformation(book)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 
     @FXML
     void onScanButtonAction(ActionEvent event) {
 
     }
 
-    private void loadData() {
+    private void loadBookItemData() {
         bookItemList.clear();
         copyBookTableVbox.getChildren().clear();
 
-        try{
+        try {
             Map<String, Object> criteria = new HashMap<>();
-            criteria.put("ISBN", 123123);
-            bookItemList.addAll(BookItemDAO.getInstance().selectAll());
-        }catch (Exception e) {
+            criteria.put("ISBN", String.valueOf(book.getISBN()));
+            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(criteria));
+        } catch (Exception e) {
             System.out.println("Lỗi bookItemList addAll:" + e.getMessage());
         }
 
-        for(BookItem bookItem: bookItemList) {
+        for (BookItem bookItem : bookItemList) {
             try {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_COPY_ROW_FXML));
                     HBox row = loader.load();
 
-                    AdminBookTableRowController rowController = loader.getController();
+                    AdminBookCopyRowController rowController = loader.getController();
                     rowController.setMainController(mainController);
-                    rowController.setBook(bookItem);
+                    rowController.setBookItem(bookItem);
                     childFitWidthParent(row, rowController);
                     copyBookTableVbox.getChildren().add(row);
                 } catch (IOException e) {
@@ -287,19 +328,17 @@ public class AdminBookDetailController extends BasicBookController {
 
     public void setItem(Book book) {
         this.book = book;
-
         bookNameText.setText(book.getTitle());
         ISBNText.setText(String.valueOf(book.getISBN()));
         authorNameText.setText(getAuthors(book.getAuthors()));
         categoryText.setText(getCategories(book.getCategories()));
-        publishingHouseText.setText("chua co");
-        numberOfBookText.setText("0");
+        numberOfBookText.setText(book.getQuantity() + "");
         numberOfBorrowText.setText(String.valueOf(book.getNumberOfLoanedBooks()));
         numberOfLostText.setText(String.valueOf(book.getNumberOfLostBooks()));
         locationText.setText(book.getPlaceAt());
         bookContentText.setText(book.getDescription());
 
-        loadData();
+        loadBookItemData();
     }
 
     public Book getItem() {
@@ -319,8 +358,10 @@ public class AdminBookDetailController extends BasicBookController {
     public void setEditMode(boolean edit) {
         editMode = edit;
         ediButton.setVisible(!edit);
+        addButtonPane.setVisible(!edit);
         deleteButton.setVisible(edit);
         saveButton.setVisible(edit);
+        choiceImageButton.setVisible(edit);
         //permit for edit
         ISBNText.setEditable(edit);
         bookNameText.setEditable(edit);
@@ -328,8 +369,8 @@ public class AdminBookDetailController extends BasicBookController {
         authorNameText.setEditable(edit);
         bookContentText.setEditable(edit);
         //categoryText.setEditable(edit);
-        publishingHouseText.setEditable(edit);
         numberOfBookText.setEditable(edit);
+
 
     }
 
@@ -347,7 +388,6 @@ public class AdminBookDetailController extends BasicBookController {
         locationText.setEditable(add);
         authorNameText.setEditable(add);
         //categoryText.setEditable(add);
-        publishingHouseText.setEditable(add);
         numberOfBookText.setEditable(add);
         if (addMode) {
             deleteButton.setVisible(!add);
@@ -357,10 +397,10 @@ public class AdminBookDetailController extends BasicBookController {
             locationText.setText(null);
             authorNameText.setText(null);
             categoryText.setText(null);
-            publishingHouseText.setText(null);
             numberOfBookText.setText(null);
             numberOfBorrowText.setText(null);
             numberOfLostText.setText(null);
+            bookContentText.setText(null);
             bookImage.setImage(defaultBookImage);
         }
 
@@ -374,6 +414,7 @@ public class AdminBookDetailController extends BasicBookController {
 
     private void openPagePane() {
         copyBookPane.setVisible(!isPage1);
+
     }
 
     private void setButtonPageAnimation() {
@@ -399,7 +440,6 @@ public class AdminBookDetailController extends BasicBookController {
             }
         }
     }
-
 
 
 }
