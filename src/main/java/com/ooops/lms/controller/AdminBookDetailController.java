@@ -115,7 +115,9 @@ public class AdminBookDetailController extends BasicBookController {
 
     @FXML
     private void initialize() {
-        childFitWidthParent(copyBookTableVbox,scrollPane);
+        childFitWidthParent(copyBookTableVbox, scrollPane);
+
+        //Nếu như ISBN có 13 chữ số tiến hành tra cứu API để load dữ liệu về
         ISBNText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -133,10 +135,10 @@ public class AdminBookDetailController extends BasicBookController {
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
-        System.out.println("onAddButtonAction");
         if (getNewBookInformation()) {
             boolean confirmYes = CustomerAlter.showAlter("Thêm sách mới?");
             if (confirmYes) {
+                //Thêm sách trong CSDL
                 Command addCommand = new AdminCommand("add", this.book);
                 commandInvoker.setCommand(addCommand);
                 if (commandInvoker.executeCommand()) {
@@ -152,83 +154,18 @@ public class AdminBookDetailController extends BasicBookController {
     public void onChoiceImageButtonAction(ActionEvent event) {
         book.setImagePath(getImagePath());
 
+        //Nếu như có chọn ảnh thì set ảnh cho bookImage
         if (book.getImagePath() != null) {
             Image image = new Image(book.getImagePath());
             bookImage.setImage(image);
         }
     }
 
-    private void loadBookFindAPI(String newValue) {
-        if (addMode) {
-            String isbnString = newValue;
-            book.setISBN(Long.parseLong(isbnString));
-            Command findCommand = new AdminCommand("findAPI", book);
-            commandInvoker.setCommand(findCommand);
-            if (commandInvoker.executeCommand()) {
-                AdminCommand adminCommand = (AdminCommand) findCommand;
-                book = adminCommand.getBookResult();
-                if (book != null) {
-                    setItem(book);
-                    System.out.println("Sách tồn tại");
-                } else {
-                    System.out.println("Sách không tồn tại");
-                }
-            } else {
-                System.out.println("Lỗi truy vấn");
-            }
-        }
-    }
-
-    private boolean getNewBookInformation() {
-        String isbnText = ISBNText.getText().replaceAll("[^0-9]", "");
-        book.setISBN(Long.parseLong(isbnText));
-
-        book.setTitle(bookNameText.getText());
-        book.setPlaceAt(locationText.getText());
-        book.setImagePath(Book.DEFAULT_IMAGE_PATH);
-        book.setQuantity(Integer.parseInt(numberOfBookText.getText()));
-        book.setDescription(bookContentText.getText());
-        if (book.getImagePath() == null) {
-            book.setImagePath(Book.DEFAULT_IMAGE_PATH);
-        }
-        if (checkInformation(book)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean checkInformation(Book book) {
-        String isbnText = String.valueOf(book.getISBN());
-        try {
-            // Parse ISBN only if it's a valid long number
-            if (!isbnText.isEmpty()) {
-                Long isbn = Long.parseLong(isbnText);
-                book.setISBN(isbn);
-            } else {
-                CustomerAlter.showMessage("ISBN cannot be empty.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            CustomerAlter.showMessage("Please enter a valid numeric ISBN.");
-            return false;
-        }
-        if (book.getTitle() == null || book.getTitle().trim().isEmpty()) {
-            CustomerAlter.showMessage("Không được để tên sách trống");
-            return false;
-        }
-        if (book.getPlaceAt() == null || book.getPlaceAt().trim().isEmpty()) {
-            CustomerAlter.showMessage("Không được để vị trí sách trống");
-            return false;
-        }
-
-        return true;
-    }
-
     @FXML
     void onDeleteButtonAction(ActionEvent event) {
         boolean confrimYes = CustomerAlter.showAlter("Bạn muốn xóa quyển sách này?");
         if (confrimYes) {
+            //Xóa sách trong CSDL
             Command deleteCommand = new AdminCommand("delete", this.book);
             commandInvoker.setCommand(deleteCommand);
             if (commandInvoker.executeCommand()) {
@@ -254,18 +191,20 @@ public class AdminBookDetailController extends BasicBookController {
 
     @FXML
     void onPage1ButtonAction(ActionEvent event) {
-        System.out.println("Page 1");
         isPage1 = true;
         setButtonPageAnimation();
-        openPagePane();
+
+        //Chuyển sang Page1
+        copyBookPane.setVisible(!isPage1);
     }
 
     @FXML
     void onPage2ButtonAction(ActionEvent event) {
-        System.out.println("Page 2");
         isPage1 = false;
         setButtonPageAnimation();
-        openPagePane();
+
+        //Chuyển sang Page2
+        copyBookPane.setVisible(!isPage1);
     }
 
     @FXML
@@ -273,7 +212,7 @@ public class AdminBookDetailController extends BasicBookController {
         boolean confirmYes = CustomerAlter.showAlter("Bạn có muốn lưu thay đổi này không?");
         if (getNewBookInformation()) {
             if (confirmYes) {
-                // sửa người dùng trong CSDL
+                // sửa sách trong CSDL
                 Command editCommand = new AdminCommand("edit", this.book);
                 commandInvoker.setCommand(editCommand);
                 if (commandInvoker.executeCommand()) {
@@ -293,10 +232,103 @@ public class AdminBookDetailController extends BasicBookController {
 
     }
 
+    /**
+     * Hàm này dùng để tìm kiếm sách trên API và trả về book nếu tìm được.
+     * Nếu như tìm được book thì gọi hàm set thông tin các trường.
+     *
+     * @param ISBN
+     */
+    private void loadBookFindAPI(String ISBN) {
+        if (addMode) {
+            String isbnString = ISBN;
+            book.setISBN(Long.parseLong(isbnString));
+            Command findCommand = new AdminCommand("findAPI", book);
+            commandInvoker.setCommand(findCommand);
+            if (commandInvoker.executeCommand()) {
+                AdminCommand adminCommand = (AdminCommand) findCommand;
+                book = adminCommand.getBookResult();
+                if (book != null) {
+                    setItem(book);
+                    System.out.println("Sách tồn tại");
+                } else {
+                    System.out.println("Sách không tồn tại");
+                }
+            } else {
+                System.out.println("Lỗi truy vấn");
+            }
+        }
+    }
+
+    /**
+     * Khi thêm Book mới thì sẽ lấy tất cả thông tin của các trường lưu vào book của Controller này.
+     * Kết hợp với hàm kiểm tra thông tin để biết người dùng đã nhập các thông tin hợp lệ hay chưa.
+     *
+     * @return true/false
+     */
+    private boolean getNewBookInformation() {
+        //Xử lý ISBN
+        String isbnText = ISBNText.getText().replaceAll("[^0-9]", "");
+        book.setISBN(Long.parseLong(isbnText));
+        //Xử lý các thông tin khác
+        book.setTitle(bookNameText.getText());
+        book.setPlaceAt(locationText.getText());
+        book.setQuantity(Integer.parseInt(numberOfBookText.getText()));
+        book.setDescription(bookContentText.getText());
+
+        //Kiểm tra thông tin người dùng nhập hợp lệ hay không
+        if (checkInformation(book)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Hàm kiểm tra thông tin người dùng nhập.
+     *
+     * @param book là book cần kiểm tra
+     * @return
+     */
+    private boolean checkInformation(Book book) {
+        //Kiểm tra ISBN và in thông báo lỗi
+        String isbnText = String.valueOf(book.getISBN());
+        try {
+            // Parse ISBN only if it's a valid long number
+            if (!isbnText.isEmpty()) {
+                Long isbn = Long.parseLong(isbnText);
+                book.setISBN(isbn);
+            } else {
+                CustomerAlter.showMessage("ISBN cannot be empty.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            CustomerAlter.showMessage("Please enter a valid numeric ISBN.");
+            return false;
+        }
+
+        //Kiểm tra tên sách và báo lỗi nếu có
+        if (book.getTitle() == null || book.getTitle().trim().isEmpty()) {
+            CustomerAlter.showMessage("Không được để tên sách trống");
+            return false;
+        }
+
+        //Kiểm tra nơi đặt sách và báo lỗi nếu có
+        if (book.getPlaceAt() == null || book.getPlaceAt().trim().isEmpty()) {
+            CustomerAlter.showMessage("Không được để vị trí sách trống");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Load các bookItem của book vào bảng ở Page2.
+     */
     private void loadBookItemData() {
         bookItemList.clear();
         copyBookTableVbox.getChildren().clear();
 
+        //Lấy dữ liệu
         try {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("ISBN", String.valueOf(book.getISBN()));
@@ -305,6 +337,7 @@ public class AdminBookDetailController extends BasicBookController {
             System.out.println("Lỗi bookItemList addAll:" + e.getMessage());
         }
 
+        //Đẩy các Row vào bảng
         for (BookItem bookItem : bookItemList) {
             try {
                 try {
@@ -323,9 +356,13 @@ public class AdminBookDetailController extends BasicBookController {
                 e.printStackTrace();
             }
         }
-
     }
 
+    /**
+     * Hàm dùng để lấy thông tin từ book và gán thông tin cho các trường.
+     *
+     * @param book
+     */
     public void setItem(Book book) {
         this.book = book;
         bookNameText.setText(book.getTitle());
@@ -338,57 +375,62 @@ public class AdminBookDetailController extends BasicBookController {
         locationText.setText(book.getPlaceAt());
         bookContentText.setText(book.getDescription());
 
+        if (book.getImagePath() != null && isValidImagePath(book.getImagePath())) {
+            bookImage.setImage(new Image(book.getImagePath()));
+        } else {
+            bookImage.setImage(defaultBookImage);
+        }
+
         loadBookItemData();
     }
 
-    public Book getItem() {
-        return this.book;
-    }
-
-    public String getMode() {
-        if (addMode) {
-            return "addMode";
-        } else if (editMode) {
-            return "editMode";
-        } else {
-            return "noneMode";
-        }
-    }
-
+    /**
+     * Set edit Mode.
+     *
+     * @param edit
+     */
     public void setEditMode(boolean edit) {
         editMode = edit;
+        //Xử lý ẩn hiện các nút bấm
         ediButton.setVisible(!edit);
         addButtonPane.setVisible(!edit);
         deleteButton.setVisible(edit);
         saveButton.setVisible(edit);
         choiceImageButton.setVisible(edit);
-        //permit for edit
+
+        //cho phép các trường có thể sửa đổi
         ISBNText.setEditable(edit);
         bookNameText.setEditable(edit);
         locationText.setEditable(edit);
         authorNameText.setEditable(edit);
         bookContentText.setEditable(edit);
-        //categoryText.setEditable(edit);
+        categoryText.setEditable(edit);
         numberOfBookText.setEditable(edit);
-
-
     }
 
+    /**
+     * Set Add Mode.
+     *
+     * @param add
+     */
     public void setAddMode(boolean add) {
         addMode = add;
+        //Xử lý các nút bấm
         ediButton.setVisible(!add);
         addButtonPane.setVisible(add);
         addButton.setVisible(add);
         choiceImageButton.setVisible(add);
         scanButton.setVisible(add);
 
-        //permit for edit
+        //Cho phép các trường chỉnh sửa
         ISBNText.setEditable(add);
         bookNameText.setEditable(add);
         locationText.setEditable(add);
         authorNameText.setEditable(add);
-        //categoryText.setEditable(add);
+        categoryText.setEditable(add);
         numberOfBookText.setEditable(add);
+
+        //Nếu như mà là mở addMode thì các trường thông tin set về rỗng
         if (addMode) {
             deleteButton.setVisible(!add);
             saveButton.setVisible(!add);
@@ -403,20 +445,20 @@ public class AdminBookDetailController extends BasicBookController {
             bookContentText.setText(null);
             bookImage.setImage(defaultBookImage);
         }
-
     }
 
+    /**
+     * Hàm để load bảng Detail về trạng thái rỗng ban đầu.
+     */
     public void loadStartStatus() {
         book = new Book();
         setAddMode(false);
         setEditMode(false);
     }
 
-    private void openPagePane() {
-        copyBookPane.setVisible(!isPage1);
-
-    }
-
+    /**
+     * Hàm xử lý Animation(popUp) cho nút bấm Page1 và Page2.
+     */
     private void setButtonPageAnimation() {
         if (isPage1) {
             //choice button color darker
