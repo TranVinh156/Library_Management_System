@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -22,8 +23,9 @@ import java.io.IOException;
 
 public class AdminMenuController extends BasicController {
 
+
     @FXML
-    private VBox menuBar;
+    private Button addButton;
 
     @FXML
     private Button bookManagementButton;
@@ -59,25 +61,13 @@ public class AdminMenuController extends BasicController {
     private AnchorPane mainPane;
 
     @FXML
-    private VBox menuBarPlus;
+    private ScrollPane scrollPane;
 
     @FXML
-    private AnchorPane menuPiece1Pane;
+    private VBox menuBar;
 
     @FXML
-    private AnchorPane menuPiece2Pane;
-
-    @FXML
-    private AnchorPane menuPiece3Pane;
-
-    @FXML
-    private AnchorPane plusMenuPeice3Pane;
-
-    @FXML
-    private AnchorPane plusMenuPiece1Pane;
-
-    @FXML
-    private AnchorPane plusMenuPiece2Pane;
+    private ImageView openMenuIcon;
 
     @FXML
     private Button readerManagementButton;
@@ -89,24 +79,26 @@ public class AdminMenuController extends BasicController {
     private Button settingButton;
 
     @FXML
+    private HBox hBoxMain;
+
+    @FXML
+    private VBox vBoxMain;
+
+    @FXML
     private ImageView settingLogo;
 
-    private boolean isMouseOverMenuBar = false;
+    private boolean isMenuExpanded = false;
 
     public void initialize() throws IOException {
-
-        setupHoverMenuBar();
-
-        MenuItemHover(dashboardLogo, dashboardButton);
-        MenuItemHover(borrowLogo, borrowButton);
-        MenuItemHover(bookManagementLogo, bookManagementButton);
-        MenuItemHover(readerManagementlogo, readerManagementButton);
-        MenuItemHover(logoutLogo, logoutButton);
-        MenuItemHover(issueLogo, issuesButton);
-        MenuItemHover(settingLogo, settingButton);
-        MenuItemHover(logoutLogo, logoutButton);
-
+        //vBoxMain.prefWidthProperty().bind(scrollPane.widthProperty());
+        //vBoxMain.prefHeightProperty().bind(scrollPane.heightProperty());
+        childFitHeightParent(mainPane,vBoxMain);
+        childFitWidthParent(mainPane,vBoxMain);
         openPage(dashboardPane);
+
+        hideButtonTexts();
+
+        openMenuIcon.setOnMouseClicked(event ->toggleMenu());
 
     }
 
@@ -156,43 +148,48 @@ public class AdminMenuController extends BasicController {
 
     }
 
+    @FXML
+    void onAddButtonAction(ActionEvent event) {
 
-    private void MenuItemHover(ImageView logo, Button button) {
-        logo.setOnMouseEntered(event -> button.setOpacity(0.7)); // Thay đổi độ trong của nút khi hover
-        logo.setOnMouseExited(event -> button.setOpacity(1.0)); // Trả về độ trong bình thường khi rời
-        button.setOnMouseEntered(event -> button.setOpacity(0.7)); // Giữ hiệu ứng nếu chuột ở nút
-        button.setOnMouseExited(event -> button.setOpacity(1.0)); // Trả về tính chất ban đầu
-
-        logo.setOnMouseClicked(event -> {
-            button.fire();
-        });
     }
 
-
-    private void setupHoverMenuBar() {
-        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.2));
-        menuBar.setOnMouseEntered(event -> {
-            pauseTransition.play();
-            isMouseOverMenuBar = true;
-            pauseTransition.setOnFinished(event1 -> {
-                if (menuBar.getOnMouseEntered() != null) {
-                    menuBarPlus.setVisible(true);
-                }
-            });
-        });
-        menuBar.setOnMouseExited(event -> {
-            pauseTransition.playFromStart();
-            pauseTransition.pause();
-        });
-        menuBar.setOnMouseClicked(event -> {
-            pauseTransition.playFromStart();
-        });
-        menuBarPlus.setOnMouseExited(event2 -> {
-            menuBarPlus.setVisible(false);
-            pauseTransition.playFromStart();
-        });
+    private void toggleMenu() {
+        if(!isMenuExpanded) {
+            menuBar.setMinWidth(210);
+            menuBar.setMaxWidth(210);
+            addButton.setMaxWidth(100);
+            addButton.setMinWidth(100);
+            showButtonTexts();
+        } else {
+            menuBar.setMinWidth(62);
+            menuBar.setMaxWidth(62);
+            addButton.setMinWidth(54);
+            addButton.setMaxWidth(54);
+            hideButtonTexts();
+        }
+        isMenuExpanded = !isMenuExpanded;
     }
 
+    private void showButtonTexts() {
+        addButton.setText("New");
+        dashboardButton.setText("Dashboard");
+        bookManagementButton.setText("Quản lý sách");
+        borrowButton.setText("Mượn trả");
+        readerManagementButton.setText("Quản lý độc giả");
+        issuesButton.setText("Sự cố");
+        settingButton.setText("Cài đặt");
+        logoutButton.setText("Đăng xuất");
+    }
+    private void hideButtonTexts() {
+        addButton.setText("");
+        dashboardButton.setText("");
+        bookManagementButton.setText("");
+        borrowButton.setText("");
+        readerManagementButton.setText("");
+        issuesButton.setText("");
+        settingButton.setText("");
+        logoutButton.setText("");
+    }
     private void openPage(Node e) {
         mainPane.getChildren().clear();
         mainPane.getChildren().add(e);
