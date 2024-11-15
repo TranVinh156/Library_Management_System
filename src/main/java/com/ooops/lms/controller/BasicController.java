@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-public class BasicController  {
-    private static final String DEFAULT_USER_FXML ="/image/customer/menu/ava.png";
+public class BasicController {
+    private static final String DEFAULT_USER_FXML = "/image/customer/menu/ava.png";
     private static final String LOGIN_FXML = "/com/ooops/lms/library_management_system/UserLogin.fxml";
     private static final String RESIGN_FXML = "/com/ooops/lms/library_management_system/UserResign-view.fxml";
     private static final String FORGOT_PASSWORD_FXML = "/com/ooops/lms/library_management_system/ForgotPassword-view.fxml";
@@ -80,8 +80,8 @@ public class BasicController  {
 
     static {
         //load login
-        loginLoader = loadFXML(LOGIN_FXML,BasicController.class);
-        loginPane = loadPane(loginLoader,BasicController.class);
+        loginLoader = loadFXML(LOGIN_FXML, BasicController.class);
+        loginPane = loadPane(loginLoader, BasicController.class);
 
         //load default image
         defaultUserImage = new Image(BasicController.class.getResource(DEFAULT_USER_FXML).toExternalForm());
@@ -112,16 +112,17 @@ public class BasicController  {
         issuePagePane = loadPane(issuePagePaneLoader, BasicController.class);
 
         //load BorrowMangament-view
-        borrowPagePaneLoader = loadFXML(BORROW_PAGE_FXML,BasicController.class);
+        borrowPagePaneLoader = loadFXML(BORROW_PAGE_FXML, BasicController.class);
         borrowPagePane = loadPane(borrowPagePaneLoader, BasicController.class);
     }
 
     /**
      * hàm load Pane
+     *
      * @param fxml
      * @param clazz
-     * @return pane
      * @param <T>
+     * @return pane
      */
     public static <T> T loadPane(FXMLLoader fxml, Class<?> clazz) {
         T pane = null; // Khai báo biến pane kiểu T
@@ -137,15 +138,15 @@ public class BasicController  {
                 AnchorPane.setLeftAnchor((AnchorPane) pane, 0.0);
                 AnchorPane.setRightAnchor((AnchorPane) pane, 0.0);
             } else if (pane instanceof HBox) {
-                AnchorPane.setTopAnchor((HBox)pane, 0.0);
-                AnchorPane.setBottomAnchor((HBox)pane, 0.0);
-                AnchorPane.setLeftAnchor((HBox)pane, 0.0);
-                AnchorPane.setRightAnchor((HBox)pane, 0.0);
+                AnchorPane.setTopAnchor((HBox) pane, 0.0);
+                AnchorPane.setBottomAnchor((HBox) pane, 0.0);
+                AnchorPane.setLeftAnchor((HBox) pane, 0.0);
+                AnchorPane.setRightAnchor((HBox) pane, 0.0);
             } else if (pane instanceof VBox) {
-                AnchorPane.setTopAnchor((VBox)pane, 0.0);
-                AnchorPane.setBottomAnchor((VBox)pane, 0.0);
-                AnchorPane.setLeftAnchor((VBox)pane, 0.0);
-                AnchorPane.setRightAnchor((VBox)pane, 0.0);
+                AnchorPane.setTopAnchor((VBox) pane, 0.0);
+                AnchorPane.setBottomAnchor((VBox) pane, 0.0);
+                AnchorPane.setLeftAnchor((VBox) pane, 0.0);
+                AnchorPane.setRightAnchor((VBox) pane, 0.0);
             }
 
         } catch (IOException e) {
@@ -157,7 +158,8 @@ public class BasicController  {
 
     /**
      * hàm này dùng để loadFXML.
-     * @param fxml đường dẫn của FXML
+     *
+     * @param fxml  đường dẫn của FXML
      * @param clazz
      * @return FXMLLoader yêu cầu
      */
@@ -167,10 +169,11 @@ public class BasicController  {
 
     /**
      * hàm để lấy Controller
+     *
      * @param loader FXMLLoader cần lấy controller
-     * @param clazz nhập vào class
+     * @param clazz  nhập vào class
+     * @param <T>    lớp
      * @return controller cần lấy
-     * @param <T> lớp
      */
     private static <T> T loadController(FXMLLoader loader, Class<?> clazz) {
         try {
@@ -184,12 +187,13 @@ public class BasicController  {
 
     /**
      * hàm dùng để set chiều rộng của child theo parent.
-     * @param child có thể là VBox, HBox
+     *
+     * @param child  có thể là VBox, HBox
      * @param parent là scrollPane
-     * @param <T> thuộc tính của child
-     * @param <U> thuộc tính của parent
+     * @param <T>    thuộc tính của child
+     * @param <U>    thuộc tính của parent
      */
-    public <T,U> void childFitWidthParent(T child, U parent) {
+    public <T, U> void childFitWidthParent(T child, U parent) {
         if (child instanceof VBox && parent instanceof ScrollPane) {
             VBox vboxChild = (VBox) child;
             ScrollPane scrollPaneParent = (ScrollPane) parent;
@@ -200,23 +204,33 @@ public class BasicController  {
             ScrollPane scrollPaneParent = (ScrollPane) parent;
 
             hBoxChild.prefWidthProperty().bind(scrollPaneParent.widthProperty().subtract(16));
-        } else if (child instanceof HBox && parent instanceof VBox ) {
+        } else if (child instanceof HBox && parent instanceof VBox) {
             HBox hBoxChild = (HBox) child;
             VBox vboxChild = (VBox) parent;
 
             hBoxChild.prefWidthProperty().bind(vboxChild.widthProperty().subtract(16));
+        } else if (child instanceof AnchorPane && parent instanceof ScrollPane) {
+            AnchorPane anchorPaneChild = (AnchorPane) child;
+            ScrollPane scrollPaneParent = (ScrollPane) parent;
+
+            anchorPaneChild.prefWidthProperty().bind(scrollPaneParent.widthProperty());
+        } else if (child instanceof AnchorPane && parent instanceof VBox) {
+            AnchorPane anchorPaneChild = (AnchorPane) child;
+            VBox vboxChild = (VBox) parent;
+            anchorPaneChild.prefWidthProperty().bind(vboxChild.widthProperty());
         }
 
     }
 
     /**
      * hàm dùng để set chiều cao của child theo parent.
-     * @param child có thể là VBox, HBox
+     *
+     * @param child  có thể là VBox, HBox
      * @param parent là scrollPane
-     * @param <T> thuộc tính của child
-     * @param <U> thuộc tính của parent
+     * @param <T>    thuộc tính của child
+     * @param <U>    thuộc tính của parent
      */
-    public <T,U> void childFitHeightParent(T child, U parent) {
+    public <T, U> void childFitHeightParent(T child, U parent) {
         if (child instanceof VBox && parent instanceof ScrollPane) {
             VBox vboxChild = (VBox) child;
             ScrollPane scrollPaneParent = (ScrollPane) parent;
@@ -227,11 +241,20 @@ public class BasicController  {
             ScrollPane scrollPaneParent = (ScrollPane) parent;
 
             hBoxChild.prefHeightProperty().bind(scrollPaneParent.heightProperty().subtract(16));
-        } else if (child instanceof HBox && parent instanceof VBox ) {
+        } else if (child instanceof HBox && parent instanceof VBox) {
             HBox hBoxChild = (HBox) child;
             VBox vboxChild = (VBox) parent;
 
             hBoxChild.prefHeightProperty().bind(vboxChild.heightProperty().subtract(16));
+        } else if (child instanceof AnchorPane && parent instanceof ScrollPane) {
+            AnchorPane anchorPaneChild = (AnchorPane) child;
+            ScrollPane scrollPaneParent = (ScrollPane) parent;
+
+            anchorPaneChild.prefHeightProperty().bind(scrollPaneParent.widthProperty().subtract(17));
+        } else if(child instanceof AnchorPane && parent instanceof VBox) {
+            AnchorPane anchorPaneChild = (AnchorPane) child;
+            VBox vboxChild = (VBox) parent;
+            anchorPaneChild.prefHeightProperty().bind(vboxChild.heightProperty());
         }
 
     }
@@ -277,6 +300,7 @@ public class BasicController  {
 
     /**
      * Hàm để lấy mở cửa sổ lấy ảnh.
+     *
      * @return đường dẫn của ảnh
      */
     public String getImagePath() {
@@ -301,6 +325,7 @@ public class BasicController  {
 
     /**
      * hàm này sẽ kiểm tra xem đường dâẫn ảnh có tồn tại trong máy không.
+     *
      * @param path đường dẫn cần kểm tra
      * @return true nếu có, false nếu không
      */
