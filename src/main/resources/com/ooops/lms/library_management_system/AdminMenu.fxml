@@ -51,7 +51,7 @@
                                  <children>
                                     <ImageView fx:id="openMenuIcon" fitHeight="35.0" fitWidth="16.0" layoutX="38.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <image>
-                                          <Image url="@../../../../image/icon/share%201.png" />
+                                          <Image url="@../../../../image/icon/maximize.png" />
                                        </image>
                                     </ImageView>
                                     <Button fx:id="addButton" layoutX="3.0" layoutY="52.0" maxWidth="70.0" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="40.0" prefWidth="43.0" style="-fx-font-size: 20;" AnchorPane.leftAnchor="3.0">
