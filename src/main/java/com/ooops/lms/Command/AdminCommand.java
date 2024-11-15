@@ -1,9 +1,12 @@
 package com.ooops.lms.Command;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.database.dao.BookDAO;
+import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.AccountStatus;
 
@@ -15,14 +18,26 @@ public class AdminCommand implements Command {
     private String action;
     private Object object;
     private Member memberResult;
+    private Book bookResult;
+    private BookDAO bookDAO;
+    private BookItem bookItemResult;
 
     public AdminCommand(String action, Object object) {
         this.action = action;
         this.object = object;
+        bookDAO = BookDAO.getInstance();
     }
 
     public Member getMemberResult() {
         return memberResult;
+    }
+
+    public Book getBookResult() {
+        return bookResult;
+    }
+
+    public BookItem getBookItemResult() {
+        return bookItemResult;
     }
 
     /**
@@ -36,9 +51,6 @@ public class AdminCommand implements Command {
             switch (action) {
                 case "add":
                     if (object instanceof Book) {
-                        if(object != null) {
-                            System.out.println("Book add iss not null");
-                        }
                         BookDAO.getInstance().add((Book) object);
                     } else if (object instanceof Member) {
                         MemberDAO.getInstance().add((Member) object);
@@ -54,7 +66,8 @@ public class AdminCommand implements Command {
                     return true;
                 case "edit":
                     if (object instanceof Book) {
-                        BookDAO.getInstance().update((Book) object);
+                        Book book = (Book) object;
+                        bookDAO.update((Book) object);
                     }
                     if (object instanceof Member) {
                         MemberDAO.getInstance().update((Member) object);
@@ -77,12 +90,22 @@ public class AdminCommand implements Command {
                         Member member = (Member) object;
                         this.memberResult = MemberDAO.getInstance().find(member.getAccountId());
                     }
+                    if(object instanceof BookItem) {
+                        BookItem bookItem = (BookItem) object;
+                        this.bookItemResult = BookItemDAO.getInstance().find(bookItem.getBarcode());
+                    }
+                    return true;
+                case "findAPI":
+                    if (object instanceof Book) {
+                        Book book = (Book) object;
+                        this.bookResult = BookInfoFetcher.searchBookByISBN(String.valueOf(book.getISBN()));
+                    }
                     return true;
                 default:
                     return false;
             }
         } catch (SQLException e) {
-            CustomerAlter.showAlter(e.getMessage());
+            System.out.println("Lỗi AdminCommand:" + e.getMessage());
             return false; // Thất bại
         }
     }

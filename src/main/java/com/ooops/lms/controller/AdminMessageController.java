@@ -1,6 +1,9 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.AdminCommand;
+import com.ooops.lms.Command.Command;
+import com.ooops.lms.Command.MailCommand;
 import com.ooops.lms.email.EmailUtil;
 import com.ooops.lms.model.Admin;
 import javafx.event.ActionEvent;
@@ -26,15 +29,16 @@ public class AdminMessageController extends BasicController {
 
     @FXML
     void onSendButtonAction(ActionEvent event) {
-        String toEmail = toText.getText();
-        String topicEmail = topicText.getText();
+        String to = toText.getText();
         String detail = detailText.getText();
-            if(checkEmail(toEmail,detail)) {
-                emailUtil = new EmailUtil(toEmail, topicEmail, detail);
-                //emailUtil.sendEmail();
-                CustomerAlter.showMessage("Email đã được gửi tới " + toEmail);
+        if(checkEmail(to,detail)) {
+            Command mailCommand = new MailCommand(to, topicText.getText(), detail);
+            commandInvoker.setCommand(mailCommand);
+            if (commandInvoker.executeCommand()) {
+                System.out.println("Đã gửi mail! ");
+                loadStartStatus();
             }
-
+        }
     }
 
     private boolean checkEmail(String toEmail,String detail) {
@@ -50,5 +54,11 @@ public class AdminMessageController extends BasicController {
         }
 
         return true;
+    }
+
+    private void loadStartStatus() {
+        topicText.setText(null);
+        detailText.setText(null);
+        toText.setText(null);
     }
 }

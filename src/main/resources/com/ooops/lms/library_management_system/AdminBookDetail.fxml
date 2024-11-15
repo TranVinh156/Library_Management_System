@@ -18,25 +18,19 @@
    <children>
       <AnchorPane prefHeight="445.0" prefWidth="799.0" stylesheets="@../../../../style/AdminBookManagementStyle.css" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="bookNameText" editable="false" layoutX="104.0" layoutY="54.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Lời thì thầm dòng sông">
+            <TextField fx:id="bookNameText" editable="false" layoutX="104.0" layoutY="54.0" prefHeight="39.0" prefWidth="467.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Lời thì thầm dòng sông" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="228.0">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
                </styleClass>
             </TextField>
-            <TextField fx:id="authorNameText" editable="false" layoutX="92.0" layoutY="132.0" text="Nguyen Van C">
+            <TextField fx:id="authorNameText" editable="false" layoutX="92.0" layoutY="132.0" prefHeight="33.0" prefWidth="274.0" text="Nguyen Van C" AnchorPane.leftAnchor="92.0" AnchorPane.rightAnchor="432.80000000000007">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
                </styleClass>
             </TextField>
-            <TextField fx:id="ISBNText" editable="false" layoutX="75.0" layoutY="96.0" text="903-384-434-233-23">
-               <styleClass>
-                  <String fx:value="black-text-Cabin" />
-                  <String fx:value="box-information" />
-               </styleClass>
-            </TextField>
-            <TextField fx:id="publishingHouseText" editable="false" layoutX="136.0" layoutY="168.0" text="Đại học Quốc gia Hà Nội">
+            <TextField fx:id="ISBNText" editable="false" layoutX="75.0" layoutY="96.0" text="903-384-434-233-23" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="522.4">
                <styleClass>
                   <String fx:value="black-text-Cabin" />
                   <String fx:value="box-information" />
@@ -78,6 +72,7 @@
             <Button fx:id="saveButton" layoutX="656.0" layoutY="458.0" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="49.0" prefWidth="122.0" styleClass="button_1" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Save" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.80000000000004" />
             <Button fx:id="page2Button" layoutX="51.0" layoutY="251.0" mnemonicParsing="false" onAction="#onPage2ButtonAction" prefHeight="13.0" prefWidth="32.0" styleClass="button_page" text="2" />
             <Button fx:id="page1Button" layoutX="29.0" layoutY="251.0" mnemonicParsing="false" onAction="#onPage1ButtonAction" prefHeight="13.0" prefWidth="32.0" style="-fx-background-color: #DDDCDC;" styleClass="button_page" text="1" />
+            <Button fx:id="choiceImageButton" layoutX="630.0" layoutY="238.0" mnemonicParsing="false" onAction="#onChoiceImageButtonAction" prefHeight="26.0" prefWidth="68.0" stylesheets="@../../../../style/AdminStyle.css" text="Chọn ảnh" visible="false" AnchorPane.rightAnchor="101.20000000000005" />
             <AnchorPane layoutX="584.0" layoutY="43.0" prefHeight="190.0" prefWidth="162.0" style="-fx-background-color: #E4E4E4;" AnchorPane.rightAnchor="52.80000000000004" AnchorPane.topAnchor="43.20000000000002">
                <children>
                   <ImageView fx:id="bookImage" fitHeight="190.0" fitWidth="163.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0" />
@@ -107,7 +102,7 @@
                                     </AnchorPane>
                                  </children>
                               </HBox>
-                              <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999">
+                              <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" text="cdsdsiosdhfiohidshfidoifhiodgoifdhgoifiogifdigohdfgoidfgiofdgiohfoigoifhgioiofgiodfhiohdfiogodhfgiohodfhgohfdoghiofdghoidfhgodfgoidfgiohg" wrapText="true" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999">
                                  <styleClass>
                                     <String fx:value="text-area-no-border" />
                                     <String fx:value="black-text-Cabin" />
@@ -145,12 +140,12 @@
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" prefHeight="22.0" prefWidth="85.0" HBox.hgrow="ALWAYS" />
+                                    <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="78.0" HBox.hgrow="NEVER" />
                                  </children>
                               </HBox>
-                              <ScrollPane fx:id="scrollPane" layoutY="36.0" prefHeight="137.0" prefWidth="754.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="36.0">
+                              <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutY="36.0" prefHeight="137.0" prefWidth="754.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="36.0">
                                  <content>
-                                    <VBox fx:id="copyBookTableVbox" prefHeight="150.0" prefWidth="737.0" style="-fx-background-color: D34D34;" />
+                                    <VBox fx:id="copyBookTableVbox" prefHeight="150.0" prefWidth="737.0" />
                                  </content>
                               </ScrollPane>
                            </children>
@@ -179,11 +174,9 @@
             <Label layoutX="388.0" layoutY="102.0" styleClass="gray-text-Cabin" text="Vị trí:" />
             <Label layoutX="42.0" layoutY="138.0" styleClass="gray-text-Cabin" text="Tác giả:" />
             <Label layoutX="388.0" layoutY="138.0" styleClass="gray-text-Cabin" text="Thể loại:" />
-            <Label layoutX="42.0" layoutY="174.0" styleClass="gray-text-Cabin" text="Nhà xuất bản:" />
             <Label layoutX="42.0" layoutY="210.0" styleClass="gray-text-Cabin" text="Tổng số sách:" />
             <Label layoutX="191.0" layoutY="209.0" styleClass="gray-text-Cabin" text="Tổng số đang mượn:" />
             <Label layoutX="388.0" layoutY="209.0" styleClass="gray-text-Cabin" text="Tổng số bị mất:" />
-            <Button fx:id="choiceImageButton" layoutX="630.0" layoutY="238.0" mnemonicParsing="false" onAction="#onChoiceImageButtonAction" prefHeight="26.0" prefWidth="68.0" stylesheets="@../../../../style/AdminStyle.css" text="Chọn ảnh" visible="false" />
             <TextField fx:id="categoryText" layoutX="444.0" layoutY="132.0" prefHeight="34.0" prefWidth="122.0" style="-fx-background-color: transparent;" styleClass="black-text-Cabin" text="Lich SU, hoa hoc, toan hoc" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="233.0" />
          </children>
       </AnchorPane>
