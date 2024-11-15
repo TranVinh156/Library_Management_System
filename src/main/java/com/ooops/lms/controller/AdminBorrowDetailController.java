@@ -121,8 +121,8 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     void onAddButtonAction(ActionEvent event) {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thêm người này?");
         if (confirmYes) {
-            Command addCommand = new AdminCommand("add", );
-            commandInvoker.setCommand(addCommand);
+           // Command addCommand = new AdminCommand("add",);
+           // commandInvoker.setCommand(addCommand);
         }
         setAddMode(false);
     }
