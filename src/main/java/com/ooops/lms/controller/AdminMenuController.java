@@ -1,8 +1,6 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
-import javafx.animation.PauseTransition;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,14 +8,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -88,23 +85,25 @@ public class AdminMenuController extends BasicController {
     private ImageView settingLogo;
 
     private boolean isMenuExpanded = false;
+    private static Image minimizeIconImage = new Image(BasicController.class.getResource("/image/icon/minimize.png").toExternalForm());;
+    private static Image maximizeIconImage = new Image(BasicController.class.getResource("/image/icon/maximize.png").toExternalForm());
 
     public void initialize() throws IOException {
         //vBoxMain.prefWidthProperty().bind(scrollPane.widthProperty());
         //vBoxMain.prefHeightProperty().bind(scrollPane.heightProperty());
-        childFitHeightParent(mainPane,vBoxMain);
-        childFitWidthParent(mainPane,vBoxMain);
+        childFitHeightParent(mainPane, vBoxMain);
+        childFitWidthParent(mainPane, vBoxMain);
         openPage(dashboardPane);
 
         hideButtonTexts();
 
-        openMenuIcon.setOnMouseClicked(event ->toggleMenu());
+        openMenuIcon.setOnMouseClicked(event -> toggleMenu());
 
     }
 
     @FXML
     void onDashboardButtonAction(ActionEvent event) {
-       openPage(dashboardPane);
+        openPage(dashboardPane);
     }
 
     @FXML
@@ -154,17 +153,20 @@ public class AdminMenuController extends BasicController {
     }
 
     private void toggleMenu() {
-        if(!isMenuExpanded) {
+        if (!isMenuExpanded) {
             menuBar.setMinWidth(210);
             menuBar.setMaxWidth(210);
             addButton.setMaxWidth(100);
             addButton.setMinWidth(100);
+            openMenuIcon.setImage(minimizeIconImage);
             showButtonTexts();
         } else {
             menuBar.setMinWidth(62);
             menuBar.setMaxWidth(62);
             addButton.setMinWidth(54);
             addButton.setMaxWidth(54);
+
+            openMenuIcon.setImage(maximizeIconImage);
             hideButtonTexts();
         }
         isMenuExpanded = !isMenuExpanded;
@@ -180,6 +182,7 @@ public class AdminMenuController extends BasicController {
         settingButton.setText("Cài đặt");
         logoutButton.setText("Đăng xuất");
     }
+
     private void hideButtonTexts() {
         addButton.setText("");
         dashboardButton.setText("");
@@ -190,6 +193,7 @@ public class AdminMenuController extends BasicController {
         settingButton.setText("");
         logoutButton.setText("");
     }
+
     private void openPage(Node e) {
         mainPane.getChildren().clear();
         mainPane.getChildren().add(e);
