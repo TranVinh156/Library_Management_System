@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="817.0" style="-fx-background-color: FFF;" stylesheets="@../../../../style/AdminBorrowStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBorrowDetailController">
+<HBox prefHeight="501.0" prefWidth="817.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminBorrowStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBorrowDetailController">
    <children>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="800.0" HBox.hgrow="ALWAYS">
+      <VBox prefHeight="502.0" prefWidth="800.0" HBox.hgrow="ALWAYS">
          <children>
             <VBox maxHeight="570.0" prefHeight="436.0" prefWidth="818.0" VBox.vgrow="ALWAYS">
                <children>
