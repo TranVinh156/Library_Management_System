@@ -29,12 +29,7 @@ public class BookDAO implements DatabaseQuery<Book> {
         }
         return bookDAO;
     }
-
-    //cache
-    private static final int MAX_CACHE = 100;
-
-    LRUCache<String, List<Book>> bookCache = new LRUCache<>(MAX_CACHE);
-
+    
     private static final String SELECT_AUTHOR = "Select * from Authors where author_name = ?";
 
     private static final String INSERT_NEW_AUTHOR = "Insert into Authors (author_name) values (?)";
@@ -303,7 +298,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                 preparedStatement.setString(4, entity.getPlaceAt());
                 preparedStatement.setLong(5, entity.getISBN());
                 preparedStatement.executeUpdate();
-                
+
                 database.getConnection().commit();
                 return true;
             }
