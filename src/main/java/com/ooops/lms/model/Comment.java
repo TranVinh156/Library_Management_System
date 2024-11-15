@@ -8,6 +8,14 @@ public class Comment {
     private Member member;
     private int ISBN;
 
+    public Comment(String title, String content, int rate, Member member, int ISBN) {
+        this.title = title;
+        this.content = content;
+        this.rate = rate;
+        this.member = member;
+        this.ISBN = ISBN;
+    }
+
     public Comment(int commentId, String title, String content, int rate, Member member, int ISBN) {
         this.commentId = commentId;
         this.title = title;

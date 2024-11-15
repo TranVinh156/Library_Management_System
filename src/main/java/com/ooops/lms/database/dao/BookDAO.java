@@ -29,7 +29,7 @@ public class BookDAO implements DatabaseQuery<Book> {
         }
         return bookDAO;
     }
-    
+
     private static final String SELECT_AUTHOR = "Select * from Authors where author_name = ?";
 
     private static final String INSERT_NEW_AUTHOR = "Insert into Authors (author_name) values (?)";
@@ -73,6 +73,8 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     //
     private static final String SELECT_ALL = "Select * from Books";
+    private static final String SELECT_ALL_CATEGORY = "Select * from Category";
+    private static final String SELECT_ALL_AUTHOR = "Select * from Authors";
 
     /**
      * Thêm book vào csdl.
@@ -443,7 +445,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    bookList.add(find(resultSet.getInt("ISBN")));
+                    bookList.add(find(resultSet.getLong("ISBN")));
                 }
                 return bookList;
             }
@@ -491,6 +493,30 @@ public class BookDAO implements DatabaseQuery<Book> {
         }
 
         return keywords.toString();
+    }
+
+    public List<Category> selectAllCategory() throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL_CATEGORY)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Category> categoryList = new ArrayList<>();
+                while (resultSet.next()) {
+                    categoryList.add(new Category(resultSet.getInt("category_ID"), resultSet.getString("category_name")));
+                }
+                return categoryList;
+            }
+        }
+    }
+
+    public List<Author> selectAllAuthor() throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL_AUTHOR)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Author> authorList = new ArrayList<>();
+                while (resultSet.next()) {
+                    authorList.add(new Author(resultSet.getInt("author_ID"), resultSet.getString("author_name")));
+                }
+                return authorList;
+            }
+        }
     }
 
 }
