@@ -431,7 +431,11 @@ public class BookDAO implements DatabaseQuery<Book> {
                 "JOIN Category ON Books_Category.category_ID = Category.category_ID where ");
 
         for (String key : criteria.keySet()) {
-            findBookByCriteria.append(key).append(" LIKE ? AND ");
+            if (key.equals("ISBN")) {
+                findBookByCriteria.append("CAST(Books.ISBN AS CHAR) LIKE ? AND ");
+            } else {
+                findBookByCriteria.append(key).append(" LIKE ? AND ");
+            }
         }
 
         findBookByCriteria.setLength(findBookByCriteria.length() - 5);

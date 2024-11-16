@@ -216,7 +216,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
         boolean flag = false;
         for (String key : criteria.keySet()) {
             if (key.equals("member_id")) {
-                findMemberByCriteria.append("m.").append(key).append(" = ?").append(" OR ");
+                findMemberByCriteria.append("CAST(m.member_id AS CHAR) like ? OR ");
                 flag = true;
             } else {
                 findMemberByCriteria.append(key).append(" like ?").append(" OR ");
@@ -228,12 +228,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findMemberByCriteria.toString())) {
             int index = 1;
             for (Object value : criteria.values()) {
-                if (flag) {
-                    preparedStatement.setInt(index++, Integer.parseInt(value.toString()));
-                    flag = false;
-                } else {
-                    preparedStatement.setString(index++, "%" + value.toString() + "%");
-                }
+                preparedStatement.setString(index++, "%" + value.toString() + "%");
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
