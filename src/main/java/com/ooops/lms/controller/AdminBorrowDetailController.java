@@ -21,9 +21,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -103,6 +106,10 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
     @FXML
     private HBox mainDetailPane;
+    @FXML
+    private ImageView memberImage;
+    @FXML
+    private ImageView bookImage;
 
     private AdminBorrowPageController mainController;
     private boolean addMode;
@@ -113,6 +120,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     private ObservableList<Object> suggestList = FXCollections.observableArrayList();
     private SuggestionTable suggestionTable;
     private TextField followTextField;
+
 
     @FXML
     public void initialize() {
@@ -127,7 +135,21 @@ public class AdminBorrowDetailController extends BasicBorrowController {
                     suggestionPane.setVisible(false);
                 } else if (o instanceof BookItem) {
                     setBookItem((BookItem) o);
+                    suggestionVbox.getChildren().clear();
+                    suggestionPane.setVisible(false);
                 }
+            }
+        });
+
+        bookNameText.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Stage stage = (Stage) bookNameText.getScene().getWindow();
+
+                stage.widthProperty().addListener((obs, oldWidth, newWidth) ->
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+
+                stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
             }
         });
 
@@ -135,18 +157,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         memberIDText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 suggestionTable.loadFindData("memberID", newValue);
-                // Lấy vị trí trong scene
-                Bounds boundsInScene = memberIDText.localToScene(memberIDText.getBoundsInLocal());
-
-                // Chuyển đổi tọa độ từ scene về parent
-                Point2D pointInParent = memberIDText.getParent().sceneToLocal(
-                        boundsInScene.getMinX(),
-                        boundsInScene.getMinY()
-                );
-
-                // Đặt vị trí cho suggestionPane
-                suggestionPane.setLayoutX(pointInParent.getX()+87);
-                suggestionPane.setLayoutY(pointInParent.getY()+177);
+                suggestionTable.updateSuggestionPanePosition(memberIDText);
 
             }
         });
@@ -154,24 +165,21 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         barCodeText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 suggestionTable.loadFindData("bookBarCode", newValue);
-                // Lấy vị trí trong scene
-                Bounds boundsInScene = barCodeText.localToScene(barCodeText.getBoundsInLocal());
+                suggestionTable.updateSuggestionPanePosition(barCodeText);
+            }
+        });
 
-                // Chuyển đổi tọa độ từ scene về parent
-                Point2D pointInParent = barCodeText.getParent().sceneToLocal(
-                        boundsInScene.getMinX(),
-                        boundsInScene.getMinY()
-                );
-
-                // Đặt vị trí cho suggestionPane
-                suggestionPane.setLayoutX(pointInParent.getX()+87);
-                suggestionPane.setLayoutY(pointInParent.getY()+177);
+        bookNameText.textProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                suggestionTable.loadFindData("bookItemName", newValue);
+                suggestionTable.updateSuggestionPanePosition(bookNameText);
             }
         });
 
         memberNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 suggestionTable.loadFindData("memberName", newValue);
+                suggestionTable.updateSuggestionPanePosition(memberNameText);
             }
         });
     }
@@ -217,52 +225,6 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
     }
 
-    private void loadMemberFindData(String newValue) {
-        // Khi người dùng nhập vào, lọc lại dữ liệu và hiển thị kết quả
-        member = new Member(null, null, null);
-        member.setAccountId(Integer.parseInt(newValue));
-
-        Command findMemberCommand = new AdminCommand("find", member);
-        commandInvoker.setCommand(findMemberCommand);
-        if (commandInvoker.executeCommand()) {
-            AdminCommand adminCommand = (AdminCommand) findMemberCommand;
-            member = adminCommand.getMemberResult();
-            if (member != null) {
-                setMember(member);
-                System.out.println("Người đọc tồn tại");
-            } else {
-                setMemberTextFieldNull();
-                System.out.println("Người đọc không tồn tại");
-            }
-        } else {
-            System.out.println("Lỗi truy vấn");
-        }
-    }
-
-    private void loadBookFindData(String newValue) {
-        System.out.println("Load book Find Dtaa");
-        bookItem = new BookItem();
-        bookItem.setBarcode(Integer.parseInt(newValue));
-        System.out.println(bookItem.getBarcode());
-
-        Command findBookCommand = new AdminCommand("find", bookItem);
-        commandInvoker.setCommand(findBookCommand);
-        if (commandInvoker.executeCommand()) {
-            AdminCommand adminCommand = (AdminCommand) findBookCommand;
-            bookItem = adminCommand.getBookItemResult();
-            if (bookItem != null) {
-                setBookItem(bookItem);
-                System.out.println("Sách tồn tại");
-            } else {
-                setBookTextFielNull();
-                System.out.println("Sách không tồn tại");
-            }
-        } else {
-            setBookTextFielNull();
-            System.out.println("Lỗi truy vấn");
-        }
-    }
-
     public void loadStartStatus() {
         setAddMode(false);
         setEditMode(false);
@@ -280,6 +242,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         memberIDText.setEditable(add);
         memberNameText.setEditable(add);
         barCodeText.setEditable(add);
+        bookNameText.setEditable(add);
 
         borowDateText.setEditable(add);
         returnDateText.setEditable(add);
@@ -345,13 +308,16 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         emailText.setText(member.getPerson().getEmail());
         genderText.setText(member.getPerson().getGender().toString());
         totalOFBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
+        memberImage.setImage(new Image(member.getPerson().getImagePath()));
         totalOfLostText.setText("chua co");
     }
 
     private void setBookItem(BookItem bookItem) {
         this.bookItem = bookItem;
+        barCodeText.setText(String.valueOf(bookItem.getBarcode()));
         bookNameText.setText(bookItem.getTitle());
         categoryText.setText(getCategories(bookItem.getCategories()));
         authorNameText.setText(getAuthors(bookItem.getAuthors()));
+        bookImage.setImage(new Image(bookItem.getImagePath()));
     }
 }
