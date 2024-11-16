@@ -32,7 +32,7 @@
                         </AnchorPane>
                      </children>
                   </HBox>
-                  <HBox minWidth="321.0" prefHeight="606.0" prefWidth="321.0" HBox.hgrow="ALWAYS">
+                  <HBox prefHeight="606.0" prefWidth="321.0" HBox.hgrow="ALWAYS">
                      <children>
                         <AnchorPane prefHeight="606.0" prefWidth="421.0" HBox.hgrow="ALWAYS">
                            <children>

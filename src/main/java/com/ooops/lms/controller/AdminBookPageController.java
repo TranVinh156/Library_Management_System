@@ -22,7 +22,11 @@ public class AdminBookPageController extends BasicBookController {
 
     private AdminBookDetailController adminBookDetailController;
     private AdminBookTableController adminBookTableController;
+    private AdminMenuController mainController;
 
+    public void setMainController( AdminMenuController mainController) {
+        this.mainController = mainController;
+    }
 
     @FXML
     public void initialize() {
@@ -77,6 +81,10 @@ public class AdminBookPageController extends BasicBookController {
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+    }
+    public void startPage() {
+        detailPage.setVisible(false);
+        tablePage.setVisible(true);
     }
 
     /**

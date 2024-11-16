@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBorrowTableController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="604.0" prefWidth="888.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBorrowTableController">
    <children>
       <AnchorPane prefHeight="602.0" prefWidth="893.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminBorrowStyle.css" HBox.hgrow="ALWAYS">
          <children>
