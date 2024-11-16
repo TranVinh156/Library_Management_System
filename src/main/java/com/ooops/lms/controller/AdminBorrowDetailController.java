@@ -3,17 +3,26 @@ package com.ooops.lms.controller;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
+import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
+import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.*;
+import com.ooops.lms.SuggestionTable.SuggestionTable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminBorrowDetailController extends BasicBorrowController {
 
@@ -75,25 +84,49 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     private TextField statusText;
 
     @FXML
+    private ScrollPane suggestionPane;
+
+    @FXML
     private TextField totalOFBorrowText;
 
     @FXML
     private TextField totalOfLostText;
+
+    @FXML
+    private VBox suggestionVbox;
 
     private AdminBorrowPageController mainController;
     private boolean addMode;
     private Member member;
     private BookItem bookItem;
     private BookReservation bookReservation;
+    private ObservableList<Member> membersSuggestList = FXCollections.observableArrayList();
+    private ObservableList<Object> suggestList = FXCollections.observableArrayList();
+    private SuggestionTable suggestionTable;
 
     @FXML
     public void initialize() {
+        suggestionTable = new SuggestionTable(this.suggestionVbox);
+        // Đăng ký listener để xử lý sự kiện click
+        suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
+            @Override
+            public void onRowClick(Object o) {
+                if(o instanceof Member) {
+                    setMember((Member)o);
+                    suggestionVbox.getChildren().clear();
+                    suggestionPane.setVisible(false);
+                } else if(o instanceof BookItem) {
+                    setBookItem((BookItem)o);
+                }
+            }
+        });
+
         // Lắng nghe sự thay đổi trong TextField tìm kiếm
         memberIDText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue != null && !newValue.isEmpty()) {
-                    loadMemberFindData(newValue);
-                }
+               // if (newValue != null && !newValue.isEmpty()) {
+                    loadMemberSuggestionFindData(newValue);
+
             }
         });
         barCodeText.textProperty().addListener(new ChangeListener<String>() {
@@ -103,6 +136,48 @@ public class AdminBorrowDetailController extends BasicBorrowController {
                 }
             }
         });
+
+        memberNameText.textProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                loadMemberSuggestionFindData(newValue);
+            }
+        });
+    }
+
+    private void loadMemberSuggestionFindData(String newValue) {
+        if(newValue == null || newValue.isEmpty()) {
+            suggestionVbox.getChildren().clear();
+            suggestionPane.setVisible(false);
+            return;
+        }
+        try {
+            suggestList.clear();
+            suggestionVbox.getChildren().clear();
+            Map<Integer, Member> uniqueMembersMap = new HashMap<>();
+            Map<String, Object> searchCriteria = new HashMap<>();
+            searchCriteria.clear();
+            // Tìm kiếm theo last_name
+            searchCriteria.clear();
+            searchCriteria.put("first_name", newValue);
+            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                uniqueMembersMap.put(member.getPerson().getId(), member);
+            }
+            searchCriteria.clear();
+            searchCriteria.put("last_name", newValue);
+            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                uniqueMembersMap.put(member.getPerson().getId(), member);
+            }
+            suggestList.addAll(uniqueMembersMap.values());
+            if(suggestList.size() > 0) {
+                suggestionPane.setVisible(true);
+                suggestionTable.loadSuggestionRows(suggestList);
+            } else {
+                suggestionPane.setVisible(false);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Lỗi loadMemberSuggestion: "+e.getMessage());
+        }
     }
 
     void setMainController(AdminBorrowPageController mainController) {
@@ -121,8 +196,8 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     void onAddButtonAction(ActionEvent event) {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thêm người này?");
         if (confirmYes) {
-            Command addCommand = new AdminCommand("add", );
-            commandInvoker.setCommand(addCommand);
+            // Command addCommand = new AdminCommand("add",);
+            // commandInvoker.setCommand(addCommand);
         }
         setAddMode(false);
     }
@@ -178,7 +253,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         if (commandInvoker.executeCommand()) {
             AdminCommand adminCommand = (AdminCommand) findBookCommand;
             bookItem = adminCommand.getBookItemResult();
-            if(bookItem != null) {
+            if (bookItem != null) {
                 setBookItem(bookItem);
                 System.out.println("Sách tồn tại");
             } else {
@@ -206,6 +281,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         scanMemberButton.setVisible(add);
 
         memberIDText.setEditable(add);
+        memberNameText.setEditable(add);
         barCodeText.setEditable(add);
 
         borowDateText.setEditable(add);

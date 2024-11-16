@@ -13,11 +13,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="527.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminIssuelStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminIssueDetailController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="512.0" prefWidth="527.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminIssuelStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminIssueDetailController">
    <children>
       <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
+            <AnchorPane prefHeight="250.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
                <children>
                   <GridPane layoutX="17.0" layoutY="49.0" prefHeight="194.0" prefWidth="490.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="49.0">
                     <columnConstraints>
