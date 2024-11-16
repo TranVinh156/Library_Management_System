@@ -87,6 +87,11 @@ public class AdminUserTableController extends BasicUserController {
                 uniqueMembersMap.put(member.getPerson().getId(), member);
             }
 
+            searchCriteria.put("member_id", name);
+            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                uniqueMembersMap.put(member.getPerson().getId(), member);
+            }
+
             // Tìm kiếm theo first_name
             searchCriteria.clear();
             searchCriteria.put("first_name", name);
