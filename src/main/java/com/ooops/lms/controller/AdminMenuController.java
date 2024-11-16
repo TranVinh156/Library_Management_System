@@ -11,24 +11,35 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class AdminMenuController extends BasicController {
-
-
     @FXML
     private Button addButton;
+
+    @FXML
+    private Button addNewBookButton;
+
+    @FXML
+    private Button addNewBorrowButtonAction;
+
+    @FXML
+    private Button addNewMemberButton;
+
+    @FXML
+    private AnchorPane addTablePane;
 
     @FXML
     private Button bookManagementButton;
 
     @FXML
     private ImageView bookManagementLogo;
+
+    @FXML
+    private BorderPane borderPane;
 
     @FXML
     private Button borrowButton;
@@ -41,6 +52,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     private ImageView dashboardLogo;
+
+    @FXML
+    private HBox hBoxMain;
 
     @FXML
     private ImageView issueLogo;
@@ -58,9 +72,6 @@ public class AdminMenuController extends BasicController {
     private AnchorPane mainPane;
 
     @FXML
-    private ScrollPane scrollPane;
-
-    @FXML
     private VBox menuBar;
 
     @FXML
@@ -76,53 +87,103 @@ public class AdminMenuController extends BasicController {
     private Button settingButton;
 
     @FXML
-    private HBox hBoxMain;
-
-    @FXML
-    private VBox vBoxMain;
-
-    @FXML
     private ImageView settingLogo;
 
     private boolean isMenuExpanded = false;
     private static Image minimizeIconImage = new Image(BasicController.class.getResource("/image/icon/minimize.png").toExternalForm());;
     private static Image maximizeIconImage = new Image(BasicController.class.getResource("/image/icon/maximize.png").toExternalForm());
 
+    private AdminBookPageController adminBookPageController;
+    private AdminUserPageController adminUserPageController;
+    private AdminBorrowPageController adminBorrowPageController;
+
     public void initialize() throws IOException {
-        //vBoxMain.prefWidthProperty().bind(scrollPane.widthProperty());
-        //vBoxMain.prefHeightProperty().bind(scrollPane.heightProperty());
-        childFitHeightParent(mainPane, vBoxMain);
-        childFitWidthParent(mainPane, vBoxMain);
+        adminBookPageController = bookPagePaneLoader.getController();
+        adminUserPageController = userPagePaneLoader.getController();
+        adminBorrowPageController = borrowPagePaneLoader.getController();
+
         openPage(dashboardPane);
-
         hideButtonTexts();
-
         openMenuIcon.setOnMouseClicked(event -> toggleMenu());
+        hanleAddTablePaneClose();
+    }
 
+    private void hanleAddTablePaneClose() {
+        // Lắng nghe sự thay đổi của Scene
+        borderPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            newScene.setOnMouseClicked(event -> {
+                if(addTablePane.isVisible()) {
+                    javafx.geometry.Bounds bounds = addTablePane.localToScene(addTablePane.getBoundsInLocal());
+
+                    if (!bounds.contains(event.getSceneX(), event.getSceneY())) {
+                        // Ẩn addTablePane nếu click ngoài
+                        addTablePane.setVisible(false);
+                    }
+                }
+            });
+        });
     }
 
     @FXML
-    void onDashboardButtonAction(ActionEvent event) {
+    void onAddNewBookButtonAction(ActionEvent event) {
+        openPage(bookPagePane);
+        adminBookPageController.loadAddPane();
+        addTablePane.setVisible(false);
+    }
+
+    @FXML
+    void onAddNewBorrowButtonAction(ActionEvent event) {
+        openPage(borrowPagePane);
+        adminBorrowPageController.addTable();
+        addTablePane.setVisible(false);
+    }
+
+    @FXML
+    void onAddNewMemberButtonAction(ActionEvent event) {
+        openPage(userPagePane);
+        adminUserPageController.loadAddPane();
+        addTablePane.setVisible(false);
+    }
+
+    @FXML
+     void onDashboardButtonAction(ActionEvent event) {
+        if(addTablePane.isVisible()) {
+            addTablePane.setVisible(false);
+        }
         openPage(dashboardPane);
     }
 
     @FXML
     void onBorrowButtonAction(ActionEvent event) {
+        if(addTablePane.isVisible()) {
+            addTablePane.setVisible(false);
+        }
+        adminBorrowPageController.startPage();
         openPage(borrowPagePane);
     }
 
     @FXML
     void onBookManagmentButtonAction(ActionEvent event) {
+        if(addTablePane.isVisible()) {
+            addTablePane.setVisible(false);
+        }
+        adminBookPageController.startPage();
         openPage(bookPagePane);
     }
 
     @FXML
     void onReaderManagementButtonAction(ActionEvent event) {
+        if(addTablePane.isVisible()) {
+            addTablePane.setVisible(false);
+        }
         openPage(userPagePane);
     }
 
     @FXML
     void onIssuesButtonAction(ActionEvent event) {
+        if(addTablePane.isVisible()) {
+            addTablePane.setVisible(false);
+        }
         openPage(issuePagePane);
     }
 
@@ -144,12 +205,16 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onSettingButtonAction(ActionEvent event) {
+        if(addTablePane.isVisible()) {
+            addTablePane.setVisible(false);
+        }
 
     }
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
-
+        System.out.println("Add button clicked");
+        addTablePane.setVisible(!addTablePane.isVisible());
     }
 
     private void toggleMenu() {
