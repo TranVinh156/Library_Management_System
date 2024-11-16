@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class BookInfoFetcher {
     private static final String API_URL_KEYWORD = "https://www.googleapis.com/books/v1/volumes?q=";
     private static final String API_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
-
+    private static final int MAX_BOOK = 30;
     public static List<Book> searchBooksByKeyword(String title) {
         List<Book> books = new ArrayList<>();
         try {
@@ -38,7 +38,7 @@ public class BookInfoFetcher {
             JSONObject jsonResponse = new JSONObject(response.toString());
             JSONArray items = jsonResponse.optJSONArray("items");
             if (items != null && items.length() > 0) {
-                for (int i = 0; i < items.length(); i++) {
+                for (int i = 0; i < MAX_BOOK; i++) {
                     JSONObject volumeInfo = items.getJSONObject(i).getJSONObject("volumeInfo");
 
                     Long isbn = 0L;
