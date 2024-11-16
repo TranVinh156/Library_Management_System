@@ -219,8 +219,8 @@ public class AdminMenuController extends BasicController {
 
     private void toggleMenu() {
         if (!isMenuExpanded) {
-            menuBar.setMinWidth(210);
-            menuBar.setMaxWidth(210);
+            menuBar.setMinWidth(238);
+            menuBar.setMaxWidth(238);
             addButton.setMaxWidth(100);
             addButton.setMinWidth(100);
             openMenuIcon.setImage(minimizeIconImage);
