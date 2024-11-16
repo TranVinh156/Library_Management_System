@@ -30,7 +30,7 @@ public class BasicController {
     private static final String RESIGN_FXML = "/com/ooops/lms/library_management_system/UserResign-view.fxml";
     private static final String FORGOT_PASSWORD_FXML = "/com/ooops/lms/library_management_system/ForgotPassword-view.fxml";
 
-    private static final String ADMIN_MENU_FXML = "/com/ooops/lms/library_management_system/AdminMenu.fxml";
+    protected static final String ADMIN_MENU_FXML = "/com/ooops/lms/library_management_system/AdminMenu.fxml";
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/AdminDashBoardMain.fxml";
     protected static final String TOPBOOK_CARD_FXML = "/com/ooops/lms/library_management_system/TopBookCard.fxml";
@@ -45,6 +45,9 @@ public class BasicController {
 
     protected static final FXMLLoader loginLoader;
     protected static final Node loginPane;
+
+    protected static final FXMLLoader adminMenuPaneLoader;
+    protected static final Node adminMenuPane;
 
     protected static Image defaultUserImage;
 
@@ -114,6 +117,9 @@ public class BasicController {
         //load BorrowMangament-view
         borrowPagePaneLoader = loadFXML(BORROW_PAGE_FXML, BasicController.class);
         borrowPagePane = loadPane(borrowPagePaneLoader, BasicController.class);
+
+        adminMenuPaneLoader = loadFXML(ADMIN_MENU_FXML,BasicController.class);
+        adminMenuPane = loadPane(adminMenuPaneLoader, BasicController.class);
     }
 
     /**
