@@ -3,10 +3,14 @@ package com.ooops.lms.controller;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
+import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
+import com.ooops.lms.SuggestionTable.SuggestionTable;
 import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Category;
+import com.ooops.lms.model.Member;
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.io.IOException;
@@ -101,9 +106,16 @@ public class AdminBookDetailController extends BasicBookController {
     @FXML
     private ScrollPane scrollPane;
 
+    @FXML
+    private ScrollPane suggestionPane;
+    @FXML
+    private VBox suggestionVbox;
+
     private AdminBookPageController mainController;
+    private SuggestionTable suggestionTable;
     private Book book;
 
+    private PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.25));
     private boolean editMode = false;
     private boolean addMode = false;
     private boolean isPage1 = true;
@@ -115,21 +127,38 @@ public class AdminBookDetailController extends BasicBookController {
 
     @FXML
     private void initialize() {
-        childFitWidthParent(copyBookTableVbox, scrollPane);
-
-        //Nếu như ISBN có 13 chữ số tiến hành tra cứu API để load dữ liệu về
-        ISBNText.textProperty().addListener(new ChangeListener<String>() {
+        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
+        suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Loại bỏ các ký tự không phải số
-                String isbnNumbers = newValue.replaceAll("[^0-9]", "");
-                // Chỉ tìm kiếm khi đủ 10 hoặc 13 số
-                if (isbnNumbers.length() == 13 && !isbnNumbers.equals(String.valueOf(book.getISBN()))) {
-                    System.out.println(isbnNumbers);
-                    System.out.println(book.getISBN());
-                    loadBookFindAPI(isbnNumbers);
+            public void onRowClick(Object o) {
+                if(o instanceof Book) {
+                    setItem((Book)o);
+                    suggestionVbox.getChildren().clear();
+                    suggestionPane.setVisible(false);
                 }
             }
+        });
+
+        childFitWidthParent(copyBookTableVbox, scrollPane);
+
+        // Listener cho ISBN TextField
+        ISBNText.textProperty().addListener((observable, oldValue, newValue) -> {
+            suggestionTable.updateSuggestionPanePosition(ISBNText);
+            // Reset và restart pause transition mỗi khi có thay đổi text
+            pauseTransition.setOnFinished(event -> {
+                String isbnNumbers = newValue.replaceAll("[^0-9]", "");
+                suggestionTable.loadFindData("bookAPI", isbnNumbers);
+            });
+            pauseTransition.playFromStart();
+        });
+
+        bookNameText.textProperty().addListener((observable, oldValue, newValue) -> {
+            suggestionTable.updateSuggestionPanePosition(bookNameText);
+            // Reset và restart pause transition mỗi khi có thay đổi text
+            pauseTransition.setOnFinished(event -> {
+                suggestionTable.loadFindData("bookAPI", newValue);
+            });
+            pauseTransition.playFromStart();
         });
     }
 
