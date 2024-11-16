@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="501.0" prefWidth="817.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminBorrowStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBorrowDetailController">
+<HBox fx:id="mainDetailPane" prefHeight="501.0" prefWidth="817.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminBorrowStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBorrowDetailController">
    <children>
       <StackPane prefHeight="502.0" prefWidth="893.0" HBox.hgrow="ALWAYS">
          <children>
