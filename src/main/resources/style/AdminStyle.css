@@ -27,12 +27,12 @@
 }
 .menu-bar-button {
     -fx-font-family: 'Cabin';
-    -fx-font-size: 20px;
     -fx-background-color: #FFFFFF;
 }
 
 .menu-bar-button:hover{
     -fx-background-color: #E4E4E4;
+    -fx-font-family: 'Cabin';
 }
 
 
@@ -148,3 +148,6 @@
     -fx-background-color: #c5c4c4;
 }
 
+.shadow_box {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 10, 0, 0, 0);
+}
