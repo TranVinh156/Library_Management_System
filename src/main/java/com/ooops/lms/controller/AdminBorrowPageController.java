@@ -50,6 +50,11 @@ public class AdminBorrowPageController extends BasicBorrowController {
         tablePage.setVisible(!tablePage.isVisible());
     }
 
+    public void startPage() {
+        detailPage.setVisible(false);
+        tablePage.setVisible(true);
+    }
+
 
 
 }
