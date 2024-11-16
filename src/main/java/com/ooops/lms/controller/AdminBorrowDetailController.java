@@ -7,16 +7,22 @@ import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.*;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
@@ -95,6 +101,9 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     @FXML
     private VBox suggestionVbox;
 
+    @FXML
+    private HBox mainDetailPane;
+
     private AdminBorrowPageController mainController;
     private boolean addMode;
     private Member member;
@@ -103,20 +112,21 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     private ObservableList<Member> membersSuggestList = FXCollections.observableArrayList();
     private ObservableList<Object> suggestList = FXCollections.observableArrayList();
     private SuggestionTable suggestionTable;
+    private TextField followTextField;
 
     @FXML
     public void initialize() {
-        suggestionTable = new SuggestionTable(this.suggestionVbox);
+        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
         // Đăng ký listener để xử lý sự kiện click
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
             public void onRowClick(Object o) {
-                if(o instanceof Member) {
-                    setMember((Member)o);
+                if (o instanceof Member) {
+                    setMember((Member) o);
                     suggestionVbox.getChildren().clear();
                     suggestionPane.setVisible(false);
-                } else if(o instanceof BookItem) {
-                    setBookItem((BookItem)o);
+                } else if (o instanceof BookItem) {
+                    setBookItem((BookItem) o);
                 }
             }
         });
@@ -124,60 +134,46 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         // Lắng nghe sự thay đổi trong TextField tìm kiếm
         memberIDText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-               // if (newValue != null && !newValue.isEmpty()) {
-                    loadMemberSuggestionFindData(newValue);
+                suggestionTable.loadFindData("memberID", newValue);
+                // Lấy vị trí trong scene
+                Bounds boundsInScene = memberIDText.localToScene(memberIDText.getBoundsInLocal());
+
+                // Chuyển đổi tọa độ từ scene về parent
+                Point2D pointInParent = memberIDText.getParent().sceneToLocal(
+                        boundsInScene.getMinX(),
+                        boundsInScene.getMinY()
+                );
+
+                // Đặt vị trí cho suggestionPane
+                suggestionPane.setLayoutX(pointInParent.getX()+87);
+                suggestionPane.setLayoutY(pointInParent.getY()+177);
 
             }
         });
+
         barCodeText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue != null && !newValue.isEmpty()) {
-                    loadBookFindData(newValue);
-                }
+                suggestionTable.loadFindData("bookBarCode", newValue);
+                // Lấy vị trí trong scene
+                Bounds boundsInScene = barCodeText.localToScene(barCodeText.getBoundsInLocal());
+
+                // Chuyển đổi tọa độ từ scene về parent
+                Point2D pointInParent = barCodeText.getParent().sceneToLocal(
+                        boundsInScene.getMinX(),
+                        boundsInScene.getMinY()
+                );
+
+                // Đặt vị trí cho suggestionPane
+                suggestionPane.setLayoutX(pointInParent.getX()+87);
+                suggestionPane.setLayoutY(pointInParent.getY()+177);
             }
         });
 
         memberNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                loadMemberSuggestionFindData(newValue);
+                suggestionTable.loadFindData("memberName", newValue);
             }
         });
-    }
-
-    private void loadMemberSuggestionFindData(String newValue) {
-        if(newValue == null || newValue.isEmpty()) {
-            suggestionVbox.getChildren().clear();
-            suggestionPane.setVisible(false);
-            return;
-        }
-        try {
-            suggestList.clear();
-            suggestionVbox.getChildren().clear();
-            Map<Integer, Member> uniqueMembersMap = new HashMap<>();
-            Map<String, Object> searchCriteria = new HashMap<>();
-            searchCriteria.clear();
-            // Tìm kiếm theo last_name
-            searchCriteria.clear();
-            searchCriteria.put("first_name", newValue);
-            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                uniqueMembersMap.put(member.getPerson().getId(), member);
-            }
-            searchCriteria.clear();
-            searchCriteria.put("last_name", newValue);
-            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                uniqueMembersMap.put(member.getPerson().getId(), member);
-            }
-            suggestList.addAll(uniqueMembersMap.values());
-            if(suggestList.size() > 0) {
-                suggestionPane.setVisible(true);
-                suggestionTable.loadSuggestionRows(suggestList);
-            } else {
-                suggestionPane.setVisible(false);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Lỗi loadMemberSuggestion: "+e.getMessage());
-        }
     }
 
     void setMainController(AdminBorrowPageController mainController) {
