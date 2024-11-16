@@ -198,6 +198,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
         if (confirmYes) {
             // Command addCommand = new AdminCommand("add",);
             // commandInvoker.setCommand(addCommand);
+            //Thang cho Vinh
         }
         setAddMode(false);
     }
