@@ -202,7 +202,6 @@ public class SuggestionTable {
             if (!suggestList.isEmpty()) {
                 long startTime = System.currentTimeMillis();
                 Platform.runLater(() -> scrollPane.setVisible(true));
-                updateSuggestionPaneForActiveField();
                 loadSuggestionRowsAsync();
                 long endTime = System.currentTimeMillis();
                 long duration = endTime - startTime;
