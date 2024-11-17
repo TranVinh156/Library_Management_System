@@ -115,10 +115,11 @@ public class AdminBookDetailController extends BasicBookController {
     private SuggestionTable suggestionTable;
     private Book book;
 
-    private PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.25));
+    private PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.5));
     private boolean editMode = false;
     private boolean addMode = false;
     private boolean isPage1 = true;
+    private boolean isSettingItem = false;
     private ObservableList<BookItem> bookItemList = FXCollections.observableArrayList();
 
     public void setMainController(AdminBookPageController mainController) {
@@ -132,6 +133,7 @@ public class AdminBookDetailController extends BasicBookController {
             @Override
             public void onRowClick(Object o) {
                 if(o instanceof Book) {
+                    isSettingItem = true;
                     setItem((Book)o);
                     suggestionVbox.getChildren().clear();
                     suggestionPane.setVisible(false);
@@ -143,22 +145,27 @@ public class AdminBookDetailController extends BasicBookController {
 
         // Listener cho ISBN TextField
         ISBNText.textProperty().addListener((observable, oldValue, newValue) -> {
-            suggestionTable.updateSuggestionPanePosition(ISBNText);
-            // Reset và restart pause transition mỗi khi có thay đổi text
-            pauseTransition.setOnFinished(event -> {
-                String isbnNumbers = newValue.replaceAll("[^0-9]", "");
-                suggestionTable.loadFindData("bookAPI", isbnNumbers);
-            });
-            pauseTransition.playFromStart();
+            if(!isSettingItem && addMode) {
+                suggestionTable.updateSuggestionPanePosition(ISBNText);
+                // Reset và restart pause transition mỗi khi có thay đổi text
+                pauseTransition.setOnFinished(event -> {
+                    String isbnNumbers = newValue.replaceAll("[^0-9]", "");
+                    suggestionTable.loadFindData("bookAPI", isbnNumbers);
+                });
+                pauseTransition.playFromStart();
+            }
+            isSettingItem = false;
         });
 
         bookNameText.textProperty().addListener((observable, oldValue, newValue) -> {
-            suggestionTable.updateSuggestionPanePosition(bookNameText);
-            // Reset và restart pause transition mỗi khi có thay đổi text
-            pauseTransition.setOnFinished(event -> {
-                suggestionTable.loadFindData("bookAPI", newValue);
-            });
-            pauseTransition.playFromStart();
+            if(!isSettingItem && addMode) {
+                suggestionTable.updateSuggestionPanePosition(bookNameText);
+                // Reset và restart pause transition mỗi khi có thay đổi text
+                pauseTransition.setOnFinished(event -> {
+                    suggestionTable.loadFindData("bookAPI", newValue);
+                });
+                pauseTransition.playFromStart();
+            }
         });
     }
 
@@ -259,33 +266,6 @@ public class AdminBookDetailController extends BasicBookController {
     @FXML
     void onScanButtonAction(ActionEvent event) {
 
-    }
-
-    /**
-     * Hàm này dùng để tìm kiếm sách trên API và trả về book nếu tìm được.
-     * Nếu như tìm được book thì gọi hàm set thông tin các trường.
-     *
-     * @param ISBN
-     */
-    private void loadBookFindAPI(String ISBN) {
-        if (addMode) {
-            String isbnString = ISBN;
-            book.setISBN(Long.parseLong(isbnString));
-            Command findCommand = new AdminCommand("findAPI", book);
-            commandInvoker.setCommand(findCommand);
-            if (commandInvoker.executeCommand()) {
-                AdminCommand adminCommand = (AdminCommand) findCommand;
-                book = adminCommand.getBookResult();
-                if (book != null) {
-                    setItem(book);
-                    System.out.println("Sách tồn tại");
-                } else {
-                    System.out.println("Sách không tồn tại");
-                }
-            } else {
-                System.out.println("Lỗi truy vấn");
-            }
-        }
     }
 
     /**
