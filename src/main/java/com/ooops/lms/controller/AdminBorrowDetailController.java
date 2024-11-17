@@ -7,6 +7,9 @@ import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.*;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
+import com.ooops.lms.model.enums.BookIssueStatus;
+import com.ooops.lms.model.enums.BookItemStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,10 +20,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,30 +111,48 @@ public class AdminBorrowDetailController extends BasicBorrowController {
     private ImageView memberImage;
     @FXML
     private ImageView bookImage;
+    @FXML
+    private ChoiceBox<String> borrowStatus;
 
     private AdminBorrowPageController mainController;
     private boolean addMode;
     private Member member;
     private BookItem bookItem;
     private BookReservation bookReservation;
+    private BookIssue bookIssue;
     private ObservableList<Member> membersSuggestList = FXCollections.observableArrayList();
     private ObservableList<Object> suggestList = FXCollections.observableArrayList();
     private SuggestionTable suggestionTable;
     private TextField followTextField;
 
+    private boolean isSettingMember = false;
+    private boolean isSettingBook = false;
+
 
     @FXML
     public void initialize() {
+        borrowStatus.getItems().addAll(
+                BookReservationStatus.WAITING.toString(),
+                BookReservationStatus.CANCELED.toString(),
+                BookReservationStatus.COMPLETED.toString(),
+                BookIssueStatus.BORROWED.toString(),
+                BookIssueStatus.LOST.toString(),
+                BookIssueStatus.RETURNED.toString()
+        );
+
+
         suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
         // Đăng ký listener để xử lý sự kiện click
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
             public void onRowClick(Object o) {
                 if (o instanceof Member) {
+                    isSettingMember = true;
                     setMember((Member) o);
                     suggestionVbox.getChildren().clear();
                     suggestionPane.setVisible(false);
                 } else if (o instanceof BookItem) {
+                    isSettingBook = true;
                     setBookItem((BookItem) o);
                     suggestionVbox.getChildren().clear();
                     suggestionPane.setVisible(false);
@@ -153,35 +172,46 @@ public class AdminBorrowDetailController extends BasicBorrowController {
             }
         });
 
-        // Lắng nghe sự thay đổi trong TextField tìm kiếm
-        memberIDText.textProperty().addListener(new ChangeListener<String>() {
+        memberNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                suggestionTable.loadFindData("memberID", newValue);
-                suggestionTable.updateSuggestionPanePosition(memberIDText);
-
+                if (!isSettingMember && addMode) {
+                    suggestionTable.loadFindData("memberName", newValue);
+                    suggestionTable.updateSuggestionPanePosition(memberNameText);
+                }
             }
         });
 
-        barCodeText.textProperty().addListener(new ChangeListener<String>() {
+        // Lắng nghe sự thay đổi trong TextField tìm kiếm
+        memberIDText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                suggestionTable.loadFindData("bookBarCode", newValue);
-                suggestionTable.updateSuggestionPanePosition(barCodeText);
+                if (!isSettingMember && addMode) {
+                    suggestionTable.loadFindData("memberID", newValue);
+                    suggestionTable.updateSuggestionPanePosition(memberIDText);
+                }
+                isSettingMember = false;
             }
         });
 
         bookNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                suggestionTable.loadFindData("bookItemName", newValue);
-                suggestionTable.updateSuggestionPanePosition(bookNameText);
+                if (!isSettingBook && addMode) {
+                    suggestionTable.loadFindData("bookItemName", newValue);
+                    suggestionTable.updateSuggestionPanePosition(bookNameText);
+                }
             }
         });
 
-        memberNameText.textProperty().addListener(new ChangeListener<String>() {
+        barCodeText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                suggestionTable.loadFindData("memberName", newValue);
-                suggestionTable.updateSuggestionPanePosition(memberNameText);
+                if (!isSettingBook && addMode) {
+                    suggestionTable.loadFindData("bookBarCode", newValue);
+                    suggestionTable.updateSuggestionPanePosition(barCodeText);
+                }
+                isSettingBook = false;
             }
         });
+
+
     }
 
     void setMainController(AdminBorrowPageController mainController) {
@@ -198,13 +228,85 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thêm người này?");
-        if (confirmYes) {
-            // Command addCommand = new AdminCommand("add",);
-            // commandInvoker.setCommand(addCommand);
-            //Thang cho Vinh
+        if(borrowStatus.getValue().equals("Đang chờ") ||borrowStatus.getValue().equals("Đã xong") || borrowStatus.getValue().equals("Đã hủy") ) {
+            if (getNewBookReservation()) {
+                boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thêm đơn đặt sách này?");
+                if (confirmYes) {
+                    System.out.println(bookReservation.getBookItem().getBarcode());
+                    Command addCommand = new AdminCommand("add", this.bookReservation);
+                    commandInvoker.setCommand(addCommand);
+                    if (commandInvoker.executeCommand()) {
+                        //.loadData();
+                        setAddMode(false);
+                        System.out.println("Đã lưu thay đổi");
+                    }
+                }
+            }
+        } else {
+            if(getNewBookIssuel()) {
+                boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thêm đơn mượn sách này?");
+                if (confirmYes) {
+                    System.out.println(bookIssue.getBookItem().getBarcode());
+                    Command addCommand = new AdminCommand("add", this.bookIssue);
+                    commandInvoker.setCommand(addCommand);
+                    if (commandInvoker.executeCommand()) {
+                        //.loadData();
+                        setAddMode(false);
+                        System.out.println("Đã lưu thay đổi");
+                    }
+                }
+            }
         }
-        setAddMode(false);
+    }
+
+    private boolean getNewBookIssuel() {
+        if (member == null) {
+            CustomerAlter.showMessage("Hãy điền bạn đọc vào!");
+            return false;
+        }
+        if (bookItem == null) {
+            CustomerAlter.showMessage("Hãy điền thông tin sách mượn vào!");
+            return false;
+        }
+        if (borowDateText == null) {
+            CustomerAlter.showMessage("Không được để trống ngày mượn!");
+            return false;
+        }
+        String reformattedDate = reformatDate(borowDateText.getText());
+        String reformattedReturnDate = reformatDate(returnDateText.getText());
+        bookIssue = new BookIssue(member,bookItem,reformattedDate,reformattedReturnDate);
+        if (checkInformation(bookReservation)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean getNewBookReservation() {
+        if (member == null) {
+            CustomerAlter.showMessage("Hãy điền bạn đọc vào!");
+            return false;
+        }
+        if (bookItem == null) {
+            CustomerAlter.showMessage("Hãy điền thông tin sách mượn vào!");
+            return false;
+        }
+        if (borowDateText == null) {
+            CustomerAlter.showMessage("Không được để trống ngày mượn!");
+            return false;
+        }
+        String reformattedDate = reformatDate(borowDateText.getText());
+        String reformattedReturnDate = reformatDate(returnDateText.getText());
+        bookReservation = new BookReservation(member, bookItem, reformattedDate, reformattedReturnDate);
+        if (checkInformation(bookReservation)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkInformation(BookReservation bookReservation) {
+        return true;
     }
 
     @FXML
@@ -246,7 +348,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
         borowDateText.setEditable(add);
         returnDateText.setEditable(add);
-        statusText.setEditable(add);
+        borrowStatus.setMouseTransparent(!add);
 
         scanBookButton.setMouseTransparent(!add);
         scanMemberButton.setMouseTransparent(!add);
@@ -257,12 +359,19 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
             memberIDText.setText(null);
             setMemberTextFieldNull();
+            memberImage.setImage(defaultUserImage);
 
             barCodeText.setText(null);
             setBookTextFielNull();
-            statusText.setText(null);
-            borowDateText.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yy")));
-            returnDateText.setText(null);
+            bookImage.setImage(defaultUserImage);
+            borrowStatus.setValue("Đang mượn");
+            //Xử lý ngày tháng mượn
+            LocalDate borrowDate = LocalDate.now();
+            LocalDate returnDate = borrowDate.plusWeeks(2); // Thêm 2 tuần
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            borowDateText.setText(borrowDate.format(formatter));
+            returnDateText.setText(returnDate.format(formatter));
         }
 
     }
@@ -294,7 +403,7 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
         borowDateText.setEditable(edit);
         returnDateText.setEditable(edit);
-        statusText.setEditable(edit);
+        borrowStatus.setMouseTransparent(!edit);
 
         scanBookButton.setMouseTransparent(edit);
         scanMemberButton.setMouseTransparent(edit);
@@ -302,8 +411,8 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
     public void setMember(Member member) {
         this.member = member;
-        memberIDText.setText(String.valueOf(member.getPerson().getId()));
         memberNameText.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName());
+        memberIDText.setText(String.valueOf(member.getPerson().getId()));
         phoneNumberText.setText(member.getPerson().getPhone());
         emailText.setText(member.getPerson().getEmail());
         genderText.setText(member.getPerson().getGender().toString());
@@ -314,8 +423,8 @@ public class AdminBorrowDetailController extends BasicBorrowController {
 
     private void setBookItem(BookItem bookItem) {
         this.bookItem = bookItem;
-        barCodeText.setText(String.valueOf(bookItem.getBarcode()));
         bookNameText.setText(bookItem.getTitle());
+        barCodeText.setText(String.valueOf(bookItem.getBarcode()));
         categoryText.setText(getCategories(bookItem.getCategories()));
         authorNameText.setText(getAuthors(bookItem.getAuthors()));
         bookImage.setImage(new Image(bookItem.getImagePath()));
