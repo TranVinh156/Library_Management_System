@@ -87,7 +87,7 @@ public class FXMLLoaderUtil {
     }
 
     public void addUserMenuController(UserMenuController userMenuController) {
-        controllerCache.put("/com/ooops/lms/library_management_system/UserMenuController-view.fxml",userMenuController);
+        controllerCache.put("/com/ooops/lms/library_management_system/UserMenu-view.fxml",userMenuController);
     }
 
     public void deleteAllInCache() {

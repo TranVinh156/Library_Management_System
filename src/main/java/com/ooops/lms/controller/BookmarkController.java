@@ -24,24 +24,24 @@ public class BookmarkController implements Initializable {
     private HBox bookmarkHBox;
 
     private BookManager bookManager = BookManager.getInstance();
-    private List<BookMark> markedBook;
+    private List<BookMark> bookMarkList;
     private List<Book> popularBooks;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            markedBook = BookMarkDAO.getInstance().findAllBookMark(UserMenuController.member);
+            bookMarkList = BookMarkDAO.getInstance().findAllBookMark(UserMenuController.member);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < markedBook.size(); i++) {
+        for (int i = 0; i < bookMarkList.size(); i++) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard1-view.fxml"));
                 HBox cardBox = fxmlLoader.load();
                 BookCard1Controller cardController = fxmlLoader.getController();
-                cardController.setData(markedBook.get(i));
+                cardController.setData(bookMarkList.get(i).getBook());
                 bookmarkHBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();  // In ra lỗi để dễ dàng theo dõi nếu gặp vấn đề
@@ -64,5 +64,16 @@ public class BookmarkController implements Initializable {
                 break;
             }
         }
+    }
+
+    public boolean addBookmark(Book book) throws IOException {
+        if(bookMarkList.contains(book)) return false;
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard2-view.fxml"));
+        VBox cardBox = fxmlLoader.load();
+        BookCard2Controller cardController = fxmlLoader.getController();
+        cardController.setData(book);
+        bookmarkHBox.getChildren().add(cardBox);
+        return true;
     }
 }

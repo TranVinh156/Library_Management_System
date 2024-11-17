@@ -25,7 +25,7 @@
       </HBox>
       <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0" styleClass="rounded-scrollpane">
          <content>
-            <HBox fx:id="bookmarkHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="565.0">
+            <HBox fx:id="bookmarkHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="565.0" spacing="10.0">
                <padding>
                   <Insets left="10.0" />
                </padding></HBox>

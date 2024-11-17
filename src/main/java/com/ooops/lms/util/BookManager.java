@@ -59,6 +59,7 @@ public class BookManager {
     private void sortBooks(List<Book> books, Comparator<Book> comparator) {
         Collections.sort(books, comparator);
     }
+
     private void sortBooksByRateDescending() {
         Collections.sort(highRankBooks, new Comparator<Book>() {
             @Override

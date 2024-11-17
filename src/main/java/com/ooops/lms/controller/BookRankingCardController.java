@@ -44,7 +44,7 @@ public class BookRankingCardController {
 
     public void setData(Book book,String rank) {
         this.book = book;
-        Image image = new Image(getClass().getResourceAsStream(book.getImagePath()));
+        Image image = new Image(getClass().getResourceAsStream("/"+book.getImagePath()));
         bookImage.setImage(image);
         bookNameLabel.setText("book name");
         authorNameLabel.setText("author");
