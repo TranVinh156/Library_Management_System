@@ -382,61 +382,6 @@ public class AdminUserDetailController extends BasicUserController {
     }
 
 
-    /**
-     * Hàm kiểm tra tính hợp lệ của ngày tháng năm.
-     *
-     * @param dateStr ngày tháng cần kiểm tra
-     * @return true/false
-     */
-    private boolean isValidDate(String dateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false); // Không cho phép ngày không hợp lệ
-
-        try {
-            Date date = dateFormat.parse(dateStr); // Kiểm tra định dạng và tính hợp lệ của ngày
-
-            // Kiểm tra ngày không phải là ngày trong tương lai
-            if (date.after(new Date())) {
-                CustomerAlter.showMessage("Ngày sinh không được là ngày trong tương lai.");
-                return false;
-            }
-        } catch (ParseException e) {
-            // Xảy ra ngoại lệ nếu định dạng ngày không hợp lệ
-            CustomerAlter.showMessage("Ngày sinh không hợp lệ");
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * Hàm chuyển đổi format cho ngày tháng năm.
-     * Nếu là định dạng dd/MM/yyyy thì chuyển sang yyyy-MM-dd.
-     * Nếu là định dạng yyyy-MM-dd thì chuyển sang định dạng dd/MM/yyyy.
-     *
-     * @param dateStr ngày tháng năm cần chuyển đổi
-     * @return ngày tháng năm đã dược chuyển đổi
-     */
-    private static String reformatDate(String dateStr) {
-        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
-            // Thử parse theo định dạng dd/MM/yyyy
-            try {
-                Date date = format1.parse(dateStr);
-                return format2.format(date); // Chuyển sang yyyy-MM-dd
-            } catch (ParseException e1) {
-                // Nếu không được, thử parse theo định dạng yyyy-MM-dd
-                Date date = format2.parse(dateStr);
-                return format1.format(date); // Chuyển sang dd/MM/yyyy
-            }
-        } catch (ParseException e2) {
-            // Nếu cả hai định dạng đều không đúng
-            return null;
-        }
-    }
-
 
     /**
      * Hàm để load bảng Detail về trạng thái rỗng ban đầu.
