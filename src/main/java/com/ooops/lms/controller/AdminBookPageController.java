@@ -61,6 +61,7 @@ public class AdminBookPageController extends BasicBookController {
      * @param book
      */
     public void loadDetail(Book book) {
+        adminBookDetailController.loadStartStatus();
         adminBookDetailController.setItem(book);
         alterPage();
     }
