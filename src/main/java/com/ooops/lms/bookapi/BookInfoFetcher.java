@@ -14,31 +14,55 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class BookInfoFetcher {
+    private static final String API_KEY = "AIzaSyChNsPo2ZSTE80-0Q5mwpLFysHY4zfDqtM";
     private static final String API_URL_KEYWORD = "https://www.googleapis.com/books/v1/volumes?q=";
     private static final String API_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
     private static final int MAX_BOOK = 30;
+
+    private static String fetchResponse(URL url) throws Exception {
+        HttpURLConnection conn;
+        int responseCode;
+        int retryCount = 0;
+        while (true) {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            responseCode = conn.getResponseCode();
+
+            if (responseCode == 429 && retryCount < 3) {
+                System.out.println("Rate limit exceeded. Retrying...");
+                Thread.sleep(2000); // Chờ 2 giây trước khi thử lại
+                retryCount++;
+            } else if (responseCode >= 200 && responseCode < 300) {
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    StringBuilder response = new StringBuilder();
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    return response.toString();
+                }
+            } else {
+                throw new Exception("HTTP error: " + responseCode);
+            }
+        }
+    }
+
     public static List<Book> searchBooksByKeyword(String title) {
         List<Book> books = new ArrayList<>();
         try {
             // Tạo URL từ tiêu đề
-            URL url = new URL(API_URL_KEYWORD + title.replace(" ", "+"));
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            // Đọc dữ liệu từ API
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
+            URL url = new URL(API_URL_KEYWORD + title.replace(" ", "+") + "&key=" + API_KEY);
+            String response = fetchResponse(url);
 
             // Phân tích dữ liệu JSON từ API
             JSONObject jsonResponse = new JSONObject(response.toString());
             JSONArray items = jsonResponse.optJSONArray("items");
             if (items != null && items.length() > 0) {
-                for (int i = 0; i < MAX_BOOK; i++) {
+                for (int i = 0; i < items.length(); i++) {
+                    if (books.size() >= MAX_BOOK) {
+                        break;
+                    }
+
                     JSONObject volumeInfo = items.getJSONObject(i).getJSONObject("volumeInfo");
 
                     Long isbn = 0L;
@@ -99,17 +123,7 @@ public class BookInfoFetcher {
         try {
             // Tạo URL từ ISBN
             URL url = new URL(API_URL + isbn);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            // Đọc dữ liệu từ API
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
+            String response = fetchResponse(url);
 
             // Phân tích dữ liệu JSON từ API
             JSONObject jsonResponse = new JSONObject(response.toString());
