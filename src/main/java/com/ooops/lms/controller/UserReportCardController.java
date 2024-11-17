@@ -19,8 +19,6 @@ public class UserReportCardController {
     @FXML
     HBox reportCardBox;
 
-    private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
-
     private Report report;
 
     private static final String USER_REPORT_FXML = "/com/ooops/lms/library_management_system/UserReport-view.fxml";
@@ -43,7 +41,7 @@ public class UserReportCardController {
 
     public void onShowReportMouseClicked(MouseEvent mouseEvent) {
         try {
-            UserReportController userReportController = fxmlLoaderUtil.getController(USER_REPORT_FXML);
+            UserReportController userReportController = FXMLLoaderUtil.getInstance().getController(USER_REPORT_FXML);
             userReportController.showIssueContent(report,this);
         } catch (IOException e) {
             throw new RuntimeException(e);

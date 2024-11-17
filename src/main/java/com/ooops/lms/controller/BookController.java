@@ -1,11 +1,10 @@
 package com.ooops.lms.controller;
 
-import com.ooops.lms.database.dao.BookMarkDAO;
-import com.ooops.lms.database.dao.BookReservationDAO;
-import com.ooops.lms.database.dao.CommentDAO;
+import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.database.dao.*;
 import com.ooops.lms.model.*;
 
-import com.ooops.lms.database.dao.CommentDAO;
+import com.ooops.lms.model.enums.BookIssueStatus;
 import com.ooops.lms.model.enums.BookItemStatus;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
@@ -28,8 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BookController{
+public class BookController {
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
+    private static final String HISTORY_FXML = "/com/ooops/lms/library_management_system/History-view.fxml";
+    private static final String BOOKMARK_FXML = "/com/ooops/lms/library_management_system/Bookmark-view.fxml";
+
+
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
     private Book book;
 
@@ -43,35 +46,28 @@ public class BookController{
     private Label authorNameLabel;
 
     @FXML
-    private ImageView bookImage,starImage;
+    private ImageView bookImage, starImage;
 
     @FXML
-    private Label bookNameLabel,contentText;
+    private Label bookNameLabel, contentText;
 
     @FXML
     private VBox commentsVBox;
 
-    private List<Comment> comments = new ArrayList<>();
-
     public void initialize() {
-        starChoiceBox.getItems().addAll("tất cả","5 sao", "4 sao", "3 sao", "2 sao","1 sao");
+        starChoiceBox.getItems().addAll("tất cả", "5 sao", "4 sao", "3 sao", "2 sao", "1 sao");
 
         starChoiceBox.setValue("tất cả");
     }
 
-    public void addComment() {
-//        Comment comment = new Comment()
-    }
-
     public void setData() {
-        if(this.book==null) {
-        }
-        Image image = new Image(getClass().getResourceAsStream(book.getImagePath()));
+        Image image = new Image(getClass().getResourceAsStream("/" + book.getImagePath()));
         bookImage.setImage(image);
+        System.out.println(book.getImagePath());
         bookNameLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
-        for(int i = 0;i<authorList.size();i++) {
+        for (int i = 0; i < authorList.size(); i++) {
             author += authorList.get(i).getAuthorName() + ",";
         }
         authorNameLabel.setText(author);
@@ -79,6 +75,7 @@ public class BookController{
         contentText.setText(book.getDescription());
 
         //comment
+        List<Comment> comments = new ArrayList<>();
         try {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("ISBN", book.getISBN());
@@ -100,6 +97,24 @@ public class BookController{
         }
     }
 
+    public void setBookByAPIData(Book book) {
+        String imageUrl = book.getImagePath();
+        bookImage.setImage(new Image(imageUrl));
+        this.book = book;
+
+        System.out.println(book.getImagePath());
+        bookNameLabel.setText(book.getTitle());
+        String author = "";
+        List<Author> authorList = book.getAuthors();
+        for (int i = 0; i < authorList.size(); i++) {
+            author += authorList.get(i).getAuthorName() + ",";
+        }
+        authorNameLabel.setText(author);
+        starImage.setImage(starImage(book.getRate()));
+        contentText.setText(book.getDescription());
+
+    }
+
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
         if (content != null) {
@@ -112,24 +127,56 @@ public class BookController{
     }
 
     public void onReserveBookButtonAction(ActionEvent actionEvent) {
-//        BookItem bookItem = new BookItem((int) book.getISBN(), BookItemStatus.RESERVED,"");
-//        BookReservation bookReservation = new BookReservation(UserMenuController.member
-//                ,bookItem, LocalDate.now().toString(),LocalDate.now().plusDays(10).toString());
-//        try {
-//            bookReservationDAO.add(bookReservation);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đặt trước sách chứ gì?");
+
+        if (confirmYes) {
+            try {
+                try {
+                    HistoryController historyController = FXMLLoaderUtil.getInstance().getController(HISTORY_FXML);
+                    if (historyController != null && historyController.addReservedBook(this.book)) {
+                        Map<String, Object> criteria = new HashMap<>();
+                        criteria.put("ISBN", book.getISBN());
+                        criteria.put("status", BookItemStatus.AVAILABLE);
+                        List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(criteria);
+                        BookReservation bookReservation = new BookReservation(UserMenuController.member
+                                , bookItemList.get(0), LocalDate.now().toString()
+                                , LocalDate.now().plusDays(3).toString());
+                        BookReservationDAO.getInstance().add(bookReservation);
+                        CustomerAlter.showMessage("sự đặt sách của bạn đã được chứng kiến");
+                    } else {
+                        CustomerAlter.showMessage("Đặt trước sách này rồi còn đặt chi nữa :)");
+                    }
+                } catch (IOException e) {
+                    System.out.println("loi load");
+                }
+            } catch (Exception e) {
+            }
+        }
+
     }
 
     public void onBookmarkButtonAction(ActionEvent actionEvent) {
-        BookItem bookItem = new BookItem((int) book.getISBN(), BookItemStatus.RESERVED,"");
-        BookMark bookReservation = new BookMark(UserMenuController.member
-                ,bookItem);
-        try {
-            BookMarkDAO.getInstance().add(bookReservation);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đánh dấu sách này à?");
+        if (confirmYes) {
+            try {
+                BookmarkController bookmarkController = FXMLLoaderUtil.getInstance().getController(BOOKMARK_FXML);
+                if(bookmarkController!=null&&bookmarkController.addBookmark(this.book)) {
+                    BookItem bookItem = new BookItem((int) book.getISBN(), BookItemStatus.AVAILABLE, "");
+                    BookMark bookMark = new BookMark(UserMenuController.member
+                            , bookItem);
+                    try {
+                        BookMarkDAO.getInstance().add(bookMark);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    CustomerAlter.showMessage("Đã thêm vô đánh dấu sách nè");
+                } else {
+                    CustomerAlter.showMessage("Đánh dấu rồi còn đánh dấu nữa t đánh m á :)");
+                }
+            } catch (RuntimeException | IOException e) {
+                e.printStackTrace();
+                CustomerAlter.showMessage("Lỗi đánh dấu sách, chắc do bạn xui á");
+            }
         }
     }
 

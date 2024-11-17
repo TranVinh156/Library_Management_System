@@ -1,23 +1,34 @@
 package com.ooops.lms.controller;
 
-import com.ooops.lms.database.dao.ReportDAO;
+import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.database.dao.CommentDAO;
+import com.ooops.lms.model.Author;
 import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.BookItem;
-import com.ooops.lms.model.Report;
-import com.ooops.lms.model.enums.ReportStatus;
+import com.ooops.lms.model.Comment;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RatingBookController {
 
@@ -25,26 +36,107 @@ public class RatingBookController {
     private ChoiceBox ratingChoiceBox;
     @FXML
     private VBox borrowedBookBox;
+    @FXML
+    private Label bookNameText,authorNameText,userNameText;
+    @FXML
+    Text descriptionText;
+    @FXML
+    private ImageView bookImage, starImage;
+    @FXML
+    private Circle avatarImage;
+    @FXML
+    private TextArea commentTitleText,commentContentText;
 
-    private static final String SETTING_FXML = "/com/ooops/lms/library_management_system/Setting-view.fxml";
+    private static final String HISTORY_FXML = "/com/ooops/lms/library_management_system/History-view.fxml";
 
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
+    private BookItem currrentBookItem;
     private List<BookIssue> borrowedBookList = new ArrayList<>();
-
+    private Comment comment;
 
     public void initialize() {
-        ratingChoiceBox.getItems().addAll("5 sao");
+        ratingChoiceBox.getItems().addAll("5 sao","4 sao","3 sao","2 sao","1 sao");
         ratingChoiceBox.setValue("5 sao");
     }
 
     public void onBackButtonAction(ActionEvent actionEvent) {
-        VBox content = (VBox) fxmlLoaderUtil.loadFXML(SETTING_FXML);
+        VBox content = (VBox) fxmlLoaderUtil.loadFXML(HISTORY_FXML);
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
         }
     }
 
+    private void showData() {
+        userNameText.setText(UserMenuController.member.getUsername());
+        try {
+            String imagePath = UserMenuController.member.getPerson().getImagePath();
+            if (imagePath != null) {
+                File file = new File(imagePath);
+                Image image = new Image(file.toURI().toString());
+                avatarImage.setFill(new ImagePattern(image));
+            } else {
+                avatarImage.setFill(Color.GRAY);
+            }
+        } catch (Exception e) {
+            avatarImage.setFill(Color.GRAY);
+            e.printStackTrace();
+        }
+    }
+
+    public void showBookData(BookItem bookItem,Comment comment) {
+        this.currrentBookItem = bookItem;
+        bookNameText.setText(bookItem.getTitle());
+        String author = "tác giả: ";
+        List<Author> authorList = bookItem.getAuthors();
+        for(int i = 0;i<authorList.size();i++) {
+            author += authorList.get(i).getAuthorName() + ",";
+        }
+        authorNameText.setText(author);
+        descriptionText.setText(bookItem.getDescription());
+        Image image = new Image(getClass().getResourceAsStream("/"+bookItem.getImagePath()));
+        bookImage.setImage(image);
+        starImage.setImage(starImage(bookItem.getRate()));
+
+        try {
+            this.comment = comment;
+            commentContentText.setText(comment.getContent());
+            commentTitleText.setText(comment.getTitle());
+            ratingChoiceBox.setValue(comment.getRate() +" sao");
+        } catch (RuntimeException e) {
+            System.out.println("tao ra cmt moi");
+        }
+    }
+
     public void onSaveButtonAction(ActionEvent actionEvent) {
+        if(comment == null) {
+            comment = new Comment(commentTitleText.getText(),commentContentText.getText()
+                    ,rate(ratingChoiceBox.getValue().toString()),UserMenuController.member
+                    , (int) currrentBookItem.getISBN());
+            try {
+                CommentDAO.getInstance().add(comment);
+                CustomerAlter.showMessage("đã lưu đánh giá");
+            } catch (SQLException e) {
+                CustomerAlter.showMessage("lỗi nè ba");
+            }
+        }else {
+            CustomerAlter.showMessage("khong được sửa comment");
+        }
+    }
+
+    private int rate(String rate) {
+        switch (rate) {
+            case "1 sao" :
+                return 1;
+            case "2 sao" :
+                return 2;
+            case "3 sao" :
+                return 3;
+            case "4 sao" :
+                return 4;
+            case "5 sao" :
+                return 5;
+        }
+        return 5;
     }
 
     public void setData(List<BookIssue> bookIssueList) {
@@ -52,6 +144,7 @@ public class RatingBookController {
         for(int i = 0 ;i<bookIssueList.size();i++) {
             loadBook(bookIssueList.get(i));
         }
+        showData();
     }
 
     public void loadBook(BookIssue bookIssue) {
@@ -65,5 +158,14 @@ public class RatingBookController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Image starImage(int numOfStar) {
+        String imagePath = "/image/book/" + numOfStar + "Star.png";
+        if (getClass().getResourceAsStream(imagePath) == null) {
+            System.out.println("Image not found: " + imagePath);
+            return new Image(getClass().getResourceAsStream("/image/book/1Star.png"));
+        }
+        return new Image(getClass().getResourceAsStream(imagePath));
     }
 }
