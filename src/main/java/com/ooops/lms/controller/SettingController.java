@@ -11,6 +11,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.Image;
 
+import java.io.File;
+
 public class SettingController {
     @FXML
     private VBox settingBox;
@@ -41,8 +43,7 @@ public class SettingController {
         showInfo();
     }
 
-    private void showInfo() {
-        // Set user name
+    public void showInfo() {
         nameLabel.setText(UserMenuController.member.getPerson().getLastName() + " " +
                 UserMenuController.member.getPerson().getFirstName());
 
@@ -50,8 +51,8 @@ public class SettingController {
         try {
             String imagePath = UserMenuController.member.getPerson().getImagePath();
             if (imagePath != null) {
-                imagePath = imagePath.replace("//", "/");
-                Image image = new Image(getClass().getResourceAsStream("/" + imagePath));
+                File file = new File(imagePath);
+                Image image = new Image(file.toURI().toString());
                 avaImage.setFill(new ImagePattern(image));
             } else {
                 avaImage.setFill(Color.GRAY);
@@ -99,7 +100,7 @@ public class SettingController {
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
         } else {
-            System.err.println("Failed to load InterfaceSetting-view.fxml");
+            System.err.println("Failed to load Report-view.fxml");
         }
     }
 }

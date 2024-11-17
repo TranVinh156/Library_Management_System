@@ -1,5 +1,6 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.ReportDAO;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.Report;
@@ -10,8 +11,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -28,7 +31,7 @@ public class UserReportController {
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
 
     @FXML
-    private VBox reportsBox;
+    private VBox reportsBox,vbox;
     @FXML
     private TextField reportTitleText;
     @FXML
@@ -51,6 +54,8 @@ public class UserReportController {
         for (int i = 0; i < reports.size(); i++) {
             loadReport(reports.get(i));
         }
+
+        CustomerAlter.showMessage("Chú ý: nếu m report linh tinh thì t ban luôn");
     }
 
     public void onBackButtonAction(ActionEvent actionEvent) {
@@ -80,6 +85,7 @@ public class UserReportController {
         }
         reportContentText.setText("");
         reportTitleText.setText("");
+        vbox.setStyle("-fx-background-color: #FF7878;-fx-background-radius: 20;");
     }
 
     public void showIssueContent(Report report,UserReportCardController userReportCardController) {
@@ -87,6 +93,12 @@ public class UserReportController {
         this.currentReport = report;
         reportContentText.setText(report.getContent());
         reportTitleText.setText(report.getTitle());
+        String statusText = report.getStatus().toString();
+        if(statusText.equals("PENDING")) {
+            vbox.setStyle("-fx-background-color: #FF7878;-fx-background-radius: 20;");
+        } else {
+            vbox.setStyle("-fx-background-color: #AFFF84;-fx-background-radius: 20;");
+        }
     }
 
     public void onSaveButtonAction(ActionEvent actionEvent) {
@@ -115,4 +127,15 @@ public class UserReportController {
         }
     }
 
+    public void onReportTitleTextMouseClicked(MouseEvent mouseEvent) {
+        if(currentReport == null) {
+            CustomerAlter.showMessage("hãy chọn một report hoặc tạo report để sửa");
+        }
+    }
+
+    public void onReportContentTextMouseClicked(MouseEvent mouseEvent) {
+        if(currentReport == null) {
+            CustomerAlter.showMessage("hãy chọn một report hoặc tạo report để sửa");
+        }
+    }
 }

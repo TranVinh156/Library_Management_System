@@ -45,7 +45,11 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <HBox fx:id="borrowingHBox" alignment="CENTER_LEFT" prefHeight="167.0" prefWidth="367.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20;" VBox.vgrow="ALWAYS" />
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <HBox fx:id="borrowingHBox" alignment="CENTER_LEFT" prefHeight="166.0" prefWidth="353.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20;" />
+                           </content>
+                        </ScrollPane>
                      </children>
                   </VBox>
                   <VBox prefHeight="232.0" prefWidth="247.0" spacing="5.0" HBox.hgrow="ALWAYS">
@@ -55,7 +59,11 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <HBox fx:id="reservedHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: ffffff; -fx-background-radius: 20;" VBox.vgrow="ALWAYS" />
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <HBox fx:id="reservedHBox" alignment="CENTER_LEFT" prefHeight="172.0" prefWidth="350.0" style="-fx-background-color: ffffff; -fx-background-radius: 20;" />
+                           </content>
+                        </ScrollPane>
                      </children>
                   </VBox>
                </children>

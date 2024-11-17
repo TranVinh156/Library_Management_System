@@ -32,12 +32,18 @@
                         <Font name="System Bold" size="27.0" />
                      </font>
                   </Label>
-                  <Label styleClass="label-2" text="Họ và tên" textFill="#a64f3c">
+                  <Label styleClass="label-2" text="Họ" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="nameText" styleClass="textField" />
+                  <TextField fx:id="lastNameText" styleClass="textField" />
+                  <Label styleClass="label-2" text="Tên" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="firstNameText" styleClass="textField" />
                   <Label styleClass="label-2" text="Giới tính" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -69,14 +75,14 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="497.0" prefWidth="396.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="avatarImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../image/customer/menu/ava.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="label-2" text="userID" />
-                  <Button mnemonicParsing="false" styleClass="button-1" text="Tải lên ảnh" />
-                  <Button mnemonicParsing="false" styleClass="button-1" text="Save" />
+                  <Label fx:id="userIDText" styleClass="label-2" text="userID" />
+                  <Button mnemonicParsing="false" onAction="#onLoadImageButtonAction" styleClass="button-1" text="Tải lên ảnh" />
+                  <Button mnemonicParsing="false" onAction="#onSaveButtonAction" styleClass="button-1" text="Save" />
                </children>
             </VBox>
          </children>

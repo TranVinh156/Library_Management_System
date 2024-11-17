@@ -42,31 +42,11 @@ public class BookCard1Controller {
     @FXML
     private ImageView starImage;
 
-    private String [] colors = {"FFFFFF"};
-    private BookReservation bookReservation;
-    public void setData() {
-        bookNameLabel.setText("book name");
-        authorNameLabel.setText("author");
-        hBox.setStyle("-fx-background-color: #" + colors[(int)(Math.random() * colors.length)]);
-    }
-
-    public void setData(BookMark bookmark) {
-        this.book = bookmark.getBook();
-        Image image = new Image(getClass().getResourceAsStream(book.getImagePath()));
-        bookImage.setImage(image);
-        bookNameLabel.setText(book.getTitle());
-        String author = "";
-        List<Author> authorList = book.getAuthors();
-        for(int i = 0;i<authorList.size();i++) {
-            author += authorList.get(i).getAuthorName() + ",";
-        }
-        authorNameLabel.setText(author);
-        starImage.setImage(starImage(book.getRate()));
-    }
+    private String [] colors = {"DABEEA","E0FFCC"};
 
     public void setData(Book book) {
         this.book = book;
-        Image image = new Image(getClass().getResourceAsStream(book.getImagePath()));
+        Image image = new Image(getClass().getResourceAsStream("/"+book.getImagePath()));
         bookImage.setImage(image);
         bookNameLabel.setText(book.getTitle());
         String author = "";
@@ -76,6 +56,7 @@ public class BookCard1Controller {
         }
         authorNameLabel.setText(author);
         starImage.setImage(starImage(book.getRate()));
+        hBox.setStyle("-fx-background-color: #" + colors[(int)(Math.random() * colors.length)]);
     }
 
     public void onBookMouseClicked(MouseEvent mouseEvent) {
