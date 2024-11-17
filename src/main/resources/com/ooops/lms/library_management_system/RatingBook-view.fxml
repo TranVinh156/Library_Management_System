@@ -37,13 +37,13 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </HBox>
-      <HBox prefHeight="533.0" prefWidth="750.0" spacing="20.0">
+      <HBox alignment="CENTER" prefHeight="533.0" prefWidth="750.0" spacing="20.0">
          <children>
-            <ScrollPane prefHeight="517.0" prefWidth="415.0">
+            <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="517.0" prefWidth="415.0">
                <content>
-                  <VBox fx:id="borrowedBookBox" alignment="TOP_CENTER" prefHeight="306.0" prefWidth="362.0" spacing="10.0">
+                  <VBox fx:id="borrowedBookBox" alignment="TOP_CENTER" prefHeight="282.0" prefWidth="360.0" spacing="10.0">
                      <padding>
-                        <Insets top="20.0" />
+                        <Insets left="5.0" right="5.0" top="20.0" />
                      </padding>
                   </VBox>
                </content>
@@ -92,7 +92,8 @@
                               <ChoiceBox fx:id="ratingChoiceBox" prefWidth="150.0" />
                            </children>
                         </HBox>
-                        <TextArea fx:id="commentText" prefHeight="200.0" prefWidth="200.0" promptText="viết đánh giá của bạn ở đây" />
+                        <TextArea fx:id="commentTitleText" prefHeight="12.0" prefWidth="327.0" promptText="viết tiêu đề đánh giá của bạn ở đây" />
+                        <TextArea fx:id="commentContentText" prefHeight="191.0" prefWidth="327.0" promptText="viết đánh giá của bạn ở đây" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="366.0" spacing="10.0">

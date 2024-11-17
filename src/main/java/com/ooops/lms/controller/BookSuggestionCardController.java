@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-public class BookCard2Controller {
+public class BookSuggestionCardController {
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
 
-    private Book book;
-
     private static final String BOOK_FXML = "/com/ooops/lms/library_management_system/Book-view.fxml";
+
+    private Book book;
     @FXML
     private Label authorNameLabel;
 
@@ -32,15 +32,17 @@ public class BookCard2Controller {
     private Label bookNameLabel;
 
     @FXML
-    private VBox vBox;
+    private HBox hBox;
 
     @FXML
     private ImageView starImage;
 
     public void setData(Book book) {
-        this.book =book;
-        Image image = new Image(getClass().getResourceAsStream("/"+book.getImagePath()));
-        bookImage.setImage(image);
+        this.book = book;
+        String imageUrl = book.getImagePath();
+        bookImage.setImage(new Image(imageUrl));
+        this.book = book;
+
         bookNameLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
@@ -61,7 +63,7 @@ public class BookCard2Controller {
 
             BookController bookController = fxmlLoader.getController();
             if (book != null) {
-                bookController.setBook(book);
+                bookController.setBookByAPIData(book);
             } else {
                 System.err.println("Book object is null!");
             }
@@ -69,7 +71,7 @@ public class BookCard2Controller {
             fxmlLoaderUtil.updateContentBox(newContent);
 
         } catch (IOException e) {
-            e.printStackTrace();  // In ra lỗi nếu gặp ngoại lệ
+            e.printStackTrace();
         }
     }
 
