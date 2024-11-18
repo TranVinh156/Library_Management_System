@@ -56,9 +56,13 @@ public class RatingBookCardController {
     public void onShowReportMouseClicked(MouseEvent mouseEvent) {
         try {
             RatingBookController ratingBookController= FXMLLoaderUtil.getInstance().getController(RATING_BOOK_FXML);
-            ratingBookController.showBookData(bookItem,comment);
+            ratingBookController.showBookData(bookItem,comment,this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+    public void setColorGreen() {
+        ratingCardBox.setStyle("-fx-background-color: #AFFF84;-fx-background-radius: 20;");
+    }
+
 }
