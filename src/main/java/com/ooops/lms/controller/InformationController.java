@@ -17,6 +17,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.print.DocFlavor;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -98,26 +102,44 @@ public class InformationController {
         if (selectedFile != null) {
             // Tạo tên tệp mới dựa trên ID người dùng
             String imageFile = userIDText.getText() + getFileExtension(selectedFile.toPath());
-            newImageFile = "Library_Management_System/avatar/"+ imageFile;
+            newImageFile = "Library_Management_System/avatar/" + imageFile;
 
-            Path avatarFolder = Paths.get("Library_Management_System\\avatar");
+            Path avatarFolder = Paths.get("Library_Management_System/avatar");
 
             try {
+                // Tạo thư mục nếu chưa tồn tại
                 if (Files.notExists(avatarFolder)) {
                     Files.createDirectories(avatarFolder);
                 }
 
                 Path destinationPath = avatarFolder.resolve(imageFile);
 
+                // Xóa file nếu nó đã tồn tại
                 if (Files.exists(destinationPath)) {
                     Files.delete(destinationPath);
                 }
 
-                Files.copy(selectedFile.toPath(), destinationPath);
+                // Đọc ảnh gốc từ file
+                BufferedImage originalImage = ImageIO.read(selectedFile);
 
+                // Tính toán chiều dài của hình vuông
+                int width = originalImage.getWidth();
+                int height = originalImage.getHeight();
+                int size = Math.min(width, height);  // Lấy cạnh nhỏ nhất làm kích thước vuông
+
+                // Cắt ảnh thành hình vuông ở giữa
+                int x = (width - size) / 2;
+                int y = (height - size) / 2;
+
+                BufferedImage squareImage = originalImage.getSubimage(x, y, size, size);
+
+                // Lưu ảnh vuông vào tệp
+                ImageIO.write(squareImage, "PNG", destinationPath.toFile());
+
+                // Tải ảnh vuông vào ImageView
                 Image image = new Image(destinationPath.toUri().toString());
                 avatarImage.setImage(image);
-                avatarImage.setPreserveRatio(true);
+                avatarImage.setPreserveRatio(true); // Đảm bảo tỉ lệ ảnh được giữ nguyên trong ImageView
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -136,7 +158,7 @@ public class InformationController {
 
     public void onSaveButtonAction(ActionEvent actionEvent) {
         if(newImageFile == null) {
-            System.out.println("a");
+            System.out.println("there is no image to save");
         }
         UserMenuController.member.getPerson().setImagePath(newImageFile);
         UserMenuController.member.getPerson().setLastName(lastNameText.getText());

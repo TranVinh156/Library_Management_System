@@ -51,8 +51,9 @@ public class RatingBookController {
 
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
     private BookItem currrentBookItem;
-    private List<BookIssue> borrowedBookList = new ArrayList<>();
+    private List<BookIssue> borrowedBookList;
     private Comment comment;
+    private RatingBookCardController currentRatingBookCard;
 
     public void initialize() {
         ratingChoiceBox.getItems().addAll("5 sao","4 sao","3 sao","2 sao","1 sao");
@@ -83,8 +84,9 @@ public class RatingBookController {
         }
     }
 
-    public void showBookData(BookItem bookItem,Comment comment) {
+    public void showBookData(BookItem bookItem,Comment comment,RatingBookCardController ratingBookCardController) {
         this.currrentBookItem = bookItem;
+        this.currentRatingBookCard = ratingBookCardController;
         bookNameText.setText(bookItem.getTitle());
         String author = "tác giả: ";
         List<Author> authorList = bookItem.getAuthors();
@@ -93,8 +95,8 @@ public class RatingBookController {
         }
         authorNameText.setText(author);
         descriptionText.setText(bookItem.getDescription());
-        Image image = new Image(getClass().getResourceAsStream("/"+bookItem.getImagePath()));
-        bookImage.setImage(image);
+        File file = new File(bookItem.getImagePath());
+        bookImage.setImage(new Image(file.toURI().toString()));
         starImage.setImage(starImage(bookItem.getRate()));
 
         try {
@@ -111,11 +113,13 @@ public class RatingBookController {
         if(comment == null) {
             comment = new Comment(commentTitleText.getText(),commentContentText.getText()
                     ,rate(ratingChoiceBox.getValue().toString()),UserMenuController.member
-                    , (int) currrentBookItem.getISBN());
+                    ,currrentBookItem.getISBN());
             try {
                 CommentDAO.getInstance().add(comment);
                 CustomerAlter.showMessage("đã lưu đánh giá");
+                currentRatingBookCard.setColorGreen();
             } catch (SQLException e) {
+                e.printStackTrace();
                 CustomerAlter.showMessage("lỗi nè ba");
             }
         }else {
@@ -140,11 +144,13 @@ public class RatingBookController {
     }
 
     public void setData(List<BookIssue> bookIssueList) {
-        this.borrowedBookList = bookIssueList;
-        for(int i = 0 ;i<bookIssueList.size();i++) {
-            loadBook(bookIssueList.get(i));
+        if(this.borrowedBookList==null) {
+            this.borrowedBookList = bookIssueList;
+            for (int i = 0; i < bookIssueList.size(); i++) {
+                loadBook(bookIssueList.get(i));
+            }
+            showData();
         }
-        showData();
     }
 
     public void loadBook(BookIssue bookIssue) {

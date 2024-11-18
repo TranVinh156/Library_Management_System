@@ -30,7 +30,7 @@ public class BookmarkController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            bookMarkList = BookMarkDAO.getInstance().findAllBookMark(UserMenuController.member);
+            bookMarkList =BookManager.getInstance().getMarkedBooks();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class BookmarkController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();  // In ra lỗi để dễ dàng theo dõi nếu gặp vấn đề
             }
-            if (i == 9) {
+            if (i == 5) {
                 break;
             }
         }
