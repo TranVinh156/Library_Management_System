@@ -16,12 +16,12 @@
       </ImageView>
       <Label fx:id="bookNameLabel" alignment="CENTER" prefHeight="29.0" prefWidth="87.0" text="Book name">
          <font>
-            <Font name="Berlin Sans FB Bold" size="16.0" />
+            <Font name="Calibri Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="authorNameLabel" text="Author name">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Calibri Light" size="14.0" />
          </font>
       </Label>
       <ImageView fx:id="starImage" fitHeight="22.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">

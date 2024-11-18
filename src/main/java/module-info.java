@@ -24,6 +24,7 @@ module com.ooops.lms.library_management_system {
     requires org.json;
     requires com.google.api.services.books;
     requires com.google.common;
+    requires org.checkerframework.checker.qual;
 
     opens com.ooops.lms.library_management_system to javafx.fxml;
     opens com.ooops.lms.controller to javafx.fxml;

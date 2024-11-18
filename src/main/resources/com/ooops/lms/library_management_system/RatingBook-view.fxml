@@ -39,7 +39,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="533.0" prefWidth="750.0" spacing="20.0">
          <children>
-            <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="517.0" prefWidth="415.0">
+            <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="517.0" prefWidth="415.0" styleClass="rounded-scrollpane">
                <content>
                   <VBox fx:id="borrowedBookBox" alignment="TOP_CENTER" prefHeight="282.0" prefWidth="360.0" spacing="10.0">
                      <padding>
@@ -62,7 +62,7 @@
                                     <Image url="@../../../../image/icon/Logo.png" />
                                  </image>
                               </ImageView>
-                              <VBox alignment="CENTER_LEFT" prefHeight="223.0" prefWidth="214.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                              <VBox alignment="CENTER_LEFT" prefHeight="169.0" prefWidth="171.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="bookNameText" text="App OOOPs">
                                        <font>
@@ -75,7 +75,11 @@
                                           <Image url="@../../../../image/book/5Star.png" />
                                        </image>
                                     </ImageView>
-                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="168.61394500732422" />
+                                    <ScrollPane prefHeight="79.0" prefWidth="171.0">
+                                       <content>
+                                          <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="168.61394500732422" />
+                                       </content>
+                                    </ScrollPane>
                                  </children>
                               </VBox>
                            </children>

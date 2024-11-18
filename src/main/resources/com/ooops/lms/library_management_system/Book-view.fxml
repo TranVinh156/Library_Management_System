@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <VBox fx:id="bookBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="567.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.BookController">
    <children>
@@ -32,7 +33,7 @@
                   <Insets top="20.0" />
                </HBox.margin>
             </VBox>
-            <StackPane prefHeight="150.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <StackPane prefHeight="311.0" prefWidth="159.0" HBox.hgrow="ALWAYS">
                <children>
                   <ImageView fx:id="bookImage" fitHeight="232.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
                      <image>
@@ -43,12 +44,12 @@
             </StackPane>
             <VBox prefHeight="306.0" prefWidth="443.0" spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="bookNameLabel" text="Tên Sách" textFill="#ff920c">
+                  <Label fx:id="bookNameLabel" prefHeight="43.0" prefWidth="284.0" text="Tên Sách" textFill="#ff920c">
                      <font>
                         <Font name="System Bold" size="29.0" />
                      </font>
                   </Label>
-                  <Label fx:id="authorNameLabel" text="Tên tác giả" textFill="#ff920c">
+                  <Label fx:id="authorNameLabel" prefHeight="17.0" prefWidth="285.0" text="Tên tác giả" textFill="#ff920c">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -98,8 +99,11 @@
                   <Label maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="362.0" styleClass="label1" stylesheets="@../../../../style/BookStyle.css" text="Nội dung" VBox.vgrow="ALWAYS" />
                   <ScrollPane prefHeight="125.0" prefWidth="253.0" style="-fx-background-color: #ffffff;" stylesheets="@../../../../style/BookStyle.css">
                      <content>
-                        <Label fx:id="contentText" text="Label" />
+                        <Text fx:id="contentText" strokeType="OUTSIDE" strokeWidth="0.0" text="Nội dung" wrappingWidth="323.13671875" />
                      </content>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
                   </ScrollPane>
                </children>
                <padding>

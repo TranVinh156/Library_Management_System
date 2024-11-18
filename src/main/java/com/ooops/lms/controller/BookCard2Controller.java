@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -39,8 +40,14 @@ public class BookCard2Controller {
 
     public void setData(Book book) {
         this.book =book;
-        Image image = new Image(getClass().getResourceAsStream("/"+book.getImagePath()));
-        bookImage.setImage(image);
+        try {
+            Image image = new Image(getClass().getResourceAsStream("/"+book.getImagePath()));
+            bookImage.setImage(image);
+        } catch (RuntimeException e) {
+            File file = new File(book.getImagePath());
+            Image image = new Image(file.toURI().toString());
+            bookImage.setImage(image);
+        }
         bookNameLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
