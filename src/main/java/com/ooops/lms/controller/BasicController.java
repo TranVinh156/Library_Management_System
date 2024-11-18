@@ -79,11 +79,6 @@ public class BasicController {
     protected static final Node bookPagePane;
 
     protected CommandInvoker commandInvoker = new CommandInvoker();
-    protected ObservableList<Book> bookList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> borrowBookList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> lostBookList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> bookItemList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> reverserBookList = FXCollections.observableArrayList();
 
     static {
         //load login
@@ -362,7 +357,7 @@ public class BasicController {
      * @return true/false
      */
     public boolean isValidDate(String dateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateFormat.setLenient(false); // Không cho phép ngày không hợp lệ
 
         try {
@@ -409,6 +404,18 @@ public class BasicController {
             return null;
         }
     }
+
+
+    protected static final String DEFAULT_BOOK_IMAGE = "/image/book/default.png";
+    protected static Image defaultBookImage;
+
+    protected ObservableList<Category> categoriesList = FXCollections.observableArrayList();
+
+    static {
+        defaultBookImage = new Image(BasicController.class.getResource(DEFAULT_BOOK_IMAGE).toExternalForm());
+
+    }
+
 
 }
 
