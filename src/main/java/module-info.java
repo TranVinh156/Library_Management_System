@@ -41,4 +41,6 @@ module com.ooops.lms.library_management_system {
     opens com.ooops.lms.Command to javafx.fxml;
     exports com.ooops.lms.Alter;
     opens com.ooops.lms.Alter to javafx.fxml;
+    exports com.ooops.lms.SuggestionTable;
+    opens com.ooops.lms.SuggestionTable to javafx.fxml;
 }

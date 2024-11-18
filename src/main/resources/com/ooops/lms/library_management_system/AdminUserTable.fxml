@@ -16,7 +16,7 @@
          <children>
             <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="406.0" prefWidth="262.0" style="-fx-background-color: FFF;" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
                <content>
-                  <VBox fx:id="userTableVbox" prefHeight="405.0" prefWidth="242.0" style="-fx-background-color: FFF;" />
+                  <VBox fx:id="tableVbox" prefHeight="405.0" prefWidth="242.0" style="-fx-background-color: FFF;" />
                </content>
                <HBox.margin>
                   <Insets />

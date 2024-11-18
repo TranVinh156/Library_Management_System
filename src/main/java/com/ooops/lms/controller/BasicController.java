@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.google.api.services.books.v1.model.Volumeseriesinfo;
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.CommandInvoker;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.database.dao.MemberDAO;
@@ -22,6 +23,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class BasicController {
@@ -75,11 +79,6 @@ public class BasicController {
     protected static final Node bookPagePane;
 
     protected CommandInvoker commandInvoker = new CommandInvoker();
-    protected ObservableList<Book> bookList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> borrowBookList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> lostBookList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> bookItemList = FXCollections.observableArrayList();
-    protected ObservableList<BookItem> reverserBookList = FXCollections.observableArrayList();
 
     static {
         //load login
@@ -350,6 +349,73 @@ public class BasicController {
             return false;
         }
     }
+
+    /**
+     * Hàm kiểm tra tính hợp lệ của ngày tháng năm.
+     *
+     * @param dateStr ngày tháng cần kiểm tra
+     * @return true/false
+     */
+    public boolean isValidDate(String dateStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false); // Không cho phép ngày không hợp lệ
+
+        try {
+            Date date = dateFormat.parse(dateStr); // Kiểm tra định dạng và tính hợp lệ của ngày
+
+            // Kiểm tra ngày không phải là ngày trong tương lai
+            if (date.after(new Date())) {
+                CustomerAlter.showMessage("Ngày tháng không được là ngày trong tương lai.");
+                return false;
+            }
+        } catch (ParseException e) {
+            // Xảy ra ngoại lệ nếu định dạng ngày không hợp lệ
+            CustomerAlter.showMessage("Ngày tháng định dạng không hợp lệ phải định dạng dd/MM/yyyy");
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Hàm chuyển đổi format cho ngày tháng năm.
+     * Nếu là định dạng dd/MM/yyyy thì chuyển sang yyyy-MM-dd.
+     * Nếu là định dạng yyyy-MM-dd thì chuyển sang định dạng dd/MM/yyyy.
+     *
+     * @param dateStr ngày tháng năm cần chuyển đổi
+     * @return ngày tháng năm đã dược chuyển đổi
+     */
+    public static String reformatDate(String dateStr) {
+        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            // Thử parse theo định dạng dd/MM/yyyy
+            try {
+                Date date = format1.parse(dateStr);
+                return format2.format(date); // Chuyển sang yyyy-MM-dd
+            } catch (ParseException e1) {
+                // Nếu không được, thử parse theo định dạng yyyy-MM-dd
+                Date date = format2.parse(dateStr);
+                return format1.format(date); // Chuyển sang dd/MM/yyyy
+            }
+        } catch (ParseException e2) {
+            // Nếu cả hai định dạng đều không đúng
+            return null;
+        }
+    }
+
+
+    protected static final String DEFAULT_BOOK_IMAGE = "/image/book/default.png";
+    protected static Image defaultBookImage;
+
+    protected ObservableList<Category> categoriesList = FXCollections.observableArrayList();
+
+    static {
+        defaultBookImage = new Image(BasicController.class.getResource(DEFAULT_BOOK_IMAGE).toExternalForm());
+
+    }
+
 
 }
 

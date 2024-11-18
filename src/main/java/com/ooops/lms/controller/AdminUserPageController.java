@@ -1,15 +1,14 @@
 package com.ooops.lms.controller;
 
-import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.controller.BasePageController;
 import com.ooops.lms.model.Member;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Objects;
+public class AdminUserPageController extends BasePageController<Member, AdminUserDetailController, AdminUserTableController> {
 
-public class AdminUserPageController extends BasicUserController{
+    private static final String DETAIL_FXML = "/com/ooops/lms/library_management_system/AdminUserDetail.fxml";
+    private static final String TABLE_FXML = "/com/ooops/lms/library_management_system/AdminUserTable.fxml";
 
     @FXML
     private AnchorPane messageLocationPane;
@@ -20,65 +19,32 @@ public class AdminUserPageController extends BasicUserController{
     @FXML
     private AnchorPane userTableLocationPane;
 
-    private AdminUserTableController adminUserTableController;
-    private AdminUserDetailController adminUserDetailController;
+    @Override
+    protected String getDetailFXMLPath() {
+        return DETAIL_FXML;
+    }
 
-    @FXML
-    public void initialize() throws IOException, SQLException {
-        userTableLocationPane.getChildren().add(userTablePane);
-        adminUserTableController = userTablePaneLoader.getController();
-        adminUserTableController.setMainController(this);
+    @Override
+    protected String getTableFXMLPath() {
+        return TABLE_FXML;
+    }
 
+    @Override
+    protected void setupControllers() {
+    }
+
+    @Override
+    protected void setupViews() {
+        userTableLocationPane.getChildren().add(tablePane);
+        userDetailLocationPane.getChildren().add(detailPane);
         messageLocationPane.getChildren().add(messagePane);
-
-        userDetailLocationPane.getChildren().add(userDetailPane);
-        adminUserDetailController = userDetailPaneLoader.getController();
-        adminUserDetailController.setMainController(this);
+    }
+    @Override
+    public void alterPage() {
 
     }
+    @Override
+    public  void startPage() {
 
-    public void loadDetail(Member member) {
-        System.out.println("jdisjdijid");
-        if(Objects.equals(adminUserDetailController.getMode(), "addMode")) {
-            boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang thêm sẽ bị mất");
-            if(confirmYes) {
-                adminUserDetailController.loadStartStatus();
-                adminUserDetailController.setMember(member);
-            }
-        } else if(Objects.equals(adminUserDetailController.getMode(), "editMode")) {
-            if(adminUserDetailController.getMember().equals(member)) {
-                System.out.println("van mot nguoi ma dcm");
-            } else {
-                boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang sửa sẽ bị mất");
-                if(confirmYes) {
-                    adminUserDetailController.loadStartStatus();
-                    adminUserDetailController.setMember(member);
-                }
-            }
-        } else if(Objects.equals(adminUserDetailController.getMode(), "noneMode")) {
-            System.out.println("hdshud");
-            adminUserDetailController.loadStartStatus();
-            System.out.println("djsid");
-            adminUserDetailController.setMember(member);
-        } else {
-            adminUserDetailController.setMember(member);
-        }
     }
-
-    public void loadAddPane() {
-        if(Objects.equals(adminUserDetailController.getMode(), "editMode")) {
-            boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang sửa sẽ bị mất");
-            if(confirmYes) {
-                adminUserDetailController.loadStartStatus();
-                adminUserDetailController.setAddMode(true);
-            }
-        } else if(Objects.equals(adminUserDetailController.getMode(), "noneMode")) {
-            adminUserDetailController.setAddMode(true);
-        }
-    }
-
-    public void loadData() {
-        adminUserTableController.loadData();
-    }
-
 }

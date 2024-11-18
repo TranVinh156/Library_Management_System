@@ -134,7 +134,7 @@ public class AdminMenuController extends BasicController {
     @FXML
     void onAddNewBorrowButtonAction(ActionEvent event) {
         openPage(borrowPagePane);
-        adminBorrowPageController.addTable();
+        adminBorrowPageController.loadAddPane();
         addTablePane.setVisible(false);
     }
 

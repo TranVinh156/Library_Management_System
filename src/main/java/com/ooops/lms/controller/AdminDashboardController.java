@@ -67,7 +67,6 @@ public class AdminDashboardController extends BasicController {
                 e.printStackTrace();
             }
         }
-
     }
 
 }

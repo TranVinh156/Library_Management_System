@@ -1,12 +1,12 @@
 package com.ooops.lms.controller;
 
-import javafx.event.ActionEvent;
+import com.ooops.lms.controller.BaseRowController;
+import com.ooops.lms.model.Report;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class AdminIssueTableRowController extends BasicIssueController {
+public class AdminIssueTableRowController extends BaseRowController<Report, AdminIssuePageController> {
 
     @FXML
     private Label detailLabel;
@@ -29,29 +29,14 @@ public class AdminIssueTableRowController extends BasicIssueController {
     @FXML
     private HBox mainRowHbox;
 
-    private AdminIssuePageController mainController = null;
-
-    void setTableController(AdminIssuePageController mainController) {
-        this.mainController = mainController;
-    }
-
-    public void initialize()  {
-        mainRowHbox.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1) {
-                handleClickRow();
-            }
-        });
-
-    }
-
-    public void handleClickRow() {
-        System.out.println("Click CLick");
-        mainController.loadDetail();
-    }
-
-
-    public void setItem(Object item) {
-
+    @Override
+    protected void updateRowDisplay() {
+        memberIDLabel.setText(item.getMember().getPerson().getId() + "");
+        memberNameLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
+        titleLabel.setText(item.getTitle());
+        detailLabel.setText(item.getContent());
+        emailLabel.setText(item.getMember().getPerson().getEmail());
+        statusLabel.setText(item.getStatus().toString());
     }
 
 
