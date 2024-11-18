@@ -1,21 +1,20 @@
 package com.ooops.lms.controller;
 
-import com.google.api.services.books.v1.Books;
+import com.ooops.lms.controller.BaseTableController;
+import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.model.BookIssue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 
-public class AdminBorrowTableController extends BasicBorrowController {
+public class AdminBorrowTableController extends BaseTableController<BookIssue, AdminBorrowPageController,AdminBorrowTableRowController> {
+
+    private static final String ROW_FXML = "/com/ooops/lms/library_management_system/AdminBorrowTableRow.fxml";
 
     @FXML
     private Button addButton;
@@ -47,44 +46,28 @@ public class AdminBorrowTableController extends BasicBorrowController {
     @FXML
     private VBox tableVbox;
 
-    private AdminBorrowPageController mainController;
-    private List<Node> borrowList = new ArrayList<>();
+    @Override
+    protected String getRowFXML() {
+        return ROW_FXML;
+    }
+
+    @Override
+    protected void loadDataFromSource() throws SQLException {
+        itemsList.addAll(BookIssueDAO.getInstance().selectAll());
+    }
+    @Override
+    protected void getCriteria(){
+
+    }
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
-        mainController.addTable();
+        mainController.loadAddPane();
     }
 
     @FXML
     void onFindButtonAction(ActionEvent event) {
 
-    }
-
-    void setMainController(AdminBorrowPageController mainController) {
-        this.mainController = mainController;
-        insertRowTest();
-        childFitHeightParent(tableVbox,scrollPane);
-        childFitWidthParent(tableVbox,scrollPane);
-    }
-
-    private void insertRowTest() {
-        for (int i = 0; i < 20; i++) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(BORROW_TABLE_ROW_FXML));
-                Node row = loader.load();
-
-                AdminBorrowTableRowController rowController = loader.getController();
-
-                // Thiết lập controller của bảng cho hàng
-                rowController.setTableController(mainController); // Set controller của table cho row
-                //rowController.setItem();
-                childFitWidthParent(row, scrollPane);
-                borrowList.add(row);
-                tableVbox.getChildren().add(row);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 }
