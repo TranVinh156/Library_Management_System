@@ -1,15 +1,18 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.controller.BaseRowController;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Category;
+import com.sun.mail.imap.protocol.Item;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
 
-public class AdminBookTableRowController extends BasicBookController {
+public class AdminBookTableRowController extends BaseRowController<Book, AdminBookPageController> {
+
 
     @FXML
     private Label ISBNLabel;
@@ -35,40 +38,15 @@ public class AdminBookTableRowController extends BasicBookController {
     @FXML
     private HBox mainRowHbox;
 
-    private AdminBookPageController mainController;
-
-    private Book book;
-
-    public void setMainController(AdminBookPageController controller) {
-        this.mainController = controller;
-    }
-
-    public void initialize() {
-        mainRowHbox.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1) {
-                handleClickRow();
-            }
-        });
-    }
-
-    public void handleClickRow() {
-        System.out.println("Click CLick");
-        mainController.loadDetail(book);
-    }
-
-    public void resetRowColor() {
-        mainRowHbox.setStyle(""); // Khôi phục lại màu nền mặc định
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-        ISBNLabel.setText(String.valueOf(book.getISBN()));
-        authorNameLabel.setText(getAuthors(book.getAuthors()));
-        bookNameLabel.setText(book.getTitle());
-        categoryLabel.setText(getCategories(book.getCategories()));
-        locationLabel.setText(book.getPlaceAt());
-        numberOfBookLabel.setText((String.valueOf(book.getQuantity())));
-        statusLabel.setText((book.getQuantity() - book.getNumberOfLoanedBooks() > 0) ? "Có sẵn" : "Hết sách");
+    @Override
+    protected void updateRowDisplay() {
+        ISBNLabel.setText(String.valueOf(item.getISBN()));
+        authorNameLabel.setText(getAuthors(item.getAuthors()));
+        bookNameLabel.setText(item.getTitle());
+        categoryLabel.setText(getCategories(item.getCategories()));
+        locationLabel.setText(item.getPlaceAt());
+        numberOfBookLabel.setText((String.valueOf(item.getQuantity())));
+        statusLabel.setText((item.getQuantity() - item.getNumberOfLoanedBooks() > 0) ? "Có sẵn" : "Hết sách");
     }
 
     public String getCategories(List<Category> categories) {
