@@ -107,13 +107,13 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     @Override
     public List<BookItem> searchByCriteria(Map<String, Object> criteria) throws SQLException {
 
-        StringBuilder findBookByCriteria = new StringBuilder("Select * from bookitem where ");
+        StringBuilder findBookByCriteria = new StringBuilder("Select * from bookitem bi join books b on bi.ISBN = b.ISBN where ");
 
         List<BookItem> bookItemList = new ArrayList<>();
 
         for (String key : criteria.keySet()) {
             if (criteria.get(key) == "ISBN") {
-                findBookByCriteria.append("CAST(").append(key).append(" AS CHAR)").append(" LIKE ? AND ");
+                findBookByCriteria.append("CAST(bi.ISBN AS CHAR)").append(" LIKE ? AND ");
             } else {
                 findBookByCriteria.append(key).append(" LIKE ? AND ");
             }
