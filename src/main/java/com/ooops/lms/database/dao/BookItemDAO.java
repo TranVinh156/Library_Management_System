@@ -4,6 +4,7 @@ import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.database.Database;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.enums.BookItemStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +66,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
      * @throws SQLException
      */
     @Override
-    public boolean update(BookItem entity) throws SQLException {
+    public boolean update(@NotNull BookItem entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_BOOK_ITEM)) {
             preparedStatement.setString(1, entity.getStatus().name());
             preparedStatement.setString(2, entity.getNote());
@@ -77,7 +78,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     }
 
     @Override
-    public boolean delete(BookItem entity) throws SQLException {
+    public boolean delete(@NotNull BookItem entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_ITEM)) {
             preparedStatement.setInt(1, entity.getBarcode());
             return preparedStatement.executeUpdate() > 0;
@@ -105,7 +106,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     }
 
     @Override
-    public List<BookItem> searchByCriteria(Map<String, Object> criteria) throws SQLException {
+    public List<BookItem> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
 
         StringBuilder findBookByCriteria = new StringBuilder("Select * from bookitem bi join books b on bi.ISBN = b.ISBN where ");
 
@@ -151,7 +152,8 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         }
     }
 
-    private String generateKeywords(Map<String, Object> criteria) {
+    @NotNull
+    private String generateKeywords(@NotNull Map<String, Object> criteria) {
         StringBuilder keywords = new StringBuilder();
 
         for (Map.Entry<String, Object> entry : criteria.entrySet()) {

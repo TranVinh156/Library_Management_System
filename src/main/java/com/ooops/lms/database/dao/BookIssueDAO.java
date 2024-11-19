@@ -121,6 +121,8 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
             }
         }
 
+        findBookIssueByCriteria.setLength(findBookIssueByCriteria.length() - 5);
+
         try (PreparedStatement preparedStatement
                      = database.getConnection().prepareStatement(findBookIssueByCriteria.toString())) {
             int index = 1;
