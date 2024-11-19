@@ -1,6 +1,8 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.AdminCommand;
+import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.controller.BaseDetailController;
 import com.ooops.lms.model.*;
@@ -101,6 +103,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     private ImageView bookImage;
     @FXML
     private ChoiceBox<BookIssueStatus> borrowStatus;
+    @FXML
+    private Label borrowIDLabel;
 
     private Member member;
     private BookItem bookItem;
@@ -116,6 +120,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
         bookItem = item.getBookItem();
         setBookItem(bookItem);
+
+        setDateIssue();
     }
 
     @Override
@@ -138,6 +144,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         scanBookButton.setMouseTransparent(!addMode);
         scanMemberButton.setMouseTransparent(!addMode);
 
+        borrowIDLabel.setText(String.valueOf(item.getIssueID()));
+
         if (addMode) {
             saveButton.setVisible(!addMode);
             savePane.setVisible(!addMode);
@@ -149,6 +157,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             barCodeText.setText(null);
             setBookTextFielNull();
             bookImage.setImage(defaultUserImage);
+
+            borrowIDLabel.setText(null);
+
             borrowStatus.setValue(BookIssueStatus.BORROWED);
             //Xử lý ngày tháng mượn
             LocalDate borrowDate = LocalDate.now();
@@ -305,8 +316,23 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     }
 
     @FXML
-    void onScanButtonAction(ActionEvent event) {
+    void onScanBookButtonAction(ActionEvent event) {
+        Command scanCommand = new AdminCommand("scan",bookItem);
+        commandInvoker.setCommand(scanCommand);
+        if(commandInvoker.executeCommand()) {
+            bookItem = ((AdminCommand) scanCommand).getBookItemResult();
+            setBookItem(bookItem);
+        }
+    }
 
+    @FXML
+    void onScanMemberButtonAction(ActionEvent event) {
+        Command scanCommand = new AdminCommand("scan",member);
+        commandInvoker.setCommand(scanCommand);
+        if(commandInvoker.executeCommand()) {
+            member = ((AdminCommand) scanCommand).getMemberResult();
+            setMember(member);
+        }
     }
 
     public void loadStartStatus() {
@@ -350,6 +376,12 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         categoryText.setText(getCategories(bookItem.getCategories()));
         authorNameText.setText(getAuthors(bookItem.getAuthors()));
         bookImage.setImage(new Image(bookItem.getImagePath()));
+    }
+
+    private void setDateIssue() {
+        borrowIDLabel.setText(String.valueOf(item.getIssueID()));
+        borowDateText.setText(String.valueOf(item.getCreatedDate()));
+        returnDateText.setText(String.valueOf(item.getReturnDate()));
     }
 
 }
