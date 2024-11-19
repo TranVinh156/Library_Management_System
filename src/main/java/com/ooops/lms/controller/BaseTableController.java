@@ -3,9 +3,13 @@ package com.ooops.lms.controller;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Member;
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
@@ -13,19 +17,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class BaseTableController<T, P extends BasePageController, R extends BaseRowController<T, P>> extends BasicController {
-    @FXML protected ScrollPane scrollPane;
-    @FXML protected VBox tableVbox;
+    @FXML
+    protected ScrollPane scrollPane;
+    @FXML
+    protected VBox tableVbox;
 
-    protected ObservableList<T> itemsList = FXCollections.observableArrayList();
+    protected ObservableSet<T> itemsList = FXCollections.observableSet(new HashSet<>());
     protected BasePageController mainController;
     protected Map<String, Object> findCriteria = new HashMap<>();
 
     protected abstract String getRowFXML();
+
     protected abstract void loadDataFromSource() throws SQLException;
+
     /**
      * Load lại Data cho Table.
      */
@@ -62,14 +69,15 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
             }
         }
     }
+
     protected void searchCriteria() {
         getCriteria();
         try {
             itemsList.clear();
             if (isBookType()) {
-                BookDAO.getInstance().searchByCriteria(findCriteria);
+                itemsList.addAll((Collection<? extends T>) BookDAO.getInstance().searchByCriteria(findCriteria));
             } else if (isMemberType()) {
-                MemberDAO.getInstance().searchByCriteria(findCriteria);
+                itemsList.addAll((Collection<? extends T>) MemberDAO.getInstance().searchByCriteria(findCriteria));
             }
         } catch (Exception e) {
             e.printStackTrace();
