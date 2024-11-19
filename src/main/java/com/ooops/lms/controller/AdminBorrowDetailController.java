@@ -144,7 +144,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         scanBookButton.setMouseTransparent(!addMode);
         scanMemberButton.setMouseTransparent(!addMode);
 
-        borrowIDLabel.setText(String.valueOf(item.getIssueID()));
+        borrowIDLabel.setText(null);
 
         if (addMode) {
             saveButton.setVisible(!addMode);
@@ -158,7 +158,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             setBookTextFielNull();
             bookImage.setImage(defaultUserImage);
 
-            borrowIDLabel.setText(null);
+            borrowIDLabel.setText(String.valueOf(item.getIssueID()));
 
             borrowStatus.setValue(BookIssueStatus.BORROWED);
             //Xử lý ngày tháng mượn
