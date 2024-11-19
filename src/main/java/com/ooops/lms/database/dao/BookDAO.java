@@ -423,7 +423,7 @@ public class BookDAO implements DatabaseQuery<Book> {
     public List<Book> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
 
         List<Book> bookList = new ArrayList<>();
-        StringBuilder findBookByCriteria = new StringBuilder("SELECT *\n" +
+        StringBuilder findBookByCriteria = new StringBuilder("SELECT distinct (Books.ISBN)\n" +
                 "FROM Books\n" +
                 "JOIN Books_Authors ON Books.ISBN = Books_Authors.ISBN\n" +
                 "JOIN Authors ON Books_Authors.author_ID = Authors.author_ID\n" +
@@ -444,12 +444,13 @@ public class BookDAO implements DatabaseQuery<Book> {
             int index = 1;
 
             for (Object value : criteria.values()) {
+                System.out.println(value);
                 preparedStatement.setString(index++, "%" + value + "%");
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    bookList.add(find(resultSet.getLong("ISBN")));
+                    bookList.add(find(resultSet.getLong("Books.ISBN")));
                 }
                 return bookList;
             }
