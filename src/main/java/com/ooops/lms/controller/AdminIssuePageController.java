@@ -1,5 +1,7 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.controller.BasePageController;
+import com.ooops.lms.model.Report;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +12,9 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class AdminIssuePageController extends BasicIssueController {
-
-
+public class AdminIssuePageController extends BasePageController<Report, AdminIssueDetailController, AdminIssueTableController> {
+    private static final String TABLE_FXML = "/com/ooops/lms/library_management_system/AdminIssueTable.fxml";
+    private static final String DETAIL_FXML = "/com/ooops/lms/library_management_system/AdminIssueDetail.fxml";
     @FXML
     private AnchorPane DetailPane;
 
@@ -28,47 +30,54 @@ public class AdminIssuePageController extends BasicIssueController {
     @FXML
     private AnchorPane tablePage;
 
-    @FXML
-    void onReturnButtonAction(ActionEvent event) {
-        System.out.println("eeee");
-        alterPage();
+    @Override
+    protected String getDetailFXMLPath() {
+        return DETAIL_FXML;
     }
 
-    private AdminIssueDetailController adminIssueDetailController;
-    private AdminIssueTableController adminIssueTableController;
+    @Override
+    protected String getTableFXMLPath() {
+        System.out.println("Issuel");
+        return TABLE_FXML;
+    }
 
-    @FXML
-    public void initialize() throws IOException {
-
-
-        tablePage.getChildren().add(issueTablePane);
-        adminIssueTableController = issueTablePaneLoader.getController();
-        adminIssueTableController.setMainController(this);
-
-        DetailPane.getChildren().add(issueDetailPane);
-        adminIssueDetailController = issueDetailPaneLoader.getController();
-        adminIssueDetailController.setMainController(this);
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(MESSAGE_FXML));
-        Node mess = loader.load();
-        AnchorPane.setTopAnchor((AnchorPane)mess, 0.0);
-        AnchorPane.setBottomAnchor((AnchorPane)mess, 0.0);
-        AnchorPane.setLeftAnchor((AnchorPane)mess, 0.0);
-        AnchorPane.setRightAnchor((AnchorPane)mess, 0.0);
-        this.messangePane.getChildren().add(mess);
+    @Override
+    protected void setupControllers() {
 
     }
 
-    public void loadDetail() {
-        System.out.println("loadDetail");
-        // adminIssueDetailController.loadStartStatus();
-        alterPage();
-        //adminIssueDetailController.setItem();
-    }
+    @Override
+    protected void setupViews() {
+        this.tablePage.getChildren().add(super.tablePane);
+        this.DetailPane.getChildren().add(super.detailPane);
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(MESSAGE_FXML));
+            Node mess = loader.load();
+            AnchorPane.setTopAnchor((AnchorPane) mess, 0.0);
+            AnchorPane.setBottomAnchor((AnchorPane) mess, 0.0);
+            AnchorPane.setLeftAnchor((AnchorPane) mess, 0.0);
+            AnchorPane.setRightAnchor((AnchorPane) mess, 0.0);
+            this.messangePane.getChildren().add(mess);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
     public void alterPage() {
-        System.out.println("alterPage");
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+    }
+
+    @Override
+    public void startPage() {
+        detailPage.setVisible(false);
+        tablePage.setVisible(true);
+    }
+
+    @FXML
+    void onReturnButtonAction(ActionEvent event) {
+        loadData();
+        alterPage();
     }
 }

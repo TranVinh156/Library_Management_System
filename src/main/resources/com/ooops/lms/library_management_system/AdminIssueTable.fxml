@@ -157,7 +157,7 @@
                      <children>
                         <ScrollPane fx:id="scrollPane" prefHeight="400.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
                            <content>
-                              <VBox fx:id="issueTableVbox" prefHeight="406.0" prefWidth="807.0" />
+                              <VBox fx:id="tableVbox" prefHeight="406.0" prefWidth="807.0" />
                            </content>
                         </ScrollPane>
                      </children>

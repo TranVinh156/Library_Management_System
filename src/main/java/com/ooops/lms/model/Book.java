@@ -95,6 +95,19 @@ public class Book {
         this.authors = authors;
         this.categories = categories;
     }
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Book) {
+            Book book = (Book) o;
+            return this.ISBN == book.getISBN();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(ISBN);
+    }
 
     public long getISBN() {
         return ISBN;

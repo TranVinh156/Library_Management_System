@@ -2,12 +2,8 @@ package com.ooops.lms.Command;
 
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.bookapi.BookInfoFetcher;
-import com.ooops.lms.database.dao.BookDAO;
-import com.ooops.lms.database.dao.BookItemDAO;
-import com.ooops.lms.database.dao.MemberDAO;
-import com.ooops.lms.model.Book;
-import com.ooops.lms.model.BookItem;
-import com.ooops.lms.model.Member;
+import com.ooops.lms.database.dao.*;
+import com.ooops.lms.model.*;
 import com.ooops.lms.model.enums.AccountStatus;
 
 import java.sql.SQLException;
@@ -54,6 +50,11 @@ public class AdminCommand implements Command {
                         BookDAO.getInstance().add((Book) object);
                     } else if (object instanceof Member) {
                         MemberDAO.getInstance().add((Member) object);
+                    } else if (object instanceof BookReservation) {
+                        System.out.println("Dang them borrow:" + ((BookReservation)object).getBookItem().getBarcode());
+                        BookReservationDAO.getInstance().add((BookReservation) object);
+                    } else if (object instanceof BookIssue) {
+                        BookIssueDAO.getInstance().add((BookIssue) object);
                     }
                     return true;
                 case "delete":
@@ -93,12 +94,6 @@ public class AdminCommand implements Command {
                     if(object instanceof BookItem) {
                         BookItem bookItem = (BookItem) object;
                         this.bookItemResult = BookItemDAO.getInstance().find(bookItem.getBarcode());
-                    }
-                    return true;
-                case "findAPI":
-                    if (object instanceof Book) {
-                        Book book = (Book) object;
-                        this.bookResult = BookInfoFetcher.searchBookByISBN(String.valueOf(book.getISBN()));
                     }
                     return true;
                 default:

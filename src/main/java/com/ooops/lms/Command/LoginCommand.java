@@ -55,6 +55,7 @@ public class LoginCommand extends BasicController implements Command {
                 return true;
             }
         } else if (role.equals(Role.ADMIN)) {
+            System.out.println(username + " " + password);
             if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
                 CustomerAlter.showAlter("Đăng nhập thành công");
                 openMenu();
@@ -68,7 +69,8 @@ public class LoginCommand extends BasicController implements Command {
     private void openMenu() {
         if (role.equals(Role.ADMIN)) {
             try {
-                Parent root = adminMenuPaneLoader.load();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
+                Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();

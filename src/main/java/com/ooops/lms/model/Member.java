@@ -18,6 +18,19 @@ public class Member extends Account {
         super(person);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Member) {
+            Member member = (Member) obj;
+            return getPerson().getId() == member.getPerson().getId();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(getPerson().getId());
+    }
     public int getTotalBooksCheckOut() {
         return totalBooksCheckOut;
     }
