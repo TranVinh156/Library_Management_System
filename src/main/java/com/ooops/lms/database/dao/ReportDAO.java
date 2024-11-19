@@ -107,8 +107,6 @@ public class ReportDAO implements DatabaseQuery<Report> {
             }
         }
 
-        findReportByCriteria.setLength(findReportByCriteria.length() - 5);
-
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findReportByCriteria.toString())) {
             int index = 1;
 
