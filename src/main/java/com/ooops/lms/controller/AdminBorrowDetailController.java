@@ -158,8 +158,6 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             setBookTextFielNull();
             bookImage.setImage(defaultUserImage);
 
-            borrowIDLabel.setText(String.valueOf(item.getIssueID()));
-
             borrowStatus.setValue(BookIssueStatus.BORROWED);
             //Xử lý ngày tháng mượn
             LocalDate borrowDate = LocalDate.now();
