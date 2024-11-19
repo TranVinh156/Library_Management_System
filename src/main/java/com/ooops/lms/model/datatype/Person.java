@@ -12,7 +12,7 @@ public class Person {
     private String email;
     private String phone;
 
-    public static final String DEFAULT_IMAGE_PATH ="/image/customer/menu/ava.png";
+    public static final String DEFAULT_IMAGE_PATH ="Library_Management_System/avatar/default.png";
 
     public Person() {
 
