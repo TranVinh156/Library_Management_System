@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="515.0" prefWidth="799.0" styleClass="pane-main" stylesheets="@../../../../style/AdminBookManagementStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBookDetailController">
+<HBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="515.0" prefWidth="799.0" styleClass="pane-main" stylesheets="@../../../../style/AdminStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminBookDetailController">
    <children>
       <StackPane prefHeight="515.0" prefWidth="911.0" HBox.hgrow="ALWAYS">
          <children>
