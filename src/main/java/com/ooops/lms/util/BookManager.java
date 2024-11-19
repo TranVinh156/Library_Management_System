@@ -1,20 +1,30 @@
 package com.ooops.lms.util;
 
+import com.ooops.lms.controller.UserMenuController;
+import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.database.dao.BookMarkDAO;
+import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.model.Book;
-import javafx.scene.layout.VBox;
+import com.ooops.lms.model.BookIssue;
+import com.ooops.lms.model.BookMark;
+import com.ooops.lms.model.BookReservation;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+
 import com.ooops.lms.database.dao.BookDAO;
+import com.ooops.lms.model.enums.BookIssueStatus;
 
 public class BookManager {
     private static BookManager instance = null;
     private List<Book> allBooks = new ArrayList<>();
     private List<Book> popularBooks ;
     private List<Book> highRankBooks;
+    private List<BookReservation> reservedBooks;
+    private List<BookMark> markedBooks;
+    private List<BookIssue> borrowedBooks;
+    private List<BookIssue> borrowingBooks;
+
 
     private BookManager() {
         try {
@@ -23,7 +33,6 @@ public class BookManager {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi truy vấn dữ liệu sách từ cơ sở dữ liệu", e);
         }
-
     }
 
     public List<Book> getPopularBooks() {
@@ -40,9 +49,42 @@ public class BookManager {
         if(highRankBooks==null) {
             highRankBooks = (ArrayList<Book>) ((ArrayList<Book>) allBooks).clone();
             sortBooks(highRankBooks, (book1, book2) -> Integer.compare(book2.getRate(), book1.getRate()));
-
         }
         return highRankBooks;
+    }
+
+    public List<BookReservation> getReservedBooks() throws SQLException {
+        if(reservedBooks==null) {
+            Map<String, Object> criteria = new HashMap<>();
+            criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            reservedBooks = BookReservationDAO.getInstance().searchByCriteria(criteria);
+        }
+        return reservedBooks;
+    }
+
+    public List<BookMark> getMarkedBooks() throws SQLException {
+        if(markedBooks==null) {
+            markedBooks = BookMarkDAO.getInstance().findAllBookMark(UserMenuController.getMember());
+        }
+        return markedBooks;
+    }
+    public List<BookIssue> getBorrowedBooks() throws SQLException {
+        if(borrowedBooks == null) {
+            Map<String, Object> criteria = new HashMap<>();
+            criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            criteria.put("status", BookIssueStatus.RETURNED);
+            borrowedBooks = BookIssueDAO.getInstance().searchByCriteria(criteria);
+        }
+        return borrowedBooks;
+    }
+    public List<BookIssue> getBorrowingBooks() throws SQLException {
+        if(borrowingBooks == null) {
+            Map<String, Object> criteria = new HashMap<>();
+            criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            criteria.put("status", BookIssueStatus.BORROWED);
+            borrowingBooks = BookIssueDAO.getInstance().searchByCriteria(criteria);
+        }
+        return borrowingBooks;
     }
 
     public List<Book> getAllBooks() {
@@ -80,5 +122,9 @@ public class BookManager {
                 return Integer.compare(rate2, rate1);
             }
         });
+    }
+
+    public boolean isContainInBookMarked(BookMark bookMark ) {
+        return true;
     }
 }

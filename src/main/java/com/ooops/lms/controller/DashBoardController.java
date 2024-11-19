@@ -50,7 +50,7 @@ public class DashBoardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (i == 9) {
+            if (i == 5) {
                 break;
             }
         }
@@ -74,7 +74,7 @@ public class DashBoardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (i == 9) {
+            if (i == 5) {
                 break;
             }
         }
