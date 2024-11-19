@@ -29,6 +29,8 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
     @FXML
     private VBox tableVbox; /* đổi tên thành TableVbox*/
 
+    private String findValue;
+
     @Override
     protected String getRowFXML() {
         return ROW_FXML;
@@ -38,10 +40,6 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
     protected void loadDataFromSource() throws SQLException {
         itemsList.addAll(MemberDAO.getInstance().selectAll());
     }
-    @Override
-    protected void getCriteria(){
-
-    }
 
     @FXML
     public void initialize() {
@@ -50,8 +48,8 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue != null && !newValue.trim().isEmpty()) {
-                    // Khi người dùng nhập vào, lọc lại dữ liệu và hiển thị kết quả
-                    loadFindData(newValue);
+                    findValue = newValue;
+                    searchCriteria();
                 } else {
                     // Nếu trường tìm kiếm rỗng, tải lại toàn bộ dữ liệu
                     loadData();
@@ -63,6 +61,36 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
     @FXML
     void onAddButtonAction(ActionEvent event) {
         mainController.loadAddPane();
+    }
+
+    @Override
+    protected void getCriteria() {
+
+    }
+    @Override
+    protected void searchCriteria() {
+        itemsList.clear();
+        try {
+            findCriteria.clear();
+            findCriteria.put("phone", findValue);
+            itemsList.addAll(MemberDAO.getInstance().searchByCriteria(findCriteria));
+
+            findCriteria.clear();
+            findCriteria.put("member_id", findValue);
+            itemsList.addAll(MemberDAO.getInstance().searchByCriteria(findCriteria));
+
+            findCriteria.clear();
+            findCriteria.put("first_name", findValue);
+            itemsList.addAll(MemberDAO.getInstance().searchByCriteria(findCriteria));
+
+            findCriteria.clear();
+            findCriteria.put("last_name", findValue);
+            itemsList.addAll(MemberDAO.getInstance().searchByCriteria(findCriteria));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        loadRows();
     }
 
     public void loadFindData(String name) {
