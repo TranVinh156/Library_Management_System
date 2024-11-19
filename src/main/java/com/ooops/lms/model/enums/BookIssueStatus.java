@@ -17,7 +17,7 @@ public enum BookIssueStatus {
 
     @Override
     public String toString() {
-        return displayName; // Sử dụng tên hiển thị thay vì tên enum
+        return name(); // Sử dụng tên hiển thị thay vì tên enum
     }
 
     }
