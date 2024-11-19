@@ -1,6 +1,8 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.database.dao.MemberDAO;
+import com.ooops.lms.model.Member;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,10 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ForgotPasswordController extends BasicController {
 
@@ -77,7 +83,18 @@ public class ForgotPasswordController extends BasicController {
     }
 
     private boolean checkEmail() {
-        String email = emailText.getText();
+        Map<String, Object> findCriteria = new HashMap<>();
+        findCriteria.put("email", emailText.getText());
+        List<Member> resultList = new ArrayList<>();
+        try {
+            resultList = MemberDAO.getInstance().searchByCriteria(findCriteria);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(resultList.isEmpty() || resultList.size() < 1) {
+            System.out.println(resultList.size());
+            return false;
+        }
         return true;
 
     }
@@ -98,8 +115,12 @@ public class ForgotPasswordController extends BasicController {
     }
 
     public void onToLoginButtonAction(ActionEvent actionEvent) {
+        openLoginView();
     }
 
     public void onToEmailButtonAction(ActionEvent actionEvent) {
+        isStep1 = !isStep1;
+        enterEmailHBox.setVisible(true);
+        enterVerifyHBox.setVisible(false);
     }
 }

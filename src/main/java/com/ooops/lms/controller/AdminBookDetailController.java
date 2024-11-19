@@ -333,7 +333,12 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @FXML
     void onScanButtonAction(ActionEvent event) {
-
+        Command scanCommand = new AdminCommand("scan",item);
+        commandInvoker.setCommand(scanCommand);
+        if(commandInvoker.executeCommand()) {
+            item = ((AdminCommand) scanCommand).getBookResult();
+            loadItemDetails();
+        }
     }
 
     private void setButtonPageAnimation() {

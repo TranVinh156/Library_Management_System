@@ -1,6 +1,7 @@
 package com.ooops.lms.Command;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.barcode.BarcodeScanner;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.database.dao.*;
 import com.ooops.lms.model.*;
@@ -17,6 +18,7 @@ public class AdminCommand implements Command {
     private Book bookResult;
     private BookDAO bookDAO;
     private BookItem bookItemResult;
+    private BarcodeScanner barcodeScanner = new BarcodeScanner();
 
     public AdminCommand(String action, Object object) {
         this.action = action;
@@ -94,6 +96,15 @@ public class AdminCommand implements Command {
                     if(object instanceof BookItem) {
                         BookItem bookItem = (BookItem) object;
                         this.bookItemResult = BookItemDAO.getInstance().find(bookItem.getBarcode());
+                    }
+                    return true;
+                case "scan":
+                    if(object instanceof BookItem) {
+                        bookItemResult = BookItemDAO.getInstance().find(Integer.valueOf(barcodeScanner.scanBarcodeFromCamera()));
+                    } else if(object instanceof Book) {
+                        bookResult = BookDAO.getInstance().find(Integer.valueOf(barcodeScanner.scanBarcodeFromCamera()));
+                    } else if(object instanceof Member) {
+                        memberResult = MemberDAO.getInstance().find(Long.valueOf(barcodeScanner.scanBarcodeFromCamera()));
                     }
                     return true;
                 default:
