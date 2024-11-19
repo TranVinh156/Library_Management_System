@@ -117,8 +117,6 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
             }
         }
 
-        findBookReservationByCriteria.setLength(findBookReservationByCriteria.length() - 5);
-
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookReservationByCriteria.toString())) {
             int index = 1;
 
