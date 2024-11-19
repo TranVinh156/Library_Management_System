@@ -248,13 +248,13 @@ public class UserMenuController implements Initializable {
 
     public void showInfo() {
         userNameLabel.setText(member.getPerson().getFirstName());
+
         String imagePath = member.getPerson().getImagePath();
 
         try {
             File file = new File(imagePath);
             avatarImage.setImage(new Image(file.toURI().toString()));
         } catch (Exception e) {
-            member.getPerson().setImagePath("Library_Management_System/avatar/default.png");
             File file = new File("Library_Management_System/avatar/default.png");
             avatarImage.setImage(new Image(file.toURI().toString()));
         }
