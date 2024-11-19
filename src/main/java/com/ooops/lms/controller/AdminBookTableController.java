@@ -91,16 +91,16 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
 
         // Kiểm tra và thêm tiêu chí tìm kiếm theo tên sách
         if (!bookNameFindTExt.getText().isEmpty()) {
-            findCriteria.put("title", "Error");
+            findCriteria.put("title", bookNameFindTExt.getText());
         }
         // Kiểm tra và thêm tiêu chí tìm kiếm theo tác giả
         if (!authorFindText.getText().isEmpty()) {
-            findCriteria.put("author", authorFindText.getText().trim());
+            findCriteria.put("author", authorFindText.getText());
         }
 
         // Kiểm tra và thêm tiêu chí tìm kiếm theo trạng thái
         if (!stausText.getText().isEmpty()) {
-            findCriteria.put("status", stausText.getText().trim().toUpperCase());
+            findCriteria.put("status", stausText.getText());
         }
     }
 
@@ -112,8 +112,7 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
 
     @FXML
     void onFindButtonAction(ActionEvent event) {
-        //searchCriteria();
-        getCriteria();
+        searchCriteria();
     }
 
     @FXML
