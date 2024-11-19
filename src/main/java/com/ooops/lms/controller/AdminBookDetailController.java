@@ -270,7 +270,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @FXML
     public void onChoiceImageButtonAction(ActionEvent event) {
-        item.setImagePath(getImagePath());
+        item.setImagePath(getImagePath(bookImage));
 
         //Nếu như có chọn ảnh thì set ảnh cho bookImage
         if (item.getImagePath() != null) {
