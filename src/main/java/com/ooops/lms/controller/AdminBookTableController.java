@@ -84,25 +84,32 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
     protected void getCriteria(){
         findCriteria.clear();
 
-        // Kiểm tra và thêm tiêu chí tìm kiếm theo ISBN
-        if (!ISBNFindText.getText().trim().isEmpty()) {
+        /*// Kiểm tra và thêm tiêu chí tìm kiếm theo ISBN
+        if (!ISBNFindText.getText().isEmpty()) {
             findCriteria.put("ISBN", ISBNFindText.getText());
-        }
+        }*/
 
         // Kiểm tra và thêm tiêu chí tìm kiếm theo tên sách
-        if (!bookNameFindTExt.getText().trim().isEmpty()) {
-            findCriteria.put("title", bookNameFindTExt.getText());
+        if (!bookNameFindTExt.getText().isEmpty()) {
+            findCriteria.put("title", "Error");
         }
-
-        // Kiểm tra và thêm tiêu chí tìm kiếm theo tác giả
-        if (!authorFindText.getText().trim().isEmpty()) {
+        try {
+            itemsList.addAll(BookDAO.getInstance().searchByCriteria(findCriteria));
+            System.out.println("search");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(itemsList.size());
+        loadRows();
+        /*// Kiểm tra và thêm tiêu chí tìm kiếm theo tác giả
+        if (!authorFindText.getText().isEmpty()) {
             findCriteria.put("author", authorFindText.getText().trim());
         }
 
         // Kiểm tra và thêm tiêu chí tìm kiếm theo trạng thái
-        if (!stausText.getText().trim().isEmpty()) {
+        if (!stausText.getText().isEmpty()) {
             findCriteria.put("status", stausText.getText().trim().toUpperCase());
-        }
+        }*/
     }
 
     @FXML
@@ -113,7 +120,8 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
 
     @FXML
     void onFindButtonAction(ActionEvent event) {
-        searchCriteria();
+        //searchCriteria();
+        getCriteria();
     }
 
     @FXML

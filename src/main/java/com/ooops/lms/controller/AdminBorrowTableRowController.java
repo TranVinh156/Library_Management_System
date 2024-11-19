@@ -7,6 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class AdminBorrowTableRowController extends BaseRowController<BookIssue, AdminBorrowPageController> {
 
     @FXML
@@ -39,7 +43,7 @@ public class AdminBorrowTableRowController extends BaseRowController<BookIssue, 
         memberNameLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
         bookNameLabel.setText(item.getBookItem().getTitle());
         barCodeLabel.setText(item.getBookItem().getBarcode() + "");
-        borrowDateLabel.setText(item.getCreatedDate());
+        borrowDateLabel.setText(item.getCreatedDate().substring(0, 10));
         statusLabel.setText(item.getStatus().toString());
     }
 
