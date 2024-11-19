@@ -420,15 +420,16 @@ public class BookDAO implements DatabaseQuery<Book> {
      * @throws SQLException
      */
     @Override
-    public List<Book> searchByCriteria(Map<String, Object> criteria) throws SQLException {
+    public List<Book> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
 
         List<Book> bookList = new ArrayList<>();
-        StringBuilder findBookByCriteria = new StringBuilder("SELECT *\n" +
+        StringBuilder findBookByCriteria = new StringBuilder("SELECT distinct (Books.ISBN)\n" +
                 "FROM Books\n" +
                 "JOIN Books_Authors ON Books.ISBN = Books_Authors.ISBN\n" +
                 "JOIN Authors ON Books_Authors.author_ID = Authors.author_ID\n" +
                 "JOIN Books_Category ON Books.ISBN = Books_Category.ISBN\n" +
-                "JOIN Category ON Books_Category.category_ID = Category.category_ID where ");
+                "JOIN Category ON Books_Category.category_ID = Category.category_ID\n" +
+                " WHERE ");
 
         for (String key : criteria.keySet()) {
             if (key.equals("ISBN")) {
@@ -437,19 +438,19 @@ public class BookDAO implements DatabaseQuery<Book> {
                 findBookByCriteria.append(key).append(" LIKE ? AND ");
             }
         }
-
         findBookByCriteria.setLength(findBookByCriteria.length() - 5);
 
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookByCriteria.toString())) {
             int index = 1;
 
             for (Object value : criteria.values()) {
+                System.out.println(value);
                 preparedStatement.setString(index++, "%" + value + "%");
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    bookList.add(find(resultSet.getLong("ISBN")));
+                    bookList.add(find(resultSet.getLong("Books.ISBN")));
                 }
                 return bookList;
             }
@@ -483,7 +484,8 @@ public class BookDAO implements DatabaseQuery<Book> {
      * @param criteria danh sách tiêu chí
      * @return keywords
      */
-    private String generateKeywords(Map<String, Object> criteria) {
+    @NotNull
+    private String generateKeywords(@NotNull Map<String, Object> criteria) {
         StringBuilder keywords = new StringBuilder();
 
         for (Map.Entry<String, Object> entry : criteria.entrySet()) {
