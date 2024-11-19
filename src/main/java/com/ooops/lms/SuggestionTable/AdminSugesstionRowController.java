@@ -36,7 +36,7 @@ public class AdminSugesstionRowController {
         } else if (object instanceof Book) {
             Book book = (Book) object;
             textLabel.setText(book.getTitle() + " - " + book.getISBN());
-            imageView.setImage(new Image(book.getImagePath()));
+            //imageView.setImage(new Image(book.getImagePath()));
         }
 
     }
