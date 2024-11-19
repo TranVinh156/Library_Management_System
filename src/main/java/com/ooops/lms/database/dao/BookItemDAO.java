@@ -113,7 +113,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         List<BookItem> bookItemList = new ArrayList<>();
 
         for (String key : criteria.keySet()) {
-            if (criteria.get(key) == "ISBN") {
+            if (key.equals("ISBN")) {
                 findBookByCriteria.append("CAST(bi.ISBN AS CHAR)").append(" LIKE ? AND ");
             } else {
                 findBookByCriteria.append(key).append(" LIKE ? AND ");
