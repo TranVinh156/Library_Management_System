@@ -95,9 +95,10 @@ public class Book {
         this.authors = authors;
         this.categories = categories;
     }
+
     @Override
     public boolean equals(Object o) {
-        if(o instanceof Book) {
+        if (o instanceof Book) {
             Book book = (Book) o;
             return this.ISBN == book.getISBN();
         }
@@ -203,5 +204,10 @@ public class Book {
 
     public void setNumberOfReservedBooks(int numberOfReservedBooks) {
         this.numberOfReservedBooks = numberOfReservedBooks;
+    }
+
+    @Override
+    public String toString() {
+        return ISBN + "";
     }
 }

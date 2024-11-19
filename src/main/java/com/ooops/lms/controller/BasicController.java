@@ -20,9 +20,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,6 +51,7 @@ public class BasicController {
     private static final String USER_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminUserPage.fxml";
     private static final String ISSUE_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminIssuePage.fxml";
     private static final String BORROW_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminBorrowPage.fxml";
+    private static final String RESERVATION_PAGE_FXML ="/com/ooops/lms/library_management_system/AdminReservationPage.fxml";
 
     protected static final FXMLLoader loginLoader;
     protected static final Node loginPane;
@@ -77,6 +83,9 @@ public class BasicController {
 
     protected static final FXMLLoader bookPagePaneLoader;
     protected static final Node bookPagePane;
+
+    protected static final FXMLLoader reservationPagePaneLoader;
+    protected static final Node reservationPagePane;
 
     protected CommandInvoker commandInvoker = new CommandInvoker();
 
@@ -116,6 +125,10 @@ public class BasicController {
         //load BorrowMangament-view
         borrowPagePaneLoader = loadFXML(BORROW_PAGE_FXML, BasicController.class);
         borrowPagePane = loadPane(borrowPagePaneLoader, BasicController.class);
+
+        //load Reservation-view
+        reservationPagePaneLoader = loadFXML(RESERVATION_PAGE_FXML, BasicController.class);
+        reservationPagePane = loadPane(reservationPagePaneLoader, BasicController.class);
 
         adminMenuPaneLoader = loadFXML(ADMIN_MENU_FXML,BasicController.class);
         adminMenuPane = loadPane(adminMenuPaneLoader, BasicController.class);
@@ -308,7 +321,7 @@ public class BasicController {
      *
      * @return đường dẫn của ảnh
      */
-    public String getImagePath() {
+    public String getImagePath(Object o) {
         // Tạo một FileChooser
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Chọn ảnh");
@@ -321,13 +334,64 @@ public class BasicController {
         // Mở hộp thoại chọn tệp và lấy tệp đã chọn
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
-            return selectedFile.toURI().toString();
+            // Tạo tên tệp mới dựa trên ID người dùng
+            String imageFile = o.toString() + getFileExtension(selectedFile.toPath());
+            //newImageFile = "Library_Management_System/avatar/" + imageFile;
+            Path avatarFolder =Paths.get("");
+            if(o instanceof Member) {
+                avatarFolder = Paths.get("Library_Management_System/avatar");
+            } else {
+                avatarFolder = Paths.get("Library_Management_System/avatar");
+            }
+            try {
+                // Tạo thư mục nếu chưa tồn tại
+                if (Files.notExists(avatarFolder)) {
+                    Files.createDirectories(avatarFolder);
+                }
+
+                Path destinationPath = avatarFolder.resolve(imageFile);
+
+                // Xóa file nếu nó đã tồn tại
+                if (Files.exists(destinationPath)) {
+                    Files.delete(destinationPath);
+                }
+
+                // Đọc ảnh gốc từ file
+                BufferedImage originalImage = ImageIO.read(selectedFile);
+
+                // Tính toán chiều dài của hình vuông
+                int width = originalImage.getWidth();
+                int height = originalImage.getHeight();
+                int size = Math.min(width, height);  // Lấy cạnh nhỏ nhất làm kích thước vuông
+
+                // Cắt ảnh thành hình vuông ở giữa
+                int x = width;
+                int y = height;
+
+                BufferedImage squareImage = originalImage.getSubimage(x, y, size, size);
+
+                // Lưu ảnh vuông vào tệp
+                ImageIO.write(squareImage, "PNG", destinationPath.toFile());
+
+                return destinationPath.toAbsolutePath().toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+
         } else {
             System.out.println("Không có ảnh nào được chọn.");
             return null;
         }
     }
-
+    private String getFileExtension(Path path) {
+        String fileName = path.toString();
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            return fileName.substring(dotIndex);
+        }
+        return "";
+    }
     /**
      * hàm này sẽ kiểm tra xem đường dâẫn ảnh có tồn tại trong máy không.
      *

@@ -31,6 +31,10 @@ public class Member extends Account {
     public int hashCode() {
         return Long.hashCode(getPerson().getId());
     }
+    @Override
+    public String toString() {
+        return getPerson().getId() +"";
+    }
     public int getTotalBooksCheckOut() {
         return totalBooksCheckOut;
     }
