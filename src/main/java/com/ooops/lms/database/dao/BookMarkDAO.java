@@ -3,6 +3,7 @@ package com.ooops.lms.database.dao;
 import com.ooops.lms.database.Database;
 import com.ooops.lms.model.BookMark;
 import com.ooops.lms.model.Member;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,7 +42,7 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
     private static final String FIND_BOOK_MARK = "SELECT * FROM bookmark where member_id = ?";
 
     @Override
-    public void add(BookMark entity) throws SQLException {
+    public void add(@NotNull BookMark entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_BOOK_MARK)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setLong(2, entity.getBook().getISBN());
@@ -56,7 +57,7 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
     }
 
     @Override
-    public boolean delete(BookMark entity) throws SQLException {
+    public boolean delete(@NotNull BookMark entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_MARK)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setLong(2, entity.getBook().getISBN());
@@ -81,7 +82,7 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
         return List.of();
     }
 
-    public List<BookMark> findAllBookMark(Member member) throws SQLException {
+    public List<BookMark> findAllBookMark(@NotNull Member member) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_MARK)) {
             preparedStatement.setInt(1, member.getPerson().getId());
 
