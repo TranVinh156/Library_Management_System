@@ -43,7 +43,7 @@ public class UserReportController {
 
     public void initialize() {
         Map<String, Object> criteria = new HashMap<>();
-        criteria.put("member_ID", UserMenuController.member.getPerson().getId());
+        criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
 
         try {
             reports = ReportDAO.getInstance().searchByCriteria(criteria);
@@ -66,7 +66,7 @@ public class UserReportController {
     }
 
     public void onAddReportButtonAction(ActionEvent actionEvent) {
-        currentReport = new Report(UserMenuController.member,"","");
+        currentReport = new Report(UserMenuController.getMember(),"","");
         currentReport.setStatus(ReportStatus.PENDING);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();

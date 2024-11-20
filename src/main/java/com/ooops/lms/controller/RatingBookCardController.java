@@ -42,7 +42,7 @@ public class RatingBookCardController {
         try {
             Map<String,Object> criteria = new HashMap<>();
             criteria.put("ISBN",bookItem.getISBN());
-            criteria.put("member_ID",UserMenuController.member.getPerson().getId());
+            criteria.put("member_ID",UserMenuController.getMember().getPerson().getId());
             List<Comment> commentList = CommentDAO.getInstance().searchByCriteria(criteria);
             comment=commentList.get(0);
             statusText.setText("đã đánh giá");

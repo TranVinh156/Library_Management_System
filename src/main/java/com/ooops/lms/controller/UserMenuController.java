@@ -74,7 +74,7 @@ public class UserMenuController implements Initializable {
     private FXMLLoaderUtil fxmlLoaderUtil;
 
     private int memberID = 0;
-    protected static Member member;
+    private static Member member;
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
     private static final String ADVANCED_SEARCH_FXML = "/com/ooops/lms/library_management_system/AdvancedSearch-view.fxml";
@@ -82,6 +82,7 @@ public class UserMenuController implements Initializable {
     private static final String SETTING_FXML = "/com/ooops/lms/library_management_system/Setting-view.fxml";
     private static final String USER_LOGIN_FXML = "/com/ooops/lms/library_management_system/UserLogin.fxml";
     private static final String BOOK_RANKING_FXML = "/com/ooops/lms/library_management_system/BookRanking-view.fxml";
+    private static final String SUGGEST_CARD_FXML = "/com/ooops/lms/library_management_system/BookSuggestionCard-view.fxml";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -91,7 +92,7 @@ public class UserMenuController implements Initializable {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
-            contentBox.getChildren().clear(); // Xóa nội dung cũ, nếu có
+            contentBox.getChildren().clear();
             contentBox.getChildren().add(content);
         }
         ThemeManager.getInstance().addPane(stackPane);
@@ -173,7 +174,7 @@ public class UserMenuController implements Initializable {
                     for (int i = 0; i < bookList.size(); i++) {
                         try {
                             FXMLLoader fxmlLoader = new FXMLLoader();
-                            fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookSuggestionCard-view.fxml"));
+                            fxmlLoader.setLocation(getClass().getResource(SUGGEST_CARD_FXML));
                             HBox cardBox = fxmlLoader.load();
                             BookSuggestionCardController cardController = fxmlLoader.getController();
                             cardController.setData(bookList.get(i));
@@ -194,11 +195,9 @@ public class UserMenuController implements Initializable {
                     suggestionList.setVisible(!filteredSuggestions.isEmpty());
                 });
 
-                // Thực thi task
                 new Thread(fetchBooksTask).start();
             }
 
-            // Các sự kiện để ẩn hoặc xóa gợi ý khi người dùng bấm vào
             suggestionList.setOnMouseClicked(event -> {
                 suggestionContainer.setVisible(false);
                 filteredSuggestions.clear();
@@ -255,6 +254,7 @@ public class UserMenuController implements Initializable {
             File file = new File(imagePath);
             avatarImage.setImage(new Image(file.toURI().toString()));
         } catch (Exception e) {
+            e.printStackTrace();
             File file = new File("Library_Management_System/avatar/default.png");
             avatarImage.setImage(new Image(file.toURI().toString()));
         }
@@ -282,5 +282,4 @@ public class UserMenuController implements Initializable {
     public static Member getMember() {
         return member;
     }
-
 }

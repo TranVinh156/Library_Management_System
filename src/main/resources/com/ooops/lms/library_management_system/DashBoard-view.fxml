@@ -28,9 +28,9 @@
             </ImageView>
          </children>
       </HBox>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0" styleClass="rounded-scrollpane">
+      <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0" styleClass="rounded-scrollpane" vbarPolicy="NEVER">
          <content>
-            <HBox fx:id="popularHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="565.0" spacing="10.0">
+            <HBox fx:id="popularHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="368.0" spacing="10.0">
                <padding>
                   <Insets left="10.0" />
                </padding></HBox>
@@ -49,9 +49,9 @@
             </ImageView>
          </children>
       </HBox>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0" styleClass="rounded-scrollpane">
+      <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="235.0" prefWidth="691.0" styleClass="rounded-scrollpane" vbarPolicy="NEVER">
          <content>
-            <HBox fx:id="highRankHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="553.0">
+            <HBox fx:id="highRankHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="392.0">
                <padding>
                   <Insets top="10.0" />
                </padding></HBox>
