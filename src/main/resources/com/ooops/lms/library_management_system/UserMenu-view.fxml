@@ -139,9 +139,9 @@
                      <children>
                         <VBox alignment="BOTTOM_LEFT" prefHeight="227.0" prefWidth="165.0">
                            <children>
-                              <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Dashboard" />
-                              <Button fx:id="bookmarkButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onBookmarkButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Đánh dấu" />
-                              <Button fx:id="bookRankingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onBookRankingButtonAction" prefHeight="43.0" prefWidth="204.0" styleClass="menu-bar-button" text="Bảng xếp hạng" />
+                              <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Dashboard" />
+                              <Button fx:id="bookmarkButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookmarkButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Đánh dấu" />
+                              <Button fx:id="bookRankingButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookRankingButtonAction" prefHeight="43.0" prefWidth="204.0" styleClass="menu-bar-button" text="Bảng xếp hạng" />
                            </children>
                         </VBox>
                         <HBox prefHeight="299.0" prefWidth="161.0" VBox.vgrow="ALWAYS" />
@@ -149,8 +149,8 @@
                            <children>
                               <VBox prefHeight="70.0" prefWidth="161.0">
                                  <children>
-                                    <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Cài đặt" />
-                                    <Button fx:id="logoutButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="58.0" prefWidth="187.0" styleClass="menu-bar-button" text="Logout" />
+                                    <Button fx:id="settingButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Cài đặt" />
+                                    <Button fx:id="logoutButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="58.0" prefWidth="187.0" styleClass="menu-bar-button" text="Logout" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="5.0" />

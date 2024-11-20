@@ -25,7 +25,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label text="Vấn đề của em" textFill="#a64f3c" HBox.hgrow="ALWAYS">
+            <Label styleClass="label-1" text="Vấn đề của em" textFill="#a64f3c" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
@@ -37,9 +37,9 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="533.0" prefWidth="750.0" spacing="20.0">
          <children>
-            <ScrollPane prefHeight="517.0" prefWidth="415.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="517.0" prefWidth="444.0" styleClass="rounded-scrollpane">
                <content>
-                  <VBox fx:id="reportsBox" alignment="TOP_CENTER" prefHeight="306.0" prefWidth="362.0" spacing="10.0">
+                  <VBox fx:id="reportsBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
                      <padding>
                         <Insets left="5.0" right="5.0" top="20.0" />
                      </padding></VBox>

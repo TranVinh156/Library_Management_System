@@ -68,19 +68,19 @@ public class InformationController {
     }
 
     private void showInfo() {
-        lastNameText.setText(UserMenuController.member.getPerson().getLastName());
-        firstNameText.setText(UserMenuController.member.getPerson().getFirstName());
-        phoneText.setText(UserMenuController.member.getPerson().getPhone());
-        emailText.setText(UserMenuController.member.getPerson().getEmail());
-        genderChoiceBox.setValue(UserMenuController.member.getPerson().getGender().toString());
-        String dateString = UserMenuController.member.getPerson().getDateOfBirth();
-        userIDText.setText(Integer.toString(UserMenuController.member.getPerson().getId()));
+        lastNameText.setText(UserMenuController.getMember().getPerson().getLastName());
+        firstNameText.setText(UserMenuController.getMember().getPerson().getFirstName());
+        phoneText.setText(UserMenuController.getMember().getPerson().getPhone());
+        emailText.setText(UserMenuController.getMember().getPerson().getEmail());
+        genderChoiceBox.setValue(UserMenuController.getMember().getPerson().getGender().toString());
+        String dateString = UserMenuController.getMember().getPerson().getDateOfBirth();
+        userIDText.setText(Integer.toString(UserMenuController.getMember().getPerson().getId()));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate parsedDate = LocalDate.parse(dateString, formatter);
         birthDate.setValue(parsedDate);
 
-        String imagePath = UserMenuController.member.getPerson().getImagePath();
+        String imagePath = UserMenuController.getMember().getPerson().getImagePath();
 
         try {
             File file = new File(imagePath);
@@ -160,24 +160,24 @@ public class InformationController {
         if(newImageFile == null) {
             System.out.println("there is no image to save");
         }
-        UserMenuController.member.getPerson().setImagePath(newImageFile);
-        UserMenuController.member.getPerson().setLastName(lastNameText.getText());
-        UserMenuController.member.getPerson().setFirstName(firstNameText.getText());
+        UserMenuController.getMember().getPerson().setImagePath(newImageFile);
+        UserMenuController.getMember().getPerson().setLastName(lastNameText.getText());
+        UserMenuController.getMember().getPerson().setFirstName(firstNameText.getText());
         if(genderChoiceBox.getValue().toString().equals("nữ")) {
-            UserMenuController.member.getPerson().setGender(Gender.FEMALE);
+            UserMenuController.getMember().getPerson().setGender(Gender.FEMALE);
         } else if(genderChoiceBox.getValue().toString().equals("nam")) {
-            UserMenuController.member.getPerson().setGender(Gender.MALE);
+            UserMenuController.getMember().getPerson().setGender(Gender.MALE);
         } else {
-            UserMenuController.member.getPerson().setGender(Gender.OTHER);
+            UserMenuController.getMember().getPerson().setGender(Gender.OTHER);
         }
-        UserMenuController.member.getPerson().setEmail(emailText.getText());
-        UserMenuController.member.getPerson().setPhone(phoneText.getText());
+        UserMenuController.getMember().getPerson().setEmail(emailText.getText());
+        UserMenuController.getMember().getPerson().setPhone(phoneText.getText());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = birthDate.getValue().format(formatter);
-        UserMenuController.member.getPerson().setDateOfBirth(formattedDate);
+        UserMenuController.getMember().getPerson().setDateOfBirth(formattedDate);
 
         try {
-            MemberDAO.getInstance().update(UserMenuController.member);
+            MemberDAO.getInstance().update(UserMenuController.getMember());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
