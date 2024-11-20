@@ -24,9 +24,6 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
     private TextField birthText;
 
     @FXML
-    private Button blockMember;
-
-    @FXML
     private Button choiceImageButton;
 
     @FXML
@@ -133,7 +130,6 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         saveButton.setVisible(editMode);
         saveButton.setText("Save");
         deleteButton.setVisible(editMode);
-        blockMember.setVisible(editMode);
 
         //Cho phép người dùng sửa các trường
         emailText.setEditable(editMode);
@@ -223,33 +219,6 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         statusBox.getItems().addAll(AccountStatus.values());
     }
 
-    @FXML
-    void onBlockButtonAction(ActionEvent event) {
-        if(item.getStatus().equals(AccountStatus.ACTIVE)) {
-            boolean confirmYes = CustomerAlter.showAlter("Bạn block người đọc này á?");
-            if (confirmYes) {
-                boolean confirmYes2 = CustomerAlter.showAlter("Bạn block thật đấy à?");
-                if (confirmYes2) {
-                    Command blockCommand = new AdminCommand("block",this.item);
-                    commandInvoker.setCommand(blockCommand);
-                    if(commandInvoker.executeCommand()) {
-                        statusBox.getSelectionModel().select(AccountStatus.BLOCKED);
-                        System.out.println("Đã block người đọc");
-                    }
-                }
-            }
-        } else if(item.getStatus().equals(AccountStatus.BLOCKED)) {
-            boolean confirmYes = CustomerAlter.showAlter("Bạn unblock người đọc này?");
-            if (confirmYes) {
-                Command unblockCommand = new AdminCommand("unblock",this.item);
-                commandInvoker.setCommand(unblockCommand);
-                if(commandInvoker.executeCommand()) {
-                    statusBox.getSelectionModel().select(AccountStatus.ACTIVE);
-                    System.out.println("Đã unblock người đọc");
-                }
-            }
-        }
-    }
 
     //Nút chọn ảnh
     @FXML
