@@ -11,7 +11,7 @@ import com.ooops.lms.model.Category;
 import com.ooops.lms.model.enums.BookStatus;
 
 public class Book {
-    public static final String DEFAULT_IMAGE_PATH = "Library_Management_System/bookImage/default.png";
+    public static final String DEFAULT_IMAGE_PATH = "bookImage/default.png";
     private long ISBN;
     private String title;
     private String imagePath;
