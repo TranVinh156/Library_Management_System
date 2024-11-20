@@ -4,10 +4,13 @@ import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
-import com.ooops.lms.controller.BaseDetailController;
-import com.ooops.lms.model.*;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
+import com.ooops.lms.model.BookIssue;
+import com.ooops.lms.model.BookItem;
+import com.ooops.lms.model.BookReservation;
+import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.BookIssueStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,7 +27,7 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AdminBorrowDetailController extends BaseDetailController<BookIssue> {
+public class AdminReservationDetailController extends BaseDetailController<BookReservation> {
 
     @FXML
     private Button addButotn;
@@ -102,7 +105,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     @FXML
     private ImageView bookImage;
     @FXML
-    private ChoiceBox<BookIssueStatus> borrowStatus;
+    private ChoiceBox<BookReservationStatus> borrowStatus;
     @FXML
     private Label borrowIDLabel;
 
@@ -144,7 +147,6 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         scanBookButton.setMouseTransparent(!addMode);
         scanMemberButton.setMouseTransparent(!addMode);
 
-        borrowIDLabel.setText(null);
 
         if (addMode) {
             saveButton.setVisible(!addMode);
@@ -158,7 +160,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             setBookTextFielNull();
             bookImage.setImage(defaultUserImage);
 
-            borrowStatus.setValue(BookIssueStatus.BORROWED);
+            borrowIDLabel.setText(null);
+
+            borrowStatus.setValue(BookReservationStatus.WAITING);
             //Xử lý ngày tháng mượn
             LocalDate borrowDate = LocalDate.now();
             LocalDate returnDate = borrowDate.plusWeeks(2); // Thêm 2 tuần
@@ -168,6 +172,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             returnDateText.setText(returnDate.format(formatter));
         }
     }
+
     @Override
     protected void updateEditModeUI() {
         editButton.setVisible(!editMode);
@@ -185,11 +190,13 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         scanBookButton.setMouseTransparent(editMode);
         scanMemberButton.setMouseTransparent(editMode);
     }
+
     @Override
     protected boolean validateInput() {
 
         return true;
     }
+
     @Override
     protected boolean getNewItemInformation() throws Exception {
         if (member == null) {
@@ -206,14 +213,14 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         }
         String reformattedDate = reformatDate(borowDateText.getText());
         String reformattedReturnDate = reformatDate(returnDateText.getText());
-        item = new BookIssue(member,bookItem,reformattedDate,reformattedReturnDate);
+        item = new BookReservation(member, bookItem, reformattedDate, reformattedReturnDate);
         return true;
     }
 
 
     @FXML
     public void initialize() {
-        borrowStatus.getItems().addAll(BookIssueStatus.values());
+        borrowStatus.getItems().addAll(BookReservationStatus.values());
 
 
         suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
@@ -315,9 +322,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onScanBookButtonAction(ActionEvent event) {
-        Command scanCommand = new AdminCommand("scan",bookItem);
+        Command scanCommand = new AdminCommand("scan", bookItem);
         commandInvoker.setCommand(scanCommand);
-        if(commandInvoker.executeCommand()) {
+        if (commandInvoker.executeCommand()) {
             bookItem = ((AdminCommand) scanCommand).getBookItemResult();
             setBookItem(bookItem);
         }
@@ -325,9 +332,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onScanMemberButtonAction(ActionEvent event) {
-        Command scanCommand = new AdminCommand("scan",member);
+        Command scanCommand = new AdminCommand("scan", member);
         commandInvoker.setCommand(scanCommand);
-        if(commandInvoker.executeCommand()) {
+        if (commandInvoker.executeCommand()) {
             member = ((AdminCommand) scanCommand).getMemberResult();
             setMember(member);
         }
@@ -377,9 +384,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     }
 
     private void setDateIssue() {
-        borrowIDLabel.setText(String.valueOf(item.getIssueID()));
+        borrowIDLabel.setText(String.valueOf(item.getReservationId()));
         borowDateText.setText(String.valueOf(item.getCreatedDate()));
-        returnDateText.setText(String.valueOf(item.getReturnDate()));
+        returnDateText.setText(String.valueOf(item.getDueDate()));
     }
 
 }

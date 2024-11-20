@@ -84,10 +84,14 @@ public class AdminMenuController extends BasicController {
     private ImageView readerManagementlogo;
 
     @FXML
+    private Button reservationButton;
+
+    @FXML
     private Button settingButton;
 
     @FXML
     private ImageView settingLogo;
+
 
     private boolean isMenuExpanded = false;
     private static Image minimizeIconImage = new Image(BasicController.class.getResource("/image/icon/minimize.png").toExternalForm());;
@@ -96,11 +100,13 @@ public class AdminMenuController extends BasicController {
     private AdminBookPageController adminBookPageController;
     private AdminUserPageController adminUserPageController;
     private AdminBorrowPageController adminBorrowPageController;
+    private AdminReservationPageController adminReservationPageController;
 
     public void initialize() throws IOException {
         adminBookPageController = bookPagePaneLoader.getController();
         adminUserPageController = userPagePaneLoader.getController();
         adminBorrowPageController = borrowPagePaneLoader.getController();
+        adminReservationPageController = reservationPagePaneLoader.getController();
 
         openPage(dashboardPane);
         hideButtonTexts();
@@ -160,6 +166,14 @@ public class AdminMenuController extends BasicController {
         }
         adminBorrowPageController.startPage();
         openPage(borrowPagePane);
+    }
+    @FXML
+    void onReservationButtonAction(ActionEvent event) {
+        if(addTablePane.isVisible()) {
+            addTablePane.setVisible(false);
+        }
+        adminReservationPageController.startPage();
+        openPage(reservationPagePane);
     }
 
     @FXML

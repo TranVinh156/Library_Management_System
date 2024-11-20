@@ -254,7 +254,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
     //Nút chọn ảnh
     @FXML
     void onChoiceImageButtonAction(ActionEvent event) {
-        item.getPerson().setImagePath(getImagePath());
+        item.getPerson().setImagePath(getImagePath(item));
 
         // Xử lý nếu như có chọn ảnh thì trường avatar của người dùng hiện ảnh
         if (item.getPerson().getImagePath() != null) {
