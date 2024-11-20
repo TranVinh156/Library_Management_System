@@ -39,6 +39,11 @@ public class AdminIssueTableController extends BaseTableController<Report, Admin
 
     @FXML
     private VBox tableVbox;
+    private AdminDashboardController adminDashboardController;
+
+    public void initialize() {
+        adminDashboardController = dashboardLoader.getController();
+    }
 
     @Override
     protected String getRowFXML() {
@@ -48,6 +53,13 @@ public class AdminIssueTableController extends BaseTableController<Report, Admin
     @Override
     protected void loadDataFromSource() throws SQLException {
         itemsList.addAll(ReportDAO.getInstance().selectAll());
+
+        //Xử lý set total cho Dashboard
+        findCriteria.clear();
+        findCriteria.put("status","PENDING");
+        int totalIssuel = ReportDAO.getInstance().searchByCriteria(findCriteria).size();
+        adminDashboardController.setTotalIssueLabel(totalIssuel+"");
+        findCriteria.clear();
     }
 
     @FXML
