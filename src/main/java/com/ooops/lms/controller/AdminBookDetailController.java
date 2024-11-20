@@ -98,6 +98,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     private PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.5));
     private boolean isPage1 = true;
     private boolean isSettingItem = false;
+    private boolean isSettingItem2 = false;
 
     @Override
     protected void loadItemDetails() {
@@ -120,6 +121,8 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected void updateAddModeUI() {
+        titlePage.push("Edit");
+
         //Xử lý các nút bấm
         ediButton.setVisible(!addMode);
         addButtonPane.setVisible(addMode);
@@ -223,11 +226,14 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     @FXML
     private void initialize() {
         suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
+
+
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
             public void onRowClick(Object o) {
                 if(o instanceof Book) {
                     isSettingItem = true;
+                    isSettingItem2 = true;
                     setItem((Book)o);
                     suggestionVbox.getChildren().clear();
                     suggestionPane.setVisible(false);
@@ -252,7 +258,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         });
 
         bookNameText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!isSettingItem && addMode) {
+            if(!isSettingItem2 && addMode) {
                 suggestionTable.updateSuggestionPanePosition(bookNameText);
                 // Reset và restart pause transition mỗi khi có thay đổi text
                 pauseTransition.setOnFinished(event -> {
@@ -260,6 +266,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
                 });
                 pauseTransition.playFromStart();
             }
+            isSettingItem2 = false;
         });
     }
 
