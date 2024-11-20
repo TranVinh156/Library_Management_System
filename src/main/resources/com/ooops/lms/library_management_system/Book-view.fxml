@@ -97,9 +97,9 @@
                      </VBox.margin>
                   </HBox>
                   <Label maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="362.0" styleClass="label1" stylesheets="@../../../../style/BookStyle.css" text="Nội dung" VBox.vgrow="ALWAYS" />
-                  <ScrollPane prefHeight="125.0" prefWidth="253.0" style="-fx-background-color: #ffffff;" stylesheets="@../../../../style/BookStyle.css">
+                  <ScrollPane prefHeight="125.0" prefWidth="253.0" styleClass="rounded-scrollpane">
                      <content>
-                        <Text fx:id="contentText" strokeType="OUTSIDE" strokeWidth="0.0" text="Nội dung" wrappingWidth="323.13671875" />
+                        <Text fx:id="contentText" strokeType="OUTSIDE" strokeWidth="0.0" text="Nội dung" wrappingWidth="368.13671875" />
                      </content>
                      <padding>
                         <Insets left="5.0" right="5.0" />
@@ -121,7 +121,7 @@
                         <Insets left="20.0" right="5.0" />
                      </padding>
                   </HBox>
-                  <ScrollPane maxWidth="1.7976931348623157E308" prefHeight="222.0" prefWidth="195.0" styleClass="rounded-scrollpane" stylesheets="@../../../../style/BookStyle.css">
+                  <ScrollPane maxWidth="1.7976931348623157E308" prefHeight="222.0" prefWidth="195.0" styleClass="rounded-scrollpane">
                      <content>
                         <VBox fx:id="commentsVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="148.0" prefWidth="178.0" />
                      </content>

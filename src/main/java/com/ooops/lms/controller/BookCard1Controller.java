@@ -4,6 +4,7 @@ import com.ooops.lms.model.Author;
 import com.ooops.lms.model.BookMark;
 import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -22,6 +23,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ooops.lms.controller.BookSuggestionCardController.executor;
 
 public class BookCard1Controller {
     private  FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
@@ -48,14 +51,6 @@ public class BookCard1Controller {
 
     public void setData(Book book) {
         this.book = book;
-        try {
-            Image image = new Image(getClass().getResourceAsStream("/" + book.getImagePath()));
-            bookImage.setImage(image);
-        } catch (RuntimeException e) {
-            File file = new File(book.getImagePath());
-            Image image = new Image(file.toURI().toString());
-            bookImage.setImage(image);
-        }
         bookNameLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
@@ -65,6 +60,24 @@ public class BookCard1Controller {
         authorNameLabel.setText(author);
         starImage.setImage(starImage(book.getRate()));
         hBox.setStyle("-fx-background-color: #" + colors[(int)(Math.random() * colors.length)]);
+
+        Task<Image> loadImageTask = new Task<>() {
+            @Override
+            protected Image call() throws Exception {
+                try {
+                    return new Image(book.getImagePath(), true);
+                } catch (Exception e) {
+                    System.out.println("Length: " + book.getImagePath().length());
+
+                    File file = new File("bookImage/default.png");
+                    return new Image(file.toURI().toString());
+                }
+            }
+        };
+
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+        executor.submit(loadImageTask);
     }
 
     public void onBookMouseClicked(MouseEvent mouseEvent) {

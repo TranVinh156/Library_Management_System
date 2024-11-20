@@ -5,6 +5,7 @@ import com.ooops.lms.database.Database;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Category;
+import com.ooops.lms.model.enums.BookStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
@@ -401,6 +402,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                     book.setNumberOfLostBooks(resultSet.getInt("number_lost_book"));
                     book.setNumberOfReservedBooks(resultSet.getInt("number_reserved_book"));
                     book.setRate(resultSet.getInt("rate"));
+                    book.setStatus(BookStatus.valueOf(resultSet.getString("status")));
                     bookList.add(book);
 
                     // Lưu vào bộ nhớ đệm
@@ -447,7 +449,8 @@ public class BookDAO implements DatabaseQuery<Book> {
                 System.out.println(value);
                 preparedStatement.setString(index++, "%" + value + "%");
             }
-            System.out.println("Cau sql: "+preparedStatement.toString());
+
+            System.out.println(preparedStatement.toString());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     bookList.add(find(resultSet.getLong("Books.ISBN")));

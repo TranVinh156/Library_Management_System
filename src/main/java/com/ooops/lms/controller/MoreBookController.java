@@ -50,6 +50,11 @@ public class MoreBookController {
         scrollPane1.setStyle("-fx-background-color: transparent;");
         scrollPane2.setStyle("-fx-background-color: transparent;");
 
+        scrollPane1.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        scrollPane2.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane2.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         int numberOfPage = (bookList.size() - 1) / 12 + 1;
         pagination.setPageCount((int) Math.ceil((double) bookList.size() / 12));
         pagination.setPageFactory(pageIndex -> loadBook(pageIndex * 12, Math.min((pageIndex + 1) * 12, bookList.size())));

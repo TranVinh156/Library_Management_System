@@ -41,10 +41,7 @@ public class BookRankingController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(i == 9) break;
+            if(i == 8) break;
         }
-    }
-
-    public void onBackButtonAction(ActionEvent actionEvent) {
     }
 }

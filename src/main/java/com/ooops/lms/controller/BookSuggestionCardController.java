@@ -3,29 +3,26 @@ package com.ooops.lms.controller;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookMark;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.print.DocFlavor;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class BookSuggestionCardController {
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
@@ -33,6 +30,7 @@ public class BookSuggestionCardController {
     private static final String BOOK_FXML = "/com/ooops/lms/library_management_system/Book-view.fxml";
 
     private Book book;
+
     @FXML
     private Label authorNameLabel;
 
@@ -48,27 +46,45 @@ public class BookSuggestionCardController {
     @FXML
     private ImageView starImage;
 
-    private String imagePath="";
+    private String imagePath = "";
+    protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
-    public void setData(Book book) {
-        this.book = book;
-        saveAPIBookImageToLocal(book.getImagePath());
-        book.setImagePath(imagePath);
-        book.setRate(5);
-        File file = new File(imagePath);
-        bookImage.setImage(new Image(file.toURI().toString()));
 
-        bookNameLabel.setText(book.getTitle());
-        String author = "";
-        List<Author> authorList = book.getAuthors();
-        for(int i = 0;i<authorList.size();i++) {
-            author += authorList.get(i).getAuthorName() + ",";
+    public void setData(Book otherBook) {
+        this.book = BookManager.getInstance().isContainInAllBooks(otherBook);
+
+        if(this.book==null) {
+            this.book = otherBook;
+            book.setRate(5);
         }
+        // Hiển thị thông tin cơ bản
+        bookNameLabel.setText(book.getTitle());
+        String author = book.getAuthors().stream()
+                .map(Author::getAuthorName)
+                .collect(Collectors.joining(", "));
         authorNameLabel.setText(author);
         starImage.setImage(starImage(book.getRate()));
-        book.setQuantity(100);
-        addBookToDatabase(book);
+
+        // Tải ảnh bất đồng bộ
+        Task<Image> loadImageTask = new Task<>() {
+            @Override
+            protected Image call() throws Exception {
+                try {
+                    return new Image(book.getImagePath(), true);
+                } catch (Exception e) {
+                    System.out.println("Length: " + book.getImagePath().length());
+
+                    File file = new File("bookImage/default.png");
+                    return new Image(file.toURI().toString());
+                }
+            }
+        };
+
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+        executor.submit(loadImageTask);
     }
+
 
     public void onBookMouseClicked(MouseEvent mouseEvent) {
         try {
@@ -80,52 +96,12 @@ public class BookSuggestionCardController {
 
             BookController bookController = fxmlLoader.getController();
             if (book != null) {
-                bookController.setBookByAPIData(book);
+                bookController.setBook(book);
             } else {
                 System.err.println("Book object is null!");
             }
 
             fxmlLoaderUtil.updateContentBox(newContent);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addBookToDatabase(Book book) {
-        try {
-            BookDAO.getInstance().add(book);
-        } catch (SQLException e) {
-            System.out.println("book exist");
-        }
-    }
-
-    private void saveAPIBookImageToLocal(String apiPath) {
-        try {
-            URL imageUrl = new URL(apiPath);
-
-            InputStream inputStream = imageUrl.openStream();
-
-            BufferedImage image = ImageIO.read(inputStream);
-
-            if (image == null) {
-                System.err.println("Failed to load image from URL: " + apiPath);
-                return;
-            }
-
-            String fileName = book.getTitle().replaceAll("[^a-zA-Z0-9]", "_") + ".jpg";
-
-            Path folderPath = Paths.get("Library_Management_System", "bookImage");
-            if (Files.notExists(folderPath)) {
-                Files.createDirectories(folderPath);
-            }
-
-            Path destinationPath = folderPath.resolve(fileName);
-            imagePath = destinationPath.toString();
-
-            ImageIO.write(image, "jpg", destinationPath.toFile());
-
-            System.out.println("Image saved as: " + destinationPath.toString());
 
         } catch (IOException e) {
             e.printStackTrace();
