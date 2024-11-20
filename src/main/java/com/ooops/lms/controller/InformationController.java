@@ -102,9 +102,9 @@ public class InformationController {
         if (selectedFile != null) {
             // Tạo tên tệp mới dựa trên ID người dùng
             String imageFile = userIDText.getText() + getFileExtension(selectedFile.toPath());
-            newImageFile = "Library_Management_System/avatar/" + imageFile;
+            newImageFile = "avatar/" + imageFile;
 
-            Path avatarFolder = Paths.get("Library_Management_System/avatar");
+            Path avatarFolder = Paths.get("avatar");
 
             try {
                 // Tạo thư mục nếu chưa tồn tại
