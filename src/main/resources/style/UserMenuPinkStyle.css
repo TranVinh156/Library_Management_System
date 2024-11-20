@@ -7,11 +7,11 @@
 }
 
 .background {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #FFD5D5;
 }
 
 .background-part {
-    -fx-background-color: #FFD5D5;
+    -fx-background-color: #ffffff;
 }
 
 .label-1{

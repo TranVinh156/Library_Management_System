@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.model.datatype.Person;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,12 +45,12 @@ public class SettingController {
     }
 
     public void showInfo() {
-        nameLabel.setText(UserMenuController.member.getPerson().getLastName() + " " +
-                UserMenuController.member.getPerson().getFirstName());
+        nameLabel.setText(UserMenuController.getMember().getPerson().getLastName() + " " +
+                UserMenuController.getMember().getPerson().getFirstName());
 
         // Load and display avatar image
         try {
-            String imagePath = UserMenuController.member.getPerson().getImagePath();
+            String imagePath = UserMenuController.getMember().getPerson().getImagePath();
             if (imagePath != null) {
                 File file = new File(imagePath);
                 Image image = new Image(file.toURI().toString());
@@ -63,9 +64,9 @@ public class SettingController {
         }
 
         // Set user status and other labels
-        statusLabel.setText(UserMenuController.member.getStatus().toString());
-//        borrowingLabel.setText(String.valueOf(UserMenuController.member.getBorrowingCount()));
-//        reservedLabel.setText(String.valueOf(UserMenuController.member.getReservedCount()));
+        statusLabel.setText(UserMenuController.getMember().getStatus().toString());
+        borrowingLabel.setText(String.valueOf(BookManager.getInstance().getBorrowingBookSize()));
+        reservedLabel.setText(String.valueOf(BookManager.getInstance().getReservedBookSize()));
     }
 
     public void onInfomationButtonAction(ActionEvent actionEvent) {
@@ -102,5 +103,9 @@ public class SettingController {
         } else {
             System.err.println("Failed to load Report-view.fxml");
         }
+    }
+
+    public void updateReservedBookSize() {
+        reservedLabel.setText(String.valueOf(BookManager.getInstance().getReservedBookSize()));
     }
 }

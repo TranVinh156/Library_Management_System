@@ -68,9 +68,9 @@ public class RatingBookController {
     }
 
     private void showData() {
-        userNameText.setText(UserMenuController.member.getUsername());
+        userNameText.setText(UserMenuController.getMember().getUsername());
         try {
-            String imagePath = UserMenuController.member.getPerson().getImagePath();
+            String imagePath = UserMenuController.getMember().getPerson().getImagePath();
             if (imagePath != null) {
                 File file = new File(imagePath);
                 Image image = new Image(file.toURI().toString());
@@ -95,8 +95,7 @@ public class RatingBookController {
         }
         authorNameText.setText(author);
         descriptionText.setText(bookItem.getDescription());
-        File file = new File(bookItem.getImagePath());
-        bookImage.setImage(new Image(file.toURI().toString()));
+        bookImage.setImage(new Image(bookItem.getImagePath()));
         starImage.setImage(starImage(bookItem.getRate()));
 
         try {
@@ -112,12 +111,13 @@ public class RatingBookController {
     public void onSaveButtonAction(ActionEvent actionEvent) {
         if(comment == null) {
             comment = new Comment(commentTitleText.getText(),commentContentText.getText()
-                    ,rate(ratingChoiceBox.getValue().toString()),UserMenuController.member
+                    ,rate(ratingChoiceBox.getValue().toString()),UserMenuController.getMember()
                     ,currrentBookItem.getISBN());
             try {
                 CommentDAO.getInstance().add(comment);
                 CustomerAlter.showMessage("đã lưu đánh giá");
                 currentRatingBookCard.setColorGreen();
+                FXMLLoaderUtil.getInstance().refreshUpdateBook();
             } catch (SQLException e) {
                 e.printStackTrace();
                 CustomerAlter.showMessage("lỗi nè ba");

@@ -7,21 +7,21 @@
 }
 
 .background {
-    -fx-background-color: #ffffff;
-}
-
-.background-part {
     -fx-background-color: #F9FF4E;
 }
 
+.background-part {
+    -fx-background-color: #ffffff;
+}
+
 .label-1{
-    -fx-text-fill : #EFBF04;
+    -fx-text-fill : #000080;
     -fx-font-weight : bold;
     -fx-background-radius : 20;
     -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
 }
 .label-2{
-    -fx-text-fill : #EFBF04;
+    -fx-text-fill : #000080;
     -fx-background-radius : 20;
 }
 .label-3{

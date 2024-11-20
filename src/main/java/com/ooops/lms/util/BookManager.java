@@ -124,7 +124,34 @@ public class BookManager {
         });
     }
 
-    public boolean isContainInBookMarked(BookMark bookMark ) {
-        return true;
+    public Book isContainInAllBooks(Book book ) {
+        Book findBook;
+        try {
+            findBook = BookDAO.getInstance().find(book.getISBN());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return findBook;
+    }
+
+    public int getReservedBookSize() {
+        try {
+            getReservedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return reservedBooks.size();
+    }
+    public int getBorrowingBookSize() {
+        try {
+            getBorrowingBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return borrowingBooks.size();
+    }
+
+    public void addReservedBook(BookReservation bookReservation) {
+        reservedBooks.add(bookReservation);
     }
 }

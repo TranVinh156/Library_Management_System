@@ -7,8 +7,10 @@ import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -27,6 +29,8 @@ public class AdvancedSearchController {
     @FXML
     private ChoiceBox<String> categoryChoiceBox;
 
+    private ScrollPane scrollPane1=new ScrollPane(),scrollPane2=new ScrollPane();
+
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
 
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
@@ -37,6 +41,15 @@ public class AdvancedSearchController {
     public void initialize() {
         categoryChoiceBox.getItems().addAll("title", "category_name", "author_name");
         categoryChoiceBox.setValue("title");
+        scrollPane1.setStyle("-fx-background-color: transparent;");
+        scrollPane2.setStyle("-fx-background-color: transparent;");
+
+        scrollPane1.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        scrollPane2.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane2.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
     }
 
     /**
@@ -76,7 +89,6 @@ public class AdvancedSearchController {
         }
 
         showFindedBook();
-
     }
 
     /**
@@ -106,7 +118,10 @@ public class AdvancedSearchController {
         for (int i = start + 6; i < Math.min(start + 12, end); i++) {
             loadBookCard(i, row2Box);
         }
-        test.getChildren().addAll(row1Box, row2Box);
+        scrollPane1.setContent(row1Box);
+        scrollPane2.setContent(row2Box);
+        test.getChildren().addAll(scrollPane1, scrollPane2);
+        test.setAlignment(Pos.CENTER);
         return test;
     }
 
