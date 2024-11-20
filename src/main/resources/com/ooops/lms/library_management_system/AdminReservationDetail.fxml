@@ -39,7 +39,7 @@
                                                          <children>
                                                             <AnchorPane prefHeight="268.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                                                                <children>
-                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;" styleClass="black-text-Cabin" text="Người mượn sách" />
+                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;" styleClass="black-text-Cabin" text="Người đặt trước" />
                                                                   <GridPane layoutX="31.0" layoutY="52.0" maxHeight="300.0" prefHeight="203.0" prefWidth="214.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="52.0">
                                                                      <columnConstraints>
                                                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -175,7 +175,7 @@
                                                                         </HBox>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;" styleClass="black-text-Cabin" text="Sách cho mượn" />
+                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;" styleClass="black-text-Cabin" text="Sách đặt trước" />
                                                                </children>
                                                             </AnchorPane>
                                                          </children>
@@ -218,7 +218,7 @@
                                                          <children>
                                                             <HBox alignment="CENTER" layoutX="7.0" prefHeight="75.2" prefWidth="277.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <children>
-                                                                  <Label styleClass="gray-text-Cabin" text="Ngày mượn: ">
+                                                                  <Label styleClass="gray-text-Cabin" text="Ngày đặt: ">
                                                                      <padding>
                                                                         <Insets top="15.0" />
                                                                      </padding>
@@ -239,7 +239,10 @@
                                                                      <HBox.margin>
                                                                         <Insets left="12.0" />
                                                                      </HBox.margin></Label>
-                                                                  <Label fx:id="borrowIDLabel" styleClass="black-text-Cabin" text="Label" />
+                                                                  <Label fx:id="borrowIDLabel" styleClass="gray-text-Cabin" text="Label">
+                                                                     <HBox.margin>
+                                                                        <Insets left="3.0" />
+                                                                     </HBox.margin></Label>
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -248,7 +251,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="gray-text-Cabin" text="Ngày trả: ">
+                                                      <Label styleClass="gray-text-Cabin" text="Ngày lấy: ">
                                                          <padding>
                                                             <Insets top="15.0" />
                                                          </padding>

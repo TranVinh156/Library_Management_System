@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -111,7 +112,7 @@
                                                                         <Image url="@../../../../../../../../../Users/ADMIN/Downloads/user%201.png" />
                                                                      </image>
                                                                   </ImageView>
-                                                                  <Button fx:id="scanMemberButton" layoutX="3.0" layoutY="138.0" mnemonicParsing="false" mouseTransparent="true" onAction="#onScanMemberButtonAction" prefHeight="8.0" prefWidth="94.0" styleClass="button_1" text="Quét mã vạch" visible="false" />
+                                                                  <Button fx:id="scanMemberButton" layoutX="3.0" layoutY="138.0" mnemonicParsing="false" mouseTransparent="true" onAction="#onScanMemberButtonAction" prefHeight="8.0" prefWidth="94.0" styleClass="scan-button" text="Quét mã vạch" visible="false" />
                                                                </children>
                                                             </Pane>
                                                          </children>
@@ -189,7 +190,7 @@
                                                                         <Image url="@../../../../../../../../../Users/ADMIN/Downloads/user%201.png" />
                                                                      </image>
                                                                   </ImageView>
-                                                                  <Button fx:id="scanBookButton" layoutX="3.0" layoutY="138.0" mnemonicParsing="false" mouseTransparent="true" onAction="#onScanBookButtonAction" prefHeight="8.0" prefWidth="94.0" styleClass="button_1" text="Quét mã vạch" visible="false" />
+                                                                  <Button fx:id="scanBookButton" layoutX="3.0" layoutY="138.0" mnemonicParsing="false" mouseTransparent="true" onAction="#onScanBookButtonAction" prefHeight="8.0" prefWidth="94.0" styleClass="scan-button" text="Quét mã vạch" visible="false" />
                                                                </children>
                                                             </Pane>
                                                          </children>
@@ -239,7 +240,10 @@
                                                                      <HBox.margin>
                                                                         <Insets left="12.0" />
                                                                      </HBox.margin></Label>
-                                                                  <Label fx:id="borrowIDLabel" styleClass="black-text-Cabin" text="Label" />
+                                                                  <Label fx:id="borrowIDLabel" styleClass="gray-text-Cabin" text="Label">
+                                                                     <padding>
+                                                                        <Insets left="3.0" />
+                                                                     </padding></Label>
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -285,17 +289,21 @@
                               </HBox>
                               <HBox fillHeight="false" maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <StackPane prefHeight="88.0" prefWidth="834.0" HBox.hgrow="ALWAYS">
+                                    <StackPane prefHeight="88.0" prefWidth="834.0" HBox.hgrow="NEVER">
                                        <children>
                                           <AnchorPane prefHeight="80.0" prefWidth="818.4">
                                              <children>
-                                                <Button fx:id="addButotn" layoutX="654.0" layoutY="7.0" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="41.0" prefWidth="122.0" style="-fx-font-size: 15.8;" styleClass="button-add" text="Thêm" visible="false" AnchorPane.rightAnchor="41.99999999999997" AnchorPane.topAnchor="7.0" />
+                                                <Button fx:id="addButotn" layoutX="654.0" layoutY="7.0" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="41.0" prefWidth="122.0" style="-fx-font-size: 15.8;" styleClass="brown_button" text="Thêm" visible="false" AnchorPane.rightAnchor="41.99999999999997" AnchorPane.topAnchor="7.0" />
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane fx:id="savePane" prefHeight="200.0" prefWidth="200.0">
                                              <children>
-                                                <Button fx:id="saveButton" layoutX="654.0" layoutY="7.0" mnemonicParsing="false" onAction="#oSaveButtonAction" prefHeight="41.0" prefWidth="122.0" style="-fx-font-size: 15.8;" styleClass="button-add" text="Save" visible="false" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="7.0" />
-                                                <Button fx:id="deleteButton" layoutX="519.0" layoutY="7.0" mnemonicParsing="false" onAction="#onDeleteButton" prefHeight="41.0" prefWidth="122.0" style="-fx-font-size: 15.8;" styleClass="button-add" text="Xóa" visible="false" AnchorPane.rightAnchor="177.0" AnchorPane.topAnchor="7.0" />
+                                                <Button fx:id="saveButton" layoutX="654.0" layoutY="7.0" mnemonicParsing="false" onAction="#oSaveButtonAction" prefHeight="41.0" prefWidth="122.0" style="-fx-font-size: 15.8;" text="Save" visible="false" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="7.0">
+                                                   <styleClass>
+                                                      <String fx:value="button-add" />
+                                                      <String fx:value="brown_button" />
+                                                   </styleClass></Button>
+                                                <Button fx:id="deleteButton" layoutX="519.0" layoutY="7.0" mnemonicParsing="false" onAction="#onDeleteButton" prefHeight="41.0" prefWidth="122.0" style="-fx-font-size: 15.8;" styleClass="white-button" text="Xóa" visible="false" AnchorPane.rightAnchor="177.0" AnchorPane.topAnchor="7.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>

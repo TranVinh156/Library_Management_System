@@ -8,8 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="606.0" prefWidth="891.0" style="-fx-background-color: #F2E0C9;" stylesheets="@../../../../style/AdminStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminDashboardController">
+<AnchorPane prefHeight="606.0" prefWidth="891.0" stylesheets="@../../../../style/AdminStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminDashboardController">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,25 +22,29 @@
                         <AnchorPane layoutX="43.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main" AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số người đọc" />
-                              <Label fx:id="totalReaderLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+                              <Label fx:id="totalReaderLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#a64f3c" height="30.0" layoutX="15.0" layoutY="22.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="43.0" layoutY="111.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main" AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="111.0">
                            <children>
-                              <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số vấn đề" />
-                              <Label fx:id="totalIssueLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+                              <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số vấn đề chờ giải quyết" />
+                              <Label fx:id="totalIssueLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#bc3305" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="273.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Tổng số sách" />
-                              <Label fx:id="totalBookLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+                              <Label fx:id="totalBookLabel" layoutX="59.0" layoutY="21.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="2" AnchorPane.leftAnchor="59.0" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#d4d4d4" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="273.0" layoutY="111.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main" AnchorPane.topAnchor="111.0">
                            <children>
                               <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số sách cho mượn" />
-                              <Label fx:id="totalBorrowLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" />
+                              <Label fx:id="totalBorrowLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#8d6f5e" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
                            </children>
                         </AnchorPane>
                         <HBox layoutX="503.2" prefHeight="206.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="503.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="0.0">

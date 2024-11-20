@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -46,14 +47,12 @@
                               <TextField fx:id="ISBNFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="ISBN" styleClass="find-text-field-customer" />
                               <TextField fx:id="bookNameFindTExt" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="Tên sách" styleClass="find-text-field-customer" GridPane.columnIndex="1" />
                               <TextField fx:id="authorFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="Tác giả" styleClass="find-text-field-customer" GridPane.columnIndex="2" />
-                              <TextField fx:id="stausText" alignment="CENTER" prefHeight="34.0" prefWidth="138.0" promptText="Trạng thái" styleClass="find-text-field-customer" GridPane.columnIndex="6" />
                               <Button fx:id="categoryFindButton" mnemonicParsing="false" onAction="#onCategoryFindButton" prefHeight="26.0" prefWidth="126.0" styleClass="find-text-field-customer" text="Thể loại" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
-                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0" />
-                                 </children>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" />
+                                 </children></HBox>
                               <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFindButtonAction" GridPane.columnIndex="7">
                                  <graphic>
                                     <ImageView fitHeight="60.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
@@ -63,6 +62,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <ChoiceBox fx:id="statusFindBox" prefWidth="150.0" styleClass="fill-text-field-customer" GridPane.columnIndex="6" />
                            </children>
                         </GridPane>
                         <HBox maxWidth="10.0" minWidth="10.0" prefHeight="35.0" prefWidth="10.0" />

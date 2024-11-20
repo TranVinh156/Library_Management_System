@@ -451,7 +451,6 @@ public class BookDAO implements DatabaseQuery<Book> {
             }
 
             System.out.println(preparedStatement.toString());
-
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     bookList.add(find(resultSet.getLong("Books.ISBN")));

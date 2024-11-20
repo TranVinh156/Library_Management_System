@@ -99,13 +99,17 @@ public class AdminCommand implements Command {
                     }
                     return true;
                 case "scan":
-                    if(object instanceof BookItem) {
+                    String barcode = barcodeScanner.scanBarcodeFromCamera();
+                    bookResult = BookInfoFetcher.searchBookByISBN(barcode);
+                    if(bookResult == null) {
+                        return false;
+                    }
+                    /*if(object instanceof BookItem) {
                         bookItemResult = BookItemDAO.getInstance().find(Integer.valueOf(barcodeScanner.scanBarcodeFromCamera()));
                     } else if(object instanceof Book) {
-                        bookResult = BookDAO.getInstance().find(Integer.valueOf(barcodeScanner.scanBarcodeFromCamera()));
                     } else if(object instanceof Member) {
                         memberResult = MemberDAO.getInstance().find(Long.valueOf(barcodeScanner.scanBarcodeFromCamera()));
-                    }
+                    }*/
                     return true;
                 default:
                     return false;

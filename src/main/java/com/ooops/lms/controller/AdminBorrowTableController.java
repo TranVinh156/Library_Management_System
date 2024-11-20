@@ -2,6 +2,7 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.controller.BaseTableController;
 import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.database.dao.ReportDAO;
 import com.ooops.lms.model.BookIssue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,12 @@ public class AdminBorrowTableController extends BaseTableController<BookIssue, A
     @FXML
     private VBox tableVbox;
 
+    private AdminDashboardController adminDashboardController;
+
+    public void initialize() {
+        adminDashboardController = dashboardLoader.getController();
+    }
+
     @Override
     protected String getRowFXML() {
         return ROW_FXML;
@@ -54,6 +61,12 @@ public class AdminBorrowTableController extends BaseTableController<BookIssue, A
     @Override
     protected void loadDataFromSource() throws SQLException {
         itemsList.addAll(BookIssueDAO.getInstance().selectAll());
+        //Xu ly set total cho Dashboard
+        findCriteria.clear();
+        findCriteria.put("status","BORROWED");
+        int totalBorrow = ReportDAO.getInstance().searchByCriteria(findCriteria).size();
+        adminDashboardController.setTotalBorrowLabel(totalBorrow+"");
+        findCriteria.clear();
     }
     @Override
     protected void getCriteria(){

@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,6 +29,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     private Button addNewMemberButton;
+
+    @FXML
+    private Button addNewReservationButton;
 
     @FXML
     private AnchorPane addTablePane;
@@ -92,7 +96,6 @@ public class AdminMenuController extends BasicController {
     @FXML
     private ImageView settingLogo;
 
-
     private boolean isMenuExpanded = false;
     private static Image minimizeIconImage = new Image(BasicController.class.getResource("/image/icon/minimize.png").toExternalForm());;
     private static Image maximizeIconImage = new Image(BasicController.class.getResource("/image/icon/maximize.png").toExternalForm());
@@ -103,6 +106,8 @@ public class AdminMenuController extends BasicController {
     private AdminReservationPageController adminReservationPageController;
 
     public void initialize() throws IOException {
+        titlePage.push("Dashboard");
+        setTitleLabel();
         adminBookPageController = bookPagePaneLoader.getController();
         adminUserPageController = userPagePaneLoader.getController();
         adminBorrowPageController = borrowPagePaneLoader.getController();
@@ -132,6 +137,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onAddNewBookButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý sách");
+        setTitleLabel();
         openPage(bookPagePane);
         adminBookPageController.loadAddPane();
         addTablePane.setVisible(false);
@@ -139,6 +147,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onAddNewBorrowButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý mượn sách");
+        setTitleLabel();
         openPage(borrowPagePane);
         adminBorrowPageController.loadAddPane();
         addTablePane.setVisible(false);
@@ -146,13 +157,28 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onAddNewMemberButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý độc giả");
+        setTitleLabel();
         openPage(userPagePane);
         adminUserPageController.loadAddPane();
+        addTablePane.setVisible(false);
+    }
+    @FXML
+    void onAddNewReservationButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý đặt sách");
+        setTitleLabel();
+        openPage(reservationPagePane);
+        adminReservationPageController.loadAddPane();
         addTablePane.setVisible(false);
     }
 
     @FXML
      void onDashboardButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Dashboard");
+        setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -161,6 +187,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onBorrowButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý mượn sách");
+        setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -169,6 +198,9 @@ public class AdminMenuController extends BasicController {
     }
     @FXML
     void onReservationButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý đặt sách");
+        setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -178,6 +210,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onBookManagmentButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý sách");
+        setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -187,6 +222,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onReaderManagementButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Quản lý độc giả");
+        setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -195,6 +233,9 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onIssuesButtonAction(ActionEvent event) {
+        while (!titlePage.isEmpty()) {titlePage.pop();};
+        titlePage.push("Report");
+        setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -227,9 +268,10 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onAddButtonAction(ActionEvent event) {
-        System.out.println("Add button clicked");
         addTablePane.setVisible(!addTablePane.isVisible());
     }
+
+
 
     private void toggleMenu() {
         if (!isMenuExpanded) {
@@ -255,6 +297,7 @@ public class AdminMenuController extends BasicController {
         addButton.setText("New");
         dashboardButton.setText("Dashboard");
         bookManagementButton.setText("Quản lý sách");
+        reservationButton.setText("Đặt sách");
         borrowButton.setText("Mượn trả");
         readerManagementButton.setText("Quản lý độc giả");
         issuesButton.setText("Sự cố");
@@ -268,6 +311,7 @@ public class AdminMenuController extends BasicController {
         bookManagementButton.setText("");
         borrowButton.setText("");
         readerManagementButton.setText("");
+        reservationButton.setText("");
         issuesButton.setText("");
         settingButton.setText("");
         logoutButton.setText("");
@@ -276,6 +320,10 @@ public class AdminMenuController extends BasicController {
     private void openPage(Node e) {
         mainPane.getChildren().clear();
         mainPane.getChildren().add(e);
+    }
+
+    public void setTitleLabel() {
+      //  titleLabel.setText(getAllTitles());
     }
 
 

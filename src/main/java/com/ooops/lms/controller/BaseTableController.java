@@ -73,7 +73,8 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
     protected void searchCriteria() {
         getCriteria();
         try {
-            itemsList.clear();
+            //itemsList.clear();
+            //itemsList.addAll((Collection<? extends T>) BookDAO.getInstance().searchByCriteria(findCriteria));
             if (isBookType()) {
                 itemsList.addAll((Collection<? extends T>) BookDAO.getInstance().searchByCriteria(findCriteria));
             } else if (isMemberType()) {
@@ -82,7 +83,8 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
         } catch (Exception e) {
             e.printStackTrace();
         }
-        loadData();
+        System.out.println(itemsList.size());
+        loadRows();
     }
 
     private boolean isBookType() {

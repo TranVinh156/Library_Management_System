@@ -69,4 +69,17 @@ public class AdminDashboardController extends BasicController {
         }
     }
 
+    public void setTotalBookLabel(String totalBookLabel) {
+        this.totalBookLabel.setText(totalBookLabel);
+    }
+    public void setTotalBorrowLabel(String totalBorrowLabel) {
+        this.totalBorrowLabel.setText(totalBorrowLabel);
+    }
+    public void setTotalIssueLabel(String totalIssueLabel) {
+        this.totalIssueLabel.setText(totalIssueLabel);
+    }
+    public void setTotalReaderLabel(String totalReaderLabel) {
+        this.totalReaderLabel.setText(totalReaderLabel);
+    }
+
 }
