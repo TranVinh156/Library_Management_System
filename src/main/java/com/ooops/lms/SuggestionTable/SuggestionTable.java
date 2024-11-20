@@ -222,14 +222,6 @@ public class SuggestionTable {
             throw new RuntimeException(e);
         }
 
-        /*if (suggestList.size() > 0) {
-            scrollPane.setVisible(true);
-            loadSuggestionRows();
-        } else {
-            scrollPane.setVisible(false);
-            scrollPane.setLayoutX(0);
-            scrollPane.setLayoutY(0);
-        }*/
     }
 
     public void updateSuggestionPaneForActiveField() {
