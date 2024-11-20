@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 public class BasicController {
     private static final String DEFAULT_USER_FXML = "/image/customer/menu/ava.png";
@@ -52,6 +53,8 @@ public class BasicController {
     private static final String ISSUE_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminIssuePage.fxml";
     private static final String BORROW_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminBorrowPage.fxml";
     private static final String RESERVATION_PAGE_FXML ="/com/ooops/lms/library_management_system/AdminReservationPage.fxml";
+
+    protected Stack<String> titlePage = new Stack<>();
 
     protected static final FXMLLoader loginLoader;
     protected static final Node loginPane;
@@ -132,6 +135,11 @@ public class BasicController {
 
         adminMenuPaneLoader = loadFXML(ADMIN_MENU_FXML,BasicController.class);
         adminMenuPane = loadPane(adminMenuPaneLoader, BasicController.class);
+    }
+
+    // Lấy tất cả tiêu đề và kết hợp thành một chuỗi
+    public String getAllTitles() {
+        return String.join(" / ", titlePage);
     }
 
     /**
