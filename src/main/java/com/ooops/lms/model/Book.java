@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.ooops.lms.database.dao.CommentDAO;
 import com.ooops.lms.model.Category;
+import com.ooops.lms.model.enums.BookStatus;
 
 public class Book {
     public static final String DEFAULT_IMAGE_PATH = "Library_Management_System/bookImage/default.png";
@@ -21,6 +22,7 @@ public class Book {
     private int numberOfLostBooks;
     private int numberOfReservedBooks;
     private int rate;
+    private BookStatus status;
     private List<Author> authors;
     private List<Category> categories;
 
@@ -204,6 +206,10 @@ public class Book {
 
     public void setNumberOfReservedBooks(int numberOfReservedBooks) {
         this.numberOfReservedBooks = numberOfReservedBooks;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
     }
 
     @Override
