@@ -100,7 +100,7 @@ public class SuggestionTable {
         //Tạo các row cho mỗi member và đẩy vào bảng
         for (Object o : suggestList) {
             try {
-                if(count == 30) return;
+                if (count == 30) return;
                 FXMLLoader loader = new FXMLLoader(SuggestionTable.class.getResource("/com/ooops/lms/library_management_system/AdminSuggestRow.fxml"));
                 Node row = loader.load();
 
@@ -126,7 +126,7 @@ public class SuggestionTable {
         searchCriteria.clear();
         uniqueMembersMap.clear();
         suggestionTable.getChildren().clear();
-        if(value == null || value.isEmpty()) {
+        if (value == null || value.isEmpty()) {
             scrollPane.setVisible(false);
             scrollPane.setLayoutX(0);
             scrollPane.setLayoutY(0);
@@ -137,7 +137,7 @@ public class SuggestionTable {
                 case "memberName":
                     // Tách chuỗi tìm kiếm thành các từ
                     String[] searchTerms = value.toLowerCase().split("\\s+");
-                    if(searchTerms.length <= 1) {
+                    if (searchTerms.length <= 1) {
                         searchCriteria.put("first_name", searchTerms[0]);
                         for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
                             uniqueMembersMap.put(member.getPerson().getId(), member);
@@ -151,21 +151,21 @@ public class SuggestionTable {
                         }
                         searchCriteria.clear();
                     } else {
-                            // Tìm theo first_name
-                            searchCriteria.put("first_name", searchTerms[0]);
-                            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                                uniqueMembersMap.put(member.getPerson().getId(), member);
-                            }
-                            searchCriteria.clear();
+                        // Tìm theo first_name
+                        searchCriteria.put("first_name", searchTerms[0]);
+                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                            uniqueMembersMap.put(member.getPerson().getId(), member);
+                        }
+                        searchCriteria.clear();
 
                         String lastName = String.join(" ",
                                 Arrays.copyOfRange(searchTerms, 1, searchTerms.length));
-                            // Tìm theo last_name
-                            searchCriteria.put("last_name",lastName);
-                            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                                uniqueMembersMap.put(member.getPerson().getId(), member);
-                            }
-                            searchCriteria.clear();
+                        // Tìm theo last_name
+                        searchCriteria.put("last_name", lastName);
+                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
+                            uniqueMembersMap.put(member.getPerson().getId(), member);
+                        }
+                        searchCriteria.clear();
                     }
 
                     suggestList.addAll(uniqueMembersMap.values());
@@ -239,16 +239,20 @@ public class SuggestionTable {
     }
 
     public void updateSuggestionPanePosition(TextField textField) {
-            activeTextField = textField;
-            // Lấy tọa độ của textField trong Scene
-            Bounds boundsInScene = textField.localToScene(textField.getBoundsInLocal());
+        activeTextField = textField;
+        // Lấy tọa độ của textField trong Scene
+        Bounds boundsInScene = textField.localToScene(textField.getBoundsInLocal());
 
-            // Chuyển đổi tọa độ này sang hệ tọa độ của parent chứa suggestionPane
-            Bounds boundsInParent = scrollPane.getParent().sceneToLocal(boundsInScene);
+        // Chuyển đổi tọa độ này sang hệ tọa độ của parent chứa suggestionPane
+        Bounds boundsInParent = scrollPane.getParent().sceneToLocal(boundsInScene);
 
-            // Cập nhật vị trí của suggestionPane
-            scrollPane.setLayoutX(boundsInParent.getMinX());
-            scrollPane.setLayoutY(boundsInParent.getMaxY());
+        suggestionTable.setPrefWidth(scrollPane.getWidth());
+        scrollPane.setMaxWidth(boundsInParent.getWidth());
+        scrollPane.setMaxWidth(boundsInParent.getWidth());
+
+        // Cập nhật vị trí của suggestionPane
+        scrollPane.setLayoutX(boundsInParent.getMinX());
+        scrollPane.setLayoutY(boundsInParent.getMaxY());
     }
 
 }
