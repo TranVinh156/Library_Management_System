@@ -252,10 +252,11 @@ public class UserMenuController implements Initializable {
 
         try {
             File file = new File(imagePath);
+            System.out.println(file.getAbsolutePath());
             avatarImage.setImage(new Image(file.toURI().toString()));
         } catch (Exception e) {
             e.printStackTrace();
-            File file = new File("Library_Management_System/avatar/default.png");
+            File file = new File("avatar/default.png");
             avatarImage.setImage(new Image(file.toURI().toString()));
         }
     }

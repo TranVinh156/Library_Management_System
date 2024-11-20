@@ -64,7 +64,7 @@ public class BookCard2Controller {
                 } catch (Exception e) {
                     System.out.println("Length: " + book.getImagePath().length());
 
-                    File file = new File("Library_Management_System/bookImage/default.png");
+                    File file = new File("bookImage/default.png");
                     return new Image(file.toURI().toString());
                 }
             }

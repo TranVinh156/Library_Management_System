@@ -113,7 +113,7 @@ public class BookController {
                 criteria.put("ISBN", book.getISBN());
                 List<BookItem> bookItem = BookItemDAO.getInstance().searchByCriteria(criteria);
                 BookReservation bookReservation = new BookReservation(UserMenuController.getMember()
-                        , bookItem.get(0),LocalDate.now().toString()
+                        , bookItem.getFirst(),LocalDate.now().toString()
                         , LocalDate.now().plusDays(3).toString());
                 try {
                     BookReservationDAO.getInstance().add(bookReservation);
@@ -145,7 +145,7 @@ public class BookController {
                 criteria.put("ISBN", book.getISBN());
                 List<BookItem> bookItem = BookItemDAO.getInstance().searchByCriteria(criteria);
                 BookMark bookMark = new BookMark(UserMenuController.getMember()
-                        , bookItem.get(0));
+                        , bookItem.getFirst());
                 try {
                     BookMarkDAO.getInstance().add(bookMark);
                 } catch (SQLException e) {
