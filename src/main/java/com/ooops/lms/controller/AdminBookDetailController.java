@@ -102,6 +102,9 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected void loadItemDetails() {
+        isSettingItem = true;
+        isSettingItem2 = true;
+
         bookNameText.setText(item.getTitle());
         ISBNText.setText(String.valueOf(item.getISBN()));
         authorNameText.setText(getAuthors(item.getAuthors()));
@@ -232,8 +235,6 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
             @Override
             public void onRowClick(Object o) {
                 if(o instanceof Book) {
-                    isSettingItem = true;
-                    isSettingItem2 = true;
                     setItem((Book)o);
                     suggestionVbox.getChildren().clear();
                     suggestionPane.setVisible(false);
