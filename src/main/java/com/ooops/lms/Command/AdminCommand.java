@@ -116,6 +116,7 @@ public class AdminCommand implements Command {
             }
         } catch (SQLException e) {
             System.out.println("Lỗi AdminCommand:" + e.getMessage());
+            CustomerAlter.showAlter(e.getMessage());
             return false; // Thất bại
         }
     }
