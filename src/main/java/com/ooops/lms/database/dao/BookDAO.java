@@ -447,7 +447,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                 System.out.println(value);
                 preparedStatement.setString(index++, "%" + value + "%");
             }
-
+            System.out.println("Cau sql: "+preparedStatement.toString());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     bookList.add(find(resultSet.getLong("Books.ISBN")));
