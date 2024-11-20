@@ -181,3 +181,24 @@
     -fx-border-width: 0.85px; /* Simplified to just one value */
     -fx-border-radius:  3.3px ;
 }
+
+.button_page {
+    -fx-background-color: #F8F8F8;
+    -fx-border-radius: 3px 3px 0px 0px;
+    -fx-border-color: #000;
+    -fx-border-width: 0.85px 0.85px 0px 0.85px; /* Simplified to just one value */
+}
+
+/*_________________________Admin Issuel-------------------------------*/
+.up-border {
+    -fx-border-color: #000;
+    -fx-border-width: 0.85px 0px 0px 0px; /* Simplified to just one value */
+}
+/*-------------------------Admin_Borrow----------------------------------*/
+.scan-button
+{
+    -fx-background-color: #A64F3C;
+    -fx-font-size: 10.56px;
+    -fx-text-fill: white;
+    -fx-font-family: 'Cabin';
+}
