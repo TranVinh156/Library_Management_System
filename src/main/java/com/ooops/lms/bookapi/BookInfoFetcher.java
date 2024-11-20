@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Category;
@@ -86,8 +87,6 @@ public class BookInfoFetcher {
                     String imagePath = volumeInfo.optJSONObject("imageLinks") != null
                             ? volumeInfo.optJSONObject("imageLinks").optString("thumbnail", Book.DEFAULT_IMAGE_PATH)
                             : Book.DEFAULT_IMAGE_PATH;
-
-
 
                     // Lấy danh sách tác giả
                     List<Author> authors = new ArrayList<>();
@@ -174,6 +173,13 @@ public class BookInfoFetcher {
         String isbn = "9780470046968";
         List<Book> books = searchBooksByKeyword("java");
         for (Book book : books) {
+            book.setQuantity(10);
+            try {
+                if (BookDAO.getInstance().find(book.getISBN()) == null)
+                BookDAO.getInstance().add(book);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             System.out.println(book.getISBN() + " " + book.getTitle());
         }
     }
