@@ -26,10 +26,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AdminBookDetailController extends BaseDetailController<Book> {
 
@@ -116,6 +119,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     private boolean isPage1 = true;
     private boolean isSettingItem = false;
     private boolean isSettingItem2 = false;
+    protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
     @Override
     protected void loadItemDetails() {
@@ -134,7 +138,24 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         bookContentText.setText(item.getDescription());
 
         if (item.getImagePath() != null && isValidImagePath(item.getImagePath())) {
-            bookImage.setImage(new Image(item.getImagePath()));
+            // Tải ảnh bất đồng bộ
+            Task<Image> loadImageTask = new Task<>() {
+                @Override
+                protected Image call() throws Exception {
+                    try {
+                        return new Image(item.getImagePath(), true);
+                    } catch (Exception e) {
+                        System.out.println("Length: " + item.getImagePath().length());
+
+                        File file = new File("bookImage/default.png");
+                        return new Image(file.toURI().toString());
+                    }
+                }
+            };
+
+            loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+            executor.submit(loadImageTask);
         } else {
             bookImage.setImage(defaultBookImage);
         }
