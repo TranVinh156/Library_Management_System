@@ -5,6 +5,7 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
@@ -15,10 +16,18 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
+import java.util.*;
 
 public class BarcodeScanner extends JPanel {
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Tải thư viện OpenCV
+    }
+
+    private Hashtable<DecodeHintType, Object> hints;
+
+    public BarcodeScanner() {
+        hints = new Hashtable<>();
+        hints.put(DecodeHintType.POSSIBLE_FORMATS, Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_128));
     }
 
     // camera
@@ -75,11 +84,10 @@ public class BarcodeScanner extends JPanel {
      * @return chuỗi kí tự ứng với barcode
      */
     private String decodeBarcode (BufferedImage image) {
-        LuminanceSource source = new BufferedImageLuminanceSource(image);
-        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
         try {
-            Result result = new MultiFormatReader().decode(bitmap);
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            Result result = new MultiFormatReader().decode(bitmap, hints);
             return result.getText();
         } catch (NotFoundException e) {
             return null;
@@ -128,56 +136,77 @@ public class BarcodeScanner extends JPanel {
 
     public String scanBarcodeFromCamera() {
         VideoCapture camera = new VideoCapture(0);
-        String barcode = "";
         if (!camera.isOpened()) {
-            // show alert không thể mở camera
-            System.out.println("Camera not opened!");
+            System.out.println("Không thể mở camera!");
             return null;
         }
+
+        final boolean[] flag = {true};
 
         JFrame frame = new JFrame("Barcode Scanner");
         frame.setContentPane(this);
         frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tại đây bạn có thể xử lý việc khi đóng cửa sổ mà không thoát chương trình
+                // Ví dụ: thông báo, đóng camera, v.v.
+                flag[0] = false;
+                System.out.println("Cửa sổ đang được đóng, nhưng chương trình vẫn tiếp tục.");
+                return;
+            }
+        });
         frame.setVisible(true);
 
         Mat frameMat = new Mat();
         int scanLineY = 150;
         boolean movingDown = true;
+        int frameCount = 0;
+        String barcode = "";
 
-        while (true) {
+        while (flag[0]) {
             if (camera.read(frameMat)) {
-                BufferedImage image = matToBufferedImage(frameMat);
+                // Giảm kích thước khung hình để tăng tốc độ xử lý
+                Mat resizedFrame = new Mat();
+                Imgproc.resize(frameMat, resizedFrame, new Size(640, 480));
+                BufferedImage image = matToBufferedImage(resizedFrame);
+
                 if (image == null) {
-                    System.out.println("image is null");
-                    continue;
+                    return null;
                 }
 
+                frameCount++;
                 if (movingDown) {
                     scanLineY += 5;
-                    if (scanLineY >= image.getHeight() / 2 + image.getHeight() / 4 - 5) movingDown = false;
+                    if (scanLineY >= image.getHeight() / 2 + image.getHeight() / 4 - 10) movingDown = false;
                 } else {
                     scanLineY -= 5;
                     if (scanLineY <= image.getHeight() / 4) movingDown = true;
                 }
-                BufferedImage displayImage = drawScanningFrame(image, scanLineY);
-                barcode = decodeBarcode(displayImage);
 
-                this.getGraphics().drawImage(displayImage, 0, 0, this.getWidth(), this.getHeight(), null);
+                if (frameCount % 5 == 0) {
+                    // Giảm số lần cập nhật giao diện
+                    BufferedImage displayImage = drawScanningFrame(image, scanLineY);
+                    this.getGraphics().drawImage(displayImage, 0, 0, this.getWidth(), this.getHeight(), null);
 
-                if (barcode != null) {
-                    JOptionPane.showMessageDialog(this, "Barcode: " + barcode);
-                    break;
+                    // Giới hạn giải mã vùng quét
+                    BufferedImage croppedImage = image.getSubimage(image.getWidth() / 4, image.getHeight() / 4, image.getWidth() / 2, image.getHeight() / 2);
+                    barcode = decodeBarcode(croppedImage);
+
+                    if (barcode != null) {
+                        JOptionPane.showMessageDialog(this, "Barcode: " + barcode);
+                        break;
+                    }
                 }
 
                 try {
-                    Thread.sleep(30);
+                    Thread.sleep(10); // Giảm thời gian chờ
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             } else {
-                // show alert không đọc được ảnh
+                System.out.println("Không đọc được khung hình.");
                 break;
             }
         }
