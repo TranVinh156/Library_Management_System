@@ -120,6 +120,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @Override
     protected void loadItemDetails() {
+        getTitlePageStack().push(item.getReservationId() + "");
         member = item.getMember();
         setMember(member);
 
@@ -319,6 +320,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @FXML
     void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
         setEditMode(true);
     }
 
