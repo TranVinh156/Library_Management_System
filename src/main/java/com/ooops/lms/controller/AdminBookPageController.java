@@ -77,6 +77,7 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
         setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
+        loadData();
     }
 
 }
