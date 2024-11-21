@@ -58,11 +58,19 @@ public class AdminBorrowPageController extends BasePageController<BookIssue, Adm
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+        if(detailPage.isVisible()) {
+            page1 = false;
+        } else {
+            page1 = true;
+        }
     }
     @Override
     public void startPage() {
+        page1 = true;
+        setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
+        loadData();
     }
 
 
