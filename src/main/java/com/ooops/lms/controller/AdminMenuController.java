@@ -105,6 +105,7 @@ public class AdminMenuController extends BasicController {
     private AdminUserPageController adminUserPageController;
     private AdminBorrowPageController adminBorrowPageController;
     private AdminReservationPageController adminReservationPageController;
+    private AdminIssuePageController adminIssuePageController;
 
     public void initialize() throws IOException {
        // titlePageStack.push("Dashboard");
@@ -113,8 +114,9 @@ public class AdminMenuController extends BasicController {
         adminUserPageController = userPagePaneLoader.getController();
         adminBorrowPageController = borrowPagePaneLoader.getController();
         adminReservationPageController = reservationPagePaneLoader.getController();
+        adminIssuePageController = issuePagePaneLoader.getController();
 
-        openPage(dashboardPane);
+       openPage(dashboardPane);
         hideButtonTexts();
         openMenuIcon.setOnMouseClicked(event -> toggleMenu());
         hanleAddTablePaneClose();
@@ -227,10 +229,10 @@ public class AdminMenuController extends BasicController {
     void onIssuesButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
         getTitlePageStack().push("Report");
-        setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        adminIssuePageController.startPage();
         openPage(issuePagePane);
     }
 

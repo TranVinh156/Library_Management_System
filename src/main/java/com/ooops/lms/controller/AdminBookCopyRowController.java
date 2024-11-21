@@ -31,11 +31,11 @@ public class AdminBookCopyRowController {
     public void setBookItem(BookItem bookItem) {
         this.bookItem = bookItem;
         barcodeText.setText(String.valueOf(bookItem.getBarcode()));
-        if(bookItem.getNote() != null) {
-            noteText.setText(String.valueOf(bookItem.getNote()));
+        /*if(bookItem.getNote() != null) {
+            noteText.setText(String.valueOf(bookItem));
         } else {
             noteText.setText("-");
-        }
-        statusText.setText(String.valueOf(bookItem.getStatus()));
+        }*/
+        statusText.setText(String.valueOf(bookItem.getStatus().getDisplayName()));
     }
 }

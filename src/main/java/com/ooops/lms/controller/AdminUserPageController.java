@@ -3,6 +3,7 @@ package com.ooops.lms.controller;
 import com.ooops.lms.controller.BasePageController;
 import com.ooops.lms.model.Member;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 public class AdminUserPageController extends BasePageController<Member, AdminUserDetailController, AdminUserTableController> {
@@ -18,6 +19,8 @@ public class AdminUserPageController extends BasePageController<Member, AdminUse
 
     @FXML
     private AnchorPane userTableLocationPane;
+    @FXML
+    protected Label titlePage;
 
     @Override
     protected String getDetailFXMLPath() {
@@ -46,5 +49,9 @@ public class AdminUserPageController extends BasePageController<Member, AdminUse
     @Override
     public  void startPage() {
 
+    }
+    @Override
+    public void setTitlePage() {
+        titlePage.setText("Quản lý độc giả");
     }
 }

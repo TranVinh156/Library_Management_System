@@ -70,6 +70,7 @@ public class SuggestionTable {
                     if (count == 30) break;
 
                     try {
+                        System.out.println("dsaidhsadu");
                         FXMLLoader loader = new FXMLLoader(SuggestionTable.class.getResource(
                                 "/com/ooops/lms/library_management_system/AdminSuggestRow.fxml"));
                         Node row = loader.load();
@@ -109,35 +110,6 @@ public class SuggestionTable {
         executorService.submit(loadRowsTask);
     }
 
-    private void loadSuggestionRows() {
-        System.out.println("Starting loadMemberSuggestionFindData...");
-        ObservableList<HBox> filteredSuggestions = FXCollections.observableArrayList();
-        suggestionListView.setItems(filteredSuggestions);
-
-        filteredSuggestions.clear();
-        int count =0;
-        //Tạo các row cho mỗi member và đẩy vào bảng
-        for (Object o : suggestList) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/AdminSuggestRow.fxml"));
-                HBox cardBox = fxmlLoader.load();
-                AdminSugesstionRowController cardController = fxmlLoader.getController();
-                cardController.setSuggestion(o);
-                cardBox.prefWidthProperty().bind(suggestionTable.widthProperty().subtract(16));
-                cardBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(16));
-                cardBox.prefWidthProperty().bind(suggestionListView.widthProperty().subtract(16));
-                filteredSuggestions.add(cardBox);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (count == 6) {
-                break;
-            }
-        }
-
-    }
-
     public void loadFindData(String typeData, String value) {
         boolean loaded = false;
         suggestList.clear();
@@ -153,40 +125,15 @@ public class SuggestionTable {
         try {
             switch (typeData) {
                 case "memberName":
-                    // Tách chuỗi tìm kiếm thành các từ
-                    String[] searchTerms = value.toLowerCase().split("\\s+");
-                    if (searchTerms.length <= 1) {
-                        searchCriteria.put("first_name", searchTerms[0]);
-                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                            uniqueMembersMap.put(member.getPerson().getId(), member);
-                        }
-                        searchCriteria.clear();
+                    System.out.println("dheushui");
+                    searchCriteria.clear();
+                    searchCriteria.put("first_name", value);
+                    suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
 
-                        // Tìm theo last_name
-                        searchCriteria.put("last_name", searchTerms[0]);
-                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                            uniqueMembersMap.put(member.getPerson().getId(), member);
-                        }
-                        searchCriteria.clear();
-                    } else {
-                        // Tìm theo first_name
-                        searchCriteria.put("first_name", searchTerms[0]);
-                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                            uniqueMembersMap.put(member.getPerson().getId(), member);
-                        }
-                        searchCriteria.clear();
-
-                        String lastName = String.join(" ",
-                                Arrays.copyOfRange(searchTerms, 1, searchTerms.length));
-                        // Tìm theo last_name
-                        searchCriteria.put("last_name", lastName);
-                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                            uniqueMembersMap.put(member.getPerson().getId(), member);
-                        }
-                        searchCriteria.clear();
-                    }
-
-                    suggestList.addAll(uniqueMembersMap.values());
+                    searchCriteria.clear();
+                    searchCriteria.put("last_name", value);
+                    suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
+                    System.out.println(suggestList.size());
                     break;
                 case "memberID":
                     searchCriteria.put("member_id", value);
@@ -229,14 +176,14 @@ public class SuggestionTable {
                 default:
                     break;
             }
-            if (!suggestList.isEmpty()&& !loaded) {
+            if (!suggestList.isEmpty()) {
                 long startTime = System.currentTimeMillis();
                 Platform.runLater(() -> scrollPane.setVisible(true));
                 loadSuggestionRowsAsync();
                 long endTime = System.currentTimeMillis();
                 long duration = endTime - startTime;
                 System.out.println("Thời gian load hàng vào Vbox: " + duration + " milliseconds");
-            } else if(!loaded) {
+            } else {
                 Platform.runLater(() -> {
                     scrollPane.setVisible(false);
                     scrollPane.setLayoutX(0);

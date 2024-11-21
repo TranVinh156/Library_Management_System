@@ -37,7 +37,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="borrowerFindText" alignment="CENTER" promptText="Tên người mượn" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="borrowerFindText" alignment="CENTER" promptText="Tên người đặt" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -67,7 +67,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="borrowDateFindText" alignment="CENTER" promptText="Ngày mượn">
+                              <TextField fx:id="borrowDateFindText" alignment="CENTER" promptText="Ngày đặt">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -120,7 +120,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="black-text-Cabin" text="Tên người mượn">
+                              <Label styleClass="black-text-Cabin" text="Tên người đặt">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></Label>
@@ -144,7 +144,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="black-text-Cabin" text="Ngày mượn">
+                              <Label styleClass="black-text-Cabin" text="Ngày đặt">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></Label>

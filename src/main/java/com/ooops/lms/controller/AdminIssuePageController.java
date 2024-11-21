@@ -67,16 +67,25 @@ public class AdminIssuePageController extends BasePageController<Report, AdminIs
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+        if(detailPage.isVisible()) {
+            page1 = false;
+        } else {
+            page1 = true;
+        }
     }
 
     @Override
     public void startPage() {
+        page1 = true;
+        setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
+        loadData();
     }
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
+        getTitlePageStack().pop();
         loadData();
         alterPage();
     }
