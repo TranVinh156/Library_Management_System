@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -14,7 +15,14 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="64.0" prefWidth="891.0" VBox.vgrow="NEVER" />
+            <HBox prefHeight="64.0" prefWidth="891.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label fx:id="titlePage" prefHeight="30.0" prefWidth="594.0" style="-fx-font-size: 26;" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminStyle.css" text="Dashboard">
+                     <HBox.margin>
+                        <Insets left="56.0" top="26.0" />
+                     </HBox.margin>
+                  </Label>
+               </children></HBox>
             <HBox maxHeight="300.0" prefHeight="162.0" prefWidth="891.0" VBox.vgrow="NEVER">
                <children>
                   <AnchorPane prefHeight="206.0" prefWidth="854.0" HBox.hgrow="ALWAYS">
