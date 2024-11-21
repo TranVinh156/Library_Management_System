@@ -368,24 +368,7 @@ public class BasicController {
                     Files.delete(destinationPath);
                 }
 
-                // Đọc ảnh gốc từ file
-                BufferedImage originalImage = ImageIO.read(selectedFile);
-
-                // Tính toán chiều dài của hình vuông
-                int width = originalImage.getWidth();
-                int height = originalImage.getHeight();
-                int size = Math.min(width, height);  // Lấy cạnh nhỏ nhất làm kích thước vuông
-
-                // Cắt ảnh thành hình vuông ở giữa
-                int x = width;
-                int y = height;
-
-                BufferedImage squareImage = originalImage.getSubimage(x, y, size, size);
-
-                // Lưu ảnh vuông vào tệp
-                ImageIO.write(squareImage, "PNG", destinationPath.toFile());
-
-                return destinationPath.toAbsolutePath().toString();
+                return destinationPath.toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }
