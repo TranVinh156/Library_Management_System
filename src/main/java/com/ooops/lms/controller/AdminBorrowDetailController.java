@@ -118,6 +118,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @Override
     protected void loadItemDetails() {
+        getTitlePageStack().push(item.getIssueID() + "");
         member = item.getMember();
         setMember(member);
 
@@ -314,13 +315,14 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
         setEditMode(true);
     }
 
     @FXML
     void onScanBookButtonAction(ActionEvent event) {
         bookItem = new BookItem();
-        Command scanCommand = new AdminCommand("scan",bookItem);
+        Command scanCommand = new AdminCommand("scan",new BookItem());
         commandInvoker.setCommand(scanCommand);
         if(commandInvoker.executeCommand()) {
             bookItem = ((AdminCommand) scanCommand).getBookItemResult();
@@ -331,7 +333,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     @FXML
     void onScanMemberButtonAction(ActionEvent event) {
         member = new Member(null);
-        Command scanCommand = new AdminCommand("scan",member);
+        Command scanCommand = new AdminCommand("scan",new Member(null));
         commandInvoker.setCommand(scanCommand);
         if(commandInvoker.executeCommand()) {
             member = ((AdminCommand) scanCommand).getMemberResult();
