@@ -50,6 +50,7 @@ public class AdminReservationPageController extends BasePageController<BookReser
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
+        getTitlePageStack().pop();
         loadData();
         alterPage();
     }
@@ -57,11 +58,19 @@ public class AdminReservationPageController extends BasePageController<BookReser
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+        if(detailPage.isVisible()) {
+            page1 = false;
+        } else {
+            page1 = true;
+        }
     }
     @Override
     public void startPage() {
+        page1 = true;
+        setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
+        loadData();
     }
 
 
