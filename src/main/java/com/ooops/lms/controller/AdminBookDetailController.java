@@ -119,7 +119,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected void loadItemDetails() {
-        getTitlePageStack().push(item.getISBN()+"");
+        getTitlePageStack().push(item.getISBN() + "");
         isSettingItem = true;
         isSettingItem2 = true;
 
@@ -265,12 +265,8 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         ISBNText.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!isSettingItem && addMode) {
                 suggestionTable.updateSuggestionPanePosition(ISBNText);
-                // Reset và restart pause transition mỗi khi có thay đổi text
-                pauseTransition.setOnFinished(event -> {
-                    String isbnNumbers = newValue.replaceAll("[^0-9]", "");
-                    suggestionTable.loadFindData("bookISBNAPI", isbnNumbers);
-                });
-                pauseTransition.playFromStart();
+                String isbnNumbers = newValue.replaceAll("[^0-9]", "");
+                suggestionTable.loadFindData("bookISBNAPI", isbnNumbers);
             }
             isSettingItem = false;
         });
@@ -280,7 +276,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
                 suggestionTable.updateSuggestionPanePosition(bookNameText);
                 // Reset và restart pause transition mỗi khi có thay đổi text
 
-                    //suggestionTable.loadFindData("bookNameAPI", newValue);
+                //suggestionTable.loadFindData("bookNameAPI", newValue);
                 pauseTransition.setOnFinished(event -> {
                     suggestionTable.loadFindData("bookNameAPI", bookNameText.getText());
                 });
@@ -362,11 +358,14 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @FXML
     void onScanButtonAction(ActionEvent event) {
-        Command scanCommand = new AdminCommand("scan", item);
+        Command scanCommand = new AdminCommand("scan", new Book());
         commandInvoker.setCommand(scanCommand);
         if (commandInvoker.executeCommand()) {
             item = ((AdminCommand) scanCommand).getBookResult();
+            System.out.println(item.getISBN());
             loadItemDetails();
+        } else {
+            System.out.println("chiuuuu");
         }
     }
 
@@ -393,10 +392,11 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
             }
         }
     }
+
     private void loadBookItem() {
         copyBookTableVbox.getChildren().clear();
         Map<String, Object> findCriteria2 = new HashMap<>();
-        findCriteria2.put("ISBN",this.item.getISBN());
+        findCriteria2.put("ISBN", this.item.getISBN());
         try {
             List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(findCriteria2);
             for (BookItem item : bookItemList) {
@@ -414,8 +414,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
