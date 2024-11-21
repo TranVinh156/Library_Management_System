@@ -46,7 +46,7 @@ public class AdminBookTableRowController extends BaseRowController<Book, AdminBo
         categoryLabel.setText(getCategories(item.getCategories()));
         locationLabel.setText(item.getPlaceAt());
         numberOfBookLabel.setText((String.valueOf(item.getQuantity())));
-        statusLabel.setText((item.getQuantity() - item.getNumberOfLoanedBooks() > 0) ? "Có sẵn" : "Hết sách");
+        statusLabel.setText(item.getstatus().getDisplayName());
     }
 
     public String getCategories(List<Category> categories) {
