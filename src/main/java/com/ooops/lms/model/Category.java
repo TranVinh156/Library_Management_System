@@ -20,4 +20,8 @@ public class Category {
     public String getCatagoryName() {
         return categoryName;
     }
+    @Override
+    public String toString() {
+        return categoryName;
+    }
 }
