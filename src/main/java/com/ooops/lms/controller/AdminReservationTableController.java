@@ -58,7 +58,25 @@ public class AdminReservationTableController extends BaseTableController<BookRes
     }
     @Override
     protected void getCriteria(){
-
+        findCriteria.clear();
+        if(!barCodeFindText.getText().isEmpty()){
+            findCriteria.put("barCode",barCodeFindText.getText());
+        }
+        if(!bookNameFindText.getText().isEmpty()){
+            findCriteria.put("bookName",bookNameFindText.getText());
+        }
+        if(!borrowDateFindText.getText().isEmpty()){
+            findCriteria.put("borrowDate",borrowDateFindText.getText());
+        }
+        if(!borrowerFindText.getText().isEmpty()){
+            findCriteria.put("borrower",borrowerFindText.getText());
+        }
+        if(!memeberIDFindText.getText().isEmpty()){
+            findCriteria.put("memeberID",memeberIDFindText.getText());
+        }
+        if(!statusFindText.getText().isEmpty()){
+            findCriteria.put("status",statusFindText.getText());
+        }
     }
 
     @FXML
