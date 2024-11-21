@@ -16,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Stack;
 
 public class AdminMenuController extends BasicController {
     @FXML
@@ -106,7 +107,7 @@ public class AdminMenuController extends BasicController {
     private AdminReservationPageController adminReservationPageController;
 
     public void initialize() throws IOException {
-        titlePage.push("Dashboard");
+       // titlePageStack.push("Dashboard");
         setTitleLabel();
         adminBookPageController = bookPagePaneLoader.getController();
         adminUserPageController = userPagePaneLoader.getController();
@@ -137,9 +138,8 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onAddNewBookButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý sách");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý sách");
         openPage(bookPagePane);
         adminBookPageController.loadAddPane();
         addTablePane.setVisible(false);
@@ -147,9 +147,8 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onAddNewBorrowButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý mượn sách");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý mượn sách");
         openPage(borrowPagePane);
         adminBorrowPageController.loadAddPane();
         addTablePane.setVisible(false);
@@ -157,18 +156,16 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onAddNewMemberButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý độc giả");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý độc giả");
         openPage(userPagePane);
         adminUserPageController.loadAddPane();
         addTablePane.setVisible(false);
     }
     @FXML
     void onAddNewReservationButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý đặt sách");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý đặt trước");
         openPage(reservationPagePane);
         adminReservationPageController.loadAddPane();
         addTablePane.setVisible(false);
@@ -176,9 +173,8 @@ public class AdminMenuController extends BasicController {
 
     @FXML
      void onDashboardButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Dashboard");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Dashboard");
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -187,9 +183,8 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onBorrowButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý mượn sách");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý mượn sách");
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -198,9 +193,8 @@ public class AdminMenuController extends BasicController {
     }
     @FXML
     void onReservationButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý đặt sách");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý đặt trước sách");
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -210,9 +204,8 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onBookManagmentButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý sách");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý sách");
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -222,9 +215,8 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onReaderManagementButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Quản lý độc giả");
-        setTitleLabel();
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Quản lý độc giả");
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
@@ -233,8 +225,8 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onIssuesButtonAction(ActionEvent event) {
-        while (!titlePage.isEmpty()) {titlePage.pop();};
-        titlePage.push("Report");
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Report");
         setTitleLabel();
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
