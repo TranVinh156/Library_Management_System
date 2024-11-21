@@ -51,7 +51,7 @@
                            <children>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fx:id="openMenuIcon" fitHeight="35.0" fitWidth="16.0" layoutX="48.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.599999999999994" AnchorPane.topAnchor="0.0">
+                                    <ImageView fx:id="openMenuIcon" fitHeight="35.0" fitWidth="16.0" layoutX="48.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <image>
                                           <Image url="@../../../../image/icon/maximize.png" />
                                        </image>
@@ -148,7 +148,7 @@
                                           <String fx:value="black-text-Cabin" />
                                        </styleClass>
                                     </Button>
-                                    <Button fx:id="reservationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onReservationButtonAction" prefHeight="43.0" prefWidth="69.0" style="-fx-font-size: 20;" textOverrun="CLIP" AnchorPane.topAnchor="179.0">
+                                    <Button fx:id="reservationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onReservationButtonAction" prefHeight="43.0" prefWidth="69.0" style="-fx-font-size: 20;" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="179.0">
                                        <graphic>
                                           <ImageView fitHeight="28.05" fitWidth="28.05" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -221,7 +221,7 @@
                         <AnchorPane prefHeight="606.0" prefWidth="867.0" HBox.hgrow="ALWAYS">
                            <children>
                               <AnchorPane fx:id="mainPane" prefHeight="606.0" prefWidth="887.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <AnchorPane fx:id="addTablePane" layoutY="80.0" prefHeight="217.0" prefWidth="324.0" style="-fx-background-color: FFF; -fx-background-radius: 8;" visible="false" AnchorPane.leftAnchor="3.0">
+                              <AnchorPane fx:id="addTablePane" layoutY="80.0" prefHeight="245.0" prefWidth="325.0" style="-fx-background-color: FFF; -fx-background-radius: 8;" visible="false" AnchorPane.leftAnchor="3.0">
                                  <children>
                                     <Label layoutX="85.0" layoutY="14.0" text="Bạn muốn thêm cái gì" />
                                     <Button fx:id="addNewBorrowButtonAction" alignment="BASELINE_LEFT" layoutX="47.0" layoutY="50.0" mnemonicParsing="false" onAction="#onAddNewBorrowButtonAction" prefHeight="44.0" prefWidth="324.0" styleClass="menu-bar-button" text="Thêm đơn mượn sách mới" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -260,10 +260,23 @@
                                           <Insets left="30.0" />
                                        </padding>
                                     </Button>
+                                    <Button fx:id="addNewReservationButton" alignment="BASELINE_LEFT" layoutY="188.0" mnemonicParsing="false" onAction="#onAddNewReservationButtonAction" prefHeight="44.0" prefWidth="324.0" styleClass="menu-bar-button" text="Thêm đơn đặt trước" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../image/icon/%23E4E4E4_color.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="30.0" />
+                                       </padding>
+                                    </Button>
+                                    <Line endX="223.5" layoutX="145.0" layoutY="140.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
                                     <Line endX="223.5" fill="#969696" layoutX="115.0" layoutY="46.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                     <Line endX="223.5" layoutX="125.0" layoutY="93.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
                                     <Line endX="223.5" layoutX="135.0" layoutY="187.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
-                                    <Line endX="223.5" layoutX="145.0" layoutY="140.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
+                                    <Line endX="223.5" layoutX="108.0" layoutY="232.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                  </children>
                                  <styleClass>
                                     <String fx:value="shadow_box" />

@@ -1,18 +1,25 @@
 package com.ooops.lms.SuggestionTable;
 
+import com.ooops.lms.Cache.BookQueryCache;
 import com.ooops.lms.bookapi.BookInfoFetcher;
+import com.ooops.lms.controller.BookSuggestionCardController;
 import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.MemberDAO;
+import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.BookItemStatus;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -28,17 +35,22 @@ public class SuggestionTable {
 
     private ScrollPane scrollPane;
 
+    private ListView<HBox> suggestionListView;
+
     private SuggestionRowClickListener rowClickListener;
     private List<Object> suggestList = new ArrayList<>();
     Map<Integer, Member> uniqueMembersMap = new HashMap<>();
     Map<String, Object> searchCriteria = new HashMap<>();
     private TextField activeTextField;
+    BookQueryCache cache = new BookQueryCache(5);
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public SuggestionTable(ScrollPane scrollPane, VBox suggestionVBox) {
+    public SuggestionTable(ScrollPane scrollPane, VBox suggestionVBox, ListView<HBox> listView) {
         this.suggestionTable = suggestionVBox;
         this.scrollPane = scrollPane;
+        this.suggestionListView = listView;
+
     }
 
     // Thêm setter cho listener
@@ -50,6 +62,7 @@ public class SuggestionTable {
         Task<List<Node>> loadRowsTask = new Task<>() {
             @Override
             protected List<Node> call() throws Exception {
+
                 List<Node> rows = new ArrayList<>();
                 int count = 0;
 
@@ -57,6 +70,7 @@ public class SuggestionTable {
                     if (count == 30) break;
 
                     try {
+                        System.out.println("dsaidhsadu");
                         FXMLLoader loader = new FXMLLoader(SuggestionTable.class.getResource(
                                 "/com/ooops/lms/library_management_system/AdminSuggestRow.fxml"));
                         Node row = loader.load();
@@ -64,7 +78,10 @@ public class SuggestionTable {
                         AdminSugesstionRowController rowController = loader.getController();
                         rowController.setMainController(SuggestionTable.this);
                         rowController.setSuggestion(o);
-
+                        if(row instanceof HBox) {
+                            HBox cardBox = (HBox) row;
+                            cardBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(16));
+                        }
                         final Object suggestion = o;
                         row.setOnMouseClicked(event -> {
                             if (rowClickListener != null) {
@@ -78,6 +95,7 @@ public class SuggestionTable {
                         e.printStackTrace();
                     }
                 }
+
                 return rows;
             }
         };
@@ -92,41 +110,13 @@ public class SuggestionTable {
         executorService.submit(loadRowsTask);
     }
 
-    private void loadSuggestionRows() {
-        System.out.println("Starting loadMemberSuggestionFindData...");
-        //Xóa hết các row cũ trong bảng
-        suggestionTable.getChildren().clear();
-        int count = 0;
-        //Tạo các row cho mỗi member và đẩy vào bảng
-        for (Object o : suggestList) {
-            try {
-                if(count == 30) return;
-                FXMLLoader loader = new FXMLLoader(SuggestionTable.class.getResource("/com/ooops/lms/library_management_system/AdminSuggestRow.fxml"));
-                Node row = loader.load();
-
-                AdminSugesstionRowController rowController = loader.getController();
-                rowController.setMainController(this);
-                rowController.setSuggestion(o);
-                row.setOnMouseClicked(event -> {
-                    if (rowClickListener != null) {
-                        rowClickListener.onRowClick(o);
-                    }
-                });
-                suggestionTable.getChildren().add(row);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace(); // Bắt các lỗi khác
-            }
-        }
-    }
-
     public void loadFindData(String typeData, String value) {
+        boolean loaded = false;
         suggestList.clear();
         searchCriteria.clear();
         uniqueMembersMap.clear();
         suggestionTable.getChildren().clear();
-        if(value == null || value.isEmpty()) {
+        if (value == null || value.isEmpty()) {
             scrollPane.setVisible(false);
             scrollPane.setLayoutX(0);
             scrollPane.setLayoutY(0);
@@ -135,40 +125,15 @@ public class SuggestionTable {
         try {
             switch (typeData) {
                 case "memberName":
-                    // Tách chuỗi tìm kiếm thành các từ
-                    String[] searchTerms = value.toLowerCase().split("\\s+");
-                    if(searchTerms.length <= 1) {
-                        searchCriteria.put("first_name", searchTerms[0]);
-                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                            uniqueMembersMap.put(member.getPerson().getId(), member);
-                        }
-                        searchCriteria.clear();
+                    System.out.println("dheushui");
+                    searchCriteria.clear();
+                    searchCriteria.put("first_name", value);
+                    suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
 
-                        // Tìm theo last_name
-                        searchCriteria.put("last_name", searchTerms[0]);
-                        for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                            uniqueMembersMap.put(member.getPerson().getId(), member);
-                        }
-                        searchCriteria.clear();
-                    } else {
-                            // Tìm theo first_name
-                            searchCriteria.put("first_name", searchTerms[0]);
-                            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                                uniqueMembersMap.put(member.getPerson().getId(), member);
-                            }
-                            searchCriteria.clear();
-
-                        String lastName = String.join(" ",
-                                Arrays.copyOfRange(searchTerms, 1, searchTerms.length));
-                            // Tìm theo last_name
-                            searchCriteria.put("last_name",lastName);
-                            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                                uniqueMembersMap.put(member.getPerson().getId(), member);
-                            }
-                            searchCriteria.clear();
-                    }
-
-                    suggestList.addAll(uniqueMembersMap.values());
+                    searchCriteria.clear();
+                    searchCriteria.put("last_name", value);
+                    suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
+                    System.out.println(suggestList.size());
                     break;
                 case "memberID":
                     searchCriteria.put("member_id", value);
@@ -186,15 +151,27 @@ public class SuggestionTable {
                     searchCriteria.put("status", BookItemStatus.AVAILABLE);
                     suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
                     break;
-                case "bookAPI":
-                    System.out.println("Suggest book API");
-                    long startTime = System.currentTimeMillis();
-
-                    suggestList.addAll(BookInfoFetcher.searchBooksByKeyword(value));
-
-                    long endTime = System.currentTimeMillis();
-                    long duration = endTime - startTime;
-                    System.out.println("Thời gian thực thi API: " + duration + " milliseconds");
+                case "bookNameAPI":
+                    if (cache.findBookInCache("title", value) != null) {
+                        suggestList.addAll(cache.findBookInCache("title", value));
+                    }
+                    if (suggestList.size() == 0) {
+                        System.out.println("Tim API1");
+                        List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
+                        suggestList.addAll(listbook);
+                        cache.storeQueryResult("title", listbook);
+                    }
+                    break;
+                case "bookISBNAPI":
+                    if (cache.findBookInCache("ISBN", value) != null) {
+                        suggestList.addAll(cache.findBookInCache("ISBN", value));
+                    }
+                    if (suggestList.size() == 0) {
+                        System.out.println("Tim API2");
+                        List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
+                        suggestList.addAll(listbook);
+                        cache.storeQueryResult("ISBN", listbook);
+                    }
                     break;
                 default:
                     break;
@@ -221,15 +198,8 @@ public class SuggestionTable {
             });
             throw new RuntimeException(e);
         }
+        loaded = false;
 
-        /*if (suggestList.size() > 0) {
-            scrollPane.setVisible(true);
-            loadSuggestionRows();
-        } else {
-            scrollPane.setVisible(false);
-            scrollPane.setLayoutX(0);
-            scrollPane.setLayoutY(0);
-        }*/
     }
 
     public void updateSuggestionPaneForActiveField() {
@@ -239,16 +209,29 @@ public class SuggestionTable {
     }
 
     public void updateSuggestionPanePosition(TextField textField) {
-            activeTextField = textField;
-            // Lấy tọa độ của textField trong Scene
-            Bounds boundsInScene = textField.localToScene(textField.getBoundsInLocal());
+        activeTextField = textField;
+        // Lấy tọa độ của textField trong Scene
+        Bounds boundsInScene = textField.localToScene(textField.getBoundsInLocal());
 
-            // Chuyển đổi tọa độ này sang hệ tọa độ của parent chứa suggestionPane
-            Bounds boundsInParent = scrollPane.getParent().sceneToLocal(boundsInScene);
+        // Chuyển đổi tọa độ này sang hệ tọa độ của parent chứa suggestionPane
+        Bounds boundsInParent = scrollPane.getParent().sceneToLocal(boundsInScene);
 
-            // Cập nhật vị trí của suggestionPane
-            scrollPane.setLayoutX(boundsInParent.getMinX());
-            scrollPane.setLayoutY(boundsInParent.getMaxY());
+        scrollPane.setMaxWidth(textField.getWidth());
+        scrollPane.setMinWidth(textField.getWidth());
+
+        suggestionTable.setMinWidth(scrollPane.getWidth());
+        suggestionTable.setMaxWidth(scrollPane.getWidth());
+
+        suggestionListView.setMinWidth(scrollPane.getWidth());
+        suggestionListView.setMaxWidth(scrollPane.getWidth());
+
+        scrollPane.setMaxWidth(boundsInParent.getWidth());
+        scrollPane.setMaxWidth(boundsInParent.getWidth());
+
+        // Cập nhật vị trí của suggestionPane
+        scrollPane.setLayoutX(boundsInParent.getMinX());
+        scrollPane.setLayoutY(boundsInParent.getMaxY());
     }
 
 }
+

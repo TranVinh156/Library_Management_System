@@ -211,6 +211,9 @@ public class Book {
     public void setStatus(BookStatus status) {
         this.status = status;
     }
+    public BookStatus getstatus() {
+        return this.status;
+    }
 
     @Override
     public String toString() {

@@ -106,6 +106,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     @FXML
     private Label borrowIDLabel;
 
+    @FXML
+    private ListView<HBox> sugestionList;
+
     private Member member;
     private BookItem bookItem;
     private SuggestionTable suggestionTable;
@@ -115,6 +118,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @Override
     protected void loadItemDetails() {
+        getTitlePageStack().push(item.getIssueID() + "");
         member = item.getMember();
         setMember(member);
 
@@ -215,8 +219,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     public void initialize() {
         borrowStatus.getItems().addAll(BookIssueStatus.values());
 
-
-        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
+        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox, this.sugestionList);
         // Đăng ký listener để xử lý sự kiện click
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
@@ -244,6 +247,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
                 stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
                         Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+
+
             }
         });
 
@@ -310,12 +315,14 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
         setEditMode(true);
     }
 
     @FXML
     void onScanBookButtonAction(ActionEvent event) {
-        Command scanCommand = new AdminCommand("scan",bookItem);
+        bookItem = new BookItem();
+        Command scanCommand = new AdminCommand("scan",new BookItem());
         commandInvoker.setCommand(scanCommand);
         if(commandInvoker.executeCommand()) {
             bookItem = ((AdminCommand) scanCommand).getBookItemResult();
@@ -325,7 +332,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onScanMemberButtonAction(ActionEvent event) {
-        Command scanCommand = new AdminCommand("scan",member);
+        member = new Member(null);
+        Command scanCommand = new AdminCommand("scan",new Member(null));
         commandInvoker.setCommand(scanCommand);
         if(commandInvoker.executeCommand()) {
             member = ((AdminCommand) scanCommand).getMemberResult();

@@ -108,6 +108,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
     private ChoiceBox<BookReservationStatus> borrowStatus;
     @FXML
     private Label borrowIDLabel;
+    @FXML
+    private ListView<HBox> sugestionList;
 
     private Member member;
     private BookItem bookItem;
@@ -118,6 +120,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @Override
     protected void loadItemDetails() {
+        getTitlePageStack().push(item.getReservationId() + "");
         member = item.getMember();
         setMember(member);
 
@@ -223,7 +226,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         borrowStatus.getItems().addAll(BookReservationStatus.values());
 
 
-        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
+        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox, this.sugestionList);
         // Đăng ký listener để xử lý sự kiện click
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
@@ -317,6 +320,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @FXML
     void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
         setEditMode(true);
     }
 

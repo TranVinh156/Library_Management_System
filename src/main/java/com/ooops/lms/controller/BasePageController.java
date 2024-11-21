@@ -4,11 +4,15 @@ import com.ooops.lms.Alter.CustomerAlter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 public abstract class BasePageController<T, D extends BaseDetailController<T>,
         TB extends BaseTableController<T, ? extends BasePageController, ? extends BaseRowController>>
         extends BasicController {
+
+    @FXML
+    protected Label titlePage;
 
     protected FXMLLoader detailLoader;
     protected FXMLLoader tableLoader;
@@ -18,9 +22,11 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
     protected D detailController;
     protected TB tableController;
 
+
     protected abstract String getDetailFXMLPath();
     protected abstract String getTableFXMLPath();
 
+    protected boolean page1 = true;
 
     @FXML
     public void initialize() {
@@ -65,9 +71,12 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
     protected void loadDetailItem(T item) {
         detailController.loadStartStatus();
         detailController.setItem(item);
-        alterPage();
+        if(page1) {
+            alterPage();
+        }
     }
     public void loadAddPane() {
+        getTitlePageStack().push("Add");
         if (detailController.hasUnsavedChanges()) {
             boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang thêm/sửa sẽ bị mất");
             if (confirmYes) {
@@ -80,7 +89,9 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
     protected void loadAddNewItem() {
         detailController.loadStartStatus();
         detailController.setAddMode(true);
-        alterPage();
+        if(page1) {
+            alterPage();
+        }
     }
 
     public abstract void alterPage();
@@ -88,7 +99,12 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
     public abstract void startPage();
 
     public void loadData() {
+        setTitlePage();
         tableController.loadData();
+    }
+
+    protected void setTitlePage(){
+        titlePage.setText(String.join(" / ", getTitlePageStack()));
     }
 
 

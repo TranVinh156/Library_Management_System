@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 public class BasicController {
     private static final String DEFAULT_USER_FXML = "/image/customer/menu/ava.png";
@@ -52,6 +53,8 @@ public class BasicController {
     private static final String ISSUE_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminIssuePage.fxml";
     private static final String BORROW_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminBorrowPage.fxml";
     private static final String RESERVATION_PAGE_FXML ="/com/ooops/lms/library_management_system/AdminReservationPage.fxml";
+
+    private static Stack<String> titlePageStack = new Stack<>();
 
     protected static final FXMLLoader loginLoader;
     protected static final Node loginPane;
@@ -132,6 +135,15 @@ public class BasicController {
 
         adminMenuPaneLoader = loadFXML(ADMIN_MENU_FXML,BasicController.class);
         adminMenuPane = loadPane(adminMenuPaneLoader, BasicController.class);
+    }
+
+    // Lấy tất cả tiêu đề và kết hợp thành một chuỗi
+    public String getAllTitles() {
+        return String.join(" / ", titlePageStack);
+    }
+
+    public Stack<String> getTitlePageStack() {
+        return titlePageStack;
     }
 
     /**
@@ -356,24 +368,7 @@ public class BasicController {
                     Files.delete(destinationPath);
                 }
 
-                // Đọc ảnh gốc từ file
-                BufferedImage originalImage = ImageIO.read(selectedFile);
-
-                // Tính toán chiều dài của hình vuông
-                int width = originalImage.getWidth();
-                int height = originalImage.getHeight();
-                int size = Math.min(width, height);  // Lấy cạnh nhỏ nhất làm kích thước vuông
-
-                // Cắt ảnh thành hình vuông ở giữa
-                int x = width;
-                int y = height;
-
-                BufferedImage squareImage = originalImage.getSubimage(x, y, size, size);
-
-                // Lưu ảnh vuông vào tệp
-                ImageIO.write(squareImage, "PNG", destinationPath.toFile());
-
-                return destinationPath.toAbsolutePath().toString();
+                return destinationPath.toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }

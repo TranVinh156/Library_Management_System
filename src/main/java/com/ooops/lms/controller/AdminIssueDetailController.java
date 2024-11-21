@@ -51,6 +51,7 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
 
     @Override
     protected void loadItemDetails() {
+        getTitlePageStack().push(item.getReportID() + "");
         IDreportLabel.setText(String.valueOf(item.getReportID()));
         nameMemberLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
         IDMemberLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
@@ -92,6 +93,7 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
 
     @FXML
     private void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
         setEditMode(true);
     }
 

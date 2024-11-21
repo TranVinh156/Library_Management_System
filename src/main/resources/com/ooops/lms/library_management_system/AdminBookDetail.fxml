@@ -5,6 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -22,7 +23,7 @@
    <children>
       <StackPane prefHeight="515.0" prefWidth="911.0" HBox.hgrow="ALWAYS">
          <children>
-            <AnchorPane prefHeight="515.0" prefWidth="738.0" stylesheets="@../../../../style/AdminBookManagementStyle.css">
+            <AnchorPane prefHeight="515.0" prefWidth="738.0">
                <children>
                   <HBox prefHeight="247.0" prefWidth="799.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
@@ -45,12 +46,7 @@
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3">
                                        <children>
                                           <Label prefHeight="26.0" prefWidth="121.0" style="-fx-font-size: 20;" styleClass="gray-text-Cabin" text="Tên sách:" />
-                                          <TextField fx:id="bookNameText" editable="false" prefHeight="39.0" prefWidth="467.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Lời thì thầm dòng sông">
-                                             <styleClass>
-                                                <String fx:value="black-text-Cabin" />
-                                                <String fx:value="box-information" />
-                                             </styleClass>
-                                          </TextField>
+                                          <TextField fx:id="bookNameText" editable="false" prefHeight="39.0" prefWidth="467.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="fill-text-field-customer" text="Lời thì thầm dòng sông" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
@@ -63,23 +59,13 @@
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="ISBNText" editable="false" prefHeight="34.0" prefWidth="322.0" text="903-384-434-233-23">
-                                             <styleClass>
-                                                <String fx:value="black-text-Cabin" />
-                                                <String fx:value="box-information" />
-                                             </styleClass>
-                                          </TextField>
+                                          <TextField fx:id="ISBNText" editable="false" prefHeight="34.0" prefWidth="322.0" styleClass="fill-text-field-customer" text="903-384-434-233-23" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <children>
                                           <Label prefHeight="22.0" prefWidth="74.0" styleClass="gray-text-Cabin" text="Vị trí:" />
-                                          <TextField fx:id="locationText" editable="false" prefHeight="34.0" prefWidth="150.0" text="23234">
-                                             <styleClass>
-                                                <String fx:value="black-text-Cabin" />
-                                                <String fx:value="box-information" />
-                                             </styleClass>
-                                          </TextField>
+                                          <TextField fx:id="locationText" editable="false" prefHeight="34.0" prefWidth="150.0" styleClass="fill-text-field-customer" text="23234" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
@@ -89,12 +75,7 @@
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="authorNameText" editable="false" prefHeight="34.0" prefWidth="434.0" text="Nguyen Van C">
-                                             <styleClass>
-                                                <String fx:value="black-text-Cabin" />
-                                                <String fx:value="box-information" />
-                                             </styleClass>
-                                          </TextField>
+                                          <TextField fx:id="authorNameText" editable="false" prefHeight="34.0" prefWidth="434.0" styleClass="fill-text-field-customer" text="Nguyen Van C" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
@@ -110,34 +91,19 @@
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
                                        <children>
                                           <Label prefHeight="22.0" prefWidth="92.0" styleClass="gray-text-Cabin" text="Tổng số sách:" HBox.hgrow="ALWAYS" />
-                                          <TextField fx:id="numberOfBookText" editable="false" prefHeight="34.0" prefWidth="54.0" text="12" HBox.hgrow="ALWAYS">
-                                             <styleClass>
-                                                <String fx:value="black-text-Cabin" />
-                                                <String fx:value="box-information" />
-                                             </styleClass>
-                                          </TextField>
+                                          <TextField fx:id="numberOfBookText" editable="false" prefHeight="34.0" prefWidth="54.0" styleClass="fill-text-field-customer" text="12" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <children>
                                           <Label prefHeight="22.0" prefWidth="142.0" styleClass="gray-text-Cabin" text="Tổng số đang mượn:" HBox.hgrow="ALWAYS" />
-                                          <TextField fx:id="numberOfBorrowText" editable="false" prefHeight="34.0" prefWidth="34.0" text="12" HBox.hgrow="ALWAYS">
-                                             <styleClass>
-                                                <String fx:value="black-text-Cabin" />
-                                                <String fx:value="box-information" />
-                                             </styleClass>
-                                          </TextField>
+                                          <TextField fx:id="numberOfBorrowText" editable="false" prefHeight="34.0" prefWidth="34.0" styleClass="fill-text-field-customer" text="12" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                        <children>
                                           <Label prefHeight="22.0" prefWidth="104.0" styleClass="gray-text-Cabin" text="Tổng số bị mất:" HBox.hgrow="ALWAYS" />
-                                          <TextField fx:id="numberOfLostText" editable="false" prefHeight="34.0" prefWidth="46.0" text="12" HBox.hgrow="ALWAYS">
-                                             <styleClass>
-                                                <String fx:value="black-text-Cabin" />
-                                                <String fx:value="box-information" />
-                                             </styleClass>
-                                          </TextField>
+                                          <TextField fx:id="numberOfLostText" editable="false" prefHeight="34.0" prefWidth="46.0" styleClass="fill-text-field-customer" text="12" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -176,7 +142,7 @@
                         <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="49.0" prefWidth="122.0" styleClass="button_1" stylesheets="@../../../../style/AdminBookManagementStyle.css" text="Thêm" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-                  <HBox layoutX="23.0" layoutY="272.0" prefHeight="175.0" prefWidth="756.0" style="-fx-background-color: FFFFFF;" styleClass="border" AnchorPane.bottomAnchor="68.00000000000006" AnchorPane.leftAnchor="23.200000000000045" AnchorPane.rightAnchor="20.200000000000045" AnchorPane.topAnchor="272.00000000000006">
+                  <HBox layoutX="23.0" layoutY="272.0" prefHeight="175.0" prefWidth="756.0" style="-fx-background-color: FFFFFF;" styleClass="round-box-customer" AnchorPane.bottomAnchor="68.00000000000006" AnchorPane.leftAnchor="23.200000000000045" AnchorPane.rightAnchor="20.200000000000045" AnchorPane.topAnchor="272.00000000000006">
                      <children>
                         <StackPane prefHeight="174.0" prefWidth="770.0" HBox.hgrow="ALWAYS">
                            <children>
@@ -197,8 +163,8 @@
                                     </HBox>
                                     <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" text="cdsdsiosdhfiohidshfidoifhiodgoifdhgoifiogifdigohdfgoidfgiofdgiohfoigoifhgioiofgiodfhiohdfiogodhfgiohodfhgohfdoghiofdghoidfhgodfgoidfgiohg" wrapText="true" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999">
                                        <styleClass>
-                                          <String fx:value="text-area-no-border" />
                                           <String fx:value="black-text-Cabin" />
+                                          <String fx:value="fill-text-field-customer" />
                                        </styleClass>
                                     </TextArea>
                                  </children>
@@ -255,7 +221,10 @@
                   </Label>
                   <ScrollPane fx:id="suggestionPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="273.0" vbarPolicy="ALWAYS" visible="false">
                      <content>
-                        <VBox fx:id="suggestionVbox" prefHeight="200.0" prefWidth="256.0" />
+                        <VBox fx:id="suggestionVbox" prefHeight="200.0" prefWidth="256.0">
+                           <children>
+                              <ListView fx:id="sugestionList" prefHeight="200.0" prefWidth="200.0" />
+                           </children></VBox>
                      </content>
                   </ScrollPane>
                </children>

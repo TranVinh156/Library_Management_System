@@ -5,6 +5,7 @@ import com.ooops.lms.model.Book;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 public class AdminBookPageController extends BasePageController<Book, AdminBookDetailController, AdminBookTableController> {
@@ -24,6 +25,8 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
     @FXML
     private AnchorPane tablePage;
 
+    @FXML
+    private Label titlePage;
 
     @Override
     protected String getDetailFXMLPath() {
@@ -44,7 +47,6 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
     protected void setupViews() {
         tablePage.getChildren().add(tablePane);
         detailLocation.getChildren().add(detailPane);
-
     }
 
     /**
@@ -54,6 +56,7 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
      */
     @FXML
     void onReturnButton(ActionEvent event) {
+        getTitlePageStack().pop();
         loadData();
         alterPage();
     }
@@ -62,11 +65,19 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+        if(detailPage.isVisible()) {
+            page1 = false;
+        } else {
+            page1 = true;
+        }
     }
     @Override
     public void startPage() {
+        page1 = true;
+        setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
+        loadData();
     }
 
 }

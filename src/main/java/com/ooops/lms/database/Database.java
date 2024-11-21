@@ -13,7 +13,7 @@ public class Database {
     private static ResultSet resultSet;
     private static final String URL = "jdbc:mysql://localhost:3306/lms_database";
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "cosodulieu@2024";
 
     private Database() {
 

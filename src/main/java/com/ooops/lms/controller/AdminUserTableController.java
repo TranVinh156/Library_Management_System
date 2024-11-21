@@ -31,6 +31,8 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
 
     private String findValue;
 
+    private AdminDashboardController adminDashboardController;
+
     @Override
     protected String getRowFXML() {
         return ROW_FXML;
@@ -39,10 +41,12 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
     @Override
     protected void loadDataFromSource() throws SQLException {
         itemsList.addAll(MemberDAO.getInstance().selectAll());
+        adminDashboardController.setTotalReaderLabel(itemsList.size()+"");
     }
 
     @FXML
     public void initialize() {
+        adminDashboardController = dashboardLoader.getController();
         // Lắng nghe sự thay đổi trong TextField tìm kiếm
         searchText.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -65,7 +69,6 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
 
     @Override
     protected void getCriteria() {
-
     }
     @Override
     protected void searchCriteria() {
@@ -93,44 +96,5 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
         loadRows();
     }
 
-    public void loadFindData(String name) {
-        try {
-            itemsList.clear();
-            // Sử dụng Map với key là ID của Member
-            Map<Integer, Member> uniqueMembersMap = new HashMap<>();
-
-            // Tìm kiếm theo phone
-            Map<String, Object> searchCriteria = new HashMap<>();
-            searchCriteria.put("phone", name);
-            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                uniqueMembersMap.put(member.getPerson().getId(), member);
-            }
-
-            searchCriteria.put("member_id", name);
-            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                uniqueMembersMap.put(member.getPerson().getId(), member);
-            }
-
-            // Tìm kiếm theo first_name
-            searchCriteria.clear();
-            searchCriteria.put("first_name", name);
-            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                uniqueMembersMap.put(member.getPerson().getId(), member);
-            }
-
-            // Tìm kiếm theo last_name
-            searchCriteria.clear();
-            searchCriteria.put("last_name", name);
-            for (Member member : MemberDAO.getInstance().searchByCriteria(searchCriteria)) {
-                uniqueMembersMap.put(member.getPerson().getId(), member);
-            }
-
-            // Thêm tất cả các giá trị unique vào membersList
-            itemsList.addAll(uniqueMembersMap.values());
-            loadRows();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
 }

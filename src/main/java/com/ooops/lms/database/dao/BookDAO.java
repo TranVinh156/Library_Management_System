@@ -402,7 +402,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                     book.setNumberOfLostBooks(resultSet.getInt("number_lost_book"));
                     book.setNumberOfReservedBooks(resultSet.getInt("number_reserved_book"));
                     book.setRate(resultSet.getInt("rate"));
-                    book.setStatus(BookStatus.valueOf(resultSet.getString("status")));
+                    book.setStatus(BookStatus.valueOf(resultSet.getString("book_status")));
                     bookList.add(book);
 
                     // Lưu vào bộ nhớ đệm
@@ -451,7 +451,6 @@ public class BookDAO implements DatabaseQuery<Book> {
             }
 
             System.out.println(preparedStatement.toString());
-
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     bookList.add(find(resultSet.getLong("Books.ISBN")));
@@ -528,5 +527,4 @@ public class BookDAO implements DatabaseQuery<Book> {
             }
         }
     }
-
 }
