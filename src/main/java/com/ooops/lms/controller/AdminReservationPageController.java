@@ -5,6 +5,7 @@ import com.ooops.lms.model.BookReservation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 public class AdminReservationPageController extends BasePageController<BookReservation, AdminReservationDetailController, AdminReservationTableController> {
@@ -23,6 +24,9 @@ public class AdminReservationPageController extends BasePageController<BookReser
 
     @FXML
     private Button returnButton;
+
+    @FXML
+    private Label titlePage;
 
     @Override
     protected String getDetailFXMLPath() {
