@@ -106,6 +106,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     @FXML
     private Label borrowIDLabel;
 
+    @FXML
+    private ListView<HBox> sugestionList;
+
     private Member member;
     private BookItem bookItem;
     private SuggestionTable suggestionTable;
@@ -215,8 +218,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     public void initialize() {
         borrowStatus.getItems().addAll(BookIssueStatus.values());
 
-
-        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
+        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox, this.sugestionList);
         // Đăng ký listener để xử lý sự kiện click
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
@@ -244,6 +246,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
                 stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
                         Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+
+
             }
         });
 
@@ -315,6 +319,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onScanBookButtonAction(ActionEvent event) {
+        bookItem = new BookItem();
         Command scanCommand = new AdminCommand("scan",bookItem);
         commandInvoker.setCommand(scanCommand);
         if(commandInvoker.executeCommand()) {
@@ -325,6 +330,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onScanMemberButtonAction(ActionEvent event) {
+        member = new Member(null);
         Command scanCommand = new AdminCommand("scan",member);
         commandInvoker.setCommand(scanCommand);
         if(commandInvoker.executeCommand()) {
