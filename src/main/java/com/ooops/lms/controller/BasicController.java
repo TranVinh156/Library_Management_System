@@ -54,7 +54,7 @@ public class BasicController {
     private static final String BORROW_PAGE_FXML = "/com/ooops/lms/library_management_system/AdminBorrowPage.fxml";
     private static final String RESERVATION_PAGE_FXML ="/com/ooops/lms/library_management_system/AdminReservationPage.fxml";
 
-    protected Stack<String> titlePage = new Stack<>();
+    private static Stack<String> titlePageStack = new Stack<>();
 
     protected static final FXMLLoader loginLoader;
     protected static final Node loginPane;
@@ -139,7 +139,11 @@ public class BasicController {
 
     // Lấy tất cả tiêu đề và kết hợp thành một chuỗi
     public String getAllTitles() {
-        return String.join(" / ", titlePage);
+        return String.join(" / ", titlePageStack);
+    }
+
+    public Stack<String> getTitlePageStack() {
+        return titlePageStack;
     }
 
     /**
