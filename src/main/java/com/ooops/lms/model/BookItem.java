@@ -51,7 +51,7 @@ public class BookItem extends Book {
     }
 
     public BookItemStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     public String getNote() {

@@ -22,6 +22,7 @@ public abstract class BaseDetailController<T> extends BasicController {
     public void setItem(T item) {
         this.item = item;
         loadItemDetails();
+        mainController.setTitlePage();
     }
 
     protected abstract void loadItemDetails();
@@ -29,6 +30,7 @@ public abstract class BaseDetailController<T> extends BasicController {
     public void setAddMode(boolean isAdd){
         this.addMode = isAdd;
         updateAddModeUI();
+        mainController.setTitlePage();
     };
 
     protected abstract void updateAddModeUI();
@@ -36,6 +38,7 @@ public abstract class BaseDetailController<T> extends BasicController {
     public void setEditMode(boolean enable) {
         this.editMode = enable;
         updateEditModeUI();
+        mainController.setTitlePage();
     }
 
     protected abstract void updateEditModeUI();
@@ -49,6 +52,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                         Command addCommand = new AdminCommand("add", this.item);
                         commandInvoker.setCommand(addCommand);
                         if (commandInvoker.executeCommand()) {
+                            getTitlePageStack().pop();
                             mainController.loadData();
                             setAddMode(false);
                             System.out.println("Đã lưu thay đổi");
@@ -63,6 +67,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                         Command editCommand = new AdminCommand("edit", this.item);
                         commandInvoker.setCommand(editCommand);
                         if (commandInvoker.executeCommand()) {
+                            getTitlePageStack().pop();
                             mainController.loadData();
                             setEditMode(false);
                             System.out.println("Đã lưu thay đổi");

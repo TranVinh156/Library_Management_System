@@ -3,13 +3,21 @@ package com.ooops.lms.controller;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
+import com.ooops.lms.SuggestionTable.AdminSugesstionRowController;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
+import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.controller.BaseDetailController;
+import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
 import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +25,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AdminBookDetailController extends BaseDetailController<Book> {
 
@@ -93,6 +106,10 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     private ScrollPane suggestionPane;
     @FXML
     private VBox suggestionVbox;
+
+    @FXML
+    private ListView<HBox> sugestionList;
+
     private SuggestionTable suggestionTable;
 
     private PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.5));
@@ -102,6 +119,10 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected void loadItemDetails() {
+        getTitlePageStack().push(item.getISBN() + "");
+        isSettingItem = true;
+        isSettingItem2 = true;
+
         bookNameText.setText(item.getTitle());
         ISBNText.setText(String.valueOf(item.getISBN()));
         authorNameText.setText(getAuthors(item.getAuthors()));
@@ -117,12 +138,11 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         } else {
             bookImage.setImage(defaultBookImage);
         }
+        loadBookItem();
     }
 
     @Override
     protected void updateAddModeUI() {
-        titlePage.push("Edit");
-
         //Xử lý các nút bấm
         ediButton.setVisible(!addMode);
         addButtonPane.setVisible(addMode);
@@ -225,16 +245,14 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @FXML
     private void initialize() {
-        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox);
+        suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox, this.sugestionList);
 
 
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
             public void onRowClick(Object o) {
-                if(o instanceof Book) {
-                    isSettingItem = true;
-                    isSettingItem2 = true;
-                    setItem((Book)o);
+                if (o instanceof Book) {
+                    setItem((Book) o);
                     suggestionVbox.getChildren().clear();
                     suggestionPane.setVisible(false);
                 }
@@ -245,25 +263,24 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
         // Listener cho ISBN TextField
         ISBNText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!isSettingItem && addMode) {
+            if (!isSettingItem && addMode) {
                 suggestionTable.updateSuggestionPanePosition(ISBNText);
-                // Reset và restart pause transition mỗi khi có thay đổi text
-                pauseTransition.setOnFinished(event -> {
-                    String isbnNumbers = newValue.replaceAll("[^0-9]", "");
-                    suggestionTable.loadFindData("bookAPI", isbnNumbers);
-                });
-                pauseTransition.playFromStart();
+                String isbnNumbers = newValue.replaceAll("[^0-9]", "");
+                suggestionTable.loadFindData("bookISBNAPI", isbnNumbers);
             }
             isSettingItem = false;
         });
 
         bookNameText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!isSettingItem2 && addMode) {
+            if (!isSettingItem2 && addMode) {
                 suggestionTable.updateSuggestionPanePosition(bookNameText);
                 // Reset và restart pause transition mỗi khi có thay đổi text
+
+                //suggestionTable.loadFindData("bookNameAPI", newValue);
                 pauseTransition.setOnFinished(event -> {
-                    suggestionTable.loadFindData("bookAPI", newValue);
+                    suggestionTable.loadFindData("bookNameAPI", bookNameText.getText());
                 });
+
                 pauseTransition.playFromStart();
             }
             isSettingItem2 = false;
@@ -309,6 +326,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @FXML
     void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
         if (item != null) {
             setEditMode(true);
         }
@@ -340,11 +358,14 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @FXML
     void onScanButtonAction(ActionEvent event) {
-        Command scanCommand = new AdminCommand("scan",item);
+        Command scanCommand = new AdminCommand("scan", new Book());
         commandInvoker.setCommand(scanCommand);
-        if(commandInvoker.executeCommand()) {
+        if (commandInvoker.executeCommand()) {
             item = ((AdminCommand) scanCommand).getBookResult();
+            System.out.println(item.getISBN());
             loadItemDetails();
+        } else {
+            System.out.println("chiuuuu");
         }
     }
 
@@ -369,6 +390,32 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
                     page2Button.getParent().getChildrenUnmodifiable().indexOf(page1Button)) {
                 page1Button.toBack();
             }
+        }
+    }
+
+    private void loadBookItem() {
+        copyBookTableVbox.getChildren().clear();
+        Map<String, Object> findCriteria2 = new HashMap<>();
+        findCriteria2.put("ISBN", this.item.getISBN());
+        try {
+            List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(findCriteria2);
+            for (BookItem item : bookItemList) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminBookCopyRow.fxml"));
+                    HBox row = loader.load();
+
+                    AdminBookCopyRowController rowController = loader.getController();
+                    rowController.setBookItem(item);
+
+                    childFitWidthParent(row, scrollPane);
+                    copyBookTableVbox.getChildren().add(row);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

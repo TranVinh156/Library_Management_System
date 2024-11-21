@@ -18,7 +18,7 @@ public class BookInfoFetcher {
     private static final String API_KEY = "AIzaSyChNsPo2ZSTE80-0Q5mwpLFysHY4zfDqtM";
     private static final String API_URL_KEYWORD = "https://www.googleapis.com/books/v1/volumes?q=";
     private static final String API_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
-    private static final int MAX_BOOK = 30;
+    private static final int MAX_BOOK = 100;
 
     private static String fetchResponse(URL url) throws Exception {
         HttpURLConnection conn;

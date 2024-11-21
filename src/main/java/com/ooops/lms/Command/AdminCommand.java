@@ -53,7 +53,7 @@ public class AdminCommand implements Command {
                     } else if (object instanceof Member) {
                         MemberDAO.getInstance().add((Member) object);
                     } else if (object instanceof BookReservation) {
-                        System.out.println("Dang them borrow:" + ((BookReservation)object).getBookItem().getBarcode());
+                        System.out.println("Dang them borrow:" + ((BookReservation) object).getBookItem().getBarcode());
                         BookReservationDAO.getInstance().add((BookReservation) object);
                     } else if (object instanceof BookIssue) {
                         BookIssueDAO.getInstance().add((BookIssue) object);
@@ -93,29 +93,32 @@ public class AdminCommand implements Command {
                         Member member = (Member) object;
                         this.memberResult = MemberDAO.getInstance().find(member.getAccountId());
                     }
-                    if(object instanceof BookItem) {
+                    if (object instanceof BookItem) {
                         BookItem bookItem = (BookItem) object;
                         this.bookItemResult = BookItemDAO.getInstance().find(bookItem.getBarcode());
                     }
                     return true;
                 case "scan":
-                    String barcode = barcodeScanner.scanBarcodeFromCamera();
-                    bookResult = BookInfoFetcher.searchBookByISBN(barcode);
-                    if(bookResult == null) {
-                        return false;
-                    }
-                    /*if(object instanceof BookItem) {
-                        bookItemResult = BookItemDAO.getInstance().find(Integer.valueOf(barcodeScanner.scanBarcodeFromCamera()));
-                    } else if(object instanceof Book) {
-                    } else if(object instanceof Member) {
+                    if (object instanceof BookItem) {
+                        bookItemResult = BookItemDAO.getInstance().find(Long.valueOf(barcodeScanner.scanBarcodeFromCamera()));
+                    } else if (object instanceof Book) {
+                        System.out.println("diisad");
+                        String barcode = barcodeScanner.scanBarcodeFromCamera();
+                        bookResult = BookInfoFetcher.searchBookByISBN(barcode);
+                        if (bookResult == null) {
+                            return false;
+                        }
+                    } else if (object instanceof Member) {
                         memberResult = MemberDAO.getInstance().find(Long.valueOf(barcodeScanner.scanBarcodeFromCamera()));
-                    }*/
+                    }
                     return true;
                 default:
                     return false;
             }
-        } catch (SQLException e) {
+        } catch (
+                SQLException e) {
             System.out.println("Lỗi AdminCommand:" + e.getMessage());
+            CustomerAlter.showAlter(e.getMessage());
             return false; // Thất bại
         }
     }
