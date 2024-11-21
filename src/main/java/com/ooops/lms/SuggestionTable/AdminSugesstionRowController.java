@@ -34,27 +34,50 @@ public class AdminSugesstionRowController {
     public void setSuggestion(Object o) {
         this.object = o;
         if (object instanceof Member) {
-            textLabel.setText(((Member) object).getPerson().getFirstName() + " " + ((Member) object).getPerson().getLastName()
-                    + " - " + ((Member) object).getPerson().getId());
-            imageView.setImage(new Image(((Member) object).getPerson().getImagePath()));
+            Member member = (Member) object;
+            textLabel.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName() +" - "+ member.getPerson().getId());
+            // Tải ảnh bất đồng bộ
+            Task<Image> loadImageTask = new Task<>() {
+                @Override
+                protected Image call() throws Exception {
+                    try {
+                        return new Image(member.getPerson().getImagePath(), true);
+                    } catch (Exception e) {
+                        System.out.println("Length: " + member.getPerson().getImagePath().length());
+
+                        File file = new File("bookImage/default.png");
+                        return new Image(file.toURI().toString());
+                    }
+                }
+            };
+
+            loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+
+            executor.submit(loadImageTask);
+
+
         } else if (object instanceof BookItem) {
             BookItem bookItem = (BookItem) object;
             textLabel.setText(bookItem.getTitle() + " - " + bookItem.getBarcode());
-            imageView.setImage(new Image(bookItem.getImagePath()));
-        } else if(object instanceof Map<?,?>) {
-            // Safely cast the object to a Map
-            Map<?, ?> map = (Map<?, ?>) object;
+            // Tải ảnh bất đồng bộ
+            Task<Image> loadImageTask = new Task<>() {
+                @Override
+                protected Image call() throws Exception {
+                    try {
+                        return new Image(bookItem.getImagePath(), true);
+                    } catch (Exception e) {
+                        System.out.println("Length: " + bookItem.getImagePath().length());
 
-            // Assuming 'first' is a key of type Book
-            Book book = (Book) map.get(1);
-            Image image = (Image) map.get(2);
+                        File file = new File("bookImage/default.png");
+                        return new Image(file.toURI().toString());
+                    }
+                }
+            };
 
-            if (book != null) {
-                textLabel.setText(book.getTitle() + " - " + book.getISBN());
-                imageView.setImage(image);
-            }
-        }
-        else if (object instanceof Book) {
+            loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+
+            executor.submit(loadImageTask);
+        } else if (object instanceof Book) {
             Book book = (Book) object;
             textLabel.setText(book.getTitle() + " - " + book.getISBN());
 
