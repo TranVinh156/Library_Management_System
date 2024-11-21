@@ -7,6 +7,7 @@ import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookReservation;
+import com.ooops.lms.model.enums.BookStatus;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,7 +57,7 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
     private ScrollPane scrollPane;
 
     @FXML
-    private TextField stausText;
+    private ChoiceBox<BookStatus> statusFindBox;
 
     @FXML
     private AnchorPane tableBookPane;
@@ -73,11 +74,13 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
     @FXML
     private Label totalNumberLostLabel;
 
+
     private static final String ROW_FXML = "/com/ooops/lms/library_management_system/AdminBookTableRow.fxml";
     private AdminDashboardController adminDashboardController;
 
     @FXML
     protected void initialize() {
+        statusFindBox.getItems().addAll(BookStatus.values());
         bookNameFindTExt.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
                 Stage stage = (Stage) bookNameFindTExt.getScene().getWindow();
@@ -122,9 +125,7 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
         }
 
         // Kiểm tra và thêm tiêu chí tìm kiếm theo trạng thái
-        if (!stausText.getText().isEmpty()) {
-            findCriteria.put("status", stausText.getText());
-        }
+
     }
     @Override
     protected void searchCriteria() {
