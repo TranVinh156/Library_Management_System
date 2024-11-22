@@ -1,5 +1,6 @@
 package com.ooops.lms.util;
 
+import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.controller.UserMenuController;
 import com.ooops.lms.database.dao.BookIssueDAO;
 import com.ooops.lms.database.dao.BookMarkDAO;
@@ -9,22 +10,28 @@ import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.BookMark;
 import com.ooops.lms.model.BookReservation;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.enums.BookIssueStatus;
+import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 
 public class BookManager {
     private static BookManager instance = null;
     private List<Book> allBooks = new ArrayList<>();
-    private List<Book> popularBooks ;
+    private List<Book> popularBooks;
     private List<Book> highRankBooks;
     private List<BookReservation> reservedBooks;
     private List<BookMark> markedBooks;
     private List<BookIssue> borrowedBooks;
     private List<BookIssue> borrowingBooks;
 
+    private Map<String, List<Book>> searchBooks = new HashMap<>();
+    private final Map<String, Image> bookImageCache = new HashMap<>();
 
     private BookManager() {
         try {
@@ -36,17 +43,18 @@ public class BookManager {
     }
 
     public List<Book> getPopularBooks() {
-        if(popularBooks==null) {
+        if (popularBooks == null) {
             popularBooks = (ArrayList<Book>) ((ArrayList<Book>) allBooks).clone();
             sortBooks(popularBooks, (book1, book2) -> Integer.compare(
                     (book2.getNumberOfLoanedBooks() + book2.getNumberOfReservedBooks()),
                     (book1.getNumberOfLoanedBooks() + book1.getNumberOfReservedBooks())
-            ));        }
+            ));
+        }
         return popularBooks;
     }
 
     public List<Book> getHighRankBooks() {
-        if(highRankBooks==null) {
+        if (highRankBooks == null) {
             highRankBooks = (ArrayList<Book>) ((ArrayList<Book>) allBooks).clone();
             sortBooks(highRankBooks, (book1, book2) -> Integer.compare(book2.getRate(), book1.getRate()));
         }
@@ -54,7 +62,7 @@ public class BookManager {
     }
 
     public List<BookReservation> getReservedBooks() throws SQLException {
-        if(reservedBooks==null) {
+        if (reservedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
             reservedBooks = BookReservationDAO.getInstance().searchByCriteria(criteria);
@@ -63,13 +71,14 @@ public class BookManager {
     }
 
     public List<BookMark> getMarkedBooks() throws SQLException {
-        if(markedBooks==null) {
+        if (markedBooks == null) {
             markedBooks = BookMarkDAO.getInstance().findAllBookMark(UserMenuController.getMember());
         }
         return markedBooks;
     }
+
     public List<BookIssue> getBorrowedBooks() throws SQLException {
-        if(borrowedBooks == null) {
+        if (borrowedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
             criteria.put("status", BookIssueStatus.RETURNED);
@@ -77,8 +86,9 @@ public class BookManager {
         }
         return borrowedBooks;
     }
+
     public List<BookIssue> getBorrowingBooks() throws SQLException {
-        if(borrowingBooks == null) {
+        if (borrowingBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
             criteria.put("status", BookIssueStatus.BORROWED);
@@ -92,7 +102,7 @@ public class BookManager {
     }
 
     public static BookManager getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new BookManager();
         }
         return instance;
@@ -113,18 +123,19 @@ public class BookManager {
         });
     }
 
-    private void sortBooksByPopularDescending() {
-        Collections.sort(popularBooks, new Comparator<Book>() {
-            @Override
-            public int compare(Book book1, Book book2) {
-                int rate1 = book1.getNumberOfLoanedBooks() + book1.getNumberOfReservedBooks();
-                int rate2 = book2.getNumberOfLoanedBooks() + book2.getNumberOfReservedBooks();
-                return Integer.compare(rate2, rate1);
-            }
-        });
+    public Image getBookImage(String url) {
+        // Kiểm tra trong cache
+        if (bookImageCache.containsKey(url)) {
+            return bookImageCache.get(url); // Lấy từ cache
+        }
+
+        // Nếu không có, tải ảnh và lưu vào cache
+        Image image = new Image(url, true); // `true` để tải ảnh không đồng bộ
+        bookImageCache.put(url, image);
+        return image;
     }
 
-    public Book isContainInAllBooks(Book book ) {
+    public Book isContainInAllBooks(Book book) {
         Book findBook;
         try {
             findBook = BookDAO.getInstance().find(book.getISBN());
@@ -142,6 +153,7 @@ public class BookManager {
         }
         return reservedBooks.size();
     }
+
     public int getBorrowingBookSize() {
         try {
             getBorrowingBooks();
@@ -152,6 +164,70 @@ public class BookManager {
     }
 
     public void addReservedBook(BookReservation bookReservation) {
+        try {
+            getReservedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         reservedBooks.add(bookReservation);
+    }
+
+    public List<Book> searchBookByAPI(String searchText) {
+        // Tạo Task để tìm kiếm sách bất đồng bộ
+        Task<List<Book>> fetchBooksTask = new Task<>() {
+            @Override
+            protected List<Book> call() throws Exception {
+                // Thực hiện tìm kiếm sách trên một luồng riêng
+                return BookInfoFetcher.searchBooksByKeyword(searchText);
+            }
+        };
+        AtomicReference<List<Book>> bookList = new AtomicReference<>(new ArrayList<>());
+        fetchBooksTask.setOnSucceeded(event -> {
+            bookList.set(fetchBooksTask.getValue());
+        });
+        return bookList.get();
+    }
+
+
+    public Task<Image> createLoadImageTask(Book book) {
+        return new Task<>() {
+            @Override
+            protected Image call() throws Exception {
+                String imagePath = book.getImagePath();
+
+                // Kiểm tra ảnh trong cache
+                if (bookImageCache.containsKey(imagePath)) {
+                    return bookImageCache.get(imagePath);
+                }
+
+                try {
+                    // Tải ảnh mới
+                    Image image = new Image(imagePath, true);
+                    bookImageCache.put(imagePath, image); // Lưu vào cache
+                    return image;
+                } catch (Exception e) {
+                    System.out.println("Failed to load image. Path length: " + imagePath.length());
+
+                    // Tải ảnh mặc định
+                    File file = new File("bookImage/default.png");
+                    Image defaultImage = new Image(file.toURI().toString());
+                    bookImageCache.put(imagePath, defaultImage); // Lưu ảnh mặc định vào cache với cùng key
+                    return defaultImage;
+                }
+            }
+        };
+    }
+
+    public void clearCache() {
+        bookImageCache.clear(); // Làm sạch cache khi cần thiết
+    }
+
+
+    public Map<String, List<Book>> getBookSearchCache() {
+        return searchBooks;
+    }
+
+    public void addBookSearchCache(String key, List<Book> books) {
+        searchBooks.put(key, books);
     }
 }

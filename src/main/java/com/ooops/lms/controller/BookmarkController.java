@@ -69,9 +69,9 @@ public class BookmarkController implements Initializable {
     public boolean addBookmark(Book book) throws IOException {
         if(bookMarkList.contains(book)) return false;
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard2-view.fxml"));
-        VBox cardBox = fxmlLoader.load();
-        BookCard2Controller cardController = fxmlLoader.getController();
+        fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard1-view.fxml"));
+        HBox cardBox = fxmlLoader.load();
+        BookCard1Controller cardController = fxmlLoader.getController();
         cardController.setData(book);
         bookmarkHBox.getChildren().add(cardBox);
         return true;

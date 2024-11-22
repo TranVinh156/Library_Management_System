@@ -42,7 +42,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
     // update member
     private static final String UPDATE_MEMBER = "Update Members " +
             "set first_name = ?, last_name = ?, birth_date = ?, gender = ?, email = ?, phone = ?, image_path = ?" +
-            "where member_ID = ?";
+            " where member_ID = ?";
 
     private static final String UPDATE_ACCOUNT = "Update Users set status = ? where user_ID = ?";
 
@@ -132,6 +132,8 @@ public class MemberDAO implements DatabaseQuery<Member> {
                 preparedStatement.setString(7, entity.getPerson().getImagePath());
 
                 preparedStatement.setInt(8, entity.getPerson().getId());
+                System.out.println(preparedStatement.toString());
+
                 preparedStatement.executeUpdate();
             }
 
