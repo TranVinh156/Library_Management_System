@@ -1,12 +1,17 @@
 package com.ooops.lms.controller;
 
-import javafx.event.ActionEvent;
+import com.ooops.lms.controller.BaseRowController;
+import com.ooops.lms.model.BookIssue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class AdminBorrowTableRowController {
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class AdminBorrowTableRowController extends BaseRowController<BookIssue, AdminBorrowPageController> {
 
     @FXML
     private Label barCodeLabel;
@@ -32,30 +37,14 @@ public class AdminBorrowTableRowController {
     @FXML
     private HBox mainRowHbox;
 
-    private AdminBorrowPageController mainController;
-
-    void setTableController(AdminBorrowPageController mainController) {
-        this.mainController = mainController;
+    @Override
+    protected void updateRowDisplay() {
+        memberIDLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
+        memberNameLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
+        bookNameLabel.setText(item.getBookItem().getTitle());
+        barCodeLabel.setText(item.getBookItem().getBarcode() + "");
+        borrowDateLabel.setText(item.getCreatedDate().substring(0, 10));
+        statusLabel.setText(item.getStatus().toString());
     }
-
-    public void initialize()  {
-        mainRowHbox.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1) {
-                handleClickRow();
-            }
-        });
-
-    }
-
-    public void handleClickRow() {
-        System.out.println("Click CLick");
-        mainController.loadDetail();
-    }
-
-    public void setItem(Object item) {
-
-    }
-
-
 
 }

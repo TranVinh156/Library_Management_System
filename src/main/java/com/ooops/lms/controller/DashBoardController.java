@@ -1,7 +1,8 @@
 package com.ooops.lms.controller;
 
-import com.ooops.lms.database.dao.BookDAO;
+import com.ooops.lms.Command.UserCommand;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
 import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
@@ -9,23 +10,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.*;
 
 public class DashBoardController implements Initializable {
-    @FXML
-    private VBox dashboardBox;
     @FXML
     private HBox popularHBox;
     @FXML
     private HBox highRankHBox;
 
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
-
-    private BookManager bookManager = BookManager.getInstance();
 
     private List<Book> popularBooks;
     private List<Book> highRankBooks;
@@ -34,7 +31,13 @@ public class DashBoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        popularBooks = bookManager.getPopularBooks();
+        // Sử dụng UserCommand để lấy sách phổ biến
+        UserCommand popularBooksCommand = new UserCommand("getPopularBooks", null);
+        if (popularBooksCommand.execute()) {
+            popularBooks = (List<Book>) popularBooksCommand.getObject();
+        } else {
+            System.out.println("Lỗi lấy sách phổ biến.");
+        }
 
         for (int i = 0; i < popularBooks.size(); i++) {
             try {
@@ -47,12 +50,18 @@ public class DashBoardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (i == 9) {
+            if (i == 5) {
                 break;
             }
         }
 
-        highRankBooks = bookManager.getHighRankBooks();
+        // Sử dụng UserCommand để lấy sách xếp hạng cao
+        UserCommand highRankBooksCommand = new UserCommand("getHighRankBooks", null);
+        if (highRankBooksCommand.execute()) {
+            highRankBooks = (List<Book>) highRankBooksCommand.getObject();
+        } else {
+            System.out.println("Lỗi lấy sách xếp hạng cao.");
+        }
 
         for (int i = 0; i < highRankBooks.size(); i++) {
             try {
@@ -65,7 +74,7 @@ public class DashBoardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (i == 9) {
+            if (i == 5) {
                 break;
             }
         }
@@ -77,5 +86,4 @@ public class DashBoardController implements Initializable {
             fxmlLoaderUtil.updateContentBox(content);
         }
     }
-
 }

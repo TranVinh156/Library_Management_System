@@ -13,6 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FXMLLoaderUtil {
+
+    private static final String USER_MENU_FXML = "/com/ooops/lms/library_management_system/UserMenu-view.fxml";
+    private static final String BOOKMARK_FXML = "/com/ooops/lms/library_management_system/Bookmark-view.fxml";
+    private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
+    private static final String RANKING_FXML = "/com/ooops/lms/library_management_system/BookRanking-view.fxml";
+    private static final String HISTORY_FXML = "/com/ooops/lms/library_management_system/History-view.fxml";
+    private static final String MORE_BOOK_FXML = "/com/ooops/lms/library_management_system/MoreBook-view.fxml";
+
+
     private static FXMLLoaderUtil instance = null;
     private Map<String, Pane> fxmlCache = new HashMap<>();
     private Map<String, Object> controllerCache = new HashMap<>();
@@ -87,11 +96,20 @@ public class FXMLLoaderUtil {
     }
 
     public void addUserMenuController(UserMenuController userMenuController) {
-        controllerCache.put("/com/ooops/lms/library_management_system/UserMenuController-view.fxml",userMenuController);
+        controllerCache.put(USER_MENU_FXML,userMenuController);
     }
 
     public void deleteAllInCache() {
         controllerCache.clear();
         fxmlCache.clear();
     }
+
+    public void refreshUpdateBook() {
+        fxmlCache.remove(DASHBOARD_FXML);
+        fxmlCache.remove(BOOKMARK_FXML);
+        fxmlCache.remove(HISTORY_FXML);
+        fxmlCache.remove(RANKING_FXML);
+        fxmlCache.remove(MORE_BOOK_FXML);
+    }
+
 }

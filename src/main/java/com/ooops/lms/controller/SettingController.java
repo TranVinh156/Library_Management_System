@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.model.datatype.Person;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.Image;
+
+import java.io.File;
 
 public class SettingController {
     @FXML
@@ -41,17 +44,16 @@ public class SettingController {
         showInfo();
     }
 
-    private void showInfo() {
-        // Set user name
-        nameLabel.setText(UserMenuController.member.getPerson().getLastName() + " " +
-                UserMenuController.member.getPerson().getFirstName());
+    public void showInfo() {
+        nameLabel.setText(UserMenuController.getMember().getPerson().getLastName() + " " +
+                UserMenuController.getMember().getPerson().getFirstName());
 
         // Load and display avatar image
         try {
-            String imagePath = UserMenuController.member.getPerson().getImagePath();
+            String imagePath = UserMenuController.getMember().getPerson().getImagePath();
             if (imagePath != null) {
-                imagePath = imagePath.replace("//", "/");
-                Image image = new Image(getClass().getResourceAsStream("/" + imagePath));
+                File file = new File(imagePath);
+                Image image = new Image(file.toURI().toString());
                 avaImage.setFill(new ImagePattern(image));
             } else {
                 avaImage.setFill(Color.GRAY);
@@ -62,9 +64,9 @@ public class SettingController {
         }
 
         // Set user status and other labels
-        statusLabel.setText(UserMenuController.member.getStatus().toString());
-//        borrowingLabel.setText(String.valueOf(UserMenuController.member.getBorrowingCount()));
-//        reservedLabel.setText(String.valueOf(UserMenuController.member.getReservedCount()));
+        statusLabel.setText(UserMenuController.getMember().getStatus().toString());
+        borrowingLabel.setText(String.valueOf(BookManager.getInstance().getBorrowingBookSize()));
+        reservedLabel.setText(String.valueOf(BookManager.getInstance().getReservedBookSize()));
     }
 
     public void onInfomationButtonAction(ActionEvent actionEvent) {
@@ -99,7 +101,11 @@ public class SettingController {
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
         } else {
-            System.err.println("Failed to load InterfaceSetting-view.fxml");
+            System.err.println("Failed to load Report-view.fxml");
         }
+    }
+
+    public void updateReservedBookSize() {
+        reservedLabel.setText(String.valueOf(BookManager.getInstance().getReservedBookSize()));
     }
 }

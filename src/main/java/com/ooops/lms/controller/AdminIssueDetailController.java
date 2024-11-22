@@ -1,8 +1,8 @@
 package com.ooops.lms.controller;
 
-import com.ooops.lms.Alter.CustomerAlter;
-import com.ooops.lms.Command.AdminCommand;
-import com.ooops.lms.Command.Command;
+import com.ooops.lms.controller.BaseDetailController;
+import com.ooops.lms.model.Report;
+import com.ooops.lms.model.enums.ReportStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,7 +10,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
-public class AdminIssueDetailController extends BasicIssueController {
+public class AdminIssueDetailController extends BaseDetailController<Report> {
 
     @FXML
     private Label IDMemberLabel;
@@ -40,49 +40,66 @@ public class AdminIssueDetailController extends BasicIssueController {
     private Button saveButton;
 
     @FXML
-    private ChoiceBox<String> statusBox;
+    private ChoiceBox<ReportStatus> statusBox;
 
     @FXML
     private Label titelLabel;
 
-    private boolean editMode;
-    private AdminIssuePageController mainController;
-
-    void setMainController(AdminIssuePageController mainController) {;
-        this.mainController = mainController;
-    }
-
     public void initialize() {
-        statusBox.getItems().addAll("Chưa giải quyết","Đang giải quyết","Đã giải quyết");
+        statusBox.getItems().addAll(ReportStatus.values());
     }
 
-    @FXML
-    private void onEditButtonAction(ActionEvent event) {
-        setEditMode(true);
+    @Override
+    protected void loadItemDetails() {
+        getTitlePageStack().push(item.getReportID() + "");
+        IDreportLabel.setText(String.valueOf(item.getReportID()));
+        nameMemberLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
+        IDMemberLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
+        emailLabel.setText(item.getMember().getPerson().getEmail());
+        noteText.setText("Chua co");
+        titelLabel.setText(item.getTitle());
+        detailIssueText.setText(item.getTitle());
     }
 
-    @FXML
-    private void onSaveButtonAction(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn có muốn lưu thay đổi này không?");
-        if (confirmYes) {
-            setEditMode(false);
-            System.out.println("Đã lưu thay đổi");
-        }
+    @Override
+    protected void updateAddModeUI() {
+
     }
 
-    public void loadStartStatus() {
-        setEditMode(editMode);
-    }
-
-    private void setEditMode(boolean addMode) {
-        this.editMode = addMode;
+    @Override
+    protected void updateEditModeUI() {
         editButton.setVisible(!editMode);
         saveButton.setVisible(editMode);
 
         noteText.setMouseTransparent(!editMode);
         noteText.setEditable(editMode);
         statusBox.setMouseTransparent(!editMode);
+    }
 
+    @Override
+    public void loadStartStatus() {
+        setEditMode(editMode);
+    }
+    @Override
+    protected boolean validateInput() {
+        return true;
+    }
+
+    @Override
+    protected boolean getNewItemInformation() throws Exception {
+        return true;
+    }
+
+
+    @FXML
+    private void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
+        setEditMode(true);
+    }
+
+    @FXML
+    private void onSaveButtonAction(ActionEvent event) {
+        saveChanges();
     }
 
 

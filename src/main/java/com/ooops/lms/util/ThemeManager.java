@@ -1,5 +1,6 @@
 package com.ooops.lms.util;
 
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -64,6 +65,27 @@ public class ThemeManager {
             panes.add(pane);
             pane.getStylesheets().clear();
             pane.getStylesheets().add(getClass().getResource(currentTheme).toExternalForm());
+        }
+    }
+
+    public void changeMenuBarButtonColor(Button[] buttons,Button button) {
+        for(int i = 0;i<buttons.length;i++) {
+            buttons[i].setStyle("-fx-background-color : transparent");
+        }
+        switch (currentTheme) {
+            case DEFAULT_THEME:
+                button.setStyle("-fx-background-color : #F2E0C9");
+                break;
+            case DARK_THEME:
+                button.setStyle("-fx-background-color : #000000");
+                break;
+            case PINK_THEME:
+                button.setStyle("-fx-background-color : #FFD5D5");
+                break;
+            case GOLD_THEME:
+                button.setStyle("-fx-background-color : #FFD700");
+                break;
+
         }
     }
 }

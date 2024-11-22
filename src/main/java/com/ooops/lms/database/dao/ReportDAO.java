@@ -3,6 +3,7 @@ package com.ooops.lms.database.dao;
 import com.ooops.lms.database.Database;
 import com.ooops.lms.model.Report;
 import com.ooops.lms.model.enums.ReportStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,7 +47,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
     private static final String SELLECT_ALL = "SELECT * FROM Reports";
 
     @Override
-    public void add(Report entity) throws SQLException {
+    public void add(@NotNull Report entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_REPORT)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setString(2, entity.getTitle());
@@ -57,7 +58,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
     }
 
     @Override
-    public boolean update(Report entity) throws SQLException {
+    public boolean update(@NotNull Report entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_REPORT)) {
             preparedStatement.setString(1, entity.getTitle());
             preparedStatement.setString(2, entity.getContent());
@@ -69,7 +70,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
     }
 
     @Override
-    public boolean delete(Report entity) throws SQLException {
+    public boolean delete(@NotNull Report entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_REPORT)) {
             preparedStatement.setInt(1, entity.getReportID());
             return preparedStatement.executeUpdate() > 0;
@@ -77,7 +78,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
     }
 
     @Override
-    public Report find(Number keywords) throws SQLException {
+    public Report find(@NotNull Number keywords) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_REPORT)) {
             preparedStatement.setInt(1, keywords.intValue());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -94,7 +95,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
     }
 
     @Override
-    public List<Report> searchByCriteria(Map<String, Object> criteria) throws SQLException {
+    public List<Report> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         StringBuilder findReportByCriteria = new StringBuilder("SELECT * FROM reports WHERE ");
         Iterator<String> iterator = criteria.keySet().iterator();
 

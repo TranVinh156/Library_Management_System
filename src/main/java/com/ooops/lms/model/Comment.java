@@ -6,9 +6,17 @@ public class Comment {
     private String content;
     private int rate = 5;
     private Member member;
-    private int ISBN;
+    private long ISBN;
 
-    public Comment(int commentId, String title, String content, int rate, Member member, int ISBN) {
+    public Comment(String title, String content, int rate, Member member, long ISBN) {
+        this.title = title;
+        this.content = content;
+        this.rate = rate;
+        this.member = member;
+        this.ISBN = ISBN;
+    }
+
+    public Comment(int commentId, String title, String content, int rate, Member member, long ISBN) {
         this.commentId = commentId;
         this.title = title;
         this.content = content;
@@ -37,7 +45,7 @@ public class Comment {
         return member;
     }
 
-    public int getISBN() {
+    public long getISBN() {
         return ISBN;
     }
 

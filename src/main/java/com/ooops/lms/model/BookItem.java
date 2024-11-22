@@ -28,6 +28,20 @@ public class BookItem extends Book {
         this.note = note;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof BookItem) {
+            BookItem bookItem = (BookItem) obj;
+            return bookItem.getBarcode() == this.barcode;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(this.barcode);
+    }
+
     public int getBarcode() {
         return barcode;
     }
@@ -37,7 +51,7 @@ public class BookItem extends Book {
     }
 
     public BookItemStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     public String getNote() {

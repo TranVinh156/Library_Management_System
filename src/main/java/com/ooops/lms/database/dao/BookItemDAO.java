@@ -4,6 +4,7 @@ import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.database.Database;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.enums.BookItemStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,10 +31,8 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         }
         return bookItemDAO;
     }
-    //cahce
-    private static final int MAX_CACHE_SIZE = 100;
-    private LRUCache<String, List<BookItem>> bookItemCache = new LRUCache<>(MAX_CACHE_SIZE);
 
+    //cahce
     // delete
     private static final String DELETE_BOOK_ITEM = "DELETE FROM BookItem WHERE barcode = ?";
 
@@ -50,6 +49,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
 
     /**
      * Thêm new bookitem
+     *
      * @param entity new bookitem
      * @throws SQLException
      */
@@ -60,12 +60,13 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
 
     /**
      * thay đổi thông tin bookitem.
+     *
      * @param entity bookitem khi sửa xong thông tin
      * @return true nếu thành công và ngược lại
      * @throws SQLException
      */
     @Override
-    public boolean update(BookItem entity) throws SQLException {
+    public boolean update(@NotNull BookItem entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_BOOK_ITEM)) {
             preparedStatement.setString(1, entity.getStatus().name());
             preparedStatement.setString(2, entity.getNote());
@@ -77,7 +78,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     }
 
     @Override
-    public boolean delete(BookItem entity) throws SQLException {
+    public boolean delete(@NotNull BookItem entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_ITEM)) {
             preparedStatement.setInt(1, entity.getBarcode());
             return preparedStatement.executeUpdate() > 0;
@@ -86,11 +87,6 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
 
     @Override
     public BookItem find(Number keywords) throws SQLException {
-
-        if (bookItemCache.containsKey(String.valueOf(keywords))) {
-            return bookItemCache.get(String.valueOf(keywords)).get(0);
-        }
-
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_ITEM)) {
             preparedStatement.setInt(1, (Integer) keywords);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -101,7 +97,6 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
 
                     List<BookItem> bookItemList = new ArrayList<>();
                     bookItemList.add(bookItem);
-                    bookItemCache.put(String.valueOf(keywords), bookItemList);
                     return bookItem;
                 } else {
                     throw new SQLException("No book item found");
@@ -111,42 +106,37 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     }
 
     @Override
-    public List<BookItem> searchByCriteria(Map<String, Object> criteria) throws SQLException {
-        String keywords = generateKeywords(criteria);
+    public List<BookItem> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
 
-        StringBuilder findBookByCriteria = new StringBuilder("Select * from bookitem where ");
+        StringBuilder findBookByCriteria = new StringBuilder("Select * from bookitem bi join books b on bi.ISBN = b.ISBN where ");
 
-        if (bookItemCache.containsKey(keywords)) {
-            return bookItemCache.get(keywords);
-        } else {
-            List<BookItem> bookItemList = new ArrayList<>();
+        List<BookItem> bookItemList = new ArrayList<>();
 
-            for (String key : criteria.keySet()) {
-                if (criteria.get(key) == "ISBN") {
-                    findBookByCriteria.append("CAST(").append(key).append(" AS CHAR)").append(" LIKE ? AND ");
-                } else {
-                    findBookByCriteria.append(key).append(" LIKE ? AND ");
-                }
-            }
-
-            findBookByCriteria.setLength(findBookByCriteria.length() - 5);
-
-            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookByCriteria.toString())) {
-                int index = 1;
-
-                for (Object value : criteria.values()) {
-                    preparedStatement.setString(index++, "%" + value + "%");
-                }
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    while (resultSet.next()) {
-                        bookItemList.add(find(resultSet.getInt("barcode")));
-                    }
-                    bookItemCache.put(keywords, bookItemList);
-                    return bookItemList;
-                }
+        for (String key : criteria.keySet()) {
+            if (key.equals("ISBN")) {
+                findBookByCriteria.append("CAST(bi.ISBN AS CHAR)").append(" LIKE ? AND ");
+            } else {
+                findBookByCriteria.append(key).append(" LIKE ? AND ");
             }
         }
+
+        findBookByCriteria.setLength(findBookByCriteria.length() - 5);
+
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookByCriteria.toString())) {
+            int index = 1;
+
+            for (Object value : criteria.values()) {
+                preparedStatement.setString(index++, "%" + value + "%");
+            }
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    bookItemList.add(find(resultSet.getInt("barcode")));
+                }
+                return bookItemList;
+            }
+        }
+
     }
 
     // Không sử dụng
@@ -162,7 +152,8 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         }
     }
 
-    private String generateKeywords(Map<String, Object> criteria) {
+    @NotNull
+    private String generateKeywords(@NotNull Map<String, Object> criteria) {
         StringBuilder keywords = new StringBuilder();
 
         for (Map.Entry<String, Object> entry : criteria.entrySet()) {

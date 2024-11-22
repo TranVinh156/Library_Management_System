@@ -42,7 +42,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
     // update member
     private static final String UPDATE_MEMBER = "Update Members " +
             "set first_name = ?, last_name = ?, birth_date = ?, gender = ?, email = ?, phone = ?, image_path = ?" +
-            "where member_ID = ?";
+            " where member_ID = ?";
 
     private static final String UPDATE_ACCOUNT = "Update Users set status = ? where user_ID = ?";
 
@@ -132,6 +132,8 @@ public class MemberDAO implements DatabaseQuery<Member> {
                 preparedStatement.setString(7, entity.getPerson().getImagePath());
 
                 preparedStatement.setInt(8, entity.getPerson().getId());
+                System.out.println(preparedStatement.toString());
+
                 preparedStatement.executeUpdate();
             }
 
@@ -216,7 +218,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
         boolean flag = false;
         for (String key : criteria.keySet()) {
             if (key.equals("member_id")) {
-                findMemberByCriteria.append("m.").append(key).append(" = ?").append(" OR ");
+                findMemberByCriteria.append("CAST(m.member_id AS CHAR) like ? OR ");
                 flag = true;
             } else {
                 findMemberByCriteria.append(key).append(" like ?").append(" OR ");
@@ -228,12 +230,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findMemberByCriteria.toString())) {
             int index = 1;
             for (Object value : criteria.values()) {
-                if (flag) {
-                    preparedStatement.setInt(index++, Integer.parseInt(value.toString()));
-                    flag = false;
-                } else {
-                    preparedStatement.setString(index++, "%" + value.toString() + "%");
-                }
+                preparedStatement.setString(index++, "%" + value.toString() + "%");
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {

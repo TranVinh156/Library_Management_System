@@ -8,9 +8,10 @@ import java.util.Map;
 
 import com.ooops.lms.database.dao.CommentDAO;
 import com.ooops.lms.model.Category;
+import com.ooops.lms.model.enums.BookStatus;
 
 public class Book {
-    public static final String DEFAULT_IMAGE_PATH = "image/book/default.png";
+    public static final String DEFAULT_IMAGE_PATH = "bookImage/default.png";
     private long ISBN;
     private String title;
     private String imagePath;
@@ -21,6 +22,7 @@ public class Book {
     private int numberOfLostBooks;
     private int numberOfReservedBooks;
     private int rate;
+    private BookStatus status;
     private List<Author> authors;
     private List<Category> categories;
 
@@ -94,6 +96,20 @@ public class Book {
         this.numberOfLostBooks = 0;
         this.authors = authors;
         this.categories = categories;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Book) {
+            Book book = (Book) o;
+            return this.ISBN == book.getISBN();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(ISBN);
     }
 
     public long getISBN() {
@@ -190,5 +206,17 @@ public class Book {
 
     public void setNumberOfReservedBooks(int numberOfReservedBooks) {
         this.numberOfReservedBooks = numberOfReservedBooks;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
+    public BookStatus getstatus() {
+        return this.status;
+    }
+
+    @Override
+    public String toString() {
+        return ISBN + "";
     }
 }

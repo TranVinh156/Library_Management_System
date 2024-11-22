@@ -195,7 +195,7 @@ public class AccountDAO {
         }
     }
 
-    private boolean verifyOTP(String username, String OTP) throws SQLException {
+    public boolean verifyOTP(String username, String OTP) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(VALIDATE_OTP)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, OTP);

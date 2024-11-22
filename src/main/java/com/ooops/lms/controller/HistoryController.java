@@ -2,9 +2,12 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.database.dao.BookIssueDAO;
 import com.ooops.lms.database.dao.BookReservationDAO;
+import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookIssue;
+import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.model.enums.BookIssueStatus;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,27 +51,21 @@ public class HistoryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Map<String, Object> criteria = new HashMap<>();
-        criteria.put("member_ID", UserMenuController.member.getPerson().getId());
         try {
-            bookReservationList = BookReservationDAO.getInstance().searchByCriteria(criteria);
+            bookReservationList = BookManager.getInstance().getReservedBooks();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        criteria.put("status", BookIssueStatus.RETURNED);
-
         try {
-            bookBorrowedList = BookIssueDAO.getInstance().searchByCriteria(criteria);
+            bookBorrowedList = BookManager.getInstance().getBorrowedBooks();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        Map<String, Object> criteria2 = new HashMap<>();
-        criteria.put("member_ID", UserMenuController.member.getPerson().getId());
-        criteria.put("status", BookIssueStatus.BORROWED);
+
         try {
-            bookBorrowingList = BookIssueDAO.getInstance().searchByCriteria(criteria);
+            bookBorrowingList = BookManager.getInstance().getBorrowingBooks();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -123,8 +120,17 @@ public class HistoryController implements Initializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-
         }
+    }
+
+    public boolean addReservedBook(Book book) throws IOException {
+        if(bookReservationList.contains(book)) return false;
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard2-view.fxml"));
+        VBox cardBox = fxmlLoader.load();
+        BookCard2Controller cardController = fxmlLoader.getController();
+        cardController.setData(book);
+        reservedHBox.getChildren().add(cardBox);
+        return true;
     }
 }

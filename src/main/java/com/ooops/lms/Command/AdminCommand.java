@@ -1,13 +1,10 @@
 package com.ooops.lms.Command;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.barcode.BarcodeScanner;
 import com.ooops.lms.bookapi.BookInfoFetcher;
-import com.ooops.lms.database.dao.BookDAO;
-import com.ooops.lms.database.dao.BookItemDAO;
-import com.ooops.lms.database.dao.MemberDAO;
-import com.ooops.lms.model.Book;
-import com.ooops.lms.model.BookItem;
-import com.ooops.lms.model.Member;
+import com.ooops.lms.database.dao.*;
+import com.ooops.lms.model.*;
 import com.ooops.lms.model.enums.AccountStatus;
 
 import java.sql.SQLException;
@@ -21,6 +18,7 @@ public class AdminCommand implements Command {
     private Book bookResult;
     private BookDAO bookDAO;
     private BookItem bookItemResult;
+    private BarcodeScanner barcodeScanner = new BarcodeScanner();
 
     public AdminCommand(String action, Object object) {
         this.action = action;
@@ -54,6 +52,11 @@ public class AdminCommand implements Command {
                         BookDAO.getInstance().add((Book) object);
                     } else if (object instanceof Member) {
                         MemberDAO.getInstance().add((Member) object);
+                    } else if (object instanceof BookReservation) {
+                        System.out.println("Dang them borrow:" + ((BookReservation) object).getBookItem().getBarcode());
+                        BookReservationDAO.getInstance().add((BookReservation) object);
+                    } else if (object instanceof BookIssue) {
+                        BookIssueDAO.getInstance().add((BookIssue) object);
                     }
                     return true;
                 case "delete":
@@ -90,22 +93,32 @@ public class AdminCommand implements Command {
                         Member member = (Member) object;
                         this.memberResult = MemberDAO.getInstance().find(member.getAccountId());
                     }
-                    if(object instanceof BookItem) {
+                    if (object instanceof BookItem) {
                         BookItem bookItem = (BookItem) object;
                         this.bookItemResult = BookItemDAO.getInstance().find(bookItem.getBarcode());
                     }
                     return true;
-                case "findAPI":
-                    if (object instanceof Book) {
-                        Book book = (Book) object;
-                        this.bookResult = BookInfoFetcher.searchBookByISBN(String.valueOf(book.getISBN()));
+                case "scan":
+                    if (object instanceof BookItem) {
+                        bookItemResult = BookItemDAO.getInstance().find(Long.valueOf(barcodeScanner.scanBarcodeFromCamera()));
+                    } else if (object instanceof Book) {
+                        System.out.println("diisad");
+                        String barcode = barcodeScanner.scanBarcodeFromCamera();
+                        bookResult = BookInfoFetcher.searchBookByISBN(barcode);
+                        if (bookResult == null) {
+                            return false;
+                        }
+                    } else if (object instanceof Member) {
+                        memberResult = MemberDAO.getInstance().find(Long.valueOf(barcodeScanner.scanBarcodeFromCamera()));
                     }
                     return true;
                 default:
                     return false;
             }
-        } catch (SQLException e) {
+        } catch (
+                SQLException e) {
             System.out.println("Lỗi AdminCommand:" + e.getMessage());
+            CustomerAlter.showAlter(e.getMessage());
             return false; // Thất bại
         }
     }

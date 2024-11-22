@@ -27,7 +27,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label text="Đánh giá các sách đẫ mượn" textFill="#a64f3c" HBox.hgrow="ALWAYS">
+            <Label styleClass="label-1" text="Đánh giá các sách đã mượn" textFill="#a64f3c" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
@@ -37,13 +37,13 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </HBox>
-      <HBox prefHeight="533.0" prefWidth="750.0" spacing="20.0">
+      <HBox alignment="CENTER" prefHeight="533.0" prefWidth="750.0" spacing="20.0">
          <children>
-            <ScrollPane prefHeight="517.0" prefWidth="415.0">
+            <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="517.0" prefWidth="432.0" styleClass="rounded-scrollpane">
                <content>
-                  <VBox fx:id="borrowedBookBox" alignment="TOP_CENTER" prefHeight="306.0" prefWidth="362.0" spacing="10.0">
+                  <VBox fx:id="borrowedBookBox" alignment="TOP_CENTER" spacing="10.0">
                      <padding>
-                        <Insets top="20.0" />
+                        <Insets left="5.0" right="5.0" top="20.0" />
                      </padding>
                   </VBox>
                </content>
@@ -62,20 +62,24 @@
                                     <Image url="@../../../../image/icon/Logo.png" />
                                  </image>
                               </ImageView>
-                              <VBox alignment="CENTER_LEFT" prefHeight="223.0" prefWidth="214.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                              <VBox alignment="CENTER_LEFT" prefHeight="169.0" prefWidth="171.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="bookNameText" text="App OOOPs">
                                        <font>
                                           <Font name="System Bold" size="21.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="authorNameText" text="by  trai xinh gái đẹp" />
+                                    <Label fx:id="authorNameText" text="by  thangcho +  2 con ngựa" />
                                     <ImageView fx:id="starImage" fitHeight="21.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../../../image/book/5Star.png" />
                                        </image>
                                     </ImageView>
-                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="168.61394500732422" />
+                                    <ScrollPane prefHeight="57.0" prefWidth="115.0">
+                                       <content>
+                                          <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="159.61394500732422" />
+                                       </content>
+                                    </ScrollPane>
                                  </children>
                               </VBox>
                            </children>
@@ -92,7 +96,8 @@
                               <ChoiceBox fx:id="ratingChoiceBox" prefWidth="150.0" />
                            </children>
                         </HBox>
-                        <TextArea fx:id="commentText" prefHeight="200.0" prefWidth="200.0" promptText="viết đánh giá của bạn ở đây" />
+                        <TextArea fx:id="commentTitleText" prefHeight="12.0" prefWidth="327.0" promptText="viết tiêu đề đánh giá của bạn ở đây" />
+                        <TextArea fx:id="commentContentText" prefHeight="191.0" prefWidth="327.0" promptText="viết đánh giá của bạn ở đây" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="366.0" spacing="10.0">

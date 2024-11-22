@@ -1,28 +1,29 @@
 package com.ooops.lms.controller;
 
-import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.controller.BaseTableController;
 import com.ooops.lms.database.dao.BookDAO;
+import com.ooops.lms.database.dao.BookIssueDAO;
 import com.ooops.lms.database.dao.BookItemDAO;
-import com.ooops.lms.model.Author;
+import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.model.Book;
-import com.ooops.lms.model.BookItem;
+import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.model.Category;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.ooops.lms.model.enums.BookStatus;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.checkerframework.checker.units.qual.C;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class AdminBookTableController extends BasicBookController {
+public class AdminBookTableController extends BaseTableController<Book, AdminBookPageController, AdminBookTableRowController> {
 
     @FXML
     private TextField ISBNFindText;
@@ -37,10 +38,10 @@ public class AdminBookTableController extends BasicBookController {
     private TextField bookNameFindTExt;
 
     @FXML
-    private VBox bookTableVbox;
+    private VBox tableVbox;
 
     @FXML
-    private Button categoryFindButton;
+    private ChoiceBox<String> categoryChoiceBox;
 
     @FXML
     private VBox categoryList;
@@ -58,7 +59,7 @@ public class AdminBookTableController extends BasicBookController {
     private ScrollPane scrollPane;
 
     @FXML
-    private TextField stausText;
+    private ChoiceBox<String> statusFindBox;
 
     @FXML
     private AnchorPane tableBookPane;
@@ -75,73 +76,87 @@ public class AdminBookTableController extends BasicBookController {
     @FXML
     private Label totalNumberLostLabel;
 
-    private AdminBookPageController mainController;
-    Map<String, Object> findCriteria = new HashMap<>();
 
-    public void setMainController(AdminBookPageController mainController) {
-        this.mainController = mainController;
-        loadData();
-    }
+    private static final String ROW_FXML = "/com/ooops/lms/library_management_system/AdminBookTableRow.fxml";
+    private AdminDashboardController adminDashboardController;
 
     @FXML
-    public void initialize() {
-        setCategoryList(categoryFindButton, mainPane, categoryTable, categoryList);
-        setVboxFitWithScrollPane();
+    protected void initialize() {
+        setCategoryFindList();
+        statusFindBox.getItems().add("None");
+        statusFindBox.getItems().addAll(BookStatus.AVAILABLE.toString(), BookStatus.UNAVAILAVBLE.toString().toString());
+        bookNameFindTExt.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Stage stage = (Stage) bookNameFindTExt.getScene().getWindow();
 
+                stage.widthProperty().addListener((obs, oldWidth, newWidth) ->
+                        Platform.runLater(() -> categoryTable.setVisible(false)));
+
+                stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
+                        Platform.runLater(() -> categoryTable.setVisible(false)));
+            }
+        });
+        adminDashboardController = dashboardLoader.getController();
     }
 
-    @FXML
-    void onCategoryFindButton(ActionEvent event) {
-        categoryTable.setVisible(!categoryTable.isVisible());
-        updateCategoryTablePosition(mainPane, categoryFindButton, categoryTable);
+    @Override
+    protected String getRowFXML() {
+        return ROW_FXML;
     }
 
-    @FXML
-    void onFindButtonAction(ActionEvent event) {
-        findCriteria.clear(); // Xóa các tiêu chí tìm kiếm cũ
+    @Override
+    protected void loadDataFromSource() throws SQLException {
+        itemsList.addAll(BookDAO.getInstance().selectAll());
+        setText();
+    }
+
+    @Override
+    protected void getCriteria() {
+        findCriteria.clear();
 
         // Kiểm tra và thêm tiêu chí tìm kiếm theo ISBN
-        if (!ISBNFindText.getText().trim().isEmpty()) {
+        if (!ISBNFindText.getText().isEmpty()) {
             findCriteria.put("ISBN", ISBNFindText.getText());
         }
 
         // Kiểm tra và thêm tiêu chí tìm kiếm theo tên sách
-        if (!bookNameFindTExt.getText().trim().isEmpty()) {
+        if (!bookNameFindTExt.getText().isEmpty()) {
             findCriteria.put("title", bookNameFindTExt.getText());
         }
-
         // Kiểm tra và thêm tiêu chí tìm kiếm theo tác giả
-        if (!authorFindText.getText().trim().isEmpty()) {
-            findCriteria.put("author", authorFindText.getText().trim());
+        if (!authorFindText.getText().isEmpty()) {
+            findCriteria.put("author_name", authorFindText.getText());
         }
 
-        // Kiểm tra và thêm tiêu chí tìm kiếm theo trạng thái
-        if (!stausText.getText().trim().isEmpty()) {
-            findCriteria.put("status", stausText.getText().trim().toUpperCase());
+        if(!categoryChoiceBox.getItems().isEmpty() && categoryChoiceBox.getValue() != "None" && categoryChoiceBox.getValue() != null) {
+            findCriteria.put("category_name", categoryChoiceBox.getValue());
         }
 
-        if (findCriteria != null && !findCriteria.isEmpty()) {
-            System.out.println("Tải lại dữ liệu với các tiêu chí tìm kiếm mới");
-            bookList.clear();
-            bookTableVbox.getChildren().clear();
-            findCriteria.clear();
-            findCriteria.put("title", "Ha");
-            try {
-                bookList.addAll((BookDAO.getInstance().searchByCriteria(findCriteria)));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            addRowToTable();
-        } else {
-            bookList.clear();
-            bookTableVbox.getChildren().clear();
-            try {
-                bookList.addAll((BookDAO.getInstance().selectAll()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            addRowToTable();
+        if(!statusFindBox.getItems().isEmpty() && statusFindBox.getValue() != "None" && statusFindBox.getValue() != null) {
+            findCriteria.put("book_status", statusFindBox.getValue());
         }
+
+    }
+
+    @Override
+    protected void searchCriteria() {
+        getCriteria();
+        if (findCriteria.isEmpty()) {
+            loadData();
+            return;
+        }
+        try {
+            itemsList.clear();
+            itemsList.addAll(BookDAO.getInstance().searchByCriteria(findCriteria));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        loadRows();
+    }
+
+    @FXML
+    void onFindButtonAction(ActionEvent event) {
+        searchCriteria();
     }
 
     @FXML
@@ -149,87 +164,36 @@ public class AdminBookTableController extends BasicBookController {
         mainController.loadAddPane();
     }
 
-    /**
-     * Dùng để lấy dữ liệu books từ CSDL và đẩy vào bookList của Controller.
-     */
-    public void loadData() {
-        System.out.println("Load lại các hàng trong bảng sách!");
-        // Xóa tất cả dữ liệu trong các List và các Row trong bảng
-        bookList.clear();
-        bookItemList.clear();
-        borrowBookList.clear();
-        lostBookList.clear();
-        reverserBookList.clear();
-        bookTableVbox.getChildren().clear();
-
+    protected void setText() {
+        totalNumberBookLabel.setText(String.valueOf(itemsList.size()));
+        adminDashboardController.setTotalBookLabel(totalNumberBookLabel.getText());
         try {
-            //Lấy tất cả các book cho vào bookList
-            bookList.addAll(BookDAO.getInstance().selectAll());
-
-            //Xử lý để set totalNumberBookLabel (tổng số sách hiện có)
-            Map<String, Object> criteriaTotal = new HashMap<>();
-            criteriaTotal.put("status", "available");
-            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(criteriaTotal));
-            Map<String, Object> criteriaTotal2 = new HashMap<>();
-            criteriaTotal2.put("status", "LOANED");
-            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(criteriaTotal2));
-            Map<String, Object> criteriaTotal3 = new HashMap<>();
-            criteriaTotal3.put("status", "RESERVED");
-            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(criteriaTotal3));
-            totalNumberBookLabel.setText(String.valueOf(bookItemList.size()));
-
-            //Xử lý để set totalNumberBorrowLabel ( tổng số sách mượn)
-            Map<String, Object> criteriaBorrow = new HashMap<>();
-            criteriaBorrow.put("status", "LOANED");
-            borrowBookList.addAll(BookItemDAO.getInstance().searchByCriteria(criteriaBorrow));
-            totalNumberBorrowLabel.setText(String.valueOf(borrowBookList.size()));
-
-            //Xử lý để set totalNumberLostLabel ( tổng số sách làm mất)
-            Map<String, Object> criteriaLost = new HashMap<>();
-            criteriaBorrow.put("status", "LOST");
-            lostBookList.addAll(BookItemDAO.getInstance().searchByCriteria(criteriaBorrow));
-            totalNumberLostLabel.setText(String.valueOf(lostBookList.size()));
-
-            //Xử lý để set totalNumberIssueLabel (tổng số sách đặt trước)
-            Map<String, Object> criteriaReserved = new HashMap<>();
-            criteriaReserved.put("status", "RESERVED");
-            reverserBookList.addAll(BookItemDAO.getInstance().searchByCriteria(criteriaReserved));
-            totalNumberIssueLabel.setText(String.valueOf(reverserBookList.size()));
-
-        } catch (SQLException e) {
-            System.out.println("Lỗi khi addBook:" + e.getMessage());
+            findCriteria.put("status", "BORROWED");
+            totalNumberBorrowLabel.setText(BookIssueDAO.getInstance().searchByCriteria(findCriteria).size() + "");
+            findCriteria.clear();
+            findCriteria.put("status", "PENDING");
+            totalNumberIssueLabel.setText(BookReservationDAO.getInstance().searchByCriteria(findCriteria).size() + "");
+            findCriteria.clear();
+            findCriteria.put("status", "LOST");
+            totalNumberLostLabel.setText(BookItemDAO.getInstance().searchByCriteria(findCriteria).size() + "");
+            findCriteria.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        addRowToTable();
-
     }
-
-    /**
-     * Thêm các row vào bookTable
-     */
-    private void addRowToTable() {
-        for (Book book : bookList) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(BOOK_TABLE_ROW_FMXL));
-                HBox row = loader.load();
-
-                AdminBookTableRowController rowController = loader.getController();
-                rowController.setMainController(mainController);
-                rowController.setBook(book);
-                childFitWidthParent(row, rowController);
-                bookTableVbox.getChildren().add(row);
-            } catch (IOException e) {
-                e.printStackTrace();
+    protected void setCategoryFindList() {
+        try {
+            categoryChoiceBox.getItems().add("None");
+            List<Category> categories = BookDAO.getInstance().selectAllCategory();
+            for (Category category : categories) {
+                categoryChoiceBox.getItems().add(category.toString());
             }
+        } catch (Exception e) {
+            System.out.println("Lỗi setCategoryFindList:" + e.getMessage());
         }
+
     }
 
-    /**
-     * Điều chỉnh Vbox resize theo chiều dài, chiều rộng của scrollPane.
-     */
-    private void setVboxFitWithScrollPane() {
-        childFitWidthParent(bookTableVbox, scrollPane);
-        childFitHeightParent(bookTableVbox, scrollPane);
-    }
+
 
 }

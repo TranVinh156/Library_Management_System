@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="419.0" style="-fx-background-color: FFF;" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminUserDetailController">
+<HBox maxWidth="600.0" prefHeight="515.0" prefWidth="419.0" style="-fx-background-color: FFF;" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminUserDetailController">
    <children>
       <VBox maxWidth="570.0" prefHeight="515.0" prefWidth="539.0" styleClass="pane-main" HBox.hgrow="ALWAYS">
          <children>
@@ -154,8 +154,10 @@
                                        </styleClass>
                                     </TextField>
                                  </children>
+                                 <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                 </padding>
                               </AnchorPane>
-                              <Button fx:id="blockMember" layoutX="18.0" layoutY="199.0" mnemonicParsing="false" onAction="#onBlockButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-font-size: 8;" styleClass="button-add" text="Block member" visible="false" AnchorPane.rightAnchor="36.400000000000006" AnchorPane.topAnchor="199.0" />
                            </children>
                         </AnchorPane>
                      </children>

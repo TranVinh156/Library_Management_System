@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -9,20 +10,21 @@
          <children>
             <AnchorPane prefHeight="607.0" prefWidth="284.0" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane fx:id="userTableLocationPane" maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="259.0" AnchorPane.bottomAnchor="24.000000000000114" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="73.0" />
+                  <AnchorPane fx:id="userTableLocationPane" maxWidth="400.0" prefHeight="510.0" prefWidth="259.0" AnchorPane.bottomAnchor="24.000000000000114" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="73.0" />
                </children>
             </AnchorPane>
             <AnchorPane maxWidth="578.0" prefHeight="607.0" prefWidth="444.0" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane fx:id="userDetailLocationPane" maxWidth="570.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="419.0" AnchorPane.bottomAnchor="19.200000000000045" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="73.0" />
+                  <AnchorPane fx:id="userDetailLocationPane" maxWidth="570.0" prefHeight="515.0" prefWidth="419.0" AnchorPane.bottomAnchor="19.200000000000045" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="73.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="607.0" prefWidth="181.0" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane fx:id="messageLocationPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.0" prefWidth="174.0" AnchorPane.bottomAnchor="222.4000000000001" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="73.0" />
+                  <AnchorPane fx:id="messageLocationPane" layoutY="73.0" prefHeight="312.0" prefWidth="174.0" AnchorPane.bottomAnchor="222.19999999999993" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="9.599999999999994" AnchorPane.topAnchor="73.0" />
                </children>
             </AnchorPane>
          </children>
       </HBox>
+      <Label fx:id="titlePage" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="594.0" style="-fx-font-size: 26;" styleClass="black-text-Cabin" stylesheets="@../../../../style/AdminStyle.css" text="Label" AnchorPane.leftAnchor="56.0" AnchorPane.topAnchor="26.0" />
    </children>
 </AnchorPane>

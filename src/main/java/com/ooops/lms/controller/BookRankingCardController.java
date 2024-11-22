@@ -2,7 +2,9 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +15,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+
+import static com.ooops.lms.controller.BookSuggestionCardController.executor;
 
 public class BookRankingCardController {
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
@@ -44,8 +49,6 @@ public class BookRankingCardController {
 
     public void setData(Book book,String rank) {
         this.book = book;
-        Image image = new Image(getClass().getResourceAsStream(book.getImagePath()));
-        bookImage.setImage(image);
         bookNameLabel.setText("book name");
         authorNameLabel.setText("author");
         bookNameLabel.setText(book.getTitle());
@@ -57,6 +60,12 @@ public class BookRankingCardController {
         authorNameLabel.setText(author);
         starImage.setImage(starImage(book.getRate()));
         ranking.setText(rank);
+
+        Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
+
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+        executor.submit(loadImageTask);
     }
 
     public void onReadButtonAction(ActionEvent actionEvent) {
@@ -66,23 +75,20 @@ public class BookRankingCardController {
             URL resource = FXMLLoaderUtil.class.getResource(BOOK_FXML);
             fxmlLoader.setLocation(resource);
 
-            // Load the content before getting the controller
             VBox newContent = fxmlLoader.load();
 
-            // Lấy controller và set book
             BookController bookController = fxmlLoader.getController();
             if (book != null) {
-                bookController.setBook(book);  // Chắc chắn rằng book không phải là null tại đây
-                bookController.setData(); // Gọi setData() ngay sau khi setBook()
+                bookController.setBook(book);
+                bookController.setData();
             } else {
                 System.err.println("Book object is null!");
             }
 
-            // Cập nhật container với nội dung FXML mới
             fxmlLoaderUtil.updateContentBox(newContent);
 
         } catch (IOException e) {
-            e.printStackTrace();  // In ra lỗi nếu gặp ngoại lệ
+            e.printStackTrace();
         }
     }
 

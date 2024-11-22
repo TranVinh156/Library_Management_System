@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="527.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminIssuelStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminIssueDetailController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="512.0" prefWidth="527.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminIssueDetailController">
    <children>
-      <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" VBox.vgrow="ALWAYS">
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
+            <AnchorPane prefHeight="250.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
                <children>
-                  <GridPane layoutX="17.0" layoutY="49.0" prefHeight="194.0" prefWidth="490.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="49.0">
+                  <GridPane layoutX="17.0" layoutY="49.0" prefHeight="171.0" prefWidth="490.0" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="49.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="259.800048828125" />
                       <ColumnConstraints hgrow="ALWAYS" maxWidth="218.199951171875" minWidth="10.0" prefWidth="186.199951171875" />
@@ -31,7 +31,6 @@
                       <RowConstraints maxHeight="40.0" minHeight="-Infinity" prefHeight="24.799999999999997" vgrow="ALWAYS" />
                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="1.0" vgrow="ALWAYS" />
                         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="9.799981689453134" vgrow="ALWAYS" />
-                        <RowConstraints maxHeight="170.0" minHeight="-Infinity" prefHeight="56.000018310546864" vgrow="ALWAYS" />
                     </rowConstraints>
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="18.0" prefWidth="446.0" GridPane.columnSpan="2">
@@ -95,27 +94,13 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="230.0" styleClass="up-border" GridPane.rowIndex="5" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="up-border" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <HBox prefHeight="28.0" prefWidth="446.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
-                           <children>
-                              <Label prefHeight="19.0" prefWidth="60.0" styleClass="gray-text-Cabin" text="Ghi chú:">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <TextArea fx:id="noteText" editable="false" mouseTransparent="true" prefHeight="29.0" prefWidth="393.0" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" right="3.0" top="8.0" />
-                                 </HBox.margin>
-                              </TextArea>
-                           </children>
-                        </HBox>
                      </children>
                   </GridPane>
                   <Button fx:id="editButton" layoutX="171.0" layoutY="14.0" mnemonicParsing="false" onAction="#onEditButtonAction" style="-fx-background-color: #A64F3C; -fx-text-fill: FFF; -fx-background-radius: 0;" text="Edit" />
                   <ChoiceBox fx:id="statusBox" layoutX="326.0" layoutY="14.0" mouseTransparent="true" prefWidth="150.0" AnchorPane.rightAnchor="23.599999999999994">
                      <styleClass>
-                        <String fx:value="box-information" />
-                        <String fx:value="border" />
+                        <String fx:value="fill-text-field-customer" />
+                        <String fx:value="round-box-customer" />
                      </styleClass>
                   </ChoiceBox>
                   <Label layoutX="18.0" layoutY="13.0" style="-fx-font-size: 20;" styleClass="black-text-Cabin" text="Thông tin chi tiết" />
@@ -127,7 +112,7 @@
          <children>
             <AnchorPane prefHeight="207.0" prefWidth="519.0" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane layoutX="17.0" prefHeight="209.0" prefWidth="460.0" style="-fx-background-color: FFF;" styleClass="border" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane layoutX="17.0" prefHeight="209.0" prefWidth="460.0" style="-fx-background-color: FFF;" styleClass="round-box-customer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <AnchorPane layoutX="1.0" layoutY="13.0" prefHeight="22.0" prefWidth="460.0" style="-fx-background-color: #F8F8F8;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.599999999999966">
                            <children>
@@ -151,7 +136,7 @@
          <children>
             <AnchorPane maxHeight="-Infinity" prefHeight="53.0" prefWidth="495.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="saveButton" layoutX="347.0" layoutY="4.0" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="41.0" prefWidth="122.0" styleClass="button-add" text="Save" visible="false" AnchorPane.rightAnchor="30.599999999999994" />
+                  <Button fx:id="saveButton" layoutX="347.0" layoutY="4.0" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="41.0" prefWidth="122.0" styleClass="brown_button" text="Save" visible="false" AnchorPane.rightAnchor="30.599999999999994" />
                </children>
             </AnchorPane>
          </children>

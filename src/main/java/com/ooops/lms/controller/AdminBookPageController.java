@@ -1,12 +1,17 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.controller.BasePageController;
 import com.ooops.lms.model.Book;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class AdminBookPageController extends BasicBookController {
+public class AdminBookPageController extends BasePageController<Book, AdminBookDetailController, AdminBookTableController> {
+
+    private static final String TABLE_FXML = "/com/ooops/lms/library_management_system/AdminBookTable.fxml";
+    private static final String DETAIL_FXML = "/com/ooops/lms/library_management_system/AdminBookDetail.fxml";
 
     @FXML
     private AnchorPane detailLocation;
@@ -20,23 +25,28 @@ public class AdminBookPageController extends BasicBookController {
     @FXML
     private AnchorPane tablePage;
 
-    private AdminBookDetailController adminBookDetailController;
-    private AdminBookTableController adminBookTableController;
-
-
     @FXML
-    public void initialize() {
-        // lấy BookDetail và gán mainController của bookDetail
-        adminBookDetailController = bookDetailPaneLoader.getController();
-        adminBookDetailController.setMainController(this);
+    private Label titlePage;
 
-        // lấy BookTable và gán mainController của bookTable
-        adminBookTableController = bookTablePaneLoader.getController();
-        adminBookTableController.setMainController(this);
+    @Override
+    protected String getDetailFXMLPath() {
+        return DETAIL_FXML;
+    }
 
-        //gán các fxml vào với nhau
-        tablePage.getChildren().add(bookTablePane);
-        detailLocation.getChildren().add(bookDetailPane);
+    @Override
+    protected String getTableFXMLPath() {
+        return TABLE_FXML;
+    }
+
+    @Override
+    protected void setupControllers() {
+
+    }
+
+    @Override
+    protected void setupViews() {
+        tablePage.getChildren().add(tablePane);
+        detailLocation.getChildren().add(detailPane);
     }
 
     /**
@@ -46,45 +56,28 @@ public class AdminBookPageController extends BasicBookController {
      */
     @FXML
     void onReturnButton(ActionEvent event) {
+        getTitlePageStack().pop();
         loadData();
         alterPage();
     }
 
-    /**
-     * Khi mà bấm vào ROW thì sẽ chuyển sang Page2 (Detail)
-     * Load detail Book của ROW đấy.
-     *
-     * @param book
-     */
-    public void loadDetail(Book book) {
-        adminBookDetailController.setItem(book);
-        alterPage();
-    }
-
-    /**
-     * Khi bấm nút thêm sách thì sẽ load mới detail trở về trạng thái StartStatus
-     * Lúc đấy bảng Detail sẽ có Mode là addMode.
-     */
-    public void loadAddPane() {
-        adminBookDetailController.loadStartStatus();
-        adminBookDetailController.setAddMode(true);
-        alterPage();
-    }
-
-    /**
-     * Chuyển trang.
-     */
+    @Override
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
+        if(detailPage.isVisible()) {
+            page1 = false;
+        } else {
+            page1 = true;
+        }
     }
-
-    /**
-     * Hàm này dùng để gọi loadData của BookTable.
-     * Load lại các hàng trong bảng.
-     */
-    public void loadData() {
-        adminBookTableController.loadData();
+    @Override
+    public void startPage() {
+        page1 = true;
+        setTitlePage();
+        detailPage.setVisible(false);
+        tablePage.setVisible(true);
+        loadData();
     }
 
 }

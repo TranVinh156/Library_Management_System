@@ -5,6 +5,7 @@ import com.ooops.lms.database.Database;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Category;
+import com.ooops.lms.model.enums.BookStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
@@ -29,11 +30,6 @@ public class BookDAO implements DatabaseQuery<Book> {
         }
         return bookDAO;
     }
-
-    //cache
-    private static final int MAX_CACHE = 100;
-
-    LRUCache<String, List<Book>> bookCache = new LRUCache<>(MAX_CACHE);
 
     private static final String SELECT_AUTHOR = "Select * from Authors where author_name = ?";
 
@@ -78,6 +74,8 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     //
     private static final String SELECT_ALL = "Select * from Books";
+    private static final String SELECT_ALL_CATEGORY = "Select * from Category";
+    private static final String SELECT_ALL_AUTHOR = "Select * from Authors";
 
     /**
      * Thêm book vào csdl.
@@ -303,7 +301,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                 preparedStatement.setString(4, entity.getPlaceAt());
                 preparedStatement.setLong(5, entity.getISBN());
                 preparedStatement.executeUpdate();
-                
+
                 database.getConnection().commit();
                 return true;
             }
@@ -404,6 +402,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                     book.setNumberOfLostBooks(resultSet.getInt("number_lost_book"));
                     book.setNumberOfReservedBooks(resultSet.getInt("number_reserved_book"));
                     book.setRate(resultSet.getInt("rate"));
+                    book.setStatus(BookStatus.valueOf(resultSet.getString("book_status")));
                     bookList.add(book);
 
                     // Lưu vào bộ nhớ đệm
@@ -423,32 +422,38 @@ public class BookDAO implements DatabaseQuery<Book> {
      * @throws SQLException
      */
     @Override
-    public List<Book> searchByCriteria(Map<String, Object> criteria) throws SQLException {
+    public List<Book> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
 
         List<Book> bookList = new ArrayList<>();
-        StringBuilder findBookByCriteria = new StringBuilder("SELECT *\n" +
+        StringBuilder findBookByCriteria = new StringBuilder("SELECT distinct (Books.ISBN)\n" +
                 "FROM Books\n" +
                 "JOIN Books_Authors ON Books.ISBN = Books_Authors.ISBN\n" +
                 "JOIN Authors ON Books_Authors.author_ID = Authors.author_ID\n" +
                 "JOIN Books_Category ON Books.ISBN = Books_Category.ISBN\n" +
-                "JOIN Category ON Books_Category.category_ID = Category.category_ID where ");
+                "JOIN Category ON Books_Category.category_ID = Category.category_ID\n" +
+                " WHERE ");
 
         for (String key : criteria.keySet()) {
-            findBookByCriteria.append(key).append(" LIKE ? AND ");
+            if (key.equals("ISBN")) {
+                findBookByCriteria.append("CAST(Books.ISBN AS CHAR) LIKE ? AND ");
+            } else {
+                findBookByCriteria.append(key).append(" LIKE ? AND ");
+            }
         }
-
         findBookByCriteria.setLength(findBookByCriteria.length() - 5);
 
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookByCriteria.toString())) {
             int index = 1;
 
             for (Object value : criteria.values()) {
+                System.out.println(value);
                 preparedStatement.setString(index++, "%" + value + "%");
             }
 
+            System.out.println(preparedStatement.toString());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    bookList.add(find(resultSet.getInt("ISBN")));
+                    bookList.add(find(resultSet.getLong("Books.ISBN")));
                 }
                 return bookList;
             }
@@ -482,7 +487,8 @@ public class BookDAO implements DatabaseQuery<Book> {
      * @param criteria danh sách tiêu chí
      * @return keywords
      */
-    private String generateKeywords(Map<String, Object> criteria) {
+    @NotNull
+    private String generateKeywords(@NotNull Map<String, Object> criteria) {
         StringBuilder keywords = new StringBuilder();
 
         for (Map.Entry<String, Object> entry : criteria.entrySet()) {
@@ -498,4 +504,27 @@ public class BookDAO implements DatabaseQuery<Book> {
         return keywords.toString();
     }
 
+    public List<Category> selectAllCategory() throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL_CATEGORY)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Category> categoryList = new ArrayList<>();
+                while (resultSet.next()) {
+                    categoryList.add(new Category(resultSet.getInt("category_ID"), resultSet.getString("category_name")));
+                }
+                return categoryList;
+            }
+        }
+    }
+
+    public List<Author> selectAllAuthor() throws SQLException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL_AUTHOR)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Author> authorList = new ArrayList<>();
+                while (resultSet.next()) {
+                    authorList.add(new Author(resultSet.getInt("author_ID"), resultSet.getString("author_name")));
+                }
+                return authorList;
+            }
+        }
+    }
 }

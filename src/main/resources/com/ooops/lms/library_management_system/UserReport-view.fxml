@@ -25,7 +25,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label text="Vấn đề của em" textFill="#a64f3c" HBox.hgrow="ALWAYS">
+            <Label styleClass="label-1" text="Vấn đề của em" textFill="#a64f3c" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
@@ -35,22 +35,22 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </HBox>
-      <HBox prefHeight="533.0" prefWidth="750.0" spacing="20.0">
+      <HBox alignment="CENTER" prefHeight="533.0" prefWidth="750.0" spacing="20.0">
          <children>
-            <ScrollPane prefHeight="517.0" prefWidth="415.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="517.0" prefWidth="444.0" styleClass="rounded-scrollpane">
                <content>
-                  <VBox fx:id="reportsBox" alignment="TOP_CENTER" prefHeight="306.0" prefWidth="362.0" spacing="10.0">
+                  <VBox fx:id="reportsBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
                      <padding>
-                        <Insets top="20.0" />
+                        <Insets left="5.0" right="5.0" top="20.0" />
                      </padding></VBox>
                </content>
             </ScrollPane>
             <VBox alignment="TOP_RIGHT" prefHeight="517.0" prefWidth="417.0" spacing="20.0">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="467.0" prefWidth="376.0" spacing="10.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+                  <VBox fx:id="vbox" alignment="TOP_CENTER" prefHeight="467.0" prefWidth="376.0" spacing="10.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
                      <children>
-                        <TextField fx:id="reportTitleText" promptText="tiêu đề báo cáo" styleClass="textField" />
-                        <TextArea fx:id="reportContentText" prefHeight="374.0" prefWidth="326.0" styleClass="textField" wrapText="true" />
+                        <TextField fx:id="reportTitleText" onMouseClicked="#onReportTitleTextMouseClicked" promptText="tiêu đề báo cáo" styleClass="textField" />
+                        <TextArea fx:id="reportContentText" onMouseClicked="#onReportContentTextMouseClicked" prefHeight="374.0" prefWidth="326.0" styleClass="textField" wrapText="true" />
                      </children>
                      <padding>
                         <Insets left="20.0" right="20.0" top="20.0" />

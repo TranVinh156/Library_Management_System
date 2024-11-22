@@ -42,7 +42,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
     public void add(@NotNull Comment entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_COMMENT)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
-            preparedStatement.setInt(2, entity.getISBN());
+            preparedStatement.setLong(2, entity.getISBN());
             preparedStatement.setString(3, entity.getTitle());
             preparedStatement.setString(4, entity.getContent());
             preparedStatement.setString(5, String.valueOf(entity.getRate()));
@@ -78,7 +78,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
                             , resultSet.getString("content")
                             , Integer.valueOf(resultSet.getString("rate"))
                             , memberDAO.find(resultSet.getInt("member_ID"))
-                            , resultSet.getInt("ISBN"));
+                            , resultSet.getLong("ISBN"));
                 }
             }
         }
@@ -99,7 +99,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findCommentByCriteria.toString())) {
             int index = 1;
             for (Object value : criteria.values()) {
-                preparedStatement.setInt(index++, Integer.valueOf(value.toString()));
+                preparedStatement.setLong(index++, Long.valueOf(value.toString()));
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -110,7 +110,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
                             , resultSet.getString("content")
                             , Integer.valueOf(resultSet.getString("rate"))
                             , memberDAO.find(resultSet.getInt("member_ID"))
-                            , resultSet.getInt("ISBN")));
+                            , resultSet.getLong("ISBN")));
                 }
                 return commentList;
             }

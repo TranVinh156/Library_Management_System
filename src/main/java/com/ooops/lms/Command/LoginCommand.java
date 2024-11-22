@@ -1,6 +1,7 @@
 package com.ooops.lms.Command;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.controller.BasicController;
 import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.model.Account;
 import com.ooops.lms.model.Member;
@@ -13,7 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import com.ooops.lms.controller.UserMenuController;
-public class LoginCommand implements Command {
+public class LoginCommand extends BasicController implements Command {
     private Role role;
     private String password;
     private String username;
@@ -54,6 +55,7 @@ public class LoginCommand implements Command {
                 return true;
             }
         } else if (role.equals(Role.ADMIN)) {
+            System.out.println(username + " " + password);
             if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
                 CustomerAlter.showAlter("Đăng nhập thành công");
                 openMenu();
@@ -66,7 +68,15 @@ public class LoginCommand implements Command {
 
     private void openMenu() {
         if (role.equals(Role.ADMIN)) {
-            loadView("/com/ooops/lms/library_management_system/AdminMenu.fxml");
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (role.equals(Role.NONE)) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/UserMenu-view.fxml"));

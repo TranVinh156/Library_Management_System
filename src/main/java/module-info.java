@@ -23,6 +23,12 @@ module com.ooops.lms.library_management_system {
     requires mysql.connector.j;
     requires org.json;
     requires com.google.api.services.books;
+    requires com.google.common;
+    requires google.api.client;
+    requires com.google.api.client;
+    requires google.api.services.youtube.v3.rev222;
+    requires com.google.api.client.json.jackson2;
+    requires org.checkerframework.checker.qual;
 
     opens com.ooops.lms.library_management_system to javafx.fxml;
     opens com.ooops.lms.controller to javafx.fxml;
@@ -35,4 +41,6 @@ module com.ooops.lms.library_management_system {
     opens com.ooops.lms.Command to javafx.fxml;
     exports com.ooops.lms.Alter;
     opens com.ooops.lms.Alter to javafx.fxml;
+    exports com.ooops.lms.SuggestionTable;
+    opens com.ooops.lms.SuggestionTable to javafx.fxml;
 }
