@@ -56,19 +56,7 @@ public class BookCard2Controller {
         }
         starImage.setImage(starImage(book.getRate()));
 
-        Task<Image> loadImageTask = new Task<>() {
-            @Override
-            protected Image call() throws Exception {
-                try {
-                    return new Image(book.getImagePath(), true);
-                } catch (Exception e) {
-                    System.out.println("Length: " + book.getImagePath().length());
-
-                    File file = new File("bookImage/default.png");
-                    return new Image(file.toURI().toString());
-                }
-            }
-        };
+        Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
 
         loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
 

@@ -46,7 +46,6 @@ public class BookSuggestionCardController {
     @FXML
     private ImageView starImage;
 
-    private String imagePath = "";
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
 
@@ -55,6 +54,13 @@ public class BookSuggestionCardController {
 
         if(this.book==null) {
             this.book = otherBook;
+            book.setQuantity(10);
+            try {
+                BookDAO.getInstance().add(book);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
             book.setRate(5);
         }
         // Hiển thị thông tin cơ bản
@@ -65,20 +71,7 @@ public class BookSuggestionCardController {
         authorNameLabel.setText(author);
         starImage.setImage(starImage(book.getRate()));
 
-        // Tải ảnh bất đồng bộ
-        Task<Image> loadImageTask = new Task<>() {
-            @Override
-            protected Image call() throws Exception {
-                try {
-                    return new Image(book.getImagePath(), true);
-                } catch (Exception e) {
-                    System.out.println("Length: " + book.getImagePath().length());
-
-                    File file = new File("bookImage/default.png");
-                    return new Image(file.toURI().toString());
-                }
-            }
-        };
+        Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
 
         loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
 

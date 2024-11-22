@@ -72,29 +72,29 @@
          <left>
             <VBox fx:id="menuBar" prefHeight="605.0" prefWidth="58.0" styleClass="sideBackground" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="BOTTOM_LEFT" prefHeight="220.0" prefWidth="58.0">
+                  <VBox alignment="BOTTOM_LEFT" prefHeight="231.0" prefWidth="53.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onDashboardButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#onDashboardButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo3" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="33.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/menu.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#onBookmarkButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button fx:id="bookmarkButton" mnemonicParsing="false" onAction="#onBookmarkButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo13" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="38.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/bookmark.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#onBookRankingButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button fx:id="bookRankingButton" mnemonicParsing="false" onAction="#onBookRankingButtonAction" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo21" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/ranking.png" />
                                  </image>
@@ -106,18 +106,18 @@
                   <HBox prefHeight="261.0" prefWidth="58.0" VBox.vgrow="ALWAYS" />
                   <VBox prefHeight="90.0" prefWidth="58.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onSettingButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button fx:id="settingButton" mnemonicParsing="false" onAction="#onSettingButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo12" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/admin/menu/Vector.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="39.0" prefWidth="49.0" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="39.0" prefWidth="49.0" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fx:id="dashboardLogo11" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/admin/menu/Vector%20(1).png" />
                                  </image>
@@ -137,20 +137,20 @@
                <children>
                   <VBox fx:id="menuBarPlus" prefHeight="605.0" prefWidth="0.0" styleClass="sideBackground" visible="false" HBox.hgrow="NEVER">
                      <children>
-                        <VBox alignment="BOTTOM_LEFT" prefHeight="227.0" prefWidth="165.0">
+                        <VBox alignment="BOTTOM_LEFT" prefHeight="256.0" prefWidth="181.0">
                            <children>
-                              <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Dashboard" />
-                              <Button fx:id="bookmarkButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookmarkButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Đánh dấu" />
-                              <Button fx:id="bookRankingButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookRankingButtonAction" prefHeight="43.0" prefWidth="204.0" styleClass="menu-bar-button" text="Bảng xếp hạng" />
+                              <Button fx:id="dashboardButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="181.0" styleClass="menu-bar-button" text="Dashboard" />
+                              <Button fx:id="bookmarkButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookmarkButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Đánh dấu" />
+                              <Button fx:id="bookRankingButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookRankingButtonAction" prefHeight="43.0" prefWidth="204.0" styleClass="menu-bar-button" text="Bảng xếp hạng" />
                            </children>
                         </VBox>
-                        <HBox prefHeight="299.0" prefWidth="161.0" VBox.vgrow="ALWAYS" />
+                        <HBox prefHeight="306.0" prefWidth="181.0" VBox.vgrow="ALWAYS" />
                         <VBox prefHeight="100.0" prefWidth="100.0">
                            <children>
                               <VBox prefHeight="70.0" prefWidth="161.0">
                                  <children>
-                                    <Button fx:id="settingButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Cài đặt" />
-                                    <Button fx:id="logoutButton" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="58.0" prefWidth="187.0" styleClass="menu-bar-button" text="Logout" />
+                                    <Button fx:id="settingButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Cài đặt" />
+                                    <Button fx:id="logoutButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="20.0" prefWidth="181.0" styleClass="menu-bar-button" text="Logout" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="5.0" />

@@ -3,6 +3,7 @@ package com.ooops.lms.controller;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.BookMark;
 import com.ooops.lms.model.BookReservation;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -61,19 +62,8 @@ public class BookCard1Controller {
         starImage.setImage(starImage(book.getRate()));
         hBox.setStyle("-fx-background-color: #" + colors[(int)(Math.random() * colors.length)]);
 
-        Task<Image> loadImageTask = new Task<>() {
-            @Override
-            protected Image call() throws Exception {
-                try {
-                    return new Image(book.getImagePath(), true);
-                } catch (Exception e) {
-                    System.out.println("Length: " + book.getImagePath().length());
+        Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
 
-                    File file = new File("bookImage/default.png");
-                    return new Image(file.toURI().toString());
-                }
-            }
-        };
 
         loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
 
