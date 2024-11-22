@@ -2,6 +2,7 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -60,19 +61,7 @@ public class BookRankingCardController {
         starImage.setImage(starImage(book.getRate()));
         ranking.setText(rank);
 
-        Task<Image> loadImageTask = new Task<>() {
-            @Override
-            protected Image call() throws Exception {
-                try {
-                    return new Image(book.getImagePath(), true);
-                } catch (Exception e) {
-                    System.out.println("Length: " + book.getImagePath().length());
-
-                    File file = new File("bookImage/default.png");
-                    return new Image(file.toURI().toString());
-                }
-            }
-        };
+        Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
 
         loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
 

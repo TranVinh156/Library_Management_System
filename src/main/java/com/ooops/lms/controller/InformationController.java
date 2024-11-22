@@ -1,8 +1,7 @@
 package com.ooops.lms.controller;
 
-import com.google.common.io.MoreFiles;
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.MemberDAO;
-import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.Gender;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
@@ -18,8 +17,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.print.DocFlavor;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
@@ -72,7 +69,7 @@ public class InformationController {
         firstNameText.setText(UserMenuController.getMember().getPerson().getFirstName());
         phoneText.setText(UserMenuController.getMember().getPerson().getPhone());
         emailText.setText(UserMenuController.getMember().getPerson().getEmail());
-        genderChoiceBox.setValue(UserMenuController.getMember().getPerson().getGender().toString());
+        genderChoiceBox.setValue(getGender(UserMenuController.getMember().getPerson().getGender().toString()));
         String dateString = UserMenuController.getMember().getPerson().getDateOfBirth();
         userIDText.setText(Integer.toString(UserMenuController.getMember().getPerson().getId()));
 
@@ -159,17 +156,13 @@ public class InformationController {
     public void onSaveButtonAction(ActionEvent actionEvent) {
         if(newImageFile == null) {
             System.out.println("there is no image to save");
+        } else {
+            UserMenuController.getMember().getPerson().setImagePath(newImageFile);
         }
-        UserMenuController.getMember().getPerson().setImagePath(newImageFile);
         UserMenuController.getMember().getPerson().setLastName(lastNameText.getText());
         UserMenuController.getMember().getPerson().setFirstName(firstNameText.getText());
-        if(genderChoiceBox.getValue().toString().equals("nữ")) {
-            UserMenuController.getMember().getPerson().setGender(Gender.FEMALE);
-        } else if(genderChoiceBox.getValue().toString().equals("nam")) {
-            UserMenuController.getMember().getPerson().setGender(Gender.MALE);
-        } else {
-            UserMenuController.getMember().getPerson().setGender(Gender.OTHER);
-        }
+        UserMenuController.getMember().getPerson().setGender(getGenderEnum(genderChoiceBox.getValue().toString()));
+
         UserMenuController.getMember().getPerson().setEmail(emailText.getText());
         UserMenuController.getMember().getPerson().setPhone(phoneText.getText());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -178,6 +171,7 @@ public class InformationController {
 
         try {
             MemberDAO.getInstance().update(UserMenuController.getMember());
+            CustomerAlter.showMessage("Đã lưu");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -190,5 +184,22 @@ public class InformationController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getGender(String genderEnum) {
+        if(genderEnum.equals("MALE")) {
+            return "nam";
+        } else if(genderEnum.equals("FEMALE")) {
+            return "nữ";
+        }
+        return "bê đê slay";
+    }
+    private Gender getGenderEnum(String gender) {
+        if(gender.equals("nữ")) {
+            return Gender.FEMALE;
+        } else if(gender.equals("nam")) {
+            return Gender.MALE;
+        }
+        return Gender.OTHER;
     }
 }

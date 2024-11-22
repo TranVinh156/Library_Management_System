@@ -27,6 +27,7 @@ import java.util.Map;
 
 public class UserReportController {
     private static final String SETTING_FXML = "/com/ooops/lms/library_management_system/Setting-view.fxml";
+    private static final String REPORT_CARD_FXML ="/com/ooops/lms/library_management_system/UserReportCard-view.fxml";
 
     private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
 
@@ -50,7 +51,6 @@ public class UserReportController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         for (int i = 0; i < reports.size(); i++) {
             loadReport(reports.get(i));
         }
@@ -66,23 +66,25 @@ public class UserReportController {
     }
 
     public void onAddReportButtonAction(ActionEvent actionEvent) {
+        if(currentReport!=null && (currentReport.getContent().isEmpty()
+                || currentReport.getTitle().isEmpty())) {
+            CustomerAlter.showMessage("Viết xong rì pọt kia đi thì cho thêm");
+            return;
+        }
         currentReport = new Report(UserMenuController.getMember(),"","");
         currentReport.setStatus(ReportStatus.PENDING);
         try {
+            //load new report
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/UserReportCard-view.fxml"));
+            fxmlLoader.setLocation(getClass().getResource(REPORT_CARD_FXML));
             HBox cardBox = fxmlLoader.load();
             userReportCardController = fxmlLoader.getController();
             userReportCardController.setData(currentReport);
             reportsBox.getChildren().add(cardBox);
-            try {
-                ReportDAO.getInstance().add(currentReport);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //set data and css
         reportContentText.setText("");
         reportTitleText.setText("");
         vbox.setStyle("-fx-background-color: #FF7878;-fx-background-radius: 20;");
@@ -103,21 +105,25 @@ public class UserReportController {
 
     public void onSaveButtonAction(ActionEvent actionEvent) {
         if (currentReport != null) {
-            currentReport.setContent(reportContentText.getText());
-            currentReport.setTitle(reportTitleText.getText());
-            userReportCardController.editReport(currentReport);
-            try {
-                ReportDAO.getInstance().update(currentReport);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            if(reportContentText.getText().isEmpty()
+            || reportTitleText.getText().isEmpty()) {
+                CustomerAlter.showMessage("Hãy điền đủ report!");
+                return;
             }
+            if(reports.contains(currentReport)) {
+                updateReport();
+            } else {
+                addReport();
+            }
+        } else {
+            CustomerAlter.showMessage("Hãy chọn report để sửa hoặc tạo mới");
         }
     }
 
-    public void loadReport(Report report) {
+    private void loadReport(Report report) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/UserReportCard-view.fxml"));
+            fxmlLoader.setLocation(getClass().getResource(REPORT_CARD_FXML));
             HBox cardBox = fxmlLoader.load();
             UserReportCardController cardController = fxmlLoader.getController();
             cardController.setData(report);
@@ -138,4 +144,37 @@ public class UserReportController {
             CustomerAlter.showMessage("hãy chọn một report hoặc tạo report để sửa");
         }
     }
+
+    private void updateReport() {
+        try {
+            currentReport.setContent(reportContentText.getText());
+            currentReport.setTitle(reportTitleText.getText());
+            userReportCardController.editReport(currentReport);
+            ReportDAO.getInstance().update(currentReport);
+            CustomerAlter.showMessage("Mình lưu cho bạn rùi nhá :)");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        reportContentText.setText("");
+        reportTitleText.setText("");
+        vbox.setStyle("-fx-background-color: #ffffff;-fx-background-radius: 20;");
+        currentReport = null;
+    }
+
+    private void addReport() {
+        try {
+            currentReport.setContent(reportContentText.getText());
+            currentReport.setTitle(reportTitleText.getText());
+            userReportCardController.editReport(currentReport);
+            ReportDAO.getInstance().add(currentReport);
+            CustomerAlter.showMessage("Mình lưu cho bạn rùi nhá :)");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        reportContentText.setText("");
+        reportTitleText.setText("");
+        vbox.setStyle("-fx-background-color: #ffffff;-fx-background-radius: 20;");
+        currentReport = null;
+    }
+
 }

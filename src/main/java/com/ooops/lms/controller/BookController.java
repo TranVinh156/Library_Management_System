@@ -123,7 +123,9 @@ public class BookController {
                 CustomerAlter.showMessage("Đã ghi nhận, vui lòng n mượn trong 3 ngày");
                 BookManager.getInstance().addReservedBook(bookReservation);
                 SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
-                settingController.updateReservedBookSize();
+                if(settingController!=null) {
+                    settingController.updateReservedBookSize();
+                }
             } catch (RuntimeException | IOException | SQLException e) {
                 e.printStackTrace();
                 CustomerAlter.showMessage("Lỗi :v");
