@@ -43,7 +43,7 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
     // delete
     private static final String DELETE_BOOK_RESERVATION
-            = "Delete BookReservation where reservation_ID = ?";
+            = "Delete FROM BookReservation where reservation_ID = ?";
 
     // find
     private static final String FIND_BOOK_RESERVATION = "Select * from BookReservation where reservation_ID = ?";
