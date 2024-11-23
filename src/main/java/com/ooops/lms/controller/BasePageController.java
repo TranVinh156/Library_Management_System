@@ -44,10 +44,10 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
             tableController = tableLoader.getController();
             tableController.setMainController(this);
 
-            setupControllers();
             setupViews();
             startPage();
             loadData();
+            setupControllers();
         } catch (Exception e) {
             e.printStackTrace();
         }

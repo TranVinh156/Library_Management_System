@@ -35,18 +35,17 @@ public class AdminSugesstionRowController {
         this.object = o;
         if (object instanceof Member) {
             Member member = (Member) object;
-            textLabel.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName() +" - "+ member.getPerson().getId());
+            textLabel.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName() + " - " + member.getPerson().getId());
             // Tải ảnh bất đồng bộ
             Task<Image> loadImageTask = new Task<>() {
                 @Override
                 protected Image call() throws Exception {
+                    // Nếu như ảnh của member mà không có hoặc đường dẫn ảnh lỗi thì set mặc định
                     try {
-                        return new Image(member.getPerson().getImagePath(), true);
-                    } catch (Exception e) {
-                        System.out.println("Length: " + member.getPerson().getImagePath().length());
-
-                        File file = new File("bookImage/default.png");
+                        File file = new File(member.getPerson().getImagePath());
                         return new Image(file.toURI().toString());
+                    } catch (Exception e) {
+                        return new Image(getClass().getResourceAsStream("/image/avatar/default.png"));
                     }
                 }
             };

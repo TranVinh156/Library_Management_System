@@ -58,7 +58,7 @@
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                                                                            <children>
                                                                               <Label maxWidth="107.0" prefHeight="22.0" prefWidth="90.0" styleClass="gray-text-Cabin" text="Member_ID:" />
-                                                                              <TextField fx:id="memberIDText" editable="false" prefHeight="33.0" prefWidth="126.0" styleClass="fill-text-field-customer" text="234342" />
+                                                                              <TextField fx:id="memberIDText" editable="false" prefHeight="33.0" prefWidth="126.0" styleClass="fill-text-field-customer" text="234342" HBox.hgrow="ALWAYS" />
                                                                            </children>
                                                                         </HBox>
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">

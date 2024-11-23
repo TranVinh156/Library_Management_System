@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -84,17 +85,18 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         resignDateText.setText(formatResignDate);
 
         // Nếu như ảnh của member mà không có hoặc đường dẫn ảnh lỗi thì set mặc định
-        if (item.getPerson().getImagePath() != null && isValidImagePath(item.getPerson().getImagePath())) {
-            userImage.setImage(new Image(item.getPerson().getImagePath()));
-        } else {
-            userImage.setImage(defaultUserImage);
+        try {
+            File file = new File(item.getPerson().getImagePath());
+            userImage.setImage(new Image(file.toURI().toString()));
+        } catch (Exception e) {
+            userImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));
         }
     }
     @Override
     protected void updateAddModeUI() {
         // Xử lý ẩn hiện các nút
         editButton.setVisible(!addMode);
-        choiceImageButton.setVisible(addMode);
+        //choiceImageButton.setVisible(!addMode);
         saveButton.setVisible(addMode);
         saveButton.setText("Add");
 
@@ -126,7 +128,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
     protected void updateEditModeUI() {
         //Xử lý các nút ẩn hiện
         editButton.setVisible(!editMode);
-        choiceImageButton.setVisible(editMode);
+        //choiceImageButton.setVisible(!editMode);
         saveButton.setVisible(editMode);
         saveButton.setText("Save");
         deleteButton.setVisible(editMode);
