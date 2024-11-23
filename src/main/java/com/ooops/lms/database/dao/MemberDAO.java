@@ -264,4 +264,8 @@ public class MemberDAO implements DatabaseQuery<Member> {
             }
         }
     }
+
+    public void fetchCache(int memberID) {
+        memberCache.remove(memberID);
+    }
 }

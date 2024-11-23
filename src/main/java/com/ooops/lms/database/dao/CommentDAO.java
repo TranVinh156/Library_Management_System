@@ -16,10 +16,11 @@ public class CommentDAO implements DatabaseQuery<Comment> {
 
     private static Database database;
     private static MemberDAO memberDAO;
-
+    private static BookDAO bookDAO;
     private CommentDAO() {
         database = Database.getInstance();
         memberDAO = MemberDAO.getInstance();
+        bookDAO = BookDAO.getInstance();
     }
 
     public static synchronized CommentDAO getInstance() {
@@ -48,6 +49,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
             preparedStatement.setString(5, String.valueOf(entity.getRate()));
 
             preparedStatement.executeUpdate();
+            bookDAO.fetchBook(entity.getISBN());
         }
     }
 
@@ -80,6 +82,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
                             , Integer.valueOf(resultSet.getString("rate"))
                             , memberDAO.find(resultSet.getInt("member_ID"))
                             , resultSet.getLong("ISBN"));
+                    return comment;
                 }
             }
         }
