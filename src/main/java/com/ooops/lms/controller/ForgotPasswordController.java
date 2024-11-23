@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Member;
 import javafx.event.ActionEvent;
@@ -37,15 +38,35 @@ public class ForgotPasswordController extends BasicController {
     private TextField otpText;
 
     @FXML
-    private Button sendAgainButton;
+    private TextField passwordText;
 
     @FXML
-    private Button verifyButton;
+    private Button rePasswordButton;
+
+    @FXML
+    private HBox rePasswordPane;
+
+    @FXML
+    private TextField rePasswordText;
 
     @FXML
     private Button returnLoginButton;
 
+    @FXML
+    private Button sendAgainButton;
+
+    @FXML
+    private Button toEmailButton;
+
+    @FXML
+    private Button toLoginButton;
+
+    @FXML
+    private Button verifyButton;
+
     private boolean isStep1;
+    private boolean isStep2;
+    private boolean isStep3;
 
     public void initialize() {
         isStep1 = true;
@@ -60,48 +81,80 @@ public class ForgotPasswordController extends BasicController {
     void onContinueButtonAction(ActionEvent event) {
         if(checkEmail()) {
             isStep1 = !isStep1;
+            isStep2 = true;
+            isStep3 = false;
             enterEmailHBox.setVisible(false);
             enterVerifyHBox.setVisible(true);
-        } else {
-            System.out.println("Email is not correct");
-            CustomerAlter.showMessage("Email is not correct");
+            rePasswordPane.setVisible(false);
         }
     }
 
     @FXML
     void onSendAgainButton(ActionEvent event) {
-
+        if(checkEmail()) {
+            CustomerAlter.showMessage("Đã gửi lại OTP");
+        }
     }
 
     @FXML
     void onVerifyButtonAction(ActionEvent event) {
         if(checkOTP()) {
-            System.out.println("OTP is correct");
-            CustomerAlter.showMessage("OTP is correct");
-            openLoginView();
+            isStep1 = false;
+            isStep2 = false;
+            isStep3 = true;
+            CustomerAlter.showMessage("OTP đúng rồi ó");
+            enterEmailHBox.setVisible(false);
+            enterVerifyHBox.setVisible(false);
+            rePasswordPane.setVisible(true);
         }
     }
 
-    private boolean checkEmail() {
-        Map<String, Object> findCriteria = new HashMap<>();
-        findCriteria.put("email", emailText.getText());
-        List<Member> resultList = new ArrayList<>();
-        try {
-            resultList = MemberDAO.getInstance().searchByCriteria(findCriteria);
-        } catch (Exception e) {
-            e.printStackTrace();
+    @FXML
+    void onRePasswordButtonAction(ActionEvent event) {
+        if(checkPassword()) {
+            try {
+            AccountDAO.getInstance().changePassword(emailText.getText(),passwordText.getText());
+            CustomerAlter.showMessage("Đổi mật khẩu rồi đó, đừng quên nữa nha");
+            openLoginView();
+            } catch (Exception e) {
+                CustomerAlter.showMessage("Không đổi được mật khẩu");
+            }
         }
-        if(resultList.isEmpty() || resultList.size() < 1) {
-            System.out.println(resultList.size());
+    }
+
+    private boolean checkPassword() {
+        String password1 = passwordText.getText();
+        String password2 = rePasswordText.getText();
+        if(password1.isEmpty() || password1.equals(" ")) {
+            CustomerAlter.showMessage("Đổi mật khẩu mà trống đổi làm gì");
+            return false;
+        }
+        if(!password1.equals(password2)) {
+            CustomerAlter.showMessage("Nhập lại mật khẩu không khớp");
             return false;
         }
         return true;
+    }
 
+    private boolean checkEmail() {
+        try {
+            return AccountDAO.getInstance().resetPassword(emailText.getText().toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            CustomerAlter.showMessage("Email không tồn tại");
+        }
+        return false;
     }
 
     private boolean checkOTP() {
         String otp = otpText.getText();
-        return true;
+        try {
+            return AccountDAO.getInstance().verifyOTP(emailText.getText(), otp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            CustomerAlter.showMessage("OTP không hợp lệ");
+        }
+        return false;
     }
 
     private void openLoginView() {
@@ -120,7 +173,10 @@ public class ForgotPasswordController extends BasicController {
 
     public void onToEmailButtonAction(ActionEvent actionEvent) {
         isStep1 = !isStep1;
+        isStep2 = true;
+        isStep3 = false;
         enterEmailHBox.setVisible(true);
         enterVerifyHBox.setVisible(false);
+        rePasswordPane.setVisible(false);
     }
 }

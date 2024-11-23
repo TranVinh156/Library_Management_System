@@ -84,6 +84,7 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
     private AdminDashboardController adminDashboardController;
 
     private int totalNumberBook;
+    private int totalNumberLost;
 
     @FXML
     protected void initialize() {
@@ -133,11 +134,11 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
             findCriteria.put("author_name", authorFindText.getText());
         }
 
-        if(!categoryChoiceBox.getItems().isEmpty() && categoryChoiceBox.getValue() != "None" && categoryChoiceBox.getValue() != null) {
+        if (!categoryChoiceBox.getItems().isEmpty() && categoryChoiceBox.getValue() != "None" && categoryChoiceBox.getValue() != null) {
             findCriteria.put("category_name", categoryChoiceBox.getValue());
         }
 
-        if(!statusFindBox.getItems().isEmpty() && statusFindBox.getValue() != "None" && statusFindBox.getValue() != null) {
+        if (!statusFindBox.getItems().isEmpty() && statusFindBox.getValue() != "None" && statusFindBox.getValue() != null) {
             findCriteria.put("BookStatus", statusFindBox.getValue());
         }
 
@@ -171,15 +172,16 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
 
     protected void setText() {
         try {
+            totalNumberBook = 0;
+            totalNumberLost = 0;
             findCriteria.put("BookItemStatus", BookItemStatus.AVAILABLE.toString());
-            List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(findCriteria);
-            findCriteria.clear();
-            findCriteria.put("BookItemStatus", BookItemStatus.LOANED.toString());
-            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(findCriteria));
-            findCriteria.clear();
-            findCriteria.put("BookItemStatus", BookItemStatus.RESERVED.toString());
-            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(findCriteria));
-            totalNumberBookLabel.setText(String.valueOf(bookItemList.size()));
+            List<Book> bookList = BookDAO.getInstance().selectAll();
+            for (Book book : bookList) {
+                totalNumberBook += book.getQuantity();
+                totalNumberLost += book.getNumberOfLostBooks();
+            }
+            totalNumberBookLabel.setText(String.valueOf(this.totalNumberBook-this.totalNumberLost));
+            totalNumberLostLabel.setText(String.valueOf(this.totalNumberLost));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -198,6 +200,7 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
             e.printStackTrace();
         }
     }
+
     protected void setCategoryFindList() {
         try {
             categoryChoiceBox.getItems().add("None");
@@ -210,7 +213,6 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
         }
 
     }
-
 
 
 }
