@@ -56,7 +56,7 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     // update Book
     private static final String UPDATE_BOOK
-            = "Update Books set title = ?, image_path = ?, description = ?, placeAt = ? where ISBN = ?";
+            = "Update Books set title = ?, image_path = ?, description = ?, placeAt = ?, BookStatus = ? where ISBN = ?";
 
     // delete Book
     private static final String DELETE_BOOK = "DELETE FROM Books WHERE ISBN = ?";
