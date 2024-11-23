@@ -112,8 +112,12 @@ public class BookInfoFetcher {
                         }
                     }
 
+                    JSONObject accessInfo = items.getJSONObject(i).optJSONObject("accessInfo");
+                    String webReaderLink = accessInfo != null ? accessInfo.optString("webReaderLink", "No link available") : "No link available";
+
                     // Tạo đối tượng Book
                     Book book = new Book(isbn, bookTitle, imagePath, description, "Unknown", authors, categories);
+                    book.setPreview(webReaderLink);
                     books.add(book);
                 }
             } else {
@@ -167,8 +171,12 @@ public class BookInfoFetcher {
                     }
                 }
 
+                JSONObject accessInfo = items.getJSONObject(0).optJSONObject("accessInfo");
+                String webReaderLink = accessInfo != null ? accessInfo.optString("webReaderLink", "No link available") : "No link available";
+
                 // Tạo và trả về đối tượng Book
                 Book book = new Book(Long.parseLong(isbn), title, imagePath, description, "Unknown", authors, categories);
+                book.setPreview(webReaderLink);
                 return book;
             } else {
                 System.out.println("No book information found for ISBN: " + isbn);
