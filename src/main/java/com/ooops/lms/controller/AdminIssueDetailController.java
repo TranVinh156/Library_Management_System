@@ -1,5 +1,8 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Command.AdminCommand;
+import com.ooops.lms.Command.Command;
 import com.ooops.lms.controller.BaseDetailController;
 import com.ooops.lms.model.Report;
 import com.ooops.lms.model.enums.ReportStatus;
@@ -31,9 +34,6 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
     private Label nameMemberLabel;
 
     @FXML
-    private TextArea noteText;
-
-    @FXML
     private Label phoneNumberLabel;
 
     @FXML
@@ -51,12 +51,13 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
 
     @Override
     protected void loadItemDetails() {
+        statusBox.setValue(item.getStatus());
+
         getTitlePageStack().push(item.getReportID() + "");
         IDreportLabel.setText(String.valueOf(item.getReportID()));
         nameMemberLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
         IDMemberLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
         emailLabel.setText(item.getMember().getPerson().getEmail());
-        noteText.setText("Chua co");
         titelLabel.setText(item.getTitle());
         detailIssueText.setText(item.getTitle());
     }
@@ -71,15 +72,9 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
         editButton.setVisible(!editMode);
         saveButton.setVisible(editMode);
 
-        noteText.setMouseTransparent(!editMode);
-        noteText.setEditable(editMode);
         statusBox.setMouseTransparent(!editMode);
     }
 
-    @Override
-    public void loadStartStatus() {
-        setEditMode(editMode);
-    }
     @Override
     protected boolean validateInput() {
         return true;
@@ -87,6 +82,7 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
 
     @Override
     protected boolean getNewItemInformation() throws Exception {
+        item.setStatus(statusBox.getValue());
         return true;
     }
 

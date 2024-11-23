@@ -18,9 +18,9 @@
          <children>
             <HBox layoutX="7.0" layoutY="68.0" prefHeight="45.0" prefWidth="843.0" styleClass="pane-main" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="35.19999999999993">
                <children>
-                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
                      <children>
-                        <Label styleClass="black-text-Cabin" text="Find:" />
+                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="19.2" prefWidth="31.2" styleClass="black-text-Cabin" text="Find:" HBox.hgrow="NEVER" />
                      </children>
                   </HBox>
                   <HBox prefHeight="46.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
@@ -155,7 +155,7 @@
                   </HBox>
                   <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.799999999999955">
                      <children>
-                        <ScrollPane fx:id="scrollPane" prefHeight="400.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
+                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="400.0" prefWidth="822.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
                            <content>
                               <VBox fx:id="tableVbox" prefHeight="406.0" prefWidth="807.0" />
                            </content>

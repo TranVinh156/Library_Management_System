@@ -45,7 +45,7 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
 
     // delete
     private static final String DELETE_BOOK_ISSUE
-            = "Delete BookIssue where issue_ID = ?";
+            = "Delete FROM BookIssue where issue_ID = ?";
 
     // find
     private static final String FIND_BOOK_ISSUE = "Select * from BookIssue where issue_ID = ?";

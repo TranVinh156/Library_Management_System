@@ -44,9 +44,21 @@ public class AdminDashboardController extends BasicController {
     @FXML
     private ScrollPane scrollPane;
 
-    @FXML
-    public void initialize() {
+    private AdminBookPageController adminBookPageController;
+    private static AdminIssuePageController adminIssuePageController;
+    private static AdminMenuController adminMenuController;
+
+    public void setAdminBookPageController(AdminBookPageController adminBookPageController) {
+        this.adminBookPageController = adminBookPageController;
+    }
+
+    public void setAdminIssuePageController(AdminIssuePageController adminIssuePageController) {
+        this.adminIssuePageController = adminIssuePageController;
+    }
+    public void setAdminMenuController(AdminMenuController adminMenuController) {
+        this.adminMenuController = adminMenuController;
         loadRecentIssuel();
+        loadTopBookHbox();
     }
 
     public void setTotalBookLabel(String totalBookLabel) {
@@ -65,7 +77,8 @@ public class AdminDashboardController extends BasicController {
         this.totalReaderLabel.setText(totalReaderLabel);
     }
 
-    private void loadRecentIssuel() {
+    public void loadRecentIssuel() {
+        recentIssuelVbox.getChildren().clear();
         Map<String, Object> findCriteria = new HashMap<>();
         findCriteria.put("status", "PENDING");
         try {
@@ -76,6 +89,11 @@ public class AdminDashboardController extends BasicController {
                     HBox row = loader.load();
 
                     AdminRecentIssueController rowController = loader.getController();
+                    if(adminIssuePageController == null) {
+                        System.out.println("adminIssuePageController is null");
+                    }
+                    rowController.setMenuController(this.adminMenuController);
+                    rowController.setMainController(adminIssuePageController);
                     rowController.setItem(item);
 
                     childFitWidthParent(row, scrollPane);
@@ -90,25 +108,32 @@ public class AdminDashboardController extends BasicController {
         }
     }
 
-    private void loadTopBookHbox() throws SQLException {
-        List<Book> highRankBooks;
-        highRankBooks = (ArrayList<Book>) ((ArrayList<Book>) BookDAO.getInstance().selectAll()).clone();
-        sortBooks(highRankBooks, (book1, book2) -> Integer.compare(book2.getRate(), book1.getRate()));
+    private void loadTopBookHbox() {
         try {
+             List<Book> highRankBooks = BookDAO.getInstance().selectAll();
+
+            sortBooks(highRankBooks, (book1, book2) -> Integer.compare(book2.getRate(), book1.getRate()));
+            int count =0;
             for (Book book : highRankBooks) {
+                count++;
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/TopBookCard.fxml"));
-                HBox row = loader.load();
+                VBox row = loader.load();
 
                 AdminDashboardBookCardController rowController = loader.getController();
+                rowController.setAdminMenuController(adminMenuController);
+                rowController.setMainController(adminBookPageController);
                 rowController.setItem(book);
 
-                childFitWidthParent(row, scrollPane);
-                recentIssuelVbox.getChildren().add(row);
+                topBookHbox.getChildren().add(row);
+                if(count == 11) {
+                    return;
+                }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
     private void sortBooks(List<Book> books, Comparator<Book> comparator) {
         Collections.sort(books, comparator);
     }

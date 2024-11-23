@@ -24,8 +24,8 @@
                      <children>
                         <AnchorPane fx:id="resignStep1Pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" prefWidth="393.0">
                            <children>
-                              <TextField fx:id="lastNameText" layoutX="64.0" layoutY="321.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" stylesheets="@../../../../style/ResignStyles.css" />
-                              <TextField fx:id="firstNameText" layoutX="64.0" layoutY="377.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
+                              <TextField fx:id="firstNameText" layoutX="64.0" layoutY="321.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" stylesheets="@../../../../style/ResignStyles.css" />
+                              <TextField fx:id="lastNameText" layoutX="64.0" layoutY="377.0" prefHeight="33.0" prefWidth="264.0" styleClass="textbox" />
                               <DatePicker fx:id="birthDate" layoutX="64.0" layoutY="433.0" prefHeight="33.0" prefWidth="150.0" styleClass="textbox" />
                               <TextField fx:id="emailText" layoutX="64.0" layoutY="489.0" prefHeight="33.0" prefWidth="263.0" styleClass="textbox" />
                               <ChoiceBox fx:id="genderBox" layoutX="223.0" layoutY="433.0" prefHeight="33.0" prefWidth="105.0" styleClass="textbox" />
@@ -34,7 +34,7 @@
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../../image/icon/Vector%20(2).png" />
+                                          <Image url="@../../../../image/icon/back.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>

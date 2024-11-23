@@ -2,6 +2,7 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.BookReservation;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,6 +42,13 @@ public class AdminReservationTableRowController extends BaseRowController<BookRe
         barCodeLabel.setText(item.getBookItem().getBarcode() + "");
         borrowDateLabel.setText(item.getCreatedDate().substring(0, 10));
         statusLabel.setText(item.getStatus().toString());
+        if(item.getStatus().equals(BookReservationStatus.CANCELED)) {
+            statusLabel.setStyle("-fx-text-fill: red;");
+        } else if(item.getStatus().equals(BookReservationStatus.WAITING)) {
+            statusLabel.setStyle("-fx-text-fill: blue");
+        } else{
+            statusLabel.setStyle("-fx-text-fill: black;");
+        }
     }
 
 }

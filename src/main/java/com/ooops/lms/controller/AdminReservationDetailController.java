@@ -14,18 +14,24 @@ import com.ooops.lms.model.enums.BookReservationStatus;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AdminReservationDetailController extends BaseDetailController<BookReservation> {
 
@@ -118,6 +124,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
     private boolean isSettingMember = false;
     private boolean isSettingBook = false;
 
+    protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
+
     @Override
     protected void loadItemDetails() {
         getTitlePageStack().push(item.getReservationId() + "");
@@ -186,8 +194,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         memberIDText.setEditable(editMode);
         barCodeText.setEditable(editMode);
 
-        borowDateText.setEditable(editMode);
-        returnDateText.setEditable(editMode);
+        //borowDateText.setEditable(editMode);
+        //returnDateText.setEditable(editMode);
         borrowStatus.setMouseTransparent(!editMode);
 
         scanBookButton.setMouseTransparent(editMode);
@@ -216,10 +224,11 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         }
         String reformattedDate = reformatDate(borowDateText.getText());
         String reformattedReturnDate = reformatDate(returnDateText.getText());
-        item = new BookReservation(member, bookItem, reformattedDate, reformattedReturnDate);
+        item = new BookReservation(member, bookItem, item.getCreatedDate(), item.getDueDate());
+        item.setStatus(borrowStatus.getValue());
+        item.setReservationId(Integer.valueOf(borrowIDLabel.getText()));
         return true;
     }
-
 
     @FXML
     public void initialize() {
@@ -227,6 +236,23 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
 
         suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox, this.sugestionList);
+        suggestionPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                // Scene đã được tạo, thêm event filter
+                newScene.getRoot().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                    if (suggestionPane.isVisible()) {
+                        // Lấy tọa độ của điểm click trong không gian của suggestionPane
+                        Point2D point = suggestionPane.sceneToLocal(event.getSceneX(), event.getSceneY());
+
+                        // Kiểm tra xem click có nằm ngoài suggestionPane không
+                        if (!suggestionPane.contains(point)) {
+                            suggestionPane.setVisible(false);
+                            suggestionVbox.getChildren().clear();
+                        }
+                    }
+                });
+            }
+        });
         // Đăng ký listener để xử lý sự kiện click
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
@@ -260,8 +286,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         memberNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingMember && addMode) {
-                    suggestionTable.loadFindData("memberName", newValue);
-                    suggestionTable.updateSuggestionPanePosition(memberNameText);
+                    if(newValue != null && !newValue.isEmpty()) {
+                        suggestionTable.loadFindData("memberName", newValue);
+                        suggestionTable.updateSuggestionPanePosition(memberNameText);
+                    }
                 }
             }
         });
@@ -270,8 +298,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         memberIDText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingMember && addMode) {
-                    suggestionTable.loadFindData("memberID", newValue);
-                    suggestionTable.updateSuggestionPanePosition(memberIDText);
+                    if(newValue != null && !newValue.isEmpty()) {
+                        suggestionTable.loadFindData("memberID", newValue);
+                        suggestionTable.updateSuggestionPanePosition(memberIDText);
+                    }
                 }
                 isSettingMember = false;
             }
@@ -280,8 +310,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         bookNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingBook && addMode) {
-                    suggestionTable.loadFindData("bookItemName", newValue);
-                    suggestionTable.updateSuggestionPanePosition(bookNameText);
+                    if(newValue != null && !newValue.isEmpty()) {
+                        suggestionTable.loadFindData("bookItemName", newValue);
+                        suggestionTable.updateSuggestionPanePosition(bookNameText);
+                    }
                 }
             }
         });
@@ -289,8 +321,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         barCodeText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingBook && addMode) {
-                    suggestionTable.loadFindData("bookBarCode", newValue);
-                    suggestionTable.updateSuggestionPanePosition(barCodeText);
+                    if(newValue != null && !newValue.isEmpty()) {
+                        suggestionTable.loadFindData("bookBarCode", newValue);
+                        suggestionTable.updateSuggestionPanePosition(barCodeText);
+                    }
                 }
                 isSettingBook = false;
             }
@@ -312,10 +346,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @FXML
     void onDeleteButton(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn xóa người này?");
-        if (confirmYes) {
-            setEditMode(false);
-        }
+        deleteChanges();
     }
 
     @FXML
@@ -374,7 +405,12 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         emailText.setText(member.getPerson().getEmail());
         genderText.setText(member.getPerson().getGender().toString());
         totalOFBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
-        memberImage.setImage(new Image(member.getPerson().getImagePath()));
+        try {
+            File file = new File(member.getPerson().getImagePath());
+            memberImage.setImage(new Image(file.toURI().toString()));
+        } catch (Exception e) {
+            memberImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));
+        }
         totalOfLostText.setText("chua co");
     }
 
@@ -384,13 +420,31 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         barCodeText.setText(String.valueOf(bookItem.getBarcode()));
         categoryText.setText(getCategories(bookItem.getCategories()));
         authorNameText.setText(getAuthors(bookItem.getAuthors()));
-        bookImage.setImage(new Image(bookItem.getImagePath()));
+        // Tải ảnh bất đồng bộ
+        Task<Image> loadImageTask = new Task<>() {
+            @Override
+            protected Image call() throws Exception {
+                try {
+                    return new Image(bookItem.getImagePath(), true);
+                } catch (Exception e) {
+                    System.out.println("Length: " + bookItem.getImagePath().length());
+
+                    File file = new File("bookImage/default.png");
+                    return new Image(file.toURI().toString());
+                }
+            }
+        };
+
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+        executor.submit(loadImageTask);
     }
 
     private void setDateIssue() {
         borrowIDLabel.setText(String.valueOf(item.getReservationId()));
-        borowDateText.setText(String.valueOf(item.getCreatedDate()));
-        returnDateText.setText(String.valueOf(item.getDueDate()));
+        borowDateText.setText(String.valueOf(item.getCreatedDate()).substring(0,10));
+        returnDateText.setText(String.valueOf(item.getDueDate()).substring(0,10));
+        borrowStatus.setValue(item.getStatus());
     }
 
 }

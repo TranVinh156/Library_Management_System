@@ -27,11 +27,13 @@ public abstract class BaseDetailController<T> extends BasicController {
 
     protected abstract void loadItemDetails();
 
-    public void setAddMode(boolean isAdd){
+    public void setAddMode(boolean isAdd) {
         this.addMode = isAdd;
         updateAddModeUI();
         mainController.setTitlePage();
-    };
+    }
+
+    ;
 
     protected abstract void updateAddModeUI();
 
@@ -43,7 +45,7 @@ public abstract class BaseDetailController<T> extends BasicController {
 
     protected abstract void updateEditModeUI();
 
-    public void saveChanges() {
+    protected void saveChanges() {
         try {
             if (addMode) {
                 if (validateInput() && getNewItemInformation()) {
@@ -76,6 +78,26 @@ public abstract class BaseDetailController<T> extends BasicController {
                     }
                 } else {
                     System.out.println("Tiếp tục edit");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void deleteChanges() {
+        try {
+            boolean confirmYes = CustomerAlter.showAlter("Bạn có chắc muốn xóa nó chứ?");
+            if (confirmYes) {
+                Command deleteCommand = new AdminCommand("delete", this.item);
+                commandInvoker.setCommand(deleteCommand);
+                if (commandInvoker.executeCommand()) {
+                    getTitlePageStack().pop();
+                    getTitlePageStack().pop();
+                    mainController.loadData();
+                    mainController.alterPage();
+                    setEditMode(false);
+                    System.out.println("Đã lưu thay đổi");
                 }
             }
         } catch (Exception e) {

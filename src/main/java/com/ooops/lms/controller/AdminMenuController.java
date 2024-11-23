@@ -101,6 +101,7 @@ public class AdminMenuController extends BasicController {
     private static Image minimizeIconImage = new Image(BasicController.class.getResource("/image/icon/minimize.png").toExternalForm());;
     private static Image maximizeIconImage = new Image(BasicController.class.getResource("/image/icon/maximize.png").toExternalForm());
 
+    private AdminDashboardController adminDashboardController;
     private AdminBookPageController adminBookPageController;
     private AdminUserPageController adminUserPageController;
     private AdminBorrowPageController adminBorrowPageController;
@@ -115,8 +116,10 @@ public class AdminMenuController extends BasicController {
         adminBorrowPageController = borrowPagePaneLoader.getController();
         adminReservationPageController = reservationPagePaneLoader.getController();
         adminIssuePageController = issuePagePaneLoader.getController();
+        adminDashboardController = dashboardLoader.getController();
+        adminDashboardController.setAdminMenuController(this);
 
-       openPage(dashboardPane);
+        openPage(dashboardPane);
         hideButtonTexts();
         openMenuIcon.setOnMouseClicked(event -> toggleMenu());
         hanleAddTablePaneClose();
@@ -180,6 +183,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        adminDashboardController.loadRecentIssuel();
         openPage(dashboardPane);
     }
 
@@ -222,6 +226,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        adminUserPageController.loadData();
         openPage(userPagePane);
     }
 

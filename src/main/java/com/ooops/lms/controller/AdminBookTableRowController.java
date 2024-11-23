@@ -4,6 +4,7 @@ import com.ooops.lms.controller.BaseRowController;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.Category;
+import com.ooops.lms.model.enums.BookStatus;
 import com.sun.mail.imap.protocol.Item;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -47,6 +48,12 @@ public class AdminBookTableRowController extends BaseRowController<Book, AdminBo
         locationLabel.setText(item.getPlaceAt());
         numberOfBookLabel.setText((String.valueOf(item.getQuantity())));
         statusLabel.setText(item.getstatus().getDisplayName());
+        if(item.getstatus().equals(BookStatus.AVAILABLE)) {
+            statusLabel.setStyle(("-fx-text-fill: green;"));
+        }
+        else {
+            statusLabel.setStyle(("-fx-text-fill: red;"));
+        }
     }
 
     public String getCategories(List<Category> categories) {

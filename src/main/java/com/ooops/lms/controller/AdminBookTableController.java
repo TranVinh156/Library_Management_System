@@ -6,8 +6,11 @@ import com.ooops.lms.database.dao.BookIssueDAO;
 import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.model.Category;
+import com.ooops.lms.model.enums.BookItemStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import com.ooops.lms.model.enums.BookStatus;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -79,6 +82,8 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
 
     private static final String ROW_FXML = "/com/ooops/lms/library_management_system/AdminBookTableRow.fxml";
     private AdminDashboardController adminDashboardController;
+
+    private int totalNumberBook;
 
     @FXML
     protected void initialize() {
@@ -165,16 +170,25 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
     }
 
     protected void setText() {
-        totalNumberBookLabel.setText(String.valueOf(itemsList.size()));
+        try {
+            findCriteria.put("status", BookItemStatus.AVAILABLE.toString());
+            List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(findCriteria);
+            findCriteria.clear();
+            findCriteria.put("status", BookItemStatus.LOANED.toString());
+            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(findCriteria));
+            totalNumberBookLabel.setText(String.valueOf(bookItemList.size()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         adminDashboardController.setTotalBookLabel(totalNumberBookLabel.getText());
         try {
-            findCriteria.put("status", "BORROWED");
-            totalNumberBorrowLabel.setText(BookIssueDAO.getInstance().searchByCriteria(findCriteria).size() + "");
+            findCriteria.put("status", BookItemStatus.LOANED.toString());
+            totalNumberBorrowLabel.setText(BookItemDAO.getInstance().searchByCriteria(findCriteria).size() + "");
             findCriteria.clear();
-            findCriteria.put("status", "PENDING");
+            findCriteria.put("status", BookReservationStatus.WAITING.toString());
             totalNumberIssueLabel.setText(BookReservationDAO.getInstance().searchByCriteria(findCriteria).size() + "");
             findCriteria.clear();
-            findCriteria.put("status", "LOST");
+            findCriteria.put("status", BookItemStatus.LOST.toString());
             totalNumberLostLabel.setText(BookItemDAO.getInstance().searchByCriteria(findCriteria).size() + "");
             findCriteria.clear();
         } catch (Exception e) {

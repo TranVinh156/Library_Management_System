@@ -152,26 +152,12 @@ public class SuggestionTable {
                     suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
                     break;
                 case "bookNameAPI":
-                    if (cache.findBookInCache("title", value) != null) {
-                        suggestList.addAll(cache.findBookInCache("title", value));
-                    }
-                    if (suggestList.size() == 0) {
-                        System.out.println("Tim API1");
                         List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
                         suggestList.addAll(listbook);
-                        cache.storeQueryResult("title", listbook);
-                    }
                     break;
                 case "bookISBNAPI":
-                    if (cache.findBookInCache("ISBN", value) != null) {
-                        suggestList.addAll(cache.findBookInCache("ISBN", value));
-                    }
-                    if (suggestList.size() == 0) {
-                        System.out.println("Tim API2");
-                        List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
-                        suggestList.addAll(listbook);
-                        cache.storeQueryResult("ISBN", listbook);
-                    }
+                        Book book = BookInfoFetcher.searchBookByISBN(value);
+                        suggestList.addAll((Collection<?>) book);
                     break;
                 default:
                     break;
