@@ -286,11 +286,25 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
             if (newScene != null) {
                 Stage stage = (Stage) bookNameText.getScene().getWindow();
 
-                stage.widthProperty().addListener((obs, oldWidth, newWidth) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+                stage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    if (Math.abs(newWidth.doubleValue() - oldWidth.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
 
-                stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+                stage.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+                    if (Math.abs(newHeight.doubleValue() - oldHeight.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
             }
         });
 
