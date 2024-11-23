@@ -20,12 +20,14 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
     private static Database database;
     private static MemberDAO memberDAO;
     private static BookItemDAO bookItemDAO;
+    private static BookDAO bookDAO;
     private static LRUCache<Integer, BookReservation> bookReservationCache;
 
     private BookReservationDAO() {
         database = Database.getInstance();
         memberDAO = MemberDAO.getInstance();
         bookItemDAO = BookItemDAO.getInstance();
+        bookDAO = BookDAO.getInstance();
         bookReservationCache = new LRUCache<>(100);
     }
 
@@ -63,11 +65,9 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
             preparedStatement.setString(4, entity.getDueDate());
 
             preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                entity.setReservationId(resultSet.getInt(1));
-            }
-            bookReservationCache.put(entity.getReservationId(), entity);
+            memberDAO.fetchCache(entity.getMember().getPerson().getId());
+            bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+            bookDAO.fetchBook(entity.getBookItem().getISBN());
         }
     }
 
@@ -83,6 +83,9 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
             if (preparedStatement.executeUpdate() > 0) {
                 bookReservationCache.put(entity.getReservationId(), entity);
+                memberDAO.fetchCache(entity.getMember().getPerson().getId());
+                bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+                bookDAO.fetchBook(entity.getBookItem().getISBN());
                 return true;
             } else {
                 return false;
@@ -97,6 +100,9 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
             if (preparedStatement.executeUpdate() > 0) {
                 bookReservationCache.remove(entity.getReservationId());
+                memberDAO.fetchCache(entity.getMember().getPerson().getId());
+                bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+                bookDAO.fetchBook(entity.getBookItem().getISBN());
                 return true;
             } else {
                 return false;
@@ -190,5 +196,9 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
                 return bookReservations;
             }
         }
+    }
+
+    public void fetchCache(int reservationID) {
+        bookReservationCache.remove(reservationID);
     }
 }
