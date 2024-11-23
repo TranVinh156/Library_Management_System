@@ -45,6 +45,11 @@ public class AdminBorrowTableRowController extends BaseRowController<BookIssue, 
         barCodeLabel.setText(item.getBookItem().getBarcode() + "");
         borrowDateLabel.setText(item.getCreatedDate().substring(0, 10));
         statusLabel.setText(item.getStatus().toString());
+        if(statusLabel.getText().equals("LOST")) {
+            statusLabel.setStyle("-fx-text-fill: red;");
+        } else {
+            statusLabel.setStyle("-fx-text-fill: black;");
+        }
     }
 
 }
