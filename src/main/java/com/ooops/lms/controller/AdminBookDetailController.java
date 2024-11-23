@@ -259,6 +259,10 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         item.setDescription(bookContentText.getText());
         return true;
     }
+    @Override
+    protected String getType() {
+        return "sách";
+    }
 
     @FXML
     private void initialize() {
