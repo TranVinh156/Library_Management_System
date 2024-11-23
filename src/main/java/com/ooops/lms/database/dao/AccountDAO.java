@@ -44,7 +44,7 @@ public class AccountDAO {
             "VALUES (?, ?, ?, ?, ?, ?)";
 
     private static final String GET_RESET_PASSWORD_USER
-            = "Select * from Members where email = ?";
+            = "Select * from Members join users on users.member_ID = Members.member_ID where email = ?";
 
     private static final String GET_USER_BY_USERNAME =
             "Select * from Users where username = ?";
