@@ -29,6 +29,7 @@ module com.ooops.lms.library_management_system {
     requires google.api.services.youtube.v3.rev222;
     requires com.google.api.client.json.jackson2;
     requires org.checkerframework.checker.qual;
+    requires javafx.media;
 
     opens com.ooops.lms.library_management_system to javafx.fxml;
     opens com.ooops.lms.controller to javafx.fxml;

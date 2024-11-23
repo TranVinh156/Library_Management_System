@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.util.FXMLLoaderUtil;
+import com.ooops.lms.util.Sound;
 import com.ooops.lms.util.ThemeManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,20 +26,25 @@ public class InterfaceSettingController {
     public void onBeigeColorMouseClicked(MouseEvent mouseEvent) {
         ThemeManager.getInstance().changeTheme("");
         ThemeManager.getInstance().applyTheme(interfaceSettingBox);
+        Sound.getInstance().playSound("default.mp3");
     }
 
     public void onBlackColorMouseClicked(MouseEvent mouseEvent) {
         ThemeManager.getInstance().changeTheme("dark");
         ThemeManager.getInstance().applyTheme(interfaceSettingBox);
+        Sound.getInstance().playSound("dark.mp3");
     }
 
     public void onPinkColorMouseClicked(MouseEvent mouseEvent) {
         ThemeManager.getInstance().changeTheme("pink");
         ThemeManager.getInstance().applyTheme(interfaceSettingBox);
+        Sound.getInstance().playSound("pink.mp3");
     }
 
     public void onGoldColorMouseClicked(MouseEvent mouseEvent) {
         ThemeManager.getInstance().changeTheme("gold");
         ThemeManager.getInstance().applyTheme(interfaceSettingBox);
+        Sound.getInstance().playSound("gold.mp3");
+
     }
 }

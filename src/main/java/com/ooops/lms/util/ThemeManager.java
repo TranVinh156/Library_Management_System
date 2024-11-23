@@ -74,16 +74,16 @@ public class ThemeManager {
         }
         switch (currentTheme) {
             case DEFAULT_THEME:
-                button.setStyle("-fx-background-color : #F2E0C9");
+                button.setStyle("-fx-background-color : #FF755C");
                 break;
             case DARK_THEME:
                 button.setStyle("-fx-background-color : #000000");
                 break;
             case PINK_THEME:
-                button.setStyle("-fx-background-color : #FFD5D5");
+                button.setStyle("-fx-background-color : #FD4176");
                 break;
             case GOLD_THEME:
-                button.setStyle("-fx-background-color : #FFD700");
+                button.setStyle("-fx-background-color : #7300FF");
                 break;
 
         }

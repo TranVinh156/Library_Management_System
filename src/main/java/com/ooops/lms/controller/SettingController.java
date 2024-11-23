@@ -41,7 +41,7 @@ public class SettingController {
     private static final String USER_REPORT_FXML = "/com/ooops/lms/library_management_system/UserReport-view.fxml";
 
     public void initialize() {
-        showInfo();
+        // showInfo();
     }
 
     public void showInfo() {
