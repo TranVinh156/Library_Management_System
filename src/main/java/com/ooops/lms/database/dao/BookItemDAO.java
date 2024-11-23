@@ -44,7 +44,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
 
     // update
     private static final String UPDATE_BOOK_ITEM
-            = "UPDATE BookItem SET status = ?, note = ?, ISBN = ? WHERE barcode = ?";
+            = "UPDATE BookItem SET BookItemStatus = ?, note = ?, ISBN = ? WHERE barcode = ?";
 
     // select all
     private static final String SELECT_ALL = "SELECT * FROM BookItem";
