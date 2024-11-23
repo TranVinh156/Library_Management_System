@@ -55,7 +55,7 @@ public class UserReportController {
             loadReport(reports.get(i));
         }
 
-        CustomerAlter.showMessage("Chú ý: nếu m report linh tinh thì t ban luôn");
+        CustomerAlter.showMessage("Report những vấn đề của bạn");
     }
 
     public void onBackButtonAction(ActionEvent actionEvent) {

@@ -49,10 +49,10 @@ public class BookItem extends Book {
     public void setBarcode(int barcode) {
         this.barcode = barcode;
     }
-
-    public BookItemStatus getStatus() {
-        return this.status;
-    }
+//
+//    public BookItemStatus getStatus() {
+//        return this.status;
+//    }
 
     public String getNote() {
         return note;

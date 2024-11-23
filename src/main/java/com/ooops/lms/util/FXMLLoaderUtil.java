@@ -102,6 +102,8 @@ public class FXMLLoaderUtil {
     public void deleteAllInCache() {
         controllerCache.clear();
         fxmlCache.clear();
+        System.out.println(fxmlCache.size());
+        BookManager.getInstance().clearCache();
     }
 
     public void refreshUpdateBook() {

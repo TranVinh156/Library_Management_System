@@ -6,6 +6,9 @@ import com.ooops.lms.model.*;
 import com.ooops.lms.model.enums.BookItemStatus;
 import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import com.ooops.lms.util.ThemeManager;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +16,15 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,10 +56,23 @@ public class BookController {
     private Text contentText;
     @FXML
     private VBox commentsVBox;
+    @FXML
+    HBox categoryHbox;
 
     public void initialize() {
         starChoiceBox.getItems().addAll("tất cả", "5 sao", "4 sao", "3 sao", "2 sao", "1 sao");
         starChoiceBox.setValue("tất cả");
+
+        starChoiceBox.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (oldValue != null && !oldValue.equals(newValue)) {
+                    showComment(fromRateToInt(starChoiceBox.getValue()));
+                }
+            }
+        });
+        ThemeManager.getInstance().addPane(bookBox);
+
     }
 
     public void setData() {
@@ -82,13 +103,47 @@ public class BookController {
                 fxmlLoader.setLocation(getClass().getResource(COMMENT_FXML));
                 VBox cardBox = fxmlLoader.load();
                 CommentController cardController = fxmlLoader.getController();
-                cardController.setData(comments.get(i));
+                cardController.setData(comments.get(i),authorNameLabel.getStyleClass().toString());
                 commentsVBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        categoryHbox.getChildren().clear();
+        List<Category> categories = book.getCategories();
+        for (int i = 0; i < categories.size(); i++) {
+            Label label = new Label(categories.get(i).toString());
+            label.getStyleClass().add("label-4");
+            categoryHbox.getChildren().add(label);
+        }
     }
+
+    private void showComment(int star) {
+        commentsVBox.getChildren().clear();
+        List<Comment> comments = new ArrayList<>();
+        try {
+            Map<String, Object> criteria = new HashMap<>();
+            criteria.put("ISBN", book.getISBN());
+            comments = CommentDAO.getInstance().searchByCriteria(criteria);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < comments.size(); i++) {
+            if (comments.get(i).getRate() == star) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource(COMMENT_FXML));
+                    VBox cardBox = fxmlLoader.load();
+                    CommentController cardController = fxmlLoader.getController();
+                    cardController.setData(comments.get(i),authorNameLabel.getStyleClass().toString());
+                    commentsVBox.getChildren().add(cardBox);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
@@ -113,7 +168,7 @@ public class BookController {
                 criteria.put("ISBN", book.getISBN());
                 List<BookItem> bookItem = BookItemDAO.getInstance().searchByCriteria(criteria);
                 BookReservation bookReservation = new BookReservation(UserMenuController.getMember()
-                        , bookItem.getFirst(),LocalDate.now().toString()
+                        , bookItem.getFirst(), LocalDate.now().toString()
                         , LocalDate.now().plusDays(3).toString());
                 try {
                     BookReservationDAO.getInstance().add(bookReservation);
@@ -123,7 +178,7 @@ public class BookController {
                 CustomerAlter.showMessage("Đã ghi nhận, vui lòng n mượn trong 3 ngày");
                 BookManager.getInstance().addReservedBook(bookReservation);
                 SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
-                if(settingController!=null) {
+                if (settingController != null) {
                     settingController.updateReservedBookSize();
                 }
             } catch (RuntimeException | IOException | SQLException e) {
@@ -177,5 +232,34 @@ public class BookController {
     public void setBook(Book book) {
         this.book = book;
         setData();
+    }
+
+    private int fromRateToInt(String rate) {
+        char firstChar = rate.charAt(0);
+        return Character.getNumericValue(firstChar);
+    }
+
+    public void onOpenPreviewMouseClicked(MouseEvent mouseEvent) {
+        System.out.println(book.getPreview());
+        openWebLink("https://books.google.com.vn/books?id=igvwDwAAQBAJ&printsec=frontcover&dq=java&hl=&cd=1&source=gbs_api#v=onepage&q=java&f=false");
+    }
+
+    private void openWebLink(String url) {
+        try {
+            // Kiểm tra Desktop API
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                    desktop.browse(new URI(url));
+                } else {
+                    System.out.println("Desktop không hỗ trợ mở trình duyệt.");
+                }
+            } else {
+                System.out.println("Desktop không được hỗ trợ trên hệ thống này.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Lỗi khi mở liên kết: " + url);
+        }
     }
 }

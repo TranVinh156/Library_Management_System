@@ -37,7 +37,8 @@
 }
 .choiceBox {
     -fx-background-radius: 10;
-    -fx-background-color: #ffffff;
+    -fx-background-color: linear-gradient(#ffffff, #5A5A5A);
+    -fx-text-fill : white;
 }
 .rounded-box {
     -fx-background-color: transparent;
@@ -77,6 +78,7 @@
     -fx-background-radius: 15; /* Bo tròn các góc bên trong */
     -fx-border-radius: 15;
 }
+
 /*-----button-menu-bar--------*/
 .menu-bar-button {
     -fx-background-color: transparent;
@@ -138,4 +140,80 @@
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-alignment : top-left;
+}
+
+.musicBar {
+    -fx-background-color: linear-gradient(#BAC3FF, #B682F5);
+    -fx-background-radius : 20;
+}
+
+.label-4{
+    -fx-font-weight: bold;
+    -fx-background-color: #000000;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 10;
+    -fx-padding:5 10 5 10;
+}
+
+.button-book1 {
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+}
+
+.button-book2 {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.label-book {
+    -fx-text-fill:#000000;
+}
+
+.titleBox-book {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-font-size: 13;
+    -fx-padding:8 15 8 15;
+}
+
+.BookView-Background {
+    -fx-background-image: url("../image/customer/book/darkBackground.jpg");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.bottom-background-book{
+        -fx-background-color: #5A5A5A;
+}
+
+.transparent-scrollpane {
+    -fx-background-color: transparent;
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+.content-book{
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+}
+.imageview-eye {
+    -fx-image: url("../image/customer/book/close.png");
+    -fx-background-image: url("../image/customer/book/open.png");
+}
+
+.imageview-eye:hover {
+    -fx-image: url("../image/customer/book/open.png");
+}
+.musicRadio{
+    -fx-background-color: linear-gradient(black, #363636,black);
+    -fx-background-radius:20;
+}
+.musicRadioSmall{
+    -fx-background-color: linear-gradient(white, #C8C8C8,white);
+    -fx-background-radius:20;
+}
+.musicNameIn{
+    -fx-background-color: linear-gradient(white, #C8C8C8,white);
+    -fx-background-radius:20;
 }
