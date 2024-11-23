@@ -47,6 +47,9 @@ public class AdminBookTableRowController extends BaseRowController<Book, AdminBo
         categoryLabel.setText(getCategories(item.getCategories()));
         locationLabel.setText(item.getPlaceAt());
         numberOfBookLabel.setText((String.valueOf(item.getQuantity())));
+        if(item.getstatus() == null) {
+            System.out.println(item.getISBN() +" is null status");
+        }
         statusLabel.setText(item.getstatus().getDisplayName());
         if(item.getstatus().equals(BookStatus.AVAILABLE)) {
             statusLabel.setStyle(("-fx-text-fill: green;"));
