@@ -47,7 +47,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             "set first_name = ?, last_name = ?, birth_date = ?, gender = ?, email = ?, phone = ?, image_path = ?" +
             " where member_ID = ?";
 
-    private static final String UPDATE_ACCOUNT = "Update Users set status = ? where user_ID = ?";
+    private static final String UPDATE_ACCOUNT = "Update Users set AccountStatus = ? where user_ID = ?";
 
     // delete
     private static final String DELETE_MEMBER = "Delete from members where member_ID = ?";
@@ -227,7 +227,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             if (key.equals("member_id")) {
                 findMemberByCriteria.append("CAST(m.member_id AS CHAR) like ? OR ");
             } else if (key.equals("fullname")) {
-                findMemberByCriteria.append("CONCAT(Members.last_name, ' ', Members.first_name) LIKE ? OR ");
+                findMemberByCriteria.append("CONCAT(m.last_name, ' ', m.first_name) LIKE ? OR ");
             } else {
                 findMemberByCriteria.append(key).append(" like ?").append(" OR ");
             }

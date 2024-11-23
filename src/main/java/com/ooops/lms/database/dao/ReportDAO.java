@@ -35,7 +35,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
     private static final String ADD_REPORT = "Insert into Reports(member_ID, title, content) values (?, ?, ?)";
 
     // update
-    private static final String UPDATE_REPORT = "Update Reports set title = ?, content = ?, status = ? where report_ID = ?";
+    private static final String UPDATE_REPORT = "Update Reports set title = ?, content = ?, ReportStatus = ? where report_ID = ?";
 
     //delete
     private static final String DELETE_REPORT = "Delete from Reports where report_ID = ?";

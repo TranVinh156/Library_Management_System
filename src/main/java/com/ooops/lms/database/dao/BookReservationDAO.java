@@ -42,7 +42,7 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
     // update
     private static final String UPDATE_BOOK_RESERVATION
-            = "Update BookReservation set member_ID = ?, barcode = ?, creation_date = ?, due_date = ?, status = ? where reservation_ID = ?";
+            = "Update BookReservation set member_ID = ?, barcode = ?, creation_date = ?, due_date = ?, BookReservationStatus = ? where reservation_ID = ?";
 
     // delete
     private static final String DELETE_BOOK_RESERVATION
@@ -129,7 +129,7 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
     @Override
     public List<BookReservation> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
-        StringBuilder findBookReservationByCriteria = new StringBuilder("Select * from BookReservation " +
+        StringBuilder findBookReservationByCriteria = new StringBuilder("Select distinct (reservation_ID) from BookReservation " +
                 "join Members on BookReservation.member_ID = Members.member_ID " +
                 "join BookItem on BookReservation.barcode = BookItem.barcode " +
                 "join Books on Books.ISBN = BookItem.ISBN " +
@@ -140,8 +140,8 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
         for (String key : criteria.keySet()) {
             switch (key) {
-                case "barcode" -> findBookReservationByCriteria.append("CAST(barcode AS CHAR) LIKE ? AND ");
-                case "member_ID" -> findBookReservationByCriteria.append("CAST(member_ID AS CHAR) LIKE ? AND ");
+                case "barcode" -> findBookReservationByCriteria.append("CAST(BookReservation.barcode AS CHAR) LIKE ? AND ");
+                case "member_ID" -> findBookReservationByCriteria.append("CAST(BookReservation.member_ID AS CHAR) LIKE ? AND ");
                 case "creation_date" -> {
                     flag[index] = true;
                     findBookReservationByCriteria.append("DATE(creation_date) = ? AND ");
