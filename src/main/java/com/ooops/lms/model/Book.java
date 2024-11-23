@@ -23,7 +23,7 @@ public class Book {
     private int numberOfLostBooks;
     private int numberOfReservedBooks;
     private int rate;
-    private BookStatus status;
+    private BookStatus bookStatus;
     private List<Author> authors;
     private List<Category> categories;
 
@@ -217,15 +217,12 @@ public class Book {
         this.preview = preview;
     }
 
-    public BookStatus getStatus() {
-        return status;
+    public BookStatus getstatus() {
+        return bookStatus;
     }
 
-    public void setStatus(BookStatus status) {
-        this.status = status;
-    }
-    public BookStatus getstatus() {
-        return this.status;
+    public void setBookStatus(BookStatus bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
     @Override
