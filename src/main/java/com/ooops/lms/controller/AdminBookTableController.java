@@ -138,7 +138,7 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
         }
 
         if(!statusFindBox.getItems().isEmpty() && statusFindBox.getValue() != "None" && statusFindBox.getValue() != null) {
-            findCriteria.put("book_status", statusFindBox.getValue());
+            findCriteria.put("BookStatus", statusFindBox.getValue());
         }
 
     }
@@ -171,10 +171,13 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
 
     protected void setText() {
         try {
-            findCriteria.put("status", BookItemStatus.AVAILABLE.toString());
+            findCriteria.put("BookItemStatus", BookItemStatus.AVAILABLE.toString());
             List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(findCriteria);
             findCriteria.clear();
-            findCriteria.put("status", BookItemStatus.LOANED.toString());
+            findCriteria.put("BookItemStatus", BookItemStatus.LOANED.toString());
+            bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(findCriteria));
+            findCriteria.clear();
+            findCriteria.put("BookItemStatus", BookItemStatus.RESERVED.toString());
             bookItemList.addAll(BookItemDAO.getInstance().searchByCriteria(findCriteria));
             totalNumberBookLabel.setText(String.valueOf(bookItemList.size()));
         } catch (Exception e) {
@@ -182,13 +185,13 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
         }
         adminDashboardController.setTotalBookLabel(totalNumberBookLabel.getText());
         try {
-            findCriteria.put("status", BookItemStatus.LOANED.toString());
+            findCriteria.put("BookItemStatus", BookItemStatus.LOANED.toString());
             totalNumberBorrowLabel.setText(BookItemDAO.getInstance().searchByCriteria(findCriteria).size() + "");
             findCriteria.clear();
-            findCriteria.put("status", BookReservationStatus.WAITING.toString());
+            findCriteria.put("BookReservationStatus", BookReservationStatus.WAITING.toString());
             totalNumberIssueLabel.setText(BookReservationDAO.getInstance().searchByCriteria(findCriteria).size() + "");
             findCriteria.clear();
-            findCriteria.put("status", BookItemStatus.LOST.toString());
+            findCriteria.put("BookItemStatus", BookItemStatus.LOST.toString());
             totalNumberLostLabel.setText(BookItemDAO.getInstance().searchByCriteria(findCriteria).size() + "");
             findCriteria.clear();
         } catch (Exception e) {

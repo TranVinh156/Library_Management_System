@@ -80,7 +80,7 @@ public class AdminDashboardController extends BasicController {
     public void loadRecentIssuel() {
         recentIssuelVbox.getChildren().clear();
         Map<String, Object> findCriteria = new HashMap<>();
-        findCriteria.put("status", "PENDING");
+        findCriteria.put("ReportStatus", "PENDING");
         try {
             List<Report> itemsList = ReportDAO.getInstance().searchByCriteria(findCriteria);
             for (Report item : itemsList) {
@@ -109,6 +109,7 @@ public class AdminDashboardController extends BasicController {
     }
 
     private void loadTopBookHbox() {
+        topBookHbox.getChildren().clear();
         try {
              List<Book> highRankBooks = BookDAO.getInstance().selectAll();
 

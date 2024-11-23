@@ -83,12 +83,9 @@ public class AdminUserTableController extends BaseTableController<Member, AdminU
             itemsList.addAll(MemberDAO.getInstance().searchByCriteria(findCriteria));
 
             findCriteria.clear();
-            findCriteria.put("first_name", findValue);
+            findCriteria.put("fullname", findValue);
             itemsList.addAll(MemberDAO.getInstance().searchByCriteria(findCriteria));
 
-            findCriteria.clear();
-            findCriteria.put("last_name", findValue);
-            itemsList.addAll(MemberDAO.getInstance().searchByCriteria(findCriteria));
 
         } catch (SQLException e) {
             e.printStackTrace();

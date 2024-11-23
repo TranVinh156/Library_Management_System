@@ -6,10 +6,7 @@ import com.ooops.lms.barcode.BarcodeScanner;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.database.dao.*;
 import com.ooops.lms.model.*;
-import com.ooops.lms.model.enums.AccountStatus;
-import com.ooops.lms.model.enums.BookItemStatus;
-import com.ooops.lms.model.enums.BookReservationStatus;
-import com.ooops.lms.model.enums.BookStatus;
+import com.ooops.lms.model.enums.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -55,13 +52,16 @@ public class AdminCommand implements Command {
                 case "add":
                     if (object instanceof Book) {
                         BookDAO.getInstance().add((Book) object);
+                        return true;
                     } else if (object instanceof Member) {
                         MemberDAO.getInstance().add((Member) object);
+                        return true;
                     } else if (object instanceof BookReservation) {
                         BookReservationDAO.getInstance().add((BookReservation) object);
+                        return true;
                     } else if (object instanceof BookIssue) {
                         Map<String, Object> findCriteria = new HashMap<>();
-                        findCriteria.put("status", "WAITING");
+                        findCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
                         findCriteria.put("member_ID", ((BookIssue) object).getMember().getPerson().getId());
                        // findCriteria.put("ISBN", ((BookIssue) object).getBookItem().getISBN());
                         List<BookReservation> bookReservationsList = BookReservationDAO.getInstance().searchByCriteria(findCriteria);
@@ -72,11 +72,13 @@ public class AdminCommand implements Command {
 
                             bookReservationsList.getFirst().setStatus(BookReservationStatus.COMPLETED);
                             BookReservationDAO.getInstance().update(bookReservationsList.getFirst());
+                            return true;
                         } else {
                             BookIssueDAO.getInstance().add((BookIssue) object);
+                            return true;
                         }
                     }
-                    return true;
+                    return false;
                 case "delete":
                     if (object instanceof Book) {
                         BookDAO.getInstance().delete((Book) object);
@@ -86,7 +88,7 @@ public class AdminCommand implements Command {
                         MemberDAO.getInstance().delete((Member) object);
                         return true;
                     } else if(object instanceof BookReservation) {
-                        BookItem bookItem = ((BookIssue) object).getBookItem();
+                        BookItem bookItem = ((BookReservation) object).getBookItem();
                         bookItem.setStatus(BookItemStatus.AVAILABLE);
                         BookItemDAO.getInstance().update(bookItem);
                         BookReservation bookReservation = (BookReservation) object;
