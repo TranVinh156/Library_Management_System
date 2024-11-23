@@ -16,16 +16,18 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 public class BookItemDAO implements DatabaseQuery<BookItem> {
-    private Database database;
-    private BookDAO bookDAO;
+    private static Database database;
+    private static BookDAO bookDAO;
     private static BookItemDAO bookItemDAO;
+    private static LRUCache<Integer, BookItem> bookItemCache;
 
     private BookItemDAO() {
         database = Database.getInstance();
         bookDAO = BookDAO.getInstance();
+        bookItemCache = new LRUCache<>(100);
     }
 
-    public static BookItemDAO getInstance() {
+    public static synchronized BookItemDAO getInstance() {
         if (bookItemDAO == null) {
             bookItemDAO = new BookItemDAO();
         }
@@ -73,7 +75,12 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
             preparedStatement.setLong(3, entity.getISBN());
             preparedStatement.setInt(4, entity.getBarcode());
 
-            return preparedStatement.executeUpdate() > 0;
+            if (preparedStatement.executeUpdate() > 0) {
+                bookItemCache.put(entity.getBarcode(), entity);
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -81,22 +88,29 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     public boolean delete(@NotNull BookItem entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_ITEM)) {
             preparedStatement.setInt(1, entity.getBarcode());
-            return preparedStatement.executeUpdate() > 0;
+            if (preparedStatement.executeUpdate() > 0) {
+                bookItemCache.remove(entity.getBarcode());
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
     @Override
     public BookItem find(Number keywords) throws SQLException {
+        if (bookItemCache.containsKey(keywords.intValue())) {
+            return bookItemCache.get(keywords.intValue());
+        }
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_ITEM)) {
             preparedStatement.setInt(1, (Integer) keywords);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     BookItem bookItem = new BookItem(resultSet.getInt("barcode")
-                            , BookItemStatus.valueOf(resultSet.getString("status"))
+                            , BookItemStatus.valueOf(resultSet.getString("BookItemStatus"))
                             , resultSet.getString("note"), bookDAO.find(resultSet.getLong("ISBN")));
 
-                    List<BookItem> bookItemList = new ArrayList<>();
-                    bookItemList.add(bookItem);
+                    bookItemCache.put(bookItem.getBarcode(), bookItem);
                     return bookItem;
                 } else {
                     throw new SQLException("No book item found");
