@@ -3,31 +3,27 @@ package com.ooops.lms.controller;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
-import com.ooops.lms.SuggestionTable.AdminSugesstionRowController;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
-import com.ooops.lms.bookapi.BookInfoFetcher;
-import com.ooops.lms.controller.BaseDetailController;
 import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookItem;
 import javafx.animation.PauseTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -268,6 +264,23 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     private void initialize() {
         suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox, this.sugestionList);
 
+        suggestionPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                // Scene đã được tạo, thêm event filter
+                newScene.getRoot().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                    if (suggestionPane.isVisible()) {
+                        // Lấy tọa độ của điểm click trong không gian của suggestionPane
+                        Point2D point = suggestionPane.sceneToLocal(event.getSceneX(), event.getSceneY());
+
+                        // Kiểm tra xem click có nằm ngoài suggestionPane không
+                        if (!suggestionPane.contains(point)) {
+                            suggestionPane.setVisible(false);
+                            suggestionVbox.getChildren().clear();
+                        }
+                    }
+                });
+            }
+        });
 
         suggestionTable.setRowClickListener(new SuggestionRowClickListener() {
             @Override
@@ -285,9 +298,11 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         // Listener cho ISBN TextField
         ISBNText.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!isSettingItem && addMode) {
-                suggestionTable.updateSuggestionPanePosition(ISBNText);
-                String isbnNumbers = newValue.replaceAll("[^0-9]", "");
-                suggestionTable.loadFindData("bookISBNAPI", isbnNumbers);
+                if(newValue != null && !newValue.isEmpty()) {
+                    suggestionTable.updateSuggestionPanePosition(ISBNText);
+                    String isbnNumbers = newValue.replaceAll("[^0-9]", "");
+                    suggestionTable.loadFindData("bookISBNAPI", isbnNumbers);
+                }
             }
             isSettingItem = false;
         });
