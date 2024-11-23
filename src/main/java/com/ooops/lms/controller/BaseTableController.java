@@ -31,9 +31,9 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
     protected BasePageController mainController;
     protected Map<String, Object> findCriteria = new HashMap<>();
 
-    private static final int LOAD_THRESHOLD = 5;  // Số hàng trước khi đến cuối bảng để kích hoạt tải thêm
+    private static final int LOAD_THRESHOLD = 10;  // Số hàng trước khi đến cuối bảng để kích hoạt tải thêm
     private int loadedItemsCount = 0;  // Theo dõi số hàng hiện tại đã được tải
-    private static final int ITEMS_PER_LOAD = 10; // Số hàng sẽ được tải mỗi lần
+    private static final int ITEMS_PER_LOAD = 20; // Số hàng sẽ được tải mỗi lần
 
     protected abstract String getRowFXML();
 
