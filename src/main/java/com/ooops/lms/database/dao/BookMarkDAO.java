@@ -15,9 +15,9 @@ import java.util.Map;
 public class BookMarkDAO implements DatabaseQuery<BookMark> {
     private static BookMarkDAO bookMarkDAO;
 
-    private Database database;
-    private MemberDAO memberDAO;
-    private BookDAO bookDAO;
+    private static Database database;
+    private static MemberDAO memberDAO;
+    private static BookDAO bookDAO;
 
     private BookMarkDAO() {
         database = Database.getInstance();
@@ -25,7 +25,7 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
         bookDAO = BookDAO.getInstance();
     }
 
-    public static BookMarkDAO getInstance() {
+    public static synchronized BookMarkDAO getInstance() {
         if (bookMarkDAO == null) {
             bookMarkDAO = new BookMarkDAO();
         }
