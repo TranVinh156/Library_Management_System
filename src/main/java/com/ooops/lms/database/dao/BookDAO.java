@@ -263,7 +263,7 @@ public class BookDAO implements DatabaseQuery<Book> {
             insertBookItem(entity.getISBN(), entity.getPlaceAt(), entity.getQuantity());
             
             database.getConnection().commit();
-            bookCache.put(entity.getISBN(), entity);
+            //bookCache.put(entity.getISBN(), entity);
         } catch (SQLException e) {
             database.getConnection().rollback();
             throw e;
@@ -373,7 +373,7 @@ public class BookDAO implements DatabaseQuery<Book> {
     @Override
     public Book find(Number keywords) throws SQLException {
         if (bookCache.containsKey(keywords)) {
-            System.out.println("Cache hoạt động");
+            //System.out.println("Cache hoạt động");
             return bookCache.get(keywords);
         }
 
@@ -414,6 +414,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                     book.setNumberOfReservedBooks(resultSet.getInt("number_reserved_book"));
                     book.setRate(resultSet.getInt("rate"));
                     book.setBookStatus(BookStatus.valueOf(resultSet.getString("BookStatus")));
+                    book.setPreview(resultSet.getString("preview"));
                     bookList.add(book);
 
                     // Lưu vào bộ nhớ đệm
@@ -538,5 +539,9 @@ public class BookDAO implements DatabaseQuery<Book> {
                 return authorList;
             }
         }
+    }
+
+    public void fetchBook(Long isbn) {
+        bookCache.remove(isbn);
     }
 }
