@@ -22,13 +22,14 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
     private static Database database;
     private static BookItemDAO bookItemDAO;
     private static MemberDAO memberDAO;
-
+    private static BookDAO bookDAO;
     private static LRUCache<Integer, BookIssue> bookIssueCache;
 
     private BookIssueDAO() {
         database = Database.getInstance();
         bookItemDAO = BookItemDAO.getInstance();
         memberDAO = MemberDAO.getInstance();
+        bookDAO = BookDAO.getInstance();
         bookIssueCache = new LRUCache<>(100);
     }
 
@@ -66,11 +67,9 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
             preparedStatement.setString(4, entity.getDueDate());
 
             preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                entity.setIssueID(resultSet.getInt(1));
-            }
-            bookIssueCache.put(entity.getIssueID(), entity);
+            memberDAO.fetchCache(entity.getMember().getPerson().getId());
+            bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+            bookDAO.fetchBook(entity.getBookItem().getISBN());
         }
     }
 
@@ -87,6 +86,9 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
 
             if (preparedStatement.executeUpdate() > 0) {
                 bookIssueCache.put(entity.getIssueID(), entity);
+                memberDAO.fetchCache(entity.getMember().getPerson().getId());
+                bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+                bookDAO.fetchBook(entity.getBookItem().getISBN());
                 return true;
             } else {
                 return false;
@@ -101,6 +103,9 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
 
             if (preparedStatement.executeUpdate() > 0) {
                 bookIssueCache.remove(entity.getIssueID());
+                memberDAO.fetchCache(entity.getMember().getPerson().getId());
+                bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+                bookDAO.fetchBook(entity.getBookItem().getISBN());
                 return true;
             } else {
                 return false;
@@ -111,6 +116,7 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
     @Override
     public BookIssue find(@NotNull Number keywords) throws SQLException {
         if (bookIssueCache.containsKey(keywords.intValue())) {
+            System.out.println("cache issue");
             return bookIssueCache.get(keywords.intValue());
         }
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_ISSUE)) {
@@ -196,5 +202,9 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
                 return bookIssues;
             }
         }
+    }
+
+    public void fetchCache(int issueID) {
+        bookIssueCache.remove(issueID);
     }
 }
