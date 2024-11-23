@@ -164,13 +164,12 @@ public class AccountDAO {
     }
 
     /**
-     *
-     * @param username
+     * Lấy lại mật khẩu.
      * @param email
      * @return
      * @throws SQLException
      */
-    public boolean resetPassword(String username, String email) throws SQLException {
+    public boolean resetPassword(String email) throws SQLException {
         // Kiểm tra tên dăng nhập và email có trùng khớp
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_RESET_PASSWORD_USER)) {
             preparedStatement.setString(1, email);
@@ -178,6 +177,7 @@ public class AccountDAO {
 
             if (resultSet.next()) { //Nếu trùng khớp
                 String OTP = generateOTP();
+                String username = resultSet.getString("username");
                 saveOTP(username, OTP);
                 EmailUtil.sendAsyncEmail(email, "THÔNG BÁO LẤY LẠI MẬT KHẨU", "Mã OTP của bạn là " + OTP);
                 return true;
