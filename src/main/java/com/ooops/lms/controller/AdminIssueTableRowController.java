@@ -37,6 +37,11 @@ public class AdminIssueTableRowController extends BaseRowController<Report, Admi
         detailLabel.setText(item.getContent());
         emailLabel.setText(item.getMember().getPerson().getEmail());
         statusLabel.setText(item.getStatus().toString());
+        if(statusLabel.getText().equals("RESOLVED")){
+            statusLabel.setStyle("-fx-text-fill: green;");
+        } else if(statusLabel.getText().equals("PENDING")){
+            statusLabel.setStyle("-fx-text-fill: red;");
+        }
     }
 
 
