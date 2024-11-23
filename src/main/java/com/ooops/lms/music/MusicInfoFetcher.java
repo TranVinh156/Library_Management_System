@@ -6,6 +6,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
+import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.model.Music;
 
 import java.util.ArrayList;
@@ -16,7 +17,12 @@ public class MusicInfoFetcher {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String API_KEY = "AIzaSyChNsPo2ZSTE80-0Q5mwpLFysHY4zfDqtM";
 
+    private static final LRUCache<String, List<Music>> musicCache = new LRUCache<>(50);
+
     public static List<Music> searchVideos(String keyword) {
+        if (musicCache.containsKey(keyword)) {
+            return musicCache.get(keyword);
+        }
         List<Music> musicList = new ArrayList<>();
         try {
             // Khởi tạo YouTube Service
@@ -43,11 +49,13 @@ public class MusicInfoFetcher {
                 String videoId = result.getId().getVideoId();
                 String thumbnailUrl = result.getSnippet().getThumbnails().getDefault().getUrl();
                 String title = result.getSnippet().getTitle();
-                musicList.add(new Music(videoId, thumbnailUrl, title));
+                Music music = new Music(videoId, title, thumbnailUrl);
+                musicList.add(music);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        musicCache.put(keyword, musicList);
         return musicList;
     }
 
