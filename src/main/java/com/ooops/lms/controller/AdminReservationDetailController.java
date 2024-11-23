@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -224,16 +225,17 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         }
         String reformattedDate = reformatDate(borowDateText.getText());
         String reformattedReturnDate = reformatDate(returnDateText.getText());
-        item = new BookReservation(member, bookItem, item.getCreatedDate(), item.getDueDate());
+        item = new BookReservation(member, bookItem, reformattedDate, reformattedReturnDate);
         item.setStatus(borrowStatus.getValue());
-        item.setReservationId(Integer.valueOf(borrowIDLabel.getText()));
+        if (borrowIDLabel != null && borrowIDLabel.getText() != null) {
+            item.setReservationId(Integer.valueOf(borrowIDLabel.getText()));
+        }
         return true;
     }
 
     @FXML
     public void initialize() {
         borrowStatus.getItems().addAll(BookReservationStatus.values());
-
 
         suggestionTable = new SuggestionTable(this.suggestionPane, this.suggestionVbox, this.sugestionList);
         suggestionPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
@@ -286,7 +288,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         memberNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingMember && addMode) {
-                    if(newValue != null && !newValue.isEmpty()) {
+                    if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("memberName", newValue);
                         suggestionTable.updateSuggestionPanePosition(memberNameText);
                     }
@@ -298,7 +300,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         memberIDText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingMember && addMode) {
-                    if(newValue != null && !newValue.isEmpty()) {
+                    if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("memberID", newValue);
                         suggestionTable.updateSuggestionPanePosition(memberIDText);
                     }
@@ -310,7 +312,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         bookNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingBook && addMode) {
-                    if(newValue != null && !newValue.isEmpty()) {
+                    if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("bookItemName", newValue);
                         suggestionTable.updateSuggestionPanePosition(bookNameText);
                     }
@@ -321,7 +323,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         barCodeText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingBook && addMode) {
-                    if(newValue != null && !newValue.isEmpty()) {
+                    if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("bookBarCode", newValue);
                         suggestionTable.updateSuggestionPanePosition(barCodeText);
                     }
@@ -442,8 +444,32 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     private void setDateIssue() {
         borrowIDLabel.setText(String.valueOf(item.getReservationId()));
-        borowDateText.setText(String.valueOf(item.getCreatedDate()).substring(0,10));
-        returnDateText.setText(String.valueOf(item.getDueDate()).substring(0,10));
+
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        try {
+            // Chuyển đổi và định dạng cho borrowDate
+            if (item.getCreatedDate() != null) {
+                LocalDate createdDate = LocalDate.parse(item.getCreatedDate(), inputFormatter);
+                borowDateText.setText(createdDate.format(outputFormatter));
+            } else {
+                borowDateText.setText(""); // Hoặc giá trị mặc định khác
+            }
+
+            // Chuyển đổi và định dạng cho returnDate
+            if (item.getDueDate() != null) {
+                LocalDate dueDate = LocalDate.parse(item.getDueDate(), inputFormatter);
+                returnDateText.setText(dueDate.format(outputFormatter));
+            } else {
+                returnDateText.setText(""); // Hoặc giá trị mặc định khác
+            }
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            // Xử lý lỗi nếu cần (ví dụ: hiển thị thông báo lỗi cho người dùng)
+            borowDateText.setText(""); // Hoặc giá trị mặc định khác
+            returnDateText.setText(""); // Hoặc giá trị mặc định khác
+        }
         borrowStatus.setValue(item.getStatus());
     }
 
