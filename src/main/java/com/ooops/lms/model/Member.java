@@ -5,6 +5,7 @@ import com.ooops.lms.model.enums.AccountStatus;
 
 public class Member extends Account {
     private int totalBooksCheckOut;
+    private int totalBooksLost;
 
     public Member(String username, String password, Person person) {
         super(username, password, person);
@@ -31,11 +32,24 @@ public class Member extends Account {
     public int hashCode() {
         return Long.hashCode(getPerson().getId());
     }
+
     @Override
     public String toString() {
-        return getPerson().getId() +"";
+        return getPerson().getId() + "";
     }
+
     public int getTotalBooksCheckOut() {
         return totalBooksCheckOut;
+    }
+
+    public void setTotalBooksCheckOut(int totalBooksCheckOut) {
+        this.totalBooksCheckOut = totalBooksCheckOut;
+    }
+
+    public int getTotalBooksLost() {
+        return totalBooksLost;
+    }
+    public void setTotalBooksLost(int totalBooksLost) {
+        this.totalBooksLost = totalBooksLost;
     }
 }

@@ -49,7 +49,7 @@ public abstract class BaseDetailController<T> extends BasicController {
         try {
             if (addMode) {
                 if (validateInput() && getNewItemInformation()) {
-                    boolean confirmYes = CustomerAlter.showAlter("Thêm sách mới?");
+                    boolean confirmYes = CustomerAlter.showAlter("Thêm " + getType() + " mới?");
                     if (confirmYes) {
                         Command addCommand = new AdminCommand("add", this.item);
                         commandInvoker.setCommand(addCommand);
@@ -63,7 +63,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                 }
             } else {
                 if (validateInput() && getNewItemInformation()) {
-                    boolean confirmYes = CustomerAlter.showAlter("Bạn có muốn lưu thay đổi này không?");
+                    boolean confirmYes = CustomerAlter.showAlter("Bạn có muốn lưu thay đổi " + getType() + " này hay không?");
                     if (confirmYes) {
                         // sửa sách trong CSDL
                         Command editCommand = new AdminCommand("edit", this.item);
@@ -71,6 +71,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                         if (commandInvoker.executeCommand()) {
                             getTitlePageStack().pop();
                             mainController.loadData();
+                            loadItemDetails();
                             setEditMode(false);
                             System.out.println("Đã lưu thay đổi");
                         }
@@ -87,7 +88,7 @@ public abstract class BaseDetailController<T> extends BasicController {
 
     protected void deleteChanges() {
         try {
-            boolean confirmYes = CustomerAlter.showAlter("Bạn có chắc muốn xóa nó chứ?");
+            boolean confirmYes = CustomerAlter.showAlter("Bạn có chắc muốn xóa " + getType() + " này chứ?");
             if (confirmYes) {
                 Command deleteCommand = new AdminCommand("delete", this.item);
                 commandInvoker.setCommand(deleteCommand);
@@ -118,6 +119,8 @@ public abstract class BaseDetailController<T> extends BasicController {
     protected abstract boolean validateInput();
 
     protected abstract boolean getNewItemInformation() throws Exception;
+
+    protected abstract String getType();
 
 
 }

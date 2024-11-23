@@ -4,6 +4,7 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -83,7 +84,7 @@
                               <AnchorPane layoutX="39.2" prefHeight="277.0" prefWidth="513.0" styleClass="pane-main" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <Label layoutX="14.0" layoutY="14.0" styleClass="black-text-Cabin" text="Biểu đồ sách cho mượn" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
-                                    <LineChart layoutX="-6.0" layoutY="38.0" prefHeight="228.0" prefWidth="518.0" AnchorPane.bottomAnchor="3.9999999999999716" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="4.800000000000068" AnchorPane.topAnchor="38.0">
+                                    <LineChart fx:id="lineChart" layoutX="-6.0" layoutY="38.0" prefHeight="228.0" prefWidth="518.0" AnchorPane.bottomAnchor="3.9999999999999716" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="4.800000000000068" AnchorPane.topAnchor="38.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
                                       </xAxis>
@@ -91,6 +92,8 @@
                                         <NumberAxis side="LEFT" />
                                       </yAxis>
                                     </LineChart>
+                                    <ChoiceBox fx:id="dateReportBox" layoutX="266.0" layoutY="12.0" prefHeight="30.0" prefWidth="109.0" style="-fx-background-color: transparent;" styleClass="round-box-customer" AnchorPane.rightAnchor="137.19999999999993" />
+                                    <ChoiceBox fx:id="dateReportBox2" layoutX="391.0" layoutY="12.0" prefHeight="30.0" prefWidth="109.0" style="-fx-background-color: transparent;" styleClass="round-box-customer" AnchorPane.rightAnchor="15.400000000000006" />
                                  </children>
                               </AnchorPane>
                            </children>

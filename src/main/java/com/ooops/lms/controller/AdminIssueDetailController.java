@@ -53,7 +53,9 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
     protected void loadItemDetails() {
         statusBox.setValue(item.getStatus());
 
-        getTitlePageStack().push(item.getReportID() + "");
+        if(!getTitlePageStack().peek().equals(item.getReportID()+"")) {
+            getTitlePageStack().push(item.getReportID() + "");
+        }
         IDreportLabel.setText(String.valueOf(item.getReportID()));
         nameMemberLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
         IDMemberLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
@@ -86,6 +88,10 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
         return true;
     }
 
+    @Override
+    protected String getType() {
+        return "report";
+    }
 
     @FXML
     private void onEditButtonAction(ActionEvent event) {
