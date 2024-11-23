@@ -55,14 +55,9 @@ public class BookSuggestionCardController {
         if(this.book==null) {
             this.book = otherBook;
             book.setQuantity(10);
-            try {
-                BookDAO.getInstance().add(book);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
             book.setRate(5);
         }
+
         // Hiển thị thông tin cơ bản
         bookNameLabel.setText(book.getTitle());
         String author = book.getAuthors().stream()
@@ -96,6 +91,11 @@ public class BookSuggestionCardController {
 
             fxmlLoaderUtil.updateContentBox(newContent);
 
+            try {
+                BookDAO.getInstance().add(book);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

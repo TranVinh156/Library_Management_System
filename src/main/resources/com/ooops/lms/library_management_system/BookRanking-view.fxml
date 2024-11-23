@@ -21,7 +21,7 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </HBox>
-      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="540.0" prefWidth="540.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="540.0" prefWidth="540.0" styleClass="rounded-scrollpane" VBox.vgrow="ALWAYS">
          <content>
             <VBox fx:id="rankingVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="498.0" spacing="10.0">
                <padding>

@@ -1,17 +1,17 @@
 .topBackground {
-    -fx-background-color: linear-gradient(#FFD700, #D4AF37);
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37,#C1A300);
 }
 
 .sideBackground {
-    -fx-background-color: linear-gradient(#FFD700, #D4AF37);
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37,#D2A203);
 }
 
 .background {
-    -fx-background-color: #F9FF4E;
+    -fx-background-color: #ffffff;
 }
 
 .background-part {
-    -fx-background-color: #ffffff;
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37,#D2A203);
 }
 
 .label-1{
@@ -36,10 +36,11 @@
 }
 .choiceBox {
     -fx-background-radius: 10;
-    -fx-background-color: #EFBF04;
+    -fx-background-color: linear-gradient(#C1A6F6, #53B6F3);
+    -fx-text-fill : white;
 }
 .rounded-box {
-    -fx-background-color: transparent;
+    -fx-background-color: #F9FF4E;
     -fx-background-radius: 15;
 }
 
@@ -65,14 +66,14 @@
 }
 /*-----scrollpane--------*/
 .rounded-scrollpane {
-    -fx-background-color: transparent;
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37,#C1A300);
     -fx-border-radius: 15; /* Bo tròn border của ScrollPane */
     -fx-background-radius: 15; /* Bo tròn background */
     -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
 }
 
 .scroll-pane .viewport {
-    -fx-background-color: white; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37,#C1A300);
     -fx-background-radius: 15; /* Bo tròn các góc bên trong */
     -fx-border-radius: 15;
 }
@@ -137,4 +138,79 @@
     -fx-text-fill: #EFBF04;
     -fx-font-size: 16px;
     -fx-alignment : top-left;
+}
+.musicBar {
+    -fx-background-color: linear-gradient(#BAC3FF, #B682F5);
+    -fx-background-radius : 20;
+}
+
+.label-4{
+    -fx-font-weight: bold;
+    -fx-background-color: #FF8800;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 10;
+    -fx-padding:5 10 5 10;
+}
+
+.button-book1 {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #FF6200;
+}
+
+.button-book2 {
+    -fx-background-color: #FF8000;
+    -fx-text-fill: #ffffff;
+}
+
+.label-book {
+    -fx-text-fill:#000000;
+}
+
+.titleBox-book {
+    -fx-background-color: #FF6A00;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-font-size: 13;
+    -fx-padding:8 15 8 15;
+}
+
+.BookView-Background {
+    -fx-background-image: url("../image/customer/book/goldBackground.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.bottom-background-book{
+        -fx-background-color: #ffffff;
+}
+
+.transparent-scrollpane {
+    -fx-background-color: transparent;
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+.content-book{
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+}
+.imageview-eye {
+    -fx-image: url("../image/customer/book/close.png");
+    -fx-background-image: url("../image/customer/book/open.png");
+}
+
+.imageview-eye:hover {
+    -fx-image: url("../image/customer/book/open.png");
+}
+.musicRadio{
+    -fx-background-color: linear-gradient(#FFD700, #D4AF37,#C1A300);
+    -fx-background-radius:20;
+}
+.musicRadioSmall{
+    -fx-background-color: #ffffff;
+    -fx-background-radius:20;
+}
+.musicNameIn{
+    -fx-background-color: linear-gradient(#ffffff, #E5F697,#E5FF6F);
+    -fx-background-radius:20;
 }

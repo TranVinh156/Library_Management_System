@@ -1,5 +1,6 @@
 package com.ooops.lms.util;
 
+import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.controller.UserMenuController;
 import com.ooops.lms.database.dao.BookIssueDAO;
@@ -30,8 +31,7 @@ public class BookManager {
     private List<BookIssue> borrowedBooks;
     private List<BookIssue> borrowingBooks;
 
-    private Map<String, List<Book>> searchBooks = new HashMap<>();
-    private final Map<String, Image> bookImageCache = new HashMap<>();
+    private static LRUCache<String, Image> bookImageCache = new LRUCache<>(20);
 
     private BookManager() {
         try {
@@ -81,7 +81,7 @@ public class BookManager {
         if (borrowedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
-            criteria.put("status", BookIssueStatus.RETURNED);
+            criteria.put("bookIssueStatus", BookIssueStatus.RETURNED);
             borrowedBooks = BookIssueDAO.getInstance().searchByCriteria(criteria);
         }
         return borrowedBooks;
@@ -219,15 +219,23 @@ public class BookManager {
     }
 
     public void clearCache() {
-        bookImageCache.clear(); // Làm sạch cache khi cần thiết
+        instance = null;
+        bookImageCache.clear();
+        allBooks.clear();
+        popularBooks.clear();
+        highRankBooks.clear();
+        if (reservedBooks != null) {
+            reservedBooks.clear();
+        }
+        if(markedBooks!=null) {
+            markedBooks.clear();
+        }
+        if(borrowedBooks!=null) {
+            borrowedBooks.clear();
+        }
+        if(borrowingBooks!=null) {
+            borrowingBooks.clear();
+        }
     }
 
-
-    public Map<String, List<Book>> getBookSearchCache() {
-        return searchBooks;
-    }
-
-    public void addBookSearchCache(String key, List<Book> books) {
-        searchBooks.put(key, books);
-    }
 }
