@@ -17,14 +17,16 @@ import java.util.List;
 import java.util.Map;
 
 public class BookDAO implements DatabaseQuery<Book> {
-    private Database database;
+    private static Database database;
     private static BookDAO bookDAO;
+    private static LRUCache<Long, Book> bookCache;
 
     private BookDAO() {
         database = Database.getInstance();
+        bookCache = new LRUCache<>(100);
     }
 
-    public static BookDAO getInstance() {
+    public static synchronized BookDAO getInstance() {
         if (bookDAO == null) {
             bookDAO = new BookDAO();
         }
@@ -74,8 +76,8 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     //
     private static final String SELECT_ALL = "Select * from Books";
-    private static final String SELECT_ALL_CATEGORY = "Select * from Category";
-    private static final String SELECT_ALL_AUTHOR = "Select * from Authors";
+    private static final String SELECT_ALL_CATEGORY = "Select * from Category ORDER BY category_name ASC";
+    private static final String SELECT_ALL_AUTHOR = "Select * from Authors ORDER BY author_name ASC";
 
     /**
      * Thêm book vào csdl.
@@ -258,8 +260,9 @@ public class BookDAO implements DatabaseQuery<Book> {
             }
 
             insertBookItem(entity.getISBN(), entity.getPlaceAt(), entity.getQuantity());
-
+            
             database.getConnection().commit();
+            bookCache.put(entity.getISBN(), entity);
         } catch (SQLException e) {
             database.getConnection().rollback();
             throw e;
@@ -303,6 +306,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                 preparedStatement.executeUpdate();
 
                 database.getConnection().commit();
+                bookCache.put(entity.getISBN(), entity);
                 return true;
             }
 
@@ -347,6 +351,7 @@ public class BookDAO implements DatabaseQuery<Book> {
                 stmt.setLong(1, isbn);
                 int rowsDeleted = stmt.executeUpdate();
                 database.getConnection().commit();
+                bookCache.remove(entity.getISBN());
                 return rowsDeleted > 0;
             }
         } catch (SQLException e) {
@@ -366,6 +371,11 @@ public class BookDAO implements DatabaseQuery<Book> {
      */
     @Override
     public Book find(Number keywords) throws SQLException {
+        if (bookCache.containsKey(keywords)) {
+            System.out.println("Cache hoạt động");
+            return bookCache.get(keywords);
+        }
+
         List<Author> authorList = new ArrayList<>();
         List<Category> categoryList = new ArrayList<>();
         List<Book> bookList = new ArrayList<>();
@@ -402,10 +412,11 @@ public class BookDAO implements DatabaseQuery<Book> {
                     book.setNumberOfLostBooks(resultSet.getInt("number_lost_book"));
                     book.setNumberOfReservedBooks(resultSet.getInt("number_reserved_book"));
                     book.setRate(resultSet.getInt("rate"));
-                    book.setStatus(BookStatus.valueOf(resultSet.getString("book_status")));
+                    book.setStatus(BookStatus.valueOf(resultSet.getString("BookStatus")));
                     bookList.add(book);
 
                     // Lưu vào bộ nhớ đệm
+                    bookCache.put((Long) keywords, book);
                     return book;
                 } else {
                     return null;

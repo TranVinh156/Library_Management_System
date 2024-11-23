@@ -16,14 +16,14 @@ import java.util.Map;
 import java.util.Random;
 
 public class AccountDAO {
-    private Database database;
+    private static Database database;
     private static AccountDAO accountDAO;
 
     private AccountDAO() {
         database = Database.getInstance();
     }
 
-    public static AccountDAO getInstance() {
+    public static synchronized AccountDAO getInstance() {
         if (accountDAO == null) {
             accountDAO = new AccountDAO();
         }

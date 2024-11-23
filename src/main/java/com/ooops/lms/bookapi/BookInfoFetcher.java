@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
@@ -19,6 +20,7 @@ public class BookInfoFetcher {
     private static final String API_URL_KEYWORD = "https://www.googleapis.com/books/v1/volumes?q=";
     private static final String API_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
     private static final int MAX_BOOK = 100;
+    private static LRUCache<String, List<Book>> bookCache = new LRUCache<>(20);
 
     private static String fetchResponse(URL url) throws Exception {
         HttpURLConnection conn;
@@ -50,6 +52,10 @@ public class BookInfoFetcher {
 
 
     public static List<Book> searchBooksByKeyword(String title) {
+        if (bookCache.containsKey(title)) {
+            System.out.println("Cache Hoạt động " + title + " " + bookCache.get(title).size());
+            return bookCache.get(title);
+        }
         List<Book> books = new ArrayList<>();
         try {
             // Tạo URL từ tiêu đề
@@ -116,10 +122,15 @@ public class BookInfoFetcher {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("cache " + title + " " + books.size());
         return books;
     }
 
     public static Book searchBookByISBN(String isbn) {
+        if (bookCache.containsKey(isbn)) {
+            System.out.println("cache hoạt động");
+            return bookCache.get(isbn).getFirst();
+        }
         try {
             // Tạo URL từ ISBN
             URL url = new URL(API_URL + isbn);
@@ -171,7 +182,7 @@ public class BookInfoFetcher {
     public static void main(String[] args) {
         // Thay thế ISBN này bằng ISBN bạn muốn tìm kiếm
         String isbn = "9780470046968";
-        List<Book> books = searchBooksByKeyword("java");
+        List<Book> books = searchBooksByKeyword("Hello");
         for (Book book : books) {
             book.setQuantity(10);
             try {

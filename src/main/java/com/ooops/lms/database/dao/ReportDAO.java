@@ -16,15 +16,15 @@ import java.util.Map;
 public class ReportDAO implements DatabaseQuery<Report> {
     private static ReportDAO reportDAO;
 
-    private Database database;
-    private MemberDAO memberDAO;
+    private static Database database;
+    private static MemberDAO memberDAO;
 
     private ReportDAO() {
         database = Database.getInstance();
         memberDAO = MemberDAO.getInstance();
     }
 
-    public static ReportDAO getInstance() {
+    public static synchronized ReportDAO getInstance() {
         if (reportDAO == null) {
             reportDAO = new ReportDAO();
         }
@@ -87,7 +87,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
                         , memberDAO.find(resultSet.getInt("member_ID"))
                         , resultSet.getString("title")
                         , resultSet.getString("content")
-                        , ReportStatus.valueOf(resultSet.getString("status")));
+                        , ReportStatus.valueOf(resultSet.getString("ReportStatus")));
                 return report;
             }
         }
@@ -125,7 +125,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
                             memberDAO.find(resultSet.getInt("member_ID")),
                             resultSet.getString("title"),
                             resultSet.getString("content"),
-                            ReportStatus.valueOf(resultSet.getString("status")));
+                            ReportStatus.valueOf(resultSet.getString("ReportStatus")));
                     reports.add(report);
                 }
                 return reports;
@@ -144,7 +144,7 @@ public class ReportDAO implements DatabaseQuery<Report> {
                         , memberDAO.find(resultSet.getInt("member_ID"))
                         , resultSet.getString("title")
                         , resultSet.getString("content")
-                        , ReportStatus.valueOf(resultSet.getString("status")));
+                        , ReportStatus.valueOf(resultSet.getString("ReportStatus")));
                 reports.add(report);
             }
             return reports;
