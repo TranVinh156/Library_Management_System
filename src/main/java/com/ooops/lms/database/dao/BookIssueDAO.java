@@ -45,7 +45,7 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
 
     // update
     private static final String UPDATE_BOOK_ISSUE
-            = "Update BookIssue set member_ID = ?, barcode = ?, creation_date = ?, due_date = ?, return_date = ?, status = ? where issue_ID = ?";
+            = "Update BookIssue set member_ID = ?, barcode = ?, creation_date = ?, due_date = ?, return_date = ?, BookIssueStatus = ? where issue_ID = ?";
 
     // delete
     private static final String DELETE_BOOK_ISSUE
@@ -145,8 +145,8 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
 
         for (String key : criteria.keySet()) {
             switch (key) {
-                case "barcode" -> findBookIssueByCriteria.append("CAST(barcode AS CHAR) LIKE ? AND ");
-                case "member_ID" -> findBookIssueByCriteria.append("CAST(member_ID AS CHAR) LIKE ? AND ");
+                case "barcode" -> findBookIssueByCriteria.append("CAST(BookIssue.barcode AS CHAR) LIKE ? AND ");
+                case "member_ID" -> findBookIssueByCriteria.append("CAST(BookIssue.member_ID AS CHAR) LIKE ? AND ");
                 case "creation_date" -> {
                     flag[index] = true;
                     findBookIssueByCriteria.append("DATE(creation_date) = ? AND ");
