@@ -17,6 +17,7 @@ public class Book {
     private String imagePath;
     private String description;
     private String placeAt;
+    private String preview = "No link available";
     private int quantity;
     private int numberOfLoanedBooks;
     private int numberOfLostBooks;
@@ -206,6 +207,18 @@ public class Book {
 
     public void setNumberOfReservedBooks(int numberOfReservedBooks) {
         this.numberOfReservedBooks = numberOfReservedBooks;
+    }
+
+    public String getPreview() {
+        return preview;
+    }
+
+    public void setPreview(String preview) {
+        this.preview = preview;
+    }
+
+    public BookStatus getStatus() {
+        return status;
     }
 
     public void setStatus(BookStatus status) {

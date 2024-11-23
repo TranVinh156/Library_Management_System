@@ -50,7 +50,7 @@ public class BookDAO implements DatabaseQuery<Book> {
     private static final String INSERT_NEW_BOOKITEM = "Insert into BookItem(ISBN) values (?)";
 
     private static final String INSERT_NEW_BOOK
-            = "Insert into Books (ISBN, image_path, title, description, placeAt) values (?, ?, ?, ?, ?)";
+            = "Insert into Books (ISBN, image_path, title, description, placeAt, preview) values (?, ?, ?, ?, ?, ?)";
 
     private static final String SELECT_BOOK_BY_ISBN = "Select * from Books where ISBN = ?";
 
