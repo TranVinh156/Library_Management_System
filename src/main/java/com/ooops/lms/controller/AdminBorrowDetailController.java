@@ -252,11 +252,15 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
                     isSettingMember = true;
                     setMember((Member) o);
                     suggestionVbox.getChildren().clear();
+                    suggestionPane.setLayoutX(0);
+                    suggestionPane.setLayoutY(0);
                     suggestionPane.setVisible(false);
                 } else if (o instanceof BookItem) {
                     isSettingBook = true;
                     setBookItem((BookItem) o);
                     suggestionVbox.getChildren().clear();
+                    suggestionPane.setLayoutX(0);
+                    suggestionPane.setLayoutY(0);
                     suggestionPane.setVisible(false);
                 }
             }
@@ -272,6 +276,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
                         // Kiểm tra xem click có nằm ngoài suggestionPane không
                         if (!suggestionPane.contains(point)) {
+                            suggestionPane.setLayoutX(0);
+                            suggestionPane.setLayoutY(0);
                             suggestionPane.setVisible(false);
                             suggestionVbox.getChildren().clear();
                         }
@@ -284,13 +290,25 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             if (newScene != null) {
                 Stage stage = (Stage) bookNameText.getScene().getWindow();
 
-                stage.widthProperty().addListener((obs, oldWidth, newWidth) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+                stage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    if (Math.abs(newWidth.doubleValue() - oldWidth.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
 
-                stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
-
-
+                stage.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+                    if (Math.abs(newHeight.doubleValue() - oldHeight.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
             }
         });
 
