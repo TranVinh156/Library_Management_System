@@ -1,6 +1,5 @@
 package com.ooops.lms.SuggestionTable;
 
-import com.ooops.lms.Cache.BookQueryCache;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.controller.BookSuggestionCardController;
 import com.ooops.lms.database.dao.BookItemDAO;
@@ -42,7 +41,6 @@ public class SuggestionTable {
     Map<Integer, Member> uniqueMembersMap = new HashMap<>();
     Map<String, Object> searchCriteria = new HashMap<>();
     private TextField activeTextField;
-    BookQueryCache cache = new BookQueryCache(5);
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 

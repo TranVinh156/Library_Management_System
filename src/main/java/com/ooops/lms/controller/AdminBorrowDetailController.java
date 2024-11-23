@@ -5,6 +5,8 @@ import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.controller.BaseDetailController;
+import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.*;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
 import com.ooops.lms.model.enums.BookIssueStatus;
@@ -29,6 +31,8 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -128,7 +132,9 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @Override
     protected void loadItemDetails() {
-        getTitlePageStack().push(item.getIssueID() + "");
+        if(!getTitlePageStack().peek().equals(item.getIssueID()+"")) {
+            getTitlePageStack().push(item.getIssueID() + "");
+        }
         member = item.getMember();
         setMember(member);
 
@@ -227,6 +233,10 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         }
         return true;
     }
+    @Override
+    public String getType() {
+        return "đơn mượn sách";
+    }
 
 
     @FXML
@@ -242,11 +252,15 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
                     isSettingMember = true;
                     setMember((Member) o);
                     suggestionVbox.getChildren().clear();
+                    suggestionPane.setLayoutX(0);
+                    suggestionPane.setLayoutY(0);
                     suggestionPane.setVisible(false);
                 } else if (o instanceof BookItem) {
                     isSettingBook = true;
                     setBookItem((BookItem) o);
                     suggestionVbox.getChildren().clear();
+                    suggestionPane.setLayoutX(0);
+                    suggestionPane.setLayoutY(0);
                     suggestionPane.setVisible(false);
                 }
             }
@@ -262,6 +276,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
                         // Kiểm tra xem click có nằm ngoài suggestionPane không
                         if (!suggestionPane.contains(point)) {
+                            suggestionPane.setLayoutX(0);
+                            suggestionPane.setLayoutY(0);
                             suggestionPane.setVisible(false);
                             suggestionVbox.getChildren().clear();
                         }
@@ -274,13 +290,25 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             if (newScene != null) {
                 Stage stage = (Stage) bookNameText.getScene().getWindow();
 
-                stage.widthProperty().addListener((obs, oldWidth, newWidth) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+                stage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    if (Math.abs(newWidth.doubleValue() - oldWidth.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
 
-                stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
-
-
+                stage.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+                    if (Math.abs(newHeight.doubleValue() - oldHeight.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
             }
         });
 
@@ -406,14 +434,31 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         phoneNumberText.setText(member.getPerson().getPhone());
         emailText.setText(member.getPerson().getEmail());
         genderText.setText(member.getPerson().getGender().toString());
-        totalOFBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
+        try {
+            Map<String, Object> findCriteriaa = new HashMap<>();
+            findCriteriaa.put("BookIssueStatus", BookIssueStatus.BORROWED);
+            findCriteriaa.put("member_ID", member.getPerson().getId());
+            int lostBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size();
+            totalOFBorrowText.setText(lostBook + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //totalOFBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
         try {
             File file = new File(member.getPerson().getImagePath());
             memberImage.setImage(new Image(file.toURI().toString()));
         } catch (Exception e) {
             memberImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));
         }
-        totalOfLostText.setText("chua co");
+        try {
+            Map<String, Object> findCriteriaa = new HashMap<>();
+            findCriteriaa.put("BookIssueStatus", BookIssueStatus.LOST);
+            findCriteriaa.put("member_ID", member.getPerson().getId());
+            int lostBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size();
+            totalOfLostText.setText(lostBook + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setBookItem(BookItem bookItem) {

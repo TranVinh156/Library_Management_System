@@ -5,6 +5,7 @@ import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
+import com.ooops.lms.database.dao.BookIssueDAO;
 import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.BookReservation;
@@ -31,6 +32,8 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -129,7 +132,9 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @Override
     protected void loadItemDetails() {
-        getTitlePageStack().push(item.getReservationId() + "");
+        if(!getTitlePageStack().peek().equals(item.getReservationId()+"")) {
+            getTitlePageStack().push(item.getReservationId() + "");
+        }
         member = item.getMember();
         setMember(member);
 
@@ -232,6 +237,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         }
         return true;
     }
+    @Override
+    public String getType() {
+        return "đơn đặt sách";
+    }
 
     @FXML
     public void initialize() {
@@ -277,11 +286,25 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
             if (newScene != null) {
                 Stage stage = (Stage) bookNameText.getScene().getWindow();
 
-                stage.widthProperty().addListener((obs, oldWidth, newWidth) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+                stage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    if (Math.abs(newWidth.doubleValue() - oldWidth.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
 
-                stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+                stage.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+                    if (Math.abs(newHeight.doubleValue() - oldHeight.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
             }
         });
 
@@ -413,7 +436,15 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         } catch (Exception e) {
             memberImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));
         }
-        totalOfLostText.setText("chua co");
+        try {
+            Map<String, Object> findCriteriaa = new HashMap<>();
+            findCriteriaa.put("BookIssueStatus", BookIssueStatus.LOST);
+            findCriteriaa.put("member_ID", member.getPerson().getId());
+            int lostBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size();
+            totalOfLostText.setText(lostBook + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setBookItem(BookItem bookItem) {
