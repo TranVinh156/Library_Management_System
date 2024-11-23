@@ -125,15 +125,10 @@ public class SuggestionTable {
         try {
             switch (typeData) {
                 case "memberName":
-                    System.out.println("dheushui");
                     searchCriteria.clear();
-                    searchCriteria.put("first_name", value);
+                    searchCriteria.put("fullname", value);
                     suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
 
-                    searchCriteria.clear();
-                    searchCriteria.put("last_name", value);
-                    suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
-                    System.out.println(suggestList.size());
                     break;
                 case "memberID":
                     searchCriteria.put("member_id", value);
@@ -148,7 +143,7 @@ public class SuggestionTable {
                     break;
                 case "bookItemName":
                     searchCriteria.put("title", value);
-                    searchCriteria.put("status", BookItemStatus.AVAILABLE);
+                    searchCriteria.put("BookItemStatus", BookItemStatus.AVAILABLE);
                     suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
                     break;
                 case "bookNameAPI":

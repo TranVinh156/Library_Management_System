@@ -66,7 +66,7 @@ public class AdminBorrowTableController extends BaseTableController<BookIssue, A
         itemsList.addAll(BookIssueDAO.getInstance().selectAll());
         //Xu ly set total cho Dashboard
         findCriteria.clear();
-        findCriteria.put("status", BookItemStatus.LOANED.toString());
+        findCriteria.put("BookItemStatus", BookItemStatus.LOANED.toString());
         int totalBorrow = BookItemDAO.getInstance().searchByCriteria(findCriteria).size();
         adminDashboardController.setTotalBorrowLabel(totalBorrow+"");
         findCriteria.clear();
@@ -93,7 +93,7 @@ public class AdminBorrowTableController extends BaseTableController<BookIssue, A
             findCriteria.put("memnberID",memeberIDFindText.getText());
         }
         if(!statusFindText.getText().isEmpty()){
-            findCriteria.put("status",statusFindText.getText());
+            findCriteria.put("BookIssueStatus",statusFindText.getText());
         }
 
     }
