@@ -183,6 +183,10 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         return keywords.toString();
     }
 
+    public void fetchCache(int barcode) {
+        bookItemCache.remove(barcode);
+    }
+
     public static void main(String[] args) {
         Map<String, Object> criteria = new HashMap<>();
         criteria.put("barcode", "123");
