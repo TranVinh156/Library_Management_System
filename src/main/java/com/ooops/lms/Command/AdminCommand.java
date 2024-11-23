@@ -1,14 +1,19 @@
 package com.ooops.lms.Command;
 
+import com.google.api.services.books.v1.model.Volumeseriesinfo;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.barcode.BarcodeScanner;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.database.dao.*;
 import com.ooops.lms.model.*;
 import com.ooops.lms.model.enums.AccountStatus;
+import com.ooops.lms.model.enums.BookItemStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
+import com.ooops.lms.model.enums.BookStatus;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AdminCommand implements Command {
@@ -53,29 +58,69 @@ public class AdminCommand implements Command {
                     } else if (object instanceof Member) {
                         MemberDAO.getInstance().add((Member) object);
                     } else if (object instanceof BookReservation) {
-                        System.out.println("Dang them borrow:" + ((BookReservation) object).getBookItem().getBarcode());
                         BookReservationDAO.getInstance().add((BookReservation) object);
                     } else if (object instanceof BookIssue) {
-                        BookIssueDAO.getInstance().add((BookIssue) object);
+                        Map<String, Object> findCriteria = new HashMap<>();
+                        findCriteria.put("status", "WAITING");
+                        findCriteria.put("member_ID", ((BookIssue) object).getMember().getPerson().getId());
+                       // findCriteria.put("ISBN", ((BookIssue) object).getBookItem().getISBN());
+                        List<BookReservation> bookReservationsList = BookReservationDAO.getInstance().searchByCriteria(findCriteria);
+                        if (bookReservationsList.size() > 0) {
+                            System.out.println("Coooo");
+                            BookIssue newBookIssue = new BookIssue(((BookIssue) object).getMember(),bookReservationsList.getFirst().getBookItem(),((BookIssue) object).getCreatedDate(),((BookIssue) object).getDueDate());
+                            BookIssueDAO.getInstance().add(newBookIssue);
+
+                            bookReservationsList.getFirst().setStatus(BookReservationStatus.COMPLETED);
+                            BookReservationDAO.getInstance().update(bookReservationsList.getFirst());
+                        } else {
+                            BookIssueDAO.getInstance().add((BookIssue) object);
+                        }
                     }
                     return true;
                 case "delete":
                     if (object instanceof Book) {
                         BookDAO.getInstance().delete((Book) object);
-                    }
+                        return true;
+                    } else
                     if (object instanceof Member) {
                         MemberDAO.getInstance().delete((Member) object);
+                        return true;
+                    } else if(object instanceof BookReservation) {
+                        BookItem bookItem = ((BookIssue) object).getBookItem();
+                        bookItem.setStatus(BookItemStatus.AVAILABLE);
+                        BookItemDAO.getInstance().update(bookItem);
+                        BookReservation bookReservation = (BookReservation) object;
+                        bookReservation.setStatus(BookReservationStatus.CANCELED);
+                        BookReservationDAO.getInstance().update(bookReservation);
+                        BookReservationDAO.getInstance().delete((BookReservation) object);
+                        return true;
+                    } else if(object instanceof BookIssue) {
+                        BookItem bookItem = ((BookIssue) object).getBookItem();
+                        bookItem.setStatus(BookItemStatus.AVAILABLE);
+                        BookItemDAO.getInstance().update(bookItem);
+                        BookIssueDAO.getInstance().delete((BookIssue) object);
+                        return true;
                     }
-                    return true;
+                    return false;
                 case "edit":
                     if (object instanceof Book) {
                         Book book = (Book) object;
                         bookDAO.update((Book) object);
-                    }
-                    if (object instanceof Member) {
+                        return true;
+                    } else if (object instanceof Member) {
                         MemberDAO.getInstance().update((Member) object);
+                        return true;
+                    } else if (object instanceof Report) {
+                        ReportDAO.getInstance().update((Report) object);
+                        return true;
+                    } else if(object instanceof BookIssue) {
+                        BookIssueDAO.getInstance().update((BookIssue) object);
+                        return true;
+                    } else if(object instanceof BookReservation) {
+                        BookReservationDAO.getInstance().update((BookReservation) object);
+                        return true;
                     }
-                    return true;
+                    return false;
                 case "block":
                     if (object instanceof Member) {
                         Member member = (Member) object;
@@ -102,7 +147,6 @@ public class AdminCommand implements Command {
                     if (object instanceof BookItem) {
                         bookItemResult = BookItemDAO.getInstance().find(Long.valueOf(barcodeScanner.scanBarcodeFromCamera()));
                     } else if (object instanceof Book) {
-                        System.out.println("diisad");
                         String barcode = barcodeScanner.scanBarcodeFromCamera();
                         bookResult = BookInfoFetcher.searchBookByISBN(barcode);
                         if (bookResult == null) {
