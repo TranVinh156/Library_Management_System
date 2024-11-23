@@ -14,15 +14,15 @@ import java.util.Map;
 public class CommentDAO implements DatabaseQuery<Comment> {
     private static CommentDAO commentDAO;
 
-    private Database database;
-    private MemberDAO memberDAO;
+    private static Database database;
+    private static MemberDAO memberDAO;
 
     private CommentDAO() {
         database = Database.getInstance();
         memberDAO = MemberDAO.getInstance();
     }
 
-    public static CommentDAO getInstance() {
+    public static synchronized CommentDAO getInstance() {
         if (commentDAO == null) {
             commentDAO = new CommentDAO();
         }
@@ -54,6 +54,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
     // không có sửa comment
     @Override
     public boolean update(Comment entity) throws SQLException {
+
         return false;
     }
 
