@@ -201,8 +201,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
         memberIDText.setEditable(editMode);
         barCodeText.setEditable(editMode);
 
-        //borowDateText.setEditable(editMode);
-        //returnDateText.setEditable(editMode);
+        borowDateText.setEditable(editMode);
+        returnDateText.setEditable(editMode);
         borrowStatus.setMouseTransparent(!editMode);
 
         scanBookButton.setMouseTransparent(editMode);
@@ -316,8 +316,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                         suggestionTable.loadFindData("memberName", newValue);
                         suggestionTable.updateSuggestionPanePosition(memberNameText);
                     } else {
-                        suggestionPane.setLayoutX(0);
-                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setLayoutX(50);
+                        suggestionPane.setLayoutY(50);
                         suggestionPane.setVisible(false);
                     }
                 }
@@ -332,8 +332,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                         suggestionTable.loadFindData("memberID", newValue);
                         suggestionTable.updateSuggestionPanePosition(memberIDText);
                     } else {
-                        suggestionPane.setLayoutX(0);
-                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setLayoutX(50);
+                        suggestionPane.setLayoutY(50);
                         suggestionPane.setVisible(false);
                     }
                 }
@@ -348,8 +348,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                         suggestionTable.loadFindData("bookItemName", newValue);
                         suggestionTable.updateSuggestionPanePosition(bookNameText);
                     } else {
-                        suggestionPane.setLayoutX(0);
-                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setLayoutX(50);
+                        suggestionPane.setLayoutY(50);
                         suggestionPane.setVisible(false);
                     }
                 }
@@ -363,8 +363,8 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                         suggestionTable.loadFindData("bookBarCode", newValue);
                         suggestionTable.updateSuggestionPanePosition(barCodeText);
                     } else {
-                        suggestionPane.setLayoutX(0);
-                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setLayoutX(50);
+                        suggestionPane.setLayoutY(50 );
                         suggestionPane.setVisible(false);
                     }
                 }
