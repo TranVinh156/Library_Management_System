@@ -23,6 +23,10 @@ public class AccountDAO {
         database = Database.getInstance();
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized AccountDAO getInstance() {
         if (accountDAO == null) {
             accountDAO = new AccountDAO();
@@ -30,31 +34,40 @@ public class AccountDAO {
         return accountDAO;
     }
 
+    // Lấy thông tin tài khoản admin
     private static final String GET_ACCOUNT_ADMIN =
             "Select * from Admins where username = ? and password = ?";
 
+    // lấy thông tin tài khoản user
     private static final String GET_ACCOUNT_USER =
             "Select * from Users where username = ? and password = ?";
 
+    // Thêm tài khoản user
     private static final String INSERT_USER =
             "Insert into Users (username, password, member_ID) values (?, ?, ?)";
 
+    // Thêm thành viên
     private static final String INSERT_MEMBER =
             "Insert into Members (first_name, last_name, birth_date, gender, email, phone) " +
             "VALUES (?, ?, ?, ?, ?, ?)";
 
+    // Lấy thông tin reset password
     private static final String GET_RESET_PASSWORD_USER
             = "Select * from Members join users on users.member_ID = Members.member_ID where email = ?";
 
+    // Lấy thông tin user bằng username
     private static final String GET_USER_BY_USERNAME =
             "Select * from Users where username = ?";
 
+    // Cập nhật tài khoản
     private static final String UPDATE_USER =
             "Update Users join Members on users.member_ID = Members.member_ID set password = ? where email = ?";
 
+    // Cập nhạt otp
     private static final String UPDATE_OTP_AND_EXPIRY =
             "UPDATE Users SET otp = ?, otp_expiry = NOW() + INTERVAL 5 MINUTE WHERE username = ?";
 
+    // Kiểm tra otp
     private static final String VALIDATE_OTP =
             "SELECT * FROM Users join Members on users.member_ID = Members.member_ID WHERE email = ? AND otp = ? AND otp_expiry > NOW()";
 
@@ -187,6 +200,12 @@ public class AccountDAO {
         }
     }
 
+    /**
+     * Lưu otp.
+     * @param username tên người dùng
+     * @param OTP mã otp
+     * @throws SQLException lỗi khi lưu otp
+     */
     private void saveOTP(String username, String OTP) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_OTP_AND_EXPIRY)) {
             preparedStatement.setString(1, OTP);
@@ -195,6 +214,13 @@ public class AccountDAO {
         }
     }
 
+    /**
+     * xác nhận otp.
+     * @param email email
+     * @param OTP otp
+     * @return true nếu đúng và ngược lại
+     * @throws SQLException không khớp
+     */
     public boolean verifyOTP(String email, String OTP) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(VALIDATE_OTP)) {
             preparedStatement.setString(1, email);
@@ -208,6 +234,10 @@ public class AccountDAO {
         }
     }
 
+    /**
+     * Sinh otp.
+     * @return trả về otp
+     */
     @NotNull
     private String generateOTP() {
         Random random = new Random();
@@ -215,6 +245,14 @@ public class AccountDAO {
         return String.valueOf(password);
     }
 
+    /**
+     * Đổi mật khẩu
+     * @param email email
+     * @param oldPassword mật khẩu cũ
+     * @param newPassword mật khẩu mới
+     * @return true nếu thành công và ngược lại
+     * @throws SQLException lỗi
+     */
     public boolean changePassword(String email, String oldPassword, String newPassword) throws SQLException {
         try {
             if (validateMemberLogin(email, oldPassword) != 0) {
@@ -231,6 +269,13 @@ public class AccountDAO {
         }
     }
 
+    /**
+     * Đổi mật khẩu
+     * @param email email
+     * @param newPassword mật khẩu mới
+     * @return true nếu thành công và ngược lại
+     * @throws SQLException lỗi
+     */
     public boolean changePassword(String email, String newPassword) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_USER)) {
             preparedStatement.setString(1, newPassword);
