@@ -10,6 +10,13 @@
     -fx-background-color:  #F2E0C9;
 }
 
+.Resign-Background {
+    -fx-background-image: url("../image/customer/login/LoginBackground.png"); /* Hình nền */
+    -fx-background-position: center; /* Căn giữa hình nền */
+    -fx-background-repeat: no-repeat; /* Không lặp lại hình nền */
+    -fx-background-size: cover; /* Đảm bảo hình nền phủ đầy AnchorPane */
+}
+
 /*--------------------------font------------------------------*/
 @font-face {
     /* Define the font face correctly */
