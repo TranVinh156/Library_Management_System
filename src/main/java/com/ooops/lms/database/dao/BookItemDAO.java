@@ -27,6 +27,10 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         bookItemCache = new LRUCache<>(100);
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized BookItemDAO getInstance() {
         if (bookItemDAO == null) {
             bookItemDAO = new BookItemDAO();
@@ -50,10 +54,10 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     private static final String SELECT_ALL = "SELECT * FROM BookItem";
 
     /**
-     * Thêm new bookitem
+     * Thêm new bookitem.
      *
      * @param entity new bookitem
-     * @throws SQLException
+     * @throws SQLException lỗi
      */
     @Override
     public void add(BookItem entity) throws SQLException {
@@ -65,7 +69,7 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
      *
      * @param entity bookitem khi sửa xong thông tin
      * @return true nếu thành công và ngược lại
-     * @throws SQLException
+     * @throws SQLException lỗi
      */
     @Override
     public boolean update(@NotNull BookItem entity) throws SQLException {
@@ -84,6 +88,12 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         }
     }
 
+    /**
+     * xoá.
+     * @param entity bản sao
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean delete(@NotNull BookItem entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_ITEM)) {
@@ -97,6 +107,12 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         }
     }
 
+    /**
+     * tìm.
+     * @param keywords từ khoá
+     * @return bản sao
+     * @throws SQLException lỗi
+     */
     @Override
     public BookItem find(Number keywords) throws SQLException {
         if (bookItemCache.containsKey(keywords.intValue())) {
@@ -119,6 +135,12 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         }
     }
 
+    /**
+     * tìm.
+     * @param criteria tiêu chí
+     * @return danh sách bản sao
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookItem> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
 
@@ -154,6 +176,12 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
     }
 
     // Không sử dụng
+
+    /**
+     * Lấy tất cả.
+     * @return tất cả ản sao
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookItem> selectAll() throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL)) {
@@ -166,6 +194,11 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         }
     }
 
+    /**
+     * sinh key.
+     * @param criteria tiêu chí
+     * @return key
+     */
     @NotNull
     private String generateKeywords(@NotNull Map<String, Object> criteria) {
         StringBuilder keywords = new StringBuilder();
@@ -183,6 +216,10 @@ public class BookItemDAO implements DatabaseQuery<BookItem> {
         return keywords.toString();
     }
 
+    /**
+     * cập nhật cache.
+     * @param barcode mã vạch
+     */
     public void fetchCache(int barcode) {
         bookItemCache.remove(barcode);
     }
