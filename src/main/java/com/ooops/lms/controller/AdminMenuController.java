@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -74,6 +75,9 @@ public class AdminMenuController extends BasicController {
     private ImageView logoutLogo;
 
     @FXML
+    private ImageView logo;
+
+    @FXML
     private AnchorPane mainPane;
 
     @FXML
@@ -125,6 +129,7 @@ public class AdminMenuController extends BasicController {
         hideButtonTexts();
         openMenuIcon.setOnMouseClicked(event -> toggleMenu());
         hanleAddTablePaneClose();
+        logo.setOnMouseClicked(event -> {onDashboardButtonAction(new ActionEvent());});
     }
 
     private void hanleAddTablePaneClose() {
@@ -142,6 +147,11 @@ public class AdminMenuController extends BasicController {
             });
         });
     }
+
+    @FXML
+    void onLogoAction(MouseEvent event) {
+    }
+
 
     @FXML
     void onAddNewBookButtonAction(ActionEvent event) {
