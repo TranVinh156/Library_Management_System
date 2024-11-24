@@ -84,4 +84,18 @@ public class BookIssue {
     public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof BookIssue) {
+            BookIssue bookIssue = (BookIssue) o;
+            return this.issueID == bookIssue.getIssueID();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.valueOf(this.issueID).hashCode();
+    }
 }

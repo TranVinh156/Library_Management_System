@@ -41,7 +41,7 @@ public class AdminReservationTableRowController extends BaseRowController<BookRe
     @Override
     protected void updateRowDisplay() {
         memberIDLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
-        memberNameLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
+        memberNameLabel.setText(item.getMember().getPerson().getLastName() + " " + item.getMember().getPerson().getFirstName());
         bookNameLabel.setText(item.getBookItem().getTitle());
         barCodeLabel.setText(item.getBookItem().getBarcode() + "");
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn

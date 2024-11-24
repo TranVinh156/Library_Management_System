@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AdminBorrowTableRowController extends BaseRowController<BookIssue, AdminBorrowPageController> {
 
@@ -40,10 +41,26 @@ public class AdminBorrowTableRowController extends BaseRowController<BookIssue, 
     @Override
     protected void updateRowDisplay() {
         memberIDLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
-        memberNameLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
+        memberNameLabel.setText(item.getMember().getPerson().getLastName() + " " + item.getMember().getPerson().getFirstName());
         bookNameLabel.setText(item.getBookItem().getTitle());
         barCodeLabel.setText(item.getBookItem().getBarcode() + "");
-        borrowDateLabel.setText(item.getCreatedDate().substring(0, 10));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        try {
+            // Chuyển đổi và định dạng cho borrowDate
+            if (item.getCreatedDate() != null) {
+                LocalDate createdDate = LocalDate.parse(item.getCreatedDate(), inputFormatter);
+                borrowDateLabel.setText(createdDate.format(outputFormatter));
+            } else {
+                borrowDateLabel.setText(""); // Hoặc giá trị mặc định khác
+            }
+
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            // Xử lý lỗi nếu cần (ví dụ: hiển thị thông báo lỗi cho người dùng)
+            borrowDateLabel.setText(""); // Hoặc giá trị mặc định khác
+        }
         statusLabel.setText(item.getStatus().toString());
         if(statusLabel.getText().equals("LOST")) {
             statusLabel.setStyle("-fx-text-fill: red;");

@@ -27,16 +27,24 @@ public abstract class BaseDetailController<T> extends BasicController {
 
     protected abstract void loadItemDetails();
 
+    /**
+     * Set AddMode cho Detail.
+     *
+     * @param isAdd
+     */
     public void setAddMode(boolean isAdd) {
         this.addMode = isAdd;
         updateAddModeUI();
         mainController.setTitlePage();
     }
 
-    ;
-
     protected abstract void updateAddModeUI();
 
+    /**
+     * Set EditMode cho Detail.
+     *
+     * @param enable
+     */
     public void setEditMode(boolean enable) {
         this.editMode = enable;
         updateEditModeUI();
@@ -45,6 +53,9 @@ public abstract class BaseDetailController<T> extends BasicController {
 
     protected abstract void updateEditModeUI();
 
+    /**
+     * Vinh cc.
+     */
     protected void saveChanges() {
         try {
             if (addMode) {
@@ -82,10 +93,14 @@ public abstract class BaseDetailController<T> extends BasicController {
                 }
             }
         } catch (Exception e) {
+            CustomerAlter.showMessage(e.getMessage());
             e.printStackTrace();
         }
     }
 
+    /**
+     * Khi người dùng bấm nút delete thì gọi command xóa item.
+     */
     protected void deleteChanges() {
         try {
             boolean confirmYes = CustomerAlter.showAlter("Bạn có chắc muốn xóa " + getType() + " này chứ?");
@@ -102,6 +117,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                 }
             }
         } catch (Exception e) {
+            CustomerAlter.showMessage(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -110,16 +126,35 @@ public abstract class BaseDetailController<T> extends BasicController {
         return hasUnsavedChanges;
     }
 
+    /**
+     * load về trạng thái mặc định cho detail.
+     */
     public void loadStartStatus() {
         item = null;
         setEditMode(false);
         setAddMode(false);
     }
 
+    /**
+     * Kiểm tra xem các thông tin người dùng nhập hợp lệ hay ko.
+     *
+     * @return
+     */
     protected abstract boolean validateInput();
 
+    /**
+     * Tạo newItem từ các trường text.
+     *
+     * @return
+     * @throws Exception
+     */
     protected abstract boolean getNewItemInformation() throws Exception;
 
+    /**
+     * Lấy thể loại của trang nay là gì (Đơn muon sách, Đơn đặt sách,...)
+     *
+     * @return
+     */
     protected abstract String getType();
 
 

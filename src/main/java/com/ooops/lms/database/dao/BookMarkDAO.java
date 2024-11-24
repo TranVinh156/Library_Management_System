@@ -25,6 +25,10 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
         bookDAO = BookDAO.getInstance();
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized BookMarkDAO getInstance() {
         if (bookMarkDAO == null) {
             bookMarkDAO = new BookMarkDAO();
@@ -41,6 +45,11 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
     // select all
     private static final String FIND_BOOK_MARK = "SELECT * FROM bookmark where member_id = ?";
 
+    /**
+     * thêm.
+     * @param entity đánh dấu
+     * @throws SQLException lỗi
+     */
     @Override
     public void add(@NotNull BookMark entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_BOOK_MARK)) {
@@ -51,11 +60,23 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
         }
     }
 
+    /**
+     * cập nhật.
+     * @param entity đánh dấu
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean update(BookMark entity) throws SQLException {
         return false;
     }
 
+    /**
+     * xoá.
+     * @param entity đánh dấu
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean delete(@NotNull BookMark entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_MARK)) {
@@ -66,22 +87,45 @@ public class BookMarkDAO implements DatabaseQuery<BookMark> {
         }
     }
 
+    /**
+     * tìm.
+     * @param keywords từ khoá
+     * @return đánh dấu
+     * @throws SQLException lỗi
+     */
     @Override
     public BookMark find(Number keywords) throws SQLException {
 
         return null;
     }
 
+    /**
+     * tìm.
+     * @param criteria tiêu chí
+     * @return đánh dấu
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookMark> searchByCriteria(Map<String, Object> criteria) throws SQLException {
         return List.of();
     }
 
+    /**
+     * lấy tất cả.
+     * @return ta tất cả
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookMark> selectAll() throws SQLException {
         return List.of();
     }
 
+    /**
+     * lấy tất cả sách đánh dấu.
+     * @param member người dùng
+     * @return đánh dấu
+     * @throws SQLException lỗi
+     */
     public List<BookMark> findAllBookMark(@NotNull Member member) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_MARK)) {
             preparedStatement.setInt(1, member.getPerson().getId());

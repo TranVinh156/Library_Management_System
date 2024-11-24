@@ -64,7 +64,7 @@
                               <Label styleClass="gray-text-Cabin" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="35.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="35.0" HBox.hgrow="NEVER">
                            <children>
                               <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFindButtonAction" HBox.hgrow="SOMETIMES">
                                  <graphic>

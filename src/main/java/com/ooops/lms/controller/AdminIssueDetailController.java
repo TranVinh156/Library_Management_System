@@ -57,11 +57,11 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
             getTitlePageStack().push(item.getReportID() + "");
         }
         IDreportLabel.setText(String.valueOf(item.getReportID()));
-        nameMemberLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
+        nameMemberLabel.setText(item.getMember().getPerson().getLastName() + " " + item.getMember().getPerson().getFirstName());
         IDMemberLabel.setText(String.valueOf(item.getMember().getPerson().getId()));
         emailLabel.setText(item.getMember().getPerson().getEmail());
         titelLabel.setText(item.getTitle());
-        detailIssueText.setText(item.getTitle());
+        detailIssueText.setText(item.getContent());
     }
 
     @Override
