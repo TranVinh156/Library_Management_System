@@ -42,6 +42,7 @@ public class AdminReservationPageController extends BasePageController<BookReser
     protected void setupControllers() {
 
     }
+
     @Override
     protected void setupViews() {
         this.tablePage.getChildren().add(super.tablePane);
@@ -56,16 +57,18 @@ public class AdminReservationPageController extends BasePageController<BookReser
         loadData();
         alterPage();
     }
+
     @Override
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
-        if(detailPage.isVisible()) {
+        if (detailPage.isVisible()) {
             page1 = false;
         } else {
             page1 = true;
         }
     }
+
     @Override
     public void startPage() {
         page1 = true;
@@ -74,7 +77,6 @@ public class AdminReservationPageController extends BasePageController<BookReser
         tablePage.setVisible(true);
         loadData();
     }
-
 
 
 }
