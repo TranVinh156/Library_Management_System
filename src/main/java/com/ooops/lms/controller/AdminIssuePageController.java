@@ -88,10 +88,7 @@ public class AdminIssuePageController extends BasePageController<Report, AdminIs
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
-        if(getTitlePageStack().peek() !="Edit") {
-            getTitlePageStack().pop();
-        } else {
-            getTitlePageStack().pop();
+        while (getTitlePageStack().peek() != "Report") {
             getTitlePageStack().pop();
         }
         loadData();
