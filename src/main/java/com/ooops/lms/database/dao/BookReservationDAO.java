@@ -31,6 +31,10 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
         bookReservationCache = new LRUCache<>(100);
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized BookReservationDAO getInstance() {
         if (bookReservationDAO == null) {
             bookReservationDAO = new BookReservationDAO();
@@ -56,6 +60,11 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
     // select all
     private static final String SELECT_ALL = "Select * from BookReservation";
 
+    /**
+     * thêm.
+     * @param entity đặt trước
+     * @throws SQLException lỗi
+     */
     @Override
     public void add(@NotNull BookReservation entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_BOOK_RESERVATION, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -71,6 +80,12 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
         }
     }
 
+    /**
+     * cập nhật.
+     * @param entity đặt trước
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean update(@NotNull BookReservation entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_BOOK_RESERVATION)) {
@@ -93,6 +108,12 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
         }
     }
 
+    /**
+     * xoá.
+     * @param entity đặt trước
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean delete(@NotNull BookReservation entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_RESERVATION)) {
@@ -110,6 +131,12 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
         }
     }
 
+    /**
+     * tìm.
+     * @param keywords từ khoá
+     * @return đặt trước
+     * @throws SQLException lỗi
+     */
     @Override
     public BookReservation find(@NotNull Number keywords) throws SQLException {
         if (bookReservationCache.containsKey(keywords.intValue())) {
@@ -133,6 +160,12 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
         return null;
     }
 
+    /**
+     * tìm.
+     * @param criteria tiêu chí
+     * @return danh sách đặt trước
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookReservation> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         StringBuilder findBookReservationByCriteria = new StringBuilder("Select distinct (reservation_ID) from BookReservation " +
@@ -185,6 +218,11 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
         }
     }
 
+    /**
+     * chọn tất cả.
+     * @return tất cả
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookReservation> selectAll() throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL)) {
@@ -198,6 +236,10 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
         }
     }
 
+    /**
+     * cập nhật lại cache.
+     * @param reservationID id
+     */
     public void fetchCache(int reservationID) {
         bookReservationCache.remove(reservationID);
     }

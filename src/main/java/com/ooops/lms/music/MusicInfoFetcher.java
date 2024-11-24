@@ -19,6 +19,11 @@ public class MusicInfoFetcher {
 
     private static final LRUCache<String, List<Music>> musicCache = new LRUCache<>(50);
 
+    /**
+     * tìm âm nhạc.
+     * @param keyword từ khoá
+     * @return danh sách bài hát
+     */
     public static List<Music> searchVideos(String keyword) {
         if (musicCache.containsKey(keyword)) {
             return musicCache.get(keyword);

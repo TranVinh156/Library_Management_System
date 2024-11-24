@@ -17,12 +17,17 @@ public class CommentDAO implements DatabaseQuery<Comment> {
     private static Database database;
     private static MemberDAO memberDAO;
     private static BookDAO bookDAO;
+
     private CommentDAO() {
         database = Database.getInstance();
         memberDAO = MemberDAO.getInstance();
         bookDAO = BookDAO.getInstance();
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized CommentDAO getInstance() {
         if (commentDAO == null) {
             commentDAO = new CommentDAO();
@@ -39,6 +44,11 @@ public class CommentDAO implements DatabaseQuery<Comment> {
     // delete
     private static final String DELETE_COMMENT = "DELETE FROM Comments WHERE comment_ID = ?";
 
+    /**
+     * thêm.
+     * @param entity bình luận
+     * @throws SQLException lỗi
+     */
     @Override
     public void add(@NotNull Comment entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_COMMENT)) {
@@ -60,6 +70,12 @@ public class CommentDAO implements DatabaseQuery<Comment> {
         return false;
     }
 
+    /**
+     * xoá.
+     * @param entity bình luận
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean delete(@NotNull Comment entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_COMMENT)) {
@@ -69,6 +85,12 @@ public class CommentDAO implements DatabaseQuery<Comment> {
         }
     }
 
+    /**
+     * tìm.
+     * @param keywords từ khoá
+     * @return bình luận
+     * @throws SQLException lỗi
+     */
     // không cần tìm theo id
     @Override
     public Comment find(@NotNull Number keywords) throws SQLException {
@@ -89,6 +111,12 @@ public class CommentDAO implements DatabaseQuery<Comment> {
         return null;
     }
 
+    /**
+     * tìm.
+     * @param criteria tiêu chí
+     * @return danh sách bình luận
+     * @throws SQLException lỗi
+     */
     // chỉ có tìm kiếm theo ISBN và rate
     @Override
     public List<Comment> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
@@ -121,6 +149,11 @@ public class CommentDAO implements DatabaseQuery<Comment> {
         }
     }
 
+    /**
+     * tất cả.
+     * @return không dùng
+     * @throws SQLException lỗi
+     */
     // Không có tìm tất cả bình luận
     @Override
     public List<Comment> selectAll() throws SQLException {
