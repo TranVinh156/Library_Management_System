@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.18" prefWidth="174.9" styleClass="pane-main" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.library_management_system.AdminMessage">
+<AnchorPane prefHeight="312.18" prefWidth="174.9" styleClass="pane-main" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminMessageController">
    <children>
       <Label layoutX="18.0" layoutY="13.0" style="-fx-font-size: 16;" styleClass="black-text-Cabin" text="Message" />
-      <TextField fx:id="toText" layoutX="13.0" layoutY="38.0" minWidth="-Infinity" prefHeight="19.0" prefWidth="144.0" promptText="To" style="-fx-border-radius: 0; -fx-background-radius: 0;" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="18.099999999999994" />
-      <TextField fx:id="topicText" layoutX="13.0" layoutY="72.0" minWidth="-Infinity" prefHeight="1.0" prefWidth="144.0" promptText="Topic" style="-fx-background-radius: 0;" AnchorPane.leftAnchor="12.8" AnchorPane.rightAnchor="18.400000000000006" />
-      <TextArea fx:id="detailText" layoutX="13.0" layoutY="104.0" minWidth="-Infinity" prefHeight="172.0" prefWidth="144.0" promptText="Detail" style="-fx-background-radius: 0;" AnchorPane.bottomAnchor="36.18000000000001" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="18.099999999999994" AnchorPane.topAnchor="104.0" />
-      <HBox alignment="CENTER" layoutY="281.0" minWidth="-Infinity" prefHeight="36.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <TextField fx:id="toText" layoutX="13.0" layoutY="38.0" prefHeight="19.0" prefWidth="144.0" promptText="To" style="-fx-border-radius: 0; -fx-background-radius: 0;" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="18.099999999999994" />
+      <TextField fx:id="topicText" layoutX="13.0" layoutY="72.0" prefHeight="1.0" prefWidth="144.0" promptText="Topic" style="-fx-background-radius: 0;" AnchorPane.leftAnchor="12.8" AnchorPane.rightAnchor="18.400000000000006" />
+      <TextArea fx:id="detailText" layoutX="13.0" layoutY="104.0" prefHeight="172.0" prefWidth="144.0" promptText="Detail" style="-fx-background-radius: 0;" AnchorPane.bottomAnchor="36.18000000000001" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="18.099999999999994" AnchorPane.topAnchor="104.0" />
+      <HBox alignment="CENTER" layoutY="281.0" prefHeight="36.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Button fx:id="sendButton" mnemonicParsing="false" onAction="#onSendButtonAction" prefHeight="22.0" prefWidth="40.0" style="-fx-background-color: #A64F3C; -fx-font-size: 10.56; -fx-text-fill: FFF; -fx-background-radius: 0;" text="Send" />
          </children>

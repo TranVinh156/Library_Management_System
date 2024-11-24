@@ -1,0 +1,211 @@
+.topBackground {
+    -fx-background-color: #FF7E81;
+}
+
+.sideBackground {
+    -fx-background-color: #FFC3C4;
+}
+
+.background {
+    -fx-background-color: #ffffff;
+}
+
+.background-part {
+    -fx-background-color: #FFD5D5;
+}
+
+.label-1{
+    -fx-text-fill : #FF7779;
+    -fx-font-weight : bold;
+    -fx-background-radius : 20;
+    -fx-effect: dropshadow(three-pass-box, #FF8383, 8, 0, 0, 2);
+}
+.label-2{
+    -fx-text-fill : #FF8688;
+    -fx-background-radius : 20;
+}
+.label-3{
+    -fx-text-fill : #FF8688;
+}
+.textField {
+    -fx-text-fill : #000000;
+    -fx-font-size : 20;
+    -fx-font-weight : bold;
+    -fx-background-radius : 20;
+    -fx-effect: dropshadow(three-pass-box, #FF8383, 8, 0, 0, 2);
+}
+.choiceBox {
+    -fx-background-radius: 10;
+    -fx-background-color: linear-gradient(#FF42B3, #FF7E81);
+    -fx-text-fill : white;
+}
+.rounded-box {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15;
+}
+
+/*-----imageview--------*/
+.circular-image {
+    -fx-background-radius: 50%;     /* Làm tròn vùng nền */
+    -fx-shape: "M 0 0 L 1 0 L 1 1 L 0 1 Z"; /* Tạo khung hình cho ImageView */
+    -fx-clip: "M 0 0 L 1 0 L 1 1 L 0 1 Z";
+}
+
+/*-----sidebar--------*/
+.sidebar {
+    -fx-opacity: 0;
+    -fx-pref-width: 0px; /* Kích thước mặc định */
+    -fx-pref-height: 100%;
+    -fx-overflow-x: hidden;
+    -fx-transition: 0.5s;
+}
+
+.sidebar:hover {
+    -fx-opacity: 1;
+    -fx-pref-width: 200px;
+}
+/*-----scrollpane--------*/
+.rounded-scrollpane {
+    -fx-background-color: #FFD5D5;
+    -fx-border-radius: 15; /* Bo tròn border của ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn background */
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #FFD5D5; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-radius: 15; /* Bo tròn các góc bên trong */
+    -fx-border-radius: 15;
+}
+/*-----button-menu-bar--------*/
+.menu-bar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FF8C8E;
+    -fx-font-size: 20.4;
+    -fx-alignment : top-left;
+}
+.menu-bar-button:hover {
+    -fx-background-color: #FFE2E2;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0px 5px 0px 0px;
+}
+
+/*-----button--------*/
+.button-transparent {
+    -fx-background-color: transparent;
+}
+.button-transparent .image-view{
+    -fx-opacity: 1.0;
+}
+.button-transparent:hover .image-view{
+    -fx-opacity: 0.5;
+}
+.button-transparent:pressed .image-view {
+    -fx-opacity: 0.5;
+}
+
+.button:hover
+{
+    -fx-opacity: 0.5;
+}
+
+.button:pressed
+{
+    -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+}
+.button-1{
+    -fx-padding:4 15 8 15;
+        -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+        -fx-background-radius: 15;
+        -fx-background-color: #FF8C8E;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+        -fx-font-weight: bold;
+        -fx-font-size: 1.3em;
+        -fx-text-fill: #000000;
+}
+.button-2{
+    -fx-padding:4 15 8 15;
+        -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+        -fx-background-radius: 8;
+        -fx-background-color: #FF8C8E;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+        -fx-font-weight: bold;
+        -fx-font-size: 1.3em;
+        -fx-text-fill: #ffffff;
+}
+
+.musicBar {
+    -fx-background-color: linear-gradient(#BAC3FF, #B682F5);
+    -fx-background-radius : 20;
+}
+
+.label-4{
+    -fx-font-weight: bold;
+    -fx-background-color: #C098F0;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 10;
+    -fx-padding:5 10 5 10;
+}
+
+.button-book1 {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #FF356E;
+}
+
+.button-book2 {
+    -fx-background-color: #FDA1B0;
+    -fx-text-fill: #ffffff;
+}
+
+.label-book {
+    -fx-text-fill:#000000;
+}
+
+.titleBox-book {
+    -fx-background-color: #FF42B3;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-font-size: 13;
+    -fx-padding:8 15 8 15;
+}
+
+.BookView-Background {
+    -fx-background-image: url("../image/customer/book/pinkBackground.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.bottom-background-book{
+        -fx-background-color: #ffffff;
+}
+
+.transparent-scrollpane {
+    -fx-background-color: transparent;
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+.content-book{
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+}
+.imageview-eye {
+    -fx-image: url("../image/customer/book/close.png");
+    -fx-background-image: url("../image/customer/book/open.png");
+}
+
+.imageview-eye:hover {
+    -fx-image: url("../image/customer/book/open.png");
+}
+.musicRadio{
+    -fx-background-color: linear-gradient(#FF6294, #FFA7C3,#FFDBE6);
+    -fx-background-radius:20;
+}
+.musicRadioSmall{
+    -fx-background-color: linear-gradient(#ffffff, #FFE4F0);
+    -fx-background-radius:20;
+}
+.musicNameIn{
+    -fx-background-color: linear-gradient(#ffffff, #FF9EA0);
+    -fx-background-radius:20;
+}

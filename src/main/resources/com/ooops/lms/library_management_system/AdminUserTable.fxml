@@ -7,15 +7,28 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="259.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="510.0" prefWidth="259.0" style="-fx-background-color: FFF;" styleClass="pane-main" stylesheets="@../../../../style/AdminUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminUserTableController">
    <children>
-      <HBox minHeight="-Infinity" minWidth="259.0" prefHeight="69.0" prefWidth="602.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox layoutY="69.0" prefHeight="406.0" prefWidth="259.0" style="-fx-background-color: FFF;" AnchorPane.bottomAnchor="34.80000000000001" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="69.0">
          <children>
-            <AnchorPane minWidth="259.0" prefHeight="70.0" prefWidth="262.0" HBox.hgrow="ALWAYS">
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="406.0" prefWidth="262.0" style="-fx-background-color: FFF;" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="tableVbox" prefHeight="405.0" prefWidth="242.0" style="-fx-background-color: FFF;" />
+               </content>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </ScrollPane>
+         </children>
+      </HBox>
+      <HBox prefHeight="69.0" prefWidth="602.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="70.0" prefWidth="262.0" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="44.0" prefWidth="259.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="259.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="44.0" prefWidth="134.0" HBox.hgrow="NEVER">
                            <children>
@@ -31,13 +44,13 @@
                         </HBox>
                         <HBox alignment="CENTER" maxWidth="300.0" prefHeight="44.0" prefWidth="177.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="searchText" prefHeight="23.0" prefWidth="140.0" style="-fx-background-color: #E4E4E4; -fx-background-radius: 3.3; -fx-font-size: 12;" styleClass="gray-text-Cabin" text="Search" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="searchText" prefHeight="23.0" prefWidth="140.0" promptText="Search" style="-fx-background-color: #E4E4E4; -fx-background-radius: 3.3; -fx-font-size: 12;" styleClass="gray-text-Cabin" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <HBox prefHeight="44.0" prefWidth="58.0" HBox.hgrow="SOMETIMES" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutY="45.0" minWidth="-Infinity" prefHeight="19.8" prefWidth="258.0" style="-fx-background-color: F8F8F8;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <HBox alignment="CENTER" layoutY="45.0" prefHeight="19.8" prefWidth="258.0" style="-fx-background-color: F8F8F8;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
@@ -60,16 +73,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox layoutY="69.0" minHeight="-Infinity" minWidth="259.0" prefHeight="406.0" prefWidth="259.0" AnchorPane.bottomAnchor="34.80000000000001" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-0.19999999999998863" AnchorPane.topAnchor="69.0">
-         <children>
-            <ScrollPane minWidth="259.0" prefHeight="406.0" prefWidth="262.0" HBox.hgrow="ALWAYS">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="404.0" prefWidth="259.0" />
-              </content>
-            </ScrollPane>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutY="474.0" minHeight="-Infinity" minWidth="259.0" prefHeight="38.0" prefWidth="259.0" style="-fx-background-color: #E4E4E4; -fx-border-radius: 6.6;" AnchorPane.bottomAnchor="-2.799999999999976" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-0.19999999999998863">
+      <HBox alignment="CENTER" layoutY="474.0" prefHeight="38.0" prefWidth="259.0" style="-fx-background-color: #E4E4E4; -fx-border-radius: 6.6;" AnchorPane.bottomAnchor="-2.799999999999976" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-0.19999999999998863">
          <children>
             <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonAction" text="Add">
                <font>

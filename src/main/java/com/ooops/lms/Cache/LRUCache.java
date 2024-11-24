@@ -22,7 +22,11 @@ class LRUCache<K, V> {
         tail.prev = head;
     }
 
-    // Get method
+    /**
+     * lấy.
+     * @param key khoá
+     * @return giá trị
+     */
     public V get(K key) {
         Node<K, V> node = cache.get(key);
         if (node == null) {
@@ -32,7 +36,11 @@ class LRUCache<K, V> {
         return node.value;
     }
 
-    // Put method
+    /**
+     * Thêm.
+     * @param key khoá
+     * @param value giá trị
+     */
     public void put(K key, V value) {
         Node<K, V> node = cache.get(key);
         if (node != null) {
@@ -52,7 +60,28 @@ class LRUCache<K, V> {
         }
     }
 
-    // Helper method to add a node to the head
+    /**
+     * kiểm tra có khoá.
+     * @param key khoá
+     * @return true false
+     */
+    public boolean containsKey(K key) {
+        return cache.containsKey(key);
+    }
+
+    /**
+     * dọn.
+     */
+    public void clear() {
+        cache.clear();
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    /**
+     * thêm vào đầu
+     * @param node
+     */
     private void addToHead(Node<K, V> node) {
         node.next = head.next;
         node.prev = head;
@@ -60,19 +89,28 @@ class LRUCache<K, V> {
         head.next = node;
     }
 
-    // Helper method to remove a node from the linked list
+    /**
+     * xoá.
+     * @param node
+     */
     private void removeNode(Node<K, V> node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }
 
-    // Move a node to the head (most recently used)
+    /**
+     * di chuyển về đầu.
+     * @param node
+     */
     private void moveToHead(Node<K, V> node) {
         removeNode(node);
         addToHead(node);
     }
 
-    // Remove the tail node (least recently used)
+    /**
+     * xoá đuôi.
+     * @return
+     */
     private Node<K, V> removeTail() {
         Node<K, V> node = tail.prev;
         removeNode(node);
@@ -92,3 +130,4 @@ class LRUCache<K, V> {
         }
     }
 }
+

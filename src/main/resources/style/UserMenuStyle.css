@@ -1,12 +1,62 @@
-.buttonMenu {
+.topBackground {
+    -fx-background-color: #A64F3C;
+}
+
+.sideBackground {
+    -fx-background-color: #ffffff;
+}
+
+.background {
+    -fx-background-color: #F2E0C9;
+}
+
+.background-part {
+    -fx-background-color: #ffffff;
+}
+
+.commentLabel{
+     -fx-background-color: #DFC87D;
+     -fx-background-radius: 10;
+}
+
+.label-1{
+    -fx-text-fill : #A64F3C;
+    -fx-font-weight : bold;
+    -fx-background-radius : 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
+}
+.label-2{
+    -fx-text-fill : #A64F3C;
+    -fx-background-radius : 20;
+}
+.label-3{
+    -fx-text-fill : #ffffff;
+}
+.textField {
+    -fx-text-fill : #A64F3C;
+    -fx-font-size : 20;
+    -fx-font-weight : bold;
+    -fx-background-radius : 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(191, 125, 86, 0.5), 4, 0, 0, 4); /* Shadow */
+}
+.choiceBox {
+    -fx-background-radius: 10;
+    -fx-background-color: #A64F3C;
+    -fx-text-fill : white;
+}
+.rounded-box {
     -fx-background-color: transparent;
-    -fx-text-fill: #A64F3C;
-    -fx-font-size: 16px;
-    -fx-alignment : top-left;
+    -fx-background-radius: 15;
 }
-.label{
-    -fx-font-size: 21px;
+
+/*-----imageview--------*/
+.circular-image {
+    -fx-background-radius: 50%;     /* Làm tròn vùng nền */
+    -fx-shape: "M 0 0 L 1 0 L 1 1 L 0 1 Z"; /* Tạo khung hình cho ImageView */
+    -fx-clip: "M 0 0 L 1 0 L 1 1 L 0 1 Z";
 }
+
+/*-----sidebar--------*/
 .sidebar {
     -fx-opacity: 0;
     -fx-pref-width: 0px; /* Kích thước mặc định */
@@ -19,14 +69,7 @@
     -fx-opacity: 1;
     -fx-pref-width: 200px;
 }
-
-.icon {
-    -fx-background-color: transparent; /* Nếu bạn muốn nền trong suốt */
-    -fx-min-width: 60px;
-    -fx-min-height: 60px;
-    -fx-alignment: center; /* Đặt căn giữa */
-}
-
+/*-----scrollpane--------*/
 .rounded-scrollpane {
     -fx-background-color: transparent;
     -fx-border-radius: 15; /* Bo tròn border của ScrollPane */
@@ -39,15 +82,20 @@
     -fx-background-radius: 15; /* Bo tròn các góc bên trong */
     -fx-border-radius: 15;
 }
+/*-----button-menu-bar--------*/
 .menu-bar-button {
     -fx-background-color: #FFFFFF;
-
+    -fx-font-size: 20.4;
+    -fx-alignment : top-left;
+    -fx-text-fill: #734E38;
 }
 .menu-bar-button:hover {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #A64F3C;
     -fx-border-width: 0px 5px 0px 0px;
 }
+
+/*-----button--------*/
 .button-transparent {
     -fx-background-color: transparent;
 }
@@ -69,4 +117,109 @@
 .button:pressed
 {
     -fx-background-insets: 2 0 0 0,2 0 3 0,2 0 4 0,2 0 5 0;
+}
+.button-1{
+    -fx-padding:4 15 8 15;
+        -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+        -fx-background-radius: 15;
+        -fx-background-color: #A64F3C;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+        -fx-font-weight: bold;
+        -fx-font-size: 1.3em;
+        -fx-text-fill: white;
+}
+.button-2{
+    -fx-padding:4 15 8 15;
+        -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+        -fx-background-radius: 8;
+        -fx-background-color: #ffffff;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+        -fx-font-weight: bold;
+        -fx-font-size: 1.3em;
+        -fx-text-fill: #A64F3C;
+}
+.buttonMenu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #A64F3C;
+    -fx-font-size: 16px;
+    -fx-alignment : top-left;
+}
+
+
+.musicBar {
+    -fx-background-color : #BAC3FF;
+    -fx-background-radius : 20;
+}
+
+.label-4{
+    -fx-font-weight: bold;
+    -fx-background-color: #839500;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 10;
+    -fx-padding:5 10 5 10;
+}
+
+.button-book1 {
+    -fx-background-color: #6E8701;
+}
+
+.button-book2 {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #6E8701;
+}
+
+.label-book {
+    -fx-text-fill:#6E8701;
+}
+
+.titleBox-book {
+    -fx-background-color: #6E8701;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-font-size: 13;
+    -fx-padding:8 15 8 15;
+}
+
+.BookView-Background {
+    -fx-background-image: url("../image/customer/book/defaultBackground.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.bottom-background-book{
+        -fx-background-color: #ffffff;
+}
+
+.transparent-scrollpane {
+    -fx-background-color: transparent;
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+
+.content-book{
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+}
+
+.imageview-eye {
+    -fx-image: url("../image/customer/book/close.png");
+    -fx-background-image: url("../image/customer/book/open.png");
+}
+
+.imageview-eye:hover {
+    -fx-image: url("../image/customer/book/open.png");
+}
+
+.musicRadio{
+    -fx-background-color: white;
+    -fx-background-radius:20;
+}
+.musicRadioSmall{
+    -fx-background-color: #FF9595;
+    -fx-background-radius:20;
+}
+.musicNameIn{
+    -fx-background-color: #FEC8C8;
+    -fx-background-radius:20;
 }

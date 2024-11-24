@@ -7,24 +7,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="180.0" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onBookMouseClicked" prefHeight="190.0" prefWidth="123.0" spacing="2.0" styleClass="rounded-box" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.BookCard2Controller">
    <children>
-      <ImageView fx:id="bookImage" fitHeight="194.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bookImage" fitHeight="111.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../image/customer/bookCard/Books.png" />
          </image>
       </ImageView>
-      <Label fx:id="bookNameLabel" text="Book name">
+      <Label fx:id="bookNameLabel" alignment="CENTER" prefHeight="29.0" prefWidth="87.0" text="Book name">
          <font>
-            <Font name="Berlin Sans FB Bold" size="25.0" />
+            <Font name="Calibri Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="authorNameLabel" text="Author name">
          <font>
-            <Font name="Berlin Sans FB" size="17.0" />
+            <Font name="Calibri Light" size="14.0" />
          </font>
       </Label>
-      <ImageView fx:id="starImage" fitHeight="41.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="starImage" fitHeight="22.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../image/customer/bookCard/5Star.png" />
          </image>

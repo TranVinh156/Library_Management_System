@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="interfaceSettingBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.InterfaceSettingController">
+   <children>
+      <HBox prefHeight="17.0" prefWidth="850.0" spacing="50.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="31.0" prefWidth="42.0" styleClass="button-transparent" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../image/customer/general/arrowBrown.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Label styleClass="label-2" text="Cài đặt giao diện" textFill="#a64f3c">
+               <font>
+                  <Font name="System Bold" size="27.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <VBox alignment="CENTER" prefHeight="556.0" prefWidth="850.0" spacing="5.0" style="-fx-background-radius: 20;" styleClass="background-part">
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+         <VBox.margin>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="10.0" />
+         </VBox.margin>
+         <children>
+            <CheckBox mnemonicParsing="false" text="Sound">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </CheckBox>
+            <Label styleClass="label-1" text="Chọn màu giao diện:">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Circle fill="#ffe2b1" onMouseClicked="#onBeigeColorMouseClicked" radius="32.0" stroke="#ffe2b1" strokeType="INSIDE" />
+                  <Circle onMouseClicked="#onBlackColorMouseClicked" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fill="#ff7595" onMouseClicked="#onPinkColorMouseClicked" radius="32.0" stroke="#ff7595" strokeType="INSIDE" />
+                  <Circle fill="GOLD" onMouseClicked="#onGoldColorMouseClicked" radius="32.0" stroke="GOLD" strokeType="INSIDE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

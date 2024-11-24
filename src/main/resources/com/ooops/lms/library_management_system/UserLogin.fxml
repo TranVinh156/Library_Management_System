@@ -37,7 +37,7 @@
                         <TextField fx:id="usernameText" minHeight="34.0" minWidth="267.0" styleClass="textbox" VBox.vgrow="ALWAYS" />
                         <Label prefHeight="29.0" prefWidth="271.0" text="Password" VBox.vgrow="ALWAYS" />
                         <PasswordField fx:id="passwordText" minHeight="34.0" minWidth="267.0" styleClass="textbox" VBox.vgrow="ALWAYS" />
-                        <Button fx:id="forgotPasswordButton" alignment="TOP_RIGHT" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onForgotPasswordButtonAction" prefHeight="11.0" prefWidth="350.0" style="-fx-background-color: transparent;" styleClass="button_transparent" text="Quên mật khẩu?" VBox.vgrow="ALWAYS">
+                        <Button fx:id="forgotPasswordButton" alignment="TOP_RIGHT" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onForgotPasswordButtonAction" prefHeight="26.0" prefWidth="232.0" style="-fx-background-color: transparent;" styleClass="button_transparent" text="Quên mật khẩu?" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="9.0" />
                            </font>

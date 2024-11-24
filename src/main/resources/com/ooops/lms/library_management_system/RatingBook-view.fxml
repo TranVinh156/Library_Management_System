@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="contentBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" spacing="5.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.RatingBookController">
+   <children>
+      <HBox prefHeight="55.0" prefWidth="850.0" spacing="50.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="31.0" prefWidth="42.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fx:id="backButton" fitHeight="22.0" fitWidth="21.0" onDragDetected="#onBackButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../image/customer/general/arrowBrown.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Label styleClass="label-1" text="Đánh giá các sách đã mượn" textFill="#a64f3c" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <StackPane prefHeight="586.0" prefWidth="750.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="533.0" prefWidth="750.0" spacing="20.0">
+               <children>
+                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="517.0" prefWidth="432.0" styleClass="rounded-scrollpane">
+                     <content>
+                        <VBox fx:id="borrowedBookBox" alignment="TOP_CENTER" spacing="10.0">
+                           <padding>
+                              <Insets left="5.0" right="5.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <VBox alignment="TOP_RIGHT" prefHeight="517.0" prefWidth="417.0" spacing="20.0">
+                     <children>
+                        <VBox prefHeight="467.0" prefWidth="376.0" spacing="10.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="223.0" prefWidth="327.0" spacing="20.0">
+                                 <children>
+                                    <ImageView fx:id="bookImage" fitHeight="159.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../image/icon/Logo.png" />
+                                       </image>
+                                    </ImageView>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="169.0" prefWidth="171.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="bookNameText" text="App OOOPs">
+                                             <font>
+                                                <Font name="System Bold" size="21.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="authorNameText" text="by  thangcho +  2 con ngựa" />
+                                          <ImageView fx:id="starImage" fitHeight="21.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../image/book/5Star.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ScrollPane prefHeight="57.0" prefWidth="115.0">
+                                             <content>
+                                                <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="159.61394500732422" />
+                                             </content>
+                                          </ScrollPane>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Label text="Viết đánh giá">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="327.0" spacing="10.0">
+                                 <children>
+                                    <Circle fx:id="avatarImage" fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Label fx:id="userNameText" text="user name" />
+                                    <ChoiceBox fx:id="ratingChoiceBox" prefWidth="150.0" />
+                                 </children>
+                              </HBox>
+                              <TextArea fx:id="commentTitleText" prefHeight="12.0" prefWidth="327.0" promptText="viết tiêu đề đánh giá của bạn ở đây" />
+                              <TextArea fx:id="commentContentText" prefHeight="191.0" prefWidth="327.0" promptText="viết đánh giá của bạn ở đây" />
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="366.0" spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onComplimentButtonAction" styleClass="button-1" text="Khen app" />
+                              <Button mnemonicParsing="false" onAction="#onCriticizeButtonAction" styleClass="button-1" text="Chê app" />
+                              <Button mnemonicParsing="false" onAction="#onSaveButtonAction" styleClass="button-1" text="Lưu" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <ImageView fitHeight="189.0" fitWidth="232.0" layoutX="281.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../image/customer/general/shy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="50.0" right="50.0" />
+   </padding>
+</VBox>

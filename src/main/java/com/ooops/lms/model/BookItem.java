@@ -6,33 +6,52 @@ import java.util.List;
 
 public class BookItem extends Book {
     private int barcode;
-    private int ISBN;
     private BookItemStatus status;
     private String note = "";
 
     public BookItem() {
-        super();
+
     }
 
-    public BookItem(int barcode, int ISBN, BookItemStatus status, String note) {
-        super();
-        this.barcode = barcode;
-        this.ISBN = ISBN;
+    // Sử dụng khi add
+    public BookItem(int ISBN, BookItemStatus status, String note) {
+        super.setISBN(ISBN);
         this.status = status;
         this.note = note;
+    }
+
+    // sử dụng khi find
+    public BookItem(int barcode, BookItemStatus status, String note, Book book) {
+        super(book);
+        this.barcode = barcode;
+        this.status = status;
+        this.note = note;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof BookItem) {
+            BookItem bookItem = (BookItem) obj;
+            return bookItem.getBarcode() == this.barcode;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(this.barcode);
     }
 
     public int getBarcode() {
         return barcode;
     }
 
-    @Override
-    public int getISBN() {
-        return ISBN;
+    public void setBarcode(int barcode) {
+        this.barcode = barcode;
     }
 
     public BookItemStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     public String getNote() {
