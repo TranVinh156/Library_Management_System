@@ -34,7 +34,6 @@ public class CustomerAlter {
      * @return true nếu người dùng xác nhận, false nếu người dùng hủy
      */
     public static boolean showAlter(String message) {
-        System.out.println("Alert");
         boolean userConfirmed = false;
 
         try {
