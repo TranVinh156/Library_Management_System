@@ -225,8 +225,8 @@ public class ResignController extends BasicController {
 
     private Person createPersonFromInput() {
         Person person = new Person();
-        person.setFirstName(firstNameText.getText());
-        person.setLastName(lastNameText.getText());
+        person.setFirstName(lastNameText.getText());
+        person.setLastName(firstNameText.getText());
         person.setDateOfBirth(birthDate.getValue().toString());
         person.setGender(genderBox.getValue());
         person.setEmail(emailText.getText());

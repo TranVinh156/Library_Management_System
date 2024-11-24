@@ -70,13 +70,16 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
     @FXML
     private ImageView userImage;
 
+    private AdminMessageController adminMessageController;
+
 
     @Override
     protected void loadItemDetails() {
         emailText.setText(item.getPerson().getEmail());
+        adminMessageController.setToEmail(item.getPerson().getEmail());
         genderBox.setValue(item.getPerson().getGender());
         memberIDText.setText(String.valueOf(item.getPerson().getId()));
-        memberNameText.setText(item.getPerson().getFirstName() + " " + item.getPerson().getLastName());
+        memberNameText.setText(item.getPerson().getLastName() + " " + item.getPerson().getFirstName());
         numberOfBorrowText.setText(String.valueOf(item.getTotalBooksCheckOut()));
         try {
             Map<String, Object> findCriteriaa = new HashMap<>();
@@ -253,6 +256,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
     void initialize() {
         genderBox.getItems().addAll(Gender.values());
         statusBox.getItems().addAll(AccountStatus.values());
+        adminMessageController = messageLoader.getController();
     }
 
 

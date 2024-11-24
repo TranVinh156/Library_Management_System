@@ -32,7 +32,7 @@ public class AdminIssueTableRowController extends BaseRowController<Report, Admi
     @Override
     protected void updateRowDisplay() {
         memberIDLabel.setText(item.getMember().getPerson().getId() + "");
-        memberNameLabel.setText(item.getMember().getPerson().getFirstName() + " " + item.getMember().getPerson().getLastName());
+        memberNameLabel.setText(item.getMember().getPerson().getLastName() + " " + item.getMember().getPerson().getFirstName());
         titleLabel.setText(item.getTitle());
         detailLabel.setText(item.getContent());
         emailLabel.setText(item.getMember().getPerson().getEmail());

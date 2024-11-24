@@ -74,4 +74,17 @@ public class BookReservation {
     public void setStatus(BookReservationStatus status) {
         this.status = status;
     }
+
+    @Override
+    public int hashCode() {
+        return Long.valueOf(reservationId).hashCode();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof BookReservation) {
+            BookReservation reservation = (BookReservation) obj;
+            return reservationId == reservation.getReservationId();
+        }
+        return false;
+    }
 }

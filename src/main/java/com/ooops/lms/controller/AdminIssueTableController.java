@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.controller.BaseTableController;
+import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.database.dao.ReportDAO;
 import com.ooops.lms.model.Report;
 import com.ooops.lms.model.enums.ReportStatus;
@@ -60,7 +61,7 @@ public class AdminIssueTableController extends BaseTableController<Report, Admin
 
         //Xử lý set total cho Dashboard
         findCriteria.clear();
-        findCriteria.put("ReportStatus","PENDING");
+        findCriteria.put("ReportStatus",ReportStatus.PENDING.toString());
         int totalIssuel = ReportDAO.getInstance().searchByCriteria(findCriteria).size();
         adminDashboardController.setTotalIssueLabel(totalIssuel+"");
         findCriteria.clear();
@@ -81,6 +82,17 @@ public class AdminIssueTableController extends BaseTableController<Report, Admin
             findCriteria.put("ReportStatus", statusFindBox.getValue());
         }
 
+    }
+    @FXML
+    protected void searchCriteria() {
+        getCriteria();
+        try {
+            itemsList.clear();
+            itemsList.addAll(ReportDAO.getInstance().searchByCriteria(findCriteria));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        loadRows();
     }
 
 
