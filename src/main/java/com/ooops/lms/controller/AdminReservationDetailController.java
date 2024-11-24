@@ -399,6 +399,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @FXML
     void onScanBookButtonAction(ActionEvent event) {
+        bookItem = new BookItem();
         Command scanCommand = new AdminCommand("scan", bookItem);
         commandInvoker.setCommand(scanCommand);
         if (commandInvoker.executeCommand()) {
@@ -409,6 +410,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     @FXML
     void onScanMemberButtonAction(ActionEvent event) {
+        member = new Member(null);
         Command scanCommand = new AdminCommand("scan", member);
         commandInvoker.setCommand(scanCommand);
         if (commandInvoker.executeCommand()) {
