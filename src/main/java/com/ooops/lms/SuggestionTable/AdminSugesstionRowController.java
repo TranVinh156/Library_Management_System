@@ -1,5 +1,6 @@
 package com.ooops.lms.SuggestionTable;
 
+import com.ooops.lms.Cache.ImageCache;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Member;
@@ -35,18 +36,17 @@ public class AdminSugesstionRowController {
         this.object = o;
         if (object instanceof Member) {
             Member member = (Member) object;
-            textLabel.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName() +" - "+ member.getPerson().getId());
+            textLabel.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName() + " - " + member.getPerson().getId());
             // Tải ảnh bất đồng bộ
             Task<Image> loadImageTask = new Task<>() {
                 @Override
                 protected Image call() throws Exception {
+                    // Nếu như ảnh của member mà không có hoặc đường dẫn ảnh lỗi thì set mặc định
                     try {
-                        return new Image(member.getPerson().getImagePath(), true);
-                    } catch (Exception e) {
-                        System.out.println("Length: " + member.getPerson().getImagePath().length());
-
-                        File file = new File("bookImage/default.png");
+                        File file = new File(member.getPerson().getImagePath());
                         return new Image(file.toURI().toString());
+                    } catch (Exception e) {
+                        return new Image(getClass().getResourceAsStream("/image/avatar/default.png"));
                     }
                 }
             };
@@ -64,7 +64,16 @@ public class AdminSugesstionRowController {
                 @Override
                 protected Image call() throws Exception {
                     try {
-                        return new Image(bookItem.getImagePath(), true);
+                        Image image = ImageCache.getImageLRUCache().get(bookItem.getImagePath());
+                        if(image != null) {
+                            System.out.println("tai anh trong cache");
+                            return image;
+                        } else {
+                            System.out.println("Khong co anh trong cache");
+                            Image image1 = new Image(bookItem.getImagePath(), true);
+                            ImageCache.getImageLRUCache().put(bookItem.getImagePath(), image1);
+                            return new Image(image1.getUrl());
+                        }
                     } catch (Exception e) {
                         System.out.println("Length: " + bookItem.getImagePath().length());
 
@@ -86,7 +95,16 @@ public class AdminSugesstionRowController {
                 @Override
                 protected Image call() throws Exception {
                     try {
-                        return new Image(book.getImagePath(), true);
+                        Image image = ImageCache.getImageLRUCache().get(book.getImagePath());
+                        if(image != null) {
+                            System.out.println("tai anh trong cache");
+                            return image;
+                        } else {
+                            System.out.println("Khong co anh trong cache");
+                            Image image1 = new Image(book.getImagePath(), true);
+                            ImageCache.getImageLRUCache().put(book.getImagePath(), image1);
+                            return new Image(image1.getUrl());
+                        }
                     } catch (Exception e) {
                         System.out.println("Length: " + book.getImagePath().length());
 

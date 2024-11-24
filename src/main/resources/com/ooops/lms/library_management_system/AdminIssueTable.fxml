@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -18,9 +19,9 @@
          <children>
             <HBox layoutX="7.0" layoutY="68.0" prefHeight="45.0" prefWidth="843.0" styleClass="pane-main" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="35.19999999999993">
                <children>
-                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
                      <children>
-                        <Label styleClass="black-text-Cabin" text="Find:" />
+                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="19.2" prefWidth="31.2" styleClass="black-text-Cabin" text="Find:" HBox.hgrow="NEVER" />
                      </children>
                   </HBox>
                   <HBox prefHeight="46.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
@@ -49,7 +50,7 @@
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="emailFindText" alignment="CENTER" promptText="Email">
+                              <TextField fx:id="emailFindText" alignment="CENTER" promptText="Email" visible="false">
                                  <styleClass>
                                     <String fx:value="box-information" />
                                     <String fx:value="gray-text-Cabin" />
@@ -59,12 +60,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="statusFindText" alignment="CENTER" prefHeight="29.0" prefWidth="134.0" promptText="Trạng thái">
-                                 <styleClass>
-                                    <String fx:value="box-information" />
-                                    <String fx:value="gray-text-Cabin" />
-                                 </styleClass>
-                              </TextField>
+                              <ChoiceBox fx:id="statusFindBox" prefWidth="150.0" styleClass="find-text-field-customer" stylesheets="@../../../../style/AdminStyle.css" />
                               <Label styleClass="gray-text-Cabin" />
                            </children>
                         </HBox>
@@ -155,7 +151,7 @@
                   </HBox>
                   <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.799999999999955">
                      <children>
-                        <ScrollPane fx:id="scrollPane" prefHeight="400.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
+                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="400.0" prefWidth="822.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
                            <content>
                               <VBox fx:id="tableVbox" prefHeight="406.0" prefWidth="807.0" />
                            </content>

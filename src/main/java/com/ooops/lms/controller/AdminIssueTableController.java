@@ -3,9 +3,11 @@ package com.ooops.lms.controller;
 import com.ooops.lms.controller.BaseTableController;
 import com.ooops.lms.database.dao.ReportDAO;
 import com.ooops.lms.model.Report;
+import com.ooops.lms.model.enums.ReportStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -35,13 +37,15 @@ public class AdminIssueTableController extends BaseTableController<Report, Admin
     private ScrollPane scrollPane;
 
     @FXML
-    private TextField statusFindText;
+    private ChoiceBox<String> statusFindBox;
 
     @FXML
     private VBox tableVbox;
     private AdminDashboardController adminDashboardController;
 
     public void initialize() {
+        statusFindBox.getItems().add("None");
+        statusFindBox.getItems().addAll(ReportStatus.PENDING.toString(),ReportStatus.RESOLVED.toString());
         adminDashboardController = dashboardLoader.getController();
     }
 
@@ -56,7 +60,7 @@ public class AdminIssueTableController extends BaseTableController<Report, Admin
 
         //Xử lý set total cho Dashboard
         findCriteria.clear();
-        findCriteria.put("status","PENDING");
+        findCriteria.put("ReportStatus","PENDING");
         int totalIssuel = ReportDAO.getInstance().searchByCriteria(findCriteria).size();
         adminDashboardController.setTotalIssueLabel(totalIssuel+"");
         findCriteria.clear();
@@ -64,11 +68,18 @@ public class AdminIssueTableController extends BaseTableController<Report, Admin
 
     @FXML
     void onFindButtonAction(ActionEvent event) {
-
+        searchCriteria();
     }
 
     @Override
     protected void getCriteria(){
+        findCriteria.clear();
+        if(!memeberIDFindText.getText().isEmpty()){
+            findCriteria.put("member_ID",memeberIDFindText.getText());
+        }
+        if (!statusFindBox.getItems().isEmpty() && statusFindBox.getValue() != "None" && statusFindBox.getValue() != null) {
+            findCriteria.put("ReportStatus", statusFindBox.getValue());
+        }
 
     }
 

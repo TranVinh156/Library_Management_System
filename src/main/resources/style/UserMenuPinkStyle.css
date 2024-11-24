@@ -7,11 +7,11 @@
 }
 
 .background {
-    -fx-background-color: #FFD5D5;
+    -fx-background-color: #ffffff;
 }
 
 .background-part {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #FFD5D5;
 }
 
 .label-1{
@@ -36,7 +36,8 @@
 }
 .choiceBox {
     -fx-background-radius: 10;
-    -fx-background-color: #ffffff;
+    -fx-background-color: linear-gradient(#FF42B3, #FF7E81);
+    -fx-text-fill : white;
 }
 .rounded-box {
     -fx-background-color: transparent;
@@ -65,14 +66,14 @@
 }
 /*-----scrollpane--------*/
 .rounded-scrollpane {
-    -fx-background-color: transparent;
+    -fx-background-color: #FFD5D5;
     -fx-border-radius: 15; /* Bo tròn border của ScrollPane */
     -fx-background-radius: 15; /* Bo tròn background */
     -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
 }
 
 .scroll-pane .viewport {
-    -fx-background-color: white; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-color: #FFD5D5; /* Đặt màu nền bên trong ScrollPane */
     -fx-background-radius: 15; /* Bo tròn các góc bên trong */
     -fx-border-radius: 15;
 }
@@ -131,4 +132,80 @@
         -fx-font-weight: bold;
         -fx-font-size: 1.3em;
         -fx-text-fill: #ffffff;
+}
+
+.musicBar {
+    -fx-background-color: linear-gradient(#BAC3FF, #B682F5);
+    -fx-background-radius : 20;
+}
+
+.label-4{
+    -fx-font-weight: bold;
+    -fx-background-color: #C098F0;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 10;
+    -fx-padding:5 10 5 10;
+}
+
+.button-book1 {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #FF356E;
+}
+
+.button-book2 {
+    -fx-background-color: #FDA1B0;
+    -fx-text-fill: #ffffff;
+}
+
+.label-book {
+    -fx-text-fill:#000000;
+}
+
+.titleBox-book {
+    -fx-background-color: #FF42B3;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-font-size: 13;
+    -fx-padding:8 15 8 15;
+}
+
+.BookView-Background {
+    -fx-background-image: url("../image/customer/book/pinkBackground.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.bottom-background-book{
+        -fx-background-color: #ffffff;
+}
+
+.transparent-scrollpane {
+    -fx-background-color: transparent;
+    -fx-padding: 5; /* Padding để tạo khoảng cách giữa content và border */
+}
+.content-book{
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+}
+.imageview-eye {
+    -fx-image: url("../image/customer/book/close.png");
+    -fx-background-image: url("../image/customer/book/open.png");
+}
+
+.imageview-eye:hover {
+    -fx-image: url("../image/customer/book/open.png");
+}
+.musicRadio{
+    -fx-background-color: linear-gradient(#FF6294, #FFA7C3,#FFDBE6);
+    -fx-background-radius:20;
+}
+.musicRadioSmall{
+    -fx-background-color: linear-gradient(#ffffff, #FFE4F0);
+    -fx-background-radius:20;
+}
+.musicNameIn{
+    -fx-background-color: linear-gradient(#ffffff, #FF9EA0);
+    -fx-background-radius:20;
 }

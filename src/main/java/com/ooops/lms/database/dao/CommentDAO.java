@@ -14,15 +14,16 @@ import java.util.Map;
 public class CommentDAO implements DatabaseQuery<Comment> {
     private static CommentDAO commentDAO;
 
-    private Database database;
-    private MemberDAO memberDAO;
-
+    private static Database database;
+    private static MemberDAO memberDAO;
+    private static BookDAO bookDAO;
     private CommentDAO() {
         database = Database.getInstance();
         memberDAO = MemberDAO.getInstance();
+        bookDAO = BookDAO.getInstance();
     }
 
-    public static CommentDAO getInstance() {
+    public static synchronized CommentDAO getInstance() {
         if (commentDAO == null) {
             commentDAO = new CommentDAO();
         }
@@ -48,12 +49,14 @@ public class CommentDAO implements DatabaseQuery<Comment> {
             preparedStatement.setString(5, String.valueOf(entity.getRate()));
 
             preparedStatement.executeUpdate();
+            bookDAO.fetchBook(entity.getISBN());
         }
     }
 
     // không có sửa comment
     @Override
     public boolean update(Comment entity) throws SQLException {
+
         return false;
     }
 
@@ -79,6 +82,7 @@ public class CommentDAO implements DatabaseQuery<Comment> {
                             , Integer.valueOf(resultSet.getString("rate"))
                             , memberDAO.find(resultSet.getInt("member_ID"))
                             , resultSet.getLong("ISBN"));
+                    return comment;
                 }
             }
         }

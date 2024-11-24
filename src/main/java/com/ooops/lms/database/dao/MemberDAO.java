@@ -1,5 +1,6 @@
 package com.ooops.lms.database.dao;
 
+import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.database.Database;
 import com.ooops.lms.email.EmailUtil;
 import com.ooops.lms.model.Member;
@@ -19,13 +20,15 @@ import java.util.Random;
 public class MemberDAO implements DatabaseQuery<Member> {
     private static MemberDAO memberDAO;
 
-    private Database database;
+    private static Database database;
+    private static LRUCache<Integer, Member> memberCache;
 
     private MemberDAO() {
         database = Database.getInstance();
+        memberCache = new LRUCache<>(100);
     }
 
-    public static MemberDAO getInstance() {
+    public static synchronized MemberDAO getInstance() {
         if (memberDAO == null) {
             memberDAO = new MemberDAO();
         }
@@ -44,7 +47,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             "set first_name = ?, last_name = ?, birth_date = ?, gender = ?, email = ?, phone = ?, image_path = ?" +
             " where member_ID = ?";
 
-    private static final String UPDATE_ACCOUNT = "Update Users set status = ? where user_ID = ?";
+    private static final String UPDATE_ACCOUNT = "Update Users set AccountStatus = ? where user_ID = ?";
 
     // delete
     private static final String DELETE_MEMBER = "Delete from members where member_ID = ?";
@@ -145,7 +148,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             }
 
             database.getConnection().commit();
-
+            memberCache.put(entity.getPerson().getId(), entity);
             return true;
         } catch (SQLException e) {
             database.getConnection().rollback();
@@ -172,6 +175,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             }
 
             database.getConnection().commit();
+            memberCache.remove(entity.getPerson().getId());
             return true;
         } catch (SQLException e) {
             database.getConnection().rollback();
@@ -184,6 +188,9 @@ public class MemberDAO implements DatabaseQuery<Member> {
 
     @Override
     public Member find(Number keywords) throws SQLException {
+        if (memberCache.containsKey(keywords.intValue())) {
+            return memberCache.get(keywords.intValue());
+        }
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_MEMBER)) {
             preparedStatement.setInt(1, keywords.intValue());
 
@@ -200,8 +207,9 @@ public class MemberDAO implements DatabaseQuery<Member> {
                     Member member = new Member(resultSet.getInt("user_ID")
                             , resultSet.getString("username")
                             , resultSet.getString("password")
-                            , AccountStatus.valueOf(resultSet.getString("status"))
+                            , AccountStatus.valueOf(resultSet.getString("AccountStatus"))
                             , resultSet.getString("added_at_timestamp"), person);
+                    memberCache.put(keywords.intValue(), member);
                     return member;
                 }
             }
@@ -215,11 +223,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
     public List<Member> searchByCriteria(Map<String, Object> criteria) throws SQLException {
         StringBuilder findMemberByCriteria = new StringBuilder("Select * from members m join users u on m.member_ID = u.member_Id where ");
 
-        boolean flag = false;
         for (String key : criteria.keySet()) {
             if (key.equals("member_id")) {
                 findMemberByCriteria.append("CAST(m.member_id AS CHAR) like ? OR ");
-                flag = true;
+            } else if (key.equals("fullname")) {
+                findMemberByCriteria.append("CONCAT(m.last_name, ' ', m.first_name) LIKE ? OR ");
             } else {
                 findMemberByCriteria.append(key).append(" like ?").append(" OR ");
             }
@@ -236,20 +244,7 @@ public class MemberDAO implements DatabaseQuery<Member> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Member> members = new ArrayList<>();
                 while (resultSet.next()) {
-                    Person person = new Person(resultSet.getInt("member_id")
-                            , resultSet.getString("first_name")
-                            , resultSet.getString("last_name")
-                            , resultSet.getString("image_path")
-                            , Gender.valueOf(resultSet.getString("gender"))
-                            , resultSet.getString("birth_date")
-                            , resultSet.getString("email")
-                            , resultSet.getString("phone"));
-                    Member member = new Member(resultSet.getInt("user_ID")
-                            , resultSet.getString("username")
-                            , resultSet.getString("password")
-                            , AccountStatus.valueOf(resultSet.getString("status"))
-                            , resultSet.getString("added_at_timestamp"), person);
-                    members.add(member);
+                    members.add(find(resultSet.getInt("member_id")));
                 }
 
                 return members;
@@ -263,23 +258,14 @@ public class MemberDAO implements DatabaseQuery<Member> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Member> members = new ArrayList<>();
                 while (resultSet.next()) {
-                    Person person = new Person(resultSet.getInt("member_id")
-                            , resultSet.getString("first_name")
-                            , resultSet.getString("last_name")
-                            , resultSet.getString("image_path")
-                            , Gender.valueOf(resultSet.getString("gender"))
-                            , resultSet.getString("birth_date")
-                            , resultSet.getString("email")
-                            , resultSet.getString("phone"));
-                    Member member = new Member(resultSet.getInt("user_ID")
-                            , resultSet.getString("username")
-                            , resultSet.getString("password")
-                            , AccountStatus.valueOf(resultSet.getString("status"))
-                            , resultSet.getString("added_at_timestamp"), person);
-                    members.add(member);
+                    members.add(find(resultSet.getInt("member_id")));
                 }
                 return members;
             }
         }
+    }
+
+    public void fetchCache(int memberID) {
+        memberCache.remove(memberID);
     }
 }

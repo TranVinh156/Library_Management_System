@@ -1,13 +1,16 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Cache.ImageCache;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.util.BookManager;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.util.List;
@@ -26,9 +29,19 @@ public class AdminDashboardBookCardController {
     private Label bookNameLabel;
 
     @FXML
+    private VBox vboxMain;
+
+    @FXML
     private ImageView starImage;
 
+    private AdminBookPageController mainController;
+    private AdminMenuController adminMenuController;
+
+    private Book book;
+
     public void setItem(Book book) {
+        this.book = book;
+        setupRowClickHandler();
         bookNameLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
@@ -41,11 +54,19 @@ public class AdminDashboardBookCardController {
         }
         starImage.setImage(starImage(book.getRate()));
 
+        // Tải ảnh bất đồng bộ
         Task<Image> loadImageTask = new Task<>() {
             @Override
             protected Image call() throws Exception {
                 try {
-                    return new Image(book.getImagePath(), true);
+                    Image image = ImageCache.getImageLRUCache().get(book.getImagePath());
+                    if(image != null) {
+                        return image;
+                    } else {
+                        Image image1 = new Image(book.getImagePath(), true);
+                        ImageCache.getImageLRUCache().put(book.getImagePath(), image1);
+                        return new Image(image1.getUrl());
+                    }
                 } catch (Exception e) {
                     System.out.println("Length: " + book.getImagePath().length());
 
@@ -59,6 +80,7 @@ public class AdminDashboardBookCardController {
 
         executor.submit(loadImageTask);
 
+
     }
     private Image starImage(int numOfStar) {
         String imagePath = "/image/book/" + numOfStar + "Star.png";
@@ -67,6 +89,27 @@ public class AdminDashboardBookCardController {
             return new Image(getClass().getResourceAsStream("/image/book/1Star.png"));
         }
         return new Image(getClass().getResourceAsStream(imagePath));
+    }
+
+    private void setupRowClickHandler() {
+        vboxMain.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+                handleRowClick();
+            }
+        });
+    }
+
+    protected void handleRowClick() {
+        this.adminMenuController.onBookManagmentButtonAction(new ActionEvent());
+        mainController.loadDetail(this.book);
+    }
+
+    public void setMainController(AdminBookPageController mainController) {
+        this.mainController = mainController;
+    }
+
+    public void setAdminMenuController(AdminMenuController adminMenuController) {
+        this.adminMenuController = adminMenuController;
     }
 
 }

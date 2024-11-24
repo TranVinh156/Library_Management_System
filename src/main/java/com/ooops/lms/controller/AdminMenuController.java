@@ -101,6 +101,7 @@ public class AdminMenuController extends BasicController {
     private static Image minimizeIconImage = new Image(BasicController.class.getResource("/image/icon/minimize.png").toExternalForm());;
     private static Image maximizeIconImage = new Image(BasicController.class.getResource("/image/icon/maximize.png").toExternalForm());
 
+    private AdminDashboardController adminDashboardController;
     private AdminBookPageController adminBookPageController;
     private AdminUserPageController adminUserPageController;
     private AdminBorrowPageController adminBorrowPageController;
@@ -115,8 +116,10 @@ public class AdminMenuController extends BasicController {
         adminBorrowPageController = borrowPagePaneLoader.getController();
         adminReservationPageController = reservationPagePaneLoader.getController();
         adminIssuePageController = issuePagePaneLoader.getController();
+        adminDashboardController = dashboardLoader.getController();
+        adminDashboardController.setAdminMenuController(this);
 
-       openPage(dashboardPane);
+        openPage(dashboardPane);
         hideButtonTexts();
         openMenuIcon.setOnMouseClicked(event -> toggleMenu());
         hanleAddTablePaneClose();
@@ -180,6 +183,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        adminDashboardController.loadRecentIssuel();
         openPage(dashboardPane);
     }
 
@@ -222,6 +226,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        adminUserPageController.loadData();
         openPage(userPagePane);
     }
 
@@ -238,12 +243,13 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onLogoutButtonAction(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thoát?");
+        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thoát à?");
         if (confirmYes) {
             try {
                 Stage stage = (Stage) mainPane.getScene().getWindow();
                 Parent root = FXMLLoader.load(getClass().getResource("/com/ooops/lms/library_management_system/UserLogin.fxml"));
-                stage.setResizable(false);
+                stage.setWidth(stage.getWidth());
+                stage.setHeight(stage.getHeight());
                 stage.setScene(new Scene(root));
             } catch (IOException e) {
                 e.printStackTrace();

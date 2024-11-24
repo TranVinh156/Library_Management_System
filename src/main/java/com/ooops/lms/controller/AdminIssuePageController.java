@@ -27,6 +27,8 @@ public class AdminIssuePageController extends BasePageController<Report, AdminIs
     @FXML
     private Button returnButton;
 
+    private AdminDashboardController adminDashboardController;
+
     @FXML
     private AnchorPane tablePage;
 
@@ -43,7 +45,8 @@ public class AdminIssuePageController extends BasePageController<Report, AdminIs
 
     @Override
     protected void setupControllers() {
-
+        adminDashboardController = dashboardLoader.getController();
+        adminDashboardController.setAdminIssuePageController(this);
     }
 
     @Override
@@ -85,7 +88,9 @@ public class AdminIssuePageController extends BasePageController<Report, AdminIs
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
-        getTitlePageStack().pop();
+        while (getTitlePageStack().peek() != "Report") {
+            getTitlePageStack().pop();
+        }
         loadData();
         alterPage();
     }

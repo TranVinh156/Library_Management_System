@@ -1,5 +1,6 @@
 package com.ooops.lms.database.dao;
 
+import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.database.Database;
 import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.model.enums.BookReservationStatus;
@@ -16,17 +17,21 @@ import java.util.Map;
 public class BookReservationDAO implements DatabaseQuery<BookReservation> {
     private static BookReservationDAO bookReservationDAO;
 
-    private Database database;
-    private MemberDAO memberDAO;
-    private BookItemDAO bookItemDAO;
+    private static Database database;
+    private static MemberDAO memberDAO;
+    private static BookItemDAO bookItemDAO;
+    private static BookDAO bookDAO;
+    private static LRUCache<Integer, BookReservation> bookReservationCache;
 
     private BookReservationDAO() {
         database = Database.getInstance();
         memberDAO = MemberDAO.getInstance();
         bookItemDAO = BookItemDAO.getInstance();
+        bookDAO = BookDAO.getInstance();
+        bookReservationCache = new LRUCache<>(100);
     }
 
-    public static BookReservationDAO getInstance() {
+    public static synchronized BookReservationDAO getInstance() {
         if (bookReservationDAO == null) {
             bookReservationDAO = new BookReservationDAO();
         }
@@ -39,11 +44,11 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
     // update
     private static final String UPDATE_BOOK_RESERVATION
-            = "Update BookReservation set member_ID = ?, barcode = ?, creation_date = ?, due_date = ?, status = ? where reservation_ID = ?";
+            = "Update BookReservation set member_ID = ?, barcode = ?, creation_date = ?, due_date = ?, BookReservationStatus = ? where reservation_ID = ?";
 
     // delete
     private static final String DELETE_BOOK_RESERVATION
-            = "Delete BookReservation where reservation_ID = ?";
+            = "Delete FROM BookReservation where reservation_ID = ?";
 
     // find
     private static final String FIND_BOOK_RESERVATION = "Select * from BookReservation where reservation_ID = ?";
@@ -53,13 +58,16 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
     @Override
     public void add(@NotNull BookReservation entity) throws SQLException {
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_BOOK_RESERVATION)) {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_BOOK_RESERVATION, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setInt(2, entity.getBookItem().getBarcode());
             preparedStatement.setString(3, entity.getCreatedDate());
             preparedStatement.setString(4, entity.getDueDate());
 
             preparedStatement.executeUpdate();
+            memberDAO.fetchCache(entity.getMember().getPerson().getId());
+            bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+            bookDAO.fetchBook(entity.getBookItem().getISBN());
         }
     }
 
@@ -73,7 +81,15 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
             preparedStatement.setString(5, entity.getStatus().name());
             preparedStatement.setInt(6, entity.getReservationId());
 
-            return preparedStatement.executeUpdate() > 0;
+            if (preparedStatement.executeUpdate() > 0) {
+                bookReservationCache.put(entity.getReservationId(), entity);
+                memberDAO.fetchCache(entity.getMember().getPerson().getId());
+                bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+                bookDAO.fetchBook(entity.getBookItem().getISBN());
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -81,12 +97,24 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
     public boolean delete(@NotNull BookReservation entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_RESERVATION)) {
             preparedStatement.setInt(1, entity.getReservationId());
-            return preparedStatement.executeUpdate() > 0;
+
+            if (preparedStatement.executeUpdate() > 0) {
+                bookReservationCache.remove(entity.getReservationId());
+                memberDAO.fetchCache(entity.getMember().getPerson().getId());
+                bookItemDAO.fetchCache(entity.getBookItem().getBarcode());
+                bookDAO.fetchBook(entity.getBookItem().getISBN());
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
     @Override
     public BookReservation find(@NotNull Number keywords) throws SQLException {
+        if (bookReservationCache.containsKey(keywords.intValue())) {
+            return bookReservationCache.get(keywords.intValue());
+        }
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_RESERVATION)) {
             preparedStatement.setInt(1, keywords.intValue());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -96,7 +124,8 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
                             , bookItemDAO.find(resultSet.getInt("barcode"))
                             , resultSet.getString("creation_date")
                             , resultSet.getString("due_date")
-                            , BookReservationStatus.valueOf(resultSet.getString("status")));
+                            , BookReservationStatus.valueOf(resultSet.getString("BookReservationStatus")));
+                    bookReservationCache.put(bookReservation.getReservationId(), bookReservation);
                     return bookReservation;
                 }
             }
@@ -106,38 +135,50 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
 
     @Override
     public List<BookReservation> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
-        StringBuilder findBookReservationByCriteria = new StringBuilder("Select * from BookReservation where ");
-        Iterator<String> iterator = criteria.keySet().iterator();
+        StringBuilder findBookReservationByCriteria = new StringBuilder("Select distinct (reservation_ID) from BookReservation " +
+                "join Members on BookReservation.member_ID = Members.member_ID " +
+                "join BookItem on BookReservation.barcode = BookItem.barcode " +
+                "join Books on Books.ISBN = BookItem.ISBN " +
+                "where ");
 
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            findBookReservationByCriteria.append(key).append(" LIKE ?");
-            if (iterator.hasNext()) {
-                findBookReservationByCriteria.append(" AND ");
+        boolean[] flag = new boolean[15];
+        int index = 1;
+
+        for (String key : criteria.keySet()) {
+            switch (key) {
+                case "barcode" -> findBookReservationByCriteria.append("CAST(BookReservation.barcode AS CHAR) LIKE ? AND ");
+                case "member_ID" -> findBookReservationByCriteria.append("CAST(BookReservation.member_ID AS CHAR) LIKE ? AND ");
+                case "creation_date" -> {
+                    flag[index] = true;
+                    findBookReservationByCriteria.append("DATE(creation_date) = ? AND ");
+                }
+                case "due_date" -> {
+                    flag[index] = true;
+                    findBookReservationByCriteria.append("DATE(due_date) = ? AND ");
+                }
+                case "fullname" ->
+                        findBookReservationByCriteria.append("CONCAT(Members.last_name, ' ', Members.first_name) LIKE ? AND ");
+                default -> findBookReservationByCriteria.append(key).append(" LIKE ? AND ");
             }
+            index ++;
         }
 
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookReservationByCriteria.toString())) {
-            int index = 1;
+        findBookReservationByCriteria.setLength(findBookReservationByCriteria.length() - 5);
 
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(findBookReservationByCriteria.toString())) {
+            index = 1;
             for (Object value : criteria.values()) {
-                if (value != null) {
+                if (!flag[index]) {
                     preparedStatement.setString(index++, "%" + value.toString() + "%");
                 } else {
-                    preparedStatement.setString(index++, "%");
+                    preparedStatement.setString(index++, value.toString());
                 }
             }
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<BookReservation> bookReservations = new ArrayList<>();
                 while (resultSet.next()) {
-                    BookReservation bookReservation = new BookReservation(resultSet.getInt("reservation_ID")
-                            , memberDAO.find(resultSet.getInt("member_ID"))
-                            , bookItemDAO.find(resultSet.getInt("barcode"))
-                            , resultSet.getString("creation_date")
-                            , resultSet.getString("due_date")
-                            , BookReservationStatus.valueOf(resultSet.getString("status")));
-                    bookReservations.add(bookReservation);
+                    bookReservations.add(find(resultSet.getInt("reservation_ID")));
                 }
                 return bookReservations;
             }
@@ -150,16 +191,14 @@ public class BookReservationDAO implements DatabaseQuery<BookReservation> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<BookReservation> bookReservations = new ArrayList<>();
                 while (resultSet.next()) {
-                    BookReservation bookReservation = new BookReservation(resultSet.getInt("reservation_ID")
-                            , memberDAO.find(resultSet.getInt("member_ID"))
-                            , bookItemDAO.find(resultSet.getInt("barcode"))
-                            , resultSet.getString("creation_date")
-                            , resultSet.getString("due_date")
-                            , BookReservationStatus.valueOf(resultSet.getString("status")));
-                    bookReservations.add(bookReservation);
+                    bookReservations.add(find(resultSet.getInt("reservation_ID")));
                 }
                 return bookReservations;
             }
         }
+    }
+
+    public void fetchCache(int reservationID) {
+        bookReservationCache.remove(reservationID);
     }
 }

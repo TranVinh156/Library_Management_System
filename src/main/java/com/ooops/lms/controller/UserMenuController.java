@@ -36,6 +36,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.util.Duration;
@@ -67,7 +68,7 @@ public class UserMenuController implements Initializable {
     Label userNameLabel;
 
     @FXML
-    ImageView avatarImage;
+    ImageView avatarImage,pauseImage;
 
     @FXML
     TextField searchText;
@@ -83,6 +84,9 @@ public class UserMenuController implements Initializable {
     @FXML
     private ListView<HBox> suggestionList;
 
+    @FXML
+    Label musicNameText;
+
     private FXMLLoaderUtil fxmlLoaderUtil;
     private Button[] buttons;
 
@@ -96,10 +100,12 @@ public class UserMenuController implements Initializable {
     private static final String USER_LOGIN_FXML = "/com/ooops/lms/library_management_system/UserLogin.fxml";
     private static final String BOOK_RANKING_FXML = "/com/ooops/lms/library_management_system/BookRanking-view.fxml";
     private static final String SUGGEST_CARD_FXML = "/com/ooops/lms/library_management_system/BookSuggestionCard-view.fxml";
+    private static final String MUSIC_FXML = "/com/ooops/lms/library_management_system/Music-view.fxml";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupHoverMenuBar();
+        //set up loader and add dashboard
         fxmlLoaderUtil = FXMLLoaderUtil.getInstance(contentBox);
         fxmlLoaderUtil.addUserMenuController(this);
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
@@ -108,12 +114,18 @@ public class UserMenuController implements Initializable {
             contentBox.getChildren().clear();
             contentBox.getChildren().add(content);
         }
+        //theme
         ThemeManager.getInstance().addPane(stackPane);
+        //search book
         searchBookSuggestion();
 
         buttons = new Button[]{
                 dashboardButton, bookmarkButton, bookRankingButton, settingButton};
         ThemeManager.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+    }
+
+    public void setMusicNameText(String musicNameText) {
+        this.musicNameText.setText(musicNameText);
     }
 
     public void onDashboardButtonAction(ActionEvent event) {
@@ -158,6 +170,28 @@ public class UserMenuController implements Initializable {
         }
     }
 
+    public void onContinueButtonAction(ActionEvent actionEvent) {
+        FXMLLoaderUtil.getInstance().musicAction("pause",actionEvent);
+        Image image = FXMLLoaderUtil.getInstance().getPauseImage();
+        if(image!= null) {
+            setPauseImage(image);
+        }
+    }
+
+    public void setPauseImage(Image image) {
+        pauseImage.setImage(image);
+    }
+
+    public void onNextButtonAction(ActionEvent actionEvent) {
+        FXMLLoaderUtil.getInstance().musicAction("next",actionEvent);
+
+    }
+
+    public void onPreviousButtonAction(ActionEvent actionEvent) {
+        FXMLLoaderUtil.getInstance().musicAction("previous",actionEvent);
+
+    }
+
     public void onLogoutButtonAction(ActionEvent event) {
         boolean confirmYes = CustomerAlter.showAlter("Anh bỏ em à");
         if (confirmYes) {
@@ -178,30 +212,16 @@ public class UserMenuController implements Initializable {
         ObservableList<HBox> filteredSuggestions = FXCollections.observableArrayList();
         suggestionList.setItems(filteredSuggestions);
 
-        // Listener cho textField tìm kiếm
         searchText.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredSuggestions.clear();
 
-            if (!newValue.isEmpty()) {
-                if (BookManager.getInstance().getBookSearchCache().containsKey(newValue)) {
-                    // Nếu từ khóa có trong cache, lấy danh sách sách từ cache
-                    List<Book> cachedBooks = BookManager.getInstance().getBookSearchCache().get(newValue);
-                    updateSuggestions(cachedBooks, filteredSuggestions);
-                } else {
-                    // Nếu không có trong cache, gọi API tìm kiếm
-                    fetchBooksFromApi(newValue, filteredSuggestions);
-                }
-            }
+            fetchBooksFromApi(newValue, filteredSuggestions);
 
-            // Sự kiện click vào danh sách gợi ý
             suggestionList.setOnMouseClicked(event -> clearSuggestions(filteredSuggestions));
             suggestionContainer.setOnMouseClicked(event -> clearSuggestions(filteredSuggestions));
         });
     }
 
-    /**
-     * Phương thức gọi API để tìm kiếm sách
-     */
     private void fetchBooksFromApi(String keyword, ObservableList<HBox> filteredSuggestions) {
         Task<List<Book>> fetchBooksTask = new Task<>() {
             @Override
@@ -210,20 +230,14 @@ public class UserMenuController implements Initializable {
             }
         };
 
-        // Xử lý kết quả sau khi API trả về
         fetchBooksTask.setOnSucceeded(event -> {
             List<Book> bookList = fetchBooksTask.getValue();
-            BookManager.getInstance().addBookSearchCache(keyword, bookList);
             updateSuggestions(bookList, filteredSuggestions);
         });
 
-        // Khởi chạy task trong một thread khác
         new Thread(fetchBooksTask).start();
     }
 
-    /**
-     * Cập nhật danh sách gợi ý hiển thị
-     */
     private void updateSuggestions(List<Book> bookList, ObservableList<HBox> filteredSuggestions) {
         for (int i = 0; i < bookList.size(); i++) {
             try {
@@ -242,9 +256,6 @@ public class UserMenuController implements Initializable {
         adjustSuggestionListHeight(filteredSuggestions);
     }
 
-    /**
-     * Điều chỉnh chiều cao của danh sách gợi ý
-     */
     private void adjustSuggestionListHeight(ObservableList<HBox> filteredSuggestions) {
         suggestionList.setPrefHeight(filteredSuggestions.size() * 60);
         if (suggestionList.getPrefHeight() > 360) {
@@ -254,15 +265,11 @@ public class UserMenuController implements Initializable {
         suggestionList.setVisible(!filteredSuggestions.isEmpty());
     }
 
-    /**
-     * Xóa danh sách gợi ý và làm sạch trạng thái
-     */
     private void clearSuggestions(ObservableList<HBox> filteredSuggestions) {
         suggestionContainer.setVisible(false);
         filteredSuggestions.clear();
         searchText.clear();
     }
-
 
     public void onDashBoardMouseClicked(javafx.scene.input.MouseEvent mouseEvent) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
@@ -287,7 +294,7 @@ public class UserMenuController implements Initializable {
 
             // Tạo hiệu ứng tăng chiều rộng
             Timeline expandMenu = new Timeline(
-                    new KeyFrame(Duration.millis(75),
+                    new KeyFrame(Duration.millis(100),
                             new KeyValue(menuBarPlus.prefWidthProperty(), 350)) // Chiều rộng tối đa
             );
             expandMenu.play();
@@ -350,4 +357,16 @@ public class UserMenuController implements Initializable {
         return member;
     }
 
+    public void onMusicMouseClicked(MouseEvent mouseEvent) {
+        VBox content = (VBox) fxmlLoaderUtil.loadFXML(MUSIC_FXML);
+        if (content != null) {
+            fxmlLoaderUtil.updateContentBox(content);
+            ThemeManager.getInstance().changeMenuBarButtonColor(buttons, settingButton);
+
+        }
+    }
+
+    public void changeColorButtonBack() {
+        ThemeManager.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+    }
 }

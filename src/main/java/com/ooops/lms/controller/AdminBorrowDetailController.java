@@ -1,28 +1,41 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Cache.ImageCache;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.controller.BaseDetailController;
+import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.*;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
 import com.ooops.lms.model.enums.BookIssueStatus;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AdminBorrowDetailController extends BaseDetailController<BookIssue> {
 
@@ -116,9 +129,13 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     private boolean isSettingMember = false;
     private boolean isSettingBook = false;
 
+    protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
+
     @Override
     protected void loadItemDetails() {
-        getTitlePageStack().push(item.getIssueID() + "");
+        if(!getTitlePageStack().peek().equals(item.getIssueID()+"")) {
+            getTitlePageStack().push(item.getIssueID() + "");
+        }
         member = item.getMember();
         setMember(member);
 
@@ -210,8 +227,16 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         }
         String reformattedDate = reformatDate(borowDateText.getText());
         String reformattedReturnDate = reformatDate(returnDateText.getText());
-        item = new BookIssue(member,bookItem,reformattedDate,reformattedReturnDate);
+        item = new BookIssue(member, bookItem, reformattedDate, reformattedReturnDate);
+        item.setStatus(borrowStatus.getValue());
+        if(borrowIDLabel != null && borrowIDLabel.getText() != null) {
+            item.setIssueID(Integer.valueOf(borrowIDLabel.getText()));
+        }
         return true;
+    }
+    @Override
+    public String getType() {
+        return "đơn mượn sách";
     }
 
 
@@ -228,13 +253,37 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
                     isSettingMember = true;
                     setMember((Member) o);
                     suggestionVbox.getChildren().clear();
+                    suggestionPane.setLayoutX(0);
+                    suggestionPane.setLayoutY(0);
                     suggestionPane.setVisible(false);
                 } else if (o instanceof BookItem) {
                     isSettingBook = true;
                     setBookItem((BookItem) o);
                     suggestionVbox.getChildren().clear();
+                    suggestionPane.setLayoutX(0);
+                    suggestionPane.setLayoutY(0);
                     suggestionPane.setVisible(false);
                 }
+            }
+        });
+
+        suggestionPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                // Scene đã được tạo, thêm event filter
+                newScene.getRoot().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                    if (suggestionPane.isVisible()) {
+                        // Lấy tọa độ của điểm click trong không gian của suggestionPane
+                        Point2D point = suggestionPane.sceneToLocal(event.getSceneX(), event.getSceneY());
+
+                        // Kiểm tra xem click có nằm ngoài suggestionPane không
+                        if (!suggestionPane.contains(point)) {
+                            suggestionPane.setLayoutX(0);
+                            suggestionPane.setLayoutY(0);
+                            suggestionPane.setVisible(false);
+                            suggestionVbox.getChildren().clear();
+                        }
+                    }
+                });
             }
         });
 
@@ -242,21 +291,39 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             if (newScene != null) {
                 Stage stage = (Stage) bookNameText.getScene().getWindow();
 
-                stage.widthProperty().addListener((obs, oldWidth, newWidth) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
+                stage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    if (Math.abs(newWidth.doubleValue() - oldWidth.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
 
-                stage.heightProperty().addListener((obs, oldHeight, newHeight) ->
-                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField()));
-
-
+                stage.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+                    if (Math.abs(newHeight.doubleValue() - oldHeight.doubleValue()) > 100) { // Kiểm tra chênh lệch
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false); // Không hiển thị suggestionTable
+                    } else {
+                        Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
+                    }
+                });
             }
         });
 
         memberNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingMember && addMode) {
-                    suggestionTable.loadFindData("memberName", newValue);
-                    suggestionTable.updateSuggestionPanePosition(memberNameText);
+                    if(newValue != null && !newValue.isEmpty()) {
+                        suggestionTable.loadFindData("memberName", newValue);
+                        suggestionTable.updateSuggestionPanePosition(memberNameText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
+                    }
                 }
             }
         });
@@ -265,8 +332,14 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         memberIDText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingMember && addMode) {
-                    suggestionTable.loadFindData("memberID", newValue);
-                    suggestionTable.updateSuggestionPanePosition(memberIDText);
+                    if(newValue != null && !newValue.isEmpty()) {
+                        suggestionTable.loadFindData("memberID", newValue);
+                        suggestionTable.updateSuggestionPanePosition(memberIDText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
+                    }
                 }
                 isSettingMember = false;
             }
@@ -275,8 +348,14 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         bookNameText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingBook && addMode) {
-                    suggestionTable.loadFindData("bookItemName", newValue);
-                    suggestionTable.updateSuggestionPanePosition(bookNameText);
+                    if(newValue != null && !newValue.isEmpty()) {
+                        suggestionTable.loadFindData("bookItemName", newValue);
+                        suggestionTable.updateSuggestionPanePosition(bookNameText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
+                    }
                 }
             }
         });
@@ -284,8 +363,14 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         barCodeText.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingBook && addMode) {
+                    if(newValue != null && !newValue.isEmpty()){
                     suggestionTable.loadFindData("bookBarCode", newValue);
                     suggestionTable.updateSuggestionPanePosition(barCodeText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
+                    }
                 }
                 isSettingBook = false;
             }
@@ -293,7 +378,6 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
 
     }
-
 
     @FXML
     void oSaveButtonAction(ActionEvent event) {
@@ -307,10 +391,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
     @FXML
     void onDeleteButton(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn xóa người này?");
-        if (confirmYes) {
-            setEditMode(false);
-        }
+        deleteChanges();
     }
 
     @FXML
@@ -370,9 +451,37 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         phoneNumberText.setText(member.getPerson().getPhone());
         emailText.setText(member.getPerson().getEmail());
         genderText.setText(member.getPerson().getGender().toString());
-        totalOFBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
-        memberImage.setImage(new Image(member.getPerson().getImagePath()));
-        totalOfLostText.setText("chua co");
+        try {
+            Map<String, Object> findCriteriaa = new HashMap<>();
+            findCriteriaa.put("BookIssueStatus", BookIssueStatus.BORROWED);
+            findCriteriaa.put("member_ID", member.getPerson().getId());
+            int lostBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size();
+            totalOFBorrowText.setText(lostBook + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //totalOFBorrowText.setText(String.valueOf(member.getTotalBooksCheckOut()));
+        try {
+            File file = new File(member.getPerson().getImagePath());
+            if(ImageCache.getImageLRUCache().get(file.toURI().toString()) != null) {
+                memberImage.setImage(ImageCache.getImageLRUCache().get(file.toURI().toString()));
+            } else {
+                Image newImage = new Image(file.toURI().toString());
+                ImageCache.getImageLRUCache().put(file.toURI().toString(), newImage);
+                memberImage.setImage(newImage);
+            }
+        } catch (Exception e) {
+            memberImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));
+        }
+        try {
+            Map<String, Object> findCriteriaa = new HashMap<>();
+            findCriteriaa.put("BookIssueStatus", BookIssueStatus.LOST);
+            findCriteriaa.put("member_ID", member.getPerson().getId());
+            int lostBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size();
+            totalOfLostText.setText(lostBook + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setBookItem(BookItem bookItem) {
@@ -382,12 +491,62 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         categoryText.setText(getCategories(bookItem.getCategories()));
         authorNameText.setText(getAuthors(bookItem.getAuthors()));
         bookImage.setImage(new Image(bookItem.getImagePath()));
+        // Tải ảnh bất đồng bộ
+        Task<Image> loadImageTask = new Task<>() {
+            @Override
+            protected Image call() throws Exception {
+                try {
+                    Image image = ImageCache.getImageLRUCache().get(bookItem.getImagePath());
+                    if(image != null) {
+                        System.out.println("tai anh trong cache");
+                        return image;
+                    } else {
+                        Image image1 = new Image(bookItem.getImagePath(), true);
+                        ImageCache.getImageLRUCache().put(bookItem.getImagePath(), image1);
+                        return new Image(image1.getUrl());
+                    }
+                } catch (Exception e) {
+                    System.out.println("Length: " + bookItem.getImagePath().length());
+
+                    File file = new File("bookImage/default.png");
+                    return new Image(file.toURI().toString());
+                }
+            }
+        };
+
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+        executor.submit(loadImageTask);
     }
 
     private void setDateIssue() {
         borrowIDLabel.setText(String.valueOf(item.getIssueID()));
-        borowDateText.setText(String.valueOf(item.getCreatedDate()));
-        returnDateText.setText(String.valueOf(item.getReturnDate()));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        try {
+            // Chuyển đổi và định dạng cho borrowDate
+            if (item.getCreatedDate() != null) {
+                LocalDate createdDate = LocalDate.parse(item.getCreatedDate(), inputFormatter);
+                borowDateText.setText(createdDate.format(outputFormatter));
+            } else {
+                borowDateText.setText(""); // Hoặc giá trị mặc định khác
+            }
+
+            // Chuyển đổi và định dạng cho returnDate
+            if (item.getDueDate() != null) {
+                LocalDate dueDate = LocalDate.parse(item.getDueDate(), inputFormatter);
+                returnDateText.setText(dueDate.format(outputFormatter));
+            } else {
+                returnDateText.setText(""); // Hoặc giá trị mặc định khác
+            }
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            // Xử lý lỗi nếu cần (ví dụ: hiển thị thông báo lỗi cho người dùng)
+            borowDateText.setText(""); // Hoặc giá trị mặc định khác
+            returnDateText.setText(""); // Hoặc giá trị mặc định khác
+        }
+        borrowStatus.setValue(item.getStatus());
     }
 
 }

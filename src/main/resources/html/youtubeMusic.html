@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Video Player</title>
+</head>
+<body>
+<div id="player"></div>
+<script>
+    var player;
+
+    // Khởi tạo API YouTube IFrame
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: '', // Chưa có video mặc định
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    // Khi player đã sẵn sàng
+    function onPlayerReady(event) {
+        console.log("Player is ready.");
+    }
+
+    // Hàm để thay đổi video và phát nó
+    function playVideo(videoId) {
+        if (player) {
+            player.loadVideoById(videoId);
+            player.playVideo(); // Phát video ngay lập tức
+        }
+    }
+
+    function continueVideo() {
+        if (player) {
+            player.playVideo(); // Phát video ngay lập tức
+        }
+    }
+
+    function pauseVideo() {
+        if (player) {
+             player.pauseVideo();
+        }
+    }
+
+    function nextVideo() {
+        if (player) {
+             player.nextVideo();
+        }
+    }
+
+    function previousVideo() {
+        if(player) {
+            player.previousVideo();
+        }
+    }
+
+    // Nạp YouTube IFrame API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+</script>
+</body>
+</html>

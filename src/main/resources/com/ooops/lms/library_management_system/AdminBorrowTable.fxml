@@ -162,7 +162,7 @@
                   </HBox>
                   <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0" AnchorPane.bottomAnchor="5.684341886080802E-14" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0">
                      <children>
-                        <ScrollPane fx:id="scrollPane" prefHeight="400.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
+                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="400.0" prefWidth="822.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
                            <content>
                               <VBox fx:id="tableVbox" prefHeight="399.0" prefWidth="805.0" />
                            </content>

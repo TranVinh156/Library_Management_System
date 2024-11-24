@@ -7,6 +7,7 @@ import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Comment;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,12 +16,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +47,8 @@ public class RatingBookController {
     private ImageView bookImage, starImage;
     @FXML
     private Circle avatarImage;
+    @FXML
+    AnchorPane anchorPane;
     @FXML
     private TextArea commentTitleText,commentContentText;
 
@@ -109,6 +114,10 @@ public class RatingBookController {
     }
 
     public void onSaveButtonAction(ActionEvent actionEvent) {
+        if(currrentBookItem == null) {
+            CustomerAlter.showMessage("Vui l chọn sách");
+            return;
+        }
         if(comment == null) {
             comment = new Comment(commentTitleText.getText(),commentContentText.getText()
                     ,rate(ratingChoiceBox.getValue().toString()),UserMenuController.getMember()
@@ -125,6 +134,24 @@ public class RatingBookController {
         }else {
             CustomerAlter.showMessage("khong được sửa comment");
         }
+    }
+
+    public void onComplimentButtonAction(ActionEvent actionEvent) {
+        anchorPane.setVisible(true);
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+
+        // Định nghĩa hành động sau 5 giây
+        pause.setOnFinished(event -> {
+            anchorPane.setVisible(false);
+
+        });
+
+        // Bắt đầu đếm thời gian
+        pause.play();
+    }
+
+    public void onCriticizeButtonAction(ActionEvent actionEvent)  {
+        CustomerAlter.showMessage("t ban m nè");
     }
 
     private int rate(String rate) {

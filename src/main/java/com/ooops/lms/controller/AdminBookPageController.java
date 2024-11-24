@@ -28,6 +28,8 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
     @FXML
     private Label titlePage;
 
+    private AdminDashboardController adminDashboardController;
+
     @Override
     protected String getDetailFXMLPath() {
         return DETAIL_FXML;
@@ -40,6 +42,8 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
 
     @Override
     protected void setupControllers() {
+        adminDashboardController = dashboardLoader.getController();
+        adminDashboardController.setAdminBookPageController(this);
 
     }
 
@@ -56,7 +60,9 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
      */
     @FXML
     void onReturnButton(ActionEvent event) {
-        getTitlePageStack().pop();
+        while (getTitlePageStack().peek() != "Quản lý sách") {
+            getTitlePageStack().pop();
+        }
         loadData();
         alterPage();
     }

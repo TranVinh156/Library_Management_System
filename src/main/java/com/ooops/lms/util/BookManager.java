@@ -1,5 +1,6 @@
 package com.ooops.lms.util;
 
+import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.controller.UserMenuController;
 import com.ooops.lms.database.dao.BookIssueDAO;
@@ -30,8 +31,7 @@ public class BookManager {
     private List<BookIssue> borrowedBooks;
     private List<BookIssue> borrowingBooks;
 
-    private Map<String, List<Book>> searchBooks = new HashMap<>();
-    private final Map<String, Image> bookImageCache = new HashMap<>();
+    private static final LRUCache<String, Image> bookImageCache = new LRUCache<>(50);
 
     private BookManager() {
         try {
@@ -81,7 +81,7 @@ public class BookManager {
         if (borrowedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
-            criteria.put("status", BookIssueStatus.RETURNED);
+            criteria.put("bookIssueStatus", BookIssueStatus.RETURNED);
             borrowedBooks = BookIssueDAO.getInstance().searchByCriteria(criteria);
         }
         return borrowedBooks;
@@ -91,7 +91,7 @@ public class BookManager {
         if (borrowingBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
-            criteria.put("status", BookIssueStatus.BORROWED);
+            criteria.put("bookIssueStatus", BookIssueStatus.BORROWED);
             borrowingBooks = BookIssueDAO.getInstance().searchByCriteria(criteria);
         }
         return borrowingBooks;
@@ -171,6 +171,35 @@ public class BookManager {
         }
         reservedBooks.add(bookReservation);
     }
+    public void addMarkedBook(BookMark bookMark) {
+        try {
+            getMarkedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        markedBooks.add(bookMark);
+    }
+
+    public void deleteMarkedBook(BookMark bookMark) {
+        try {
+            getMarkedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        int index = findBookMark(bookMark.getBook().getISBN());
+        if(index!=-1) {
+            markedBooks.remove(index);
+        }
+    }
+    private int findBookMark(long ISBN) {
+        for (int i = 0;i<markedBooks.size();i++) {
+            if (markedBooks.get(i).getBook().getISBN() == ISBN) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     public List<Book> searchBookByAPI(String searchText) {
         // Tạo Task để tìm kiếm sách bất đồng bộ
@@ -219,15 +248,37 @@ public class BookManager {
     }
 
     public void clearCache() {
-        bookImageCache.clear(); // Làm sạch cache khi cần thiết
+        instance = null;
+        bookImageCache.clear();
+        allBooks.clear();
+        popularBooks.clear();
+        highRankBooks.clear();
+        if (reservedBooks != null) {
+            reservedBooks.clear();
+        }
+        if (markedBooks != null) {
+            markedBooks.clear();
+        }
+        if (borrowedBooks != null) {
+            borrowedBooks.clear();
+        }
+        if (borrowingBooks != null) {
+            borrowingBooks.clear();
+        }
     }
 
-
-    public Map<String, List<Book>> getBookSearchCache() {
-        return searchBooks;
+    public boolean isContainedInMarkedBookList(Long ISBN) {
+        try {
+            getMarkedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        for (BookMark bookMark : markedBooks) {
+            if (bookMark.getBook().getISBN() == ISBN) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void addBookSearchCache(String key, List<Book> books) {
-        searchBooks.put(key, books);
-    }
 }

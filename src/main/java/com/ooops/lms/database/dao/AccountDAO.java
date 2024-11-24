@@ -16,14 +16,14 @@ import java.util.Map;
 import java.util.Random;
 
 public class AccountDAO {
-    private Database database;
+    private static Database database;
     private static AccountDAO accountDAO;
 
     private AccountDAO() {
         database = Database.getInstance();
     }
 
-    public static AccountDAO getInstance() {
+    public static synchronized AccountDAO getInstance() {
         if (accountDAO == null) {
             accountDAO = new AccountDAO();
         }
@@ -44,19 +44,19 @@ public class AccountDAO {
             "VALUES (?, ?, ?, ?, ?, ?)";
 
     private static final String GET_RESET_PASSWORD_USER
-            = "Select * from Members where email = ?";
+            = "Select * from Members join users on users.member_ID = Members.member_ID where email = ?";
 
     private static final String GET_USER_BY_USERNAME =
             "Select * from Users where username = ?";
 
     private static final String UPDATE_USER =
-            "Update Users set password = ? where username = ?";
+            "Update Users join Members on users.member_ID = Members.member_ID set password = ? where email = ?";
 
     private static final String UPDATE_OTP_AND_EXPIRY =
             "UPDATE Users SET otp = ?, otp_expiry = NOW() + INTERVAL 5 MINUTE WHERE username = ?";
 
     private static final String VALIDATE_OTP =
-            "SELECT * FROM Users WHERE username = ? AND otp = ? AND otp_expiry > NOW()";
+            "SELECT * FROM Users join Members on users.member_ID = Members.member_ID WHERE email = ? AND otp = ? AND otp_expiry > NOW()";
 
     /**
      * Kiểm tra thông tin đăng nhập.
@@ -164,13 +164,12 @@ public class AccountDAO {
     }
 
     /**
-     *
-     * @param username
+     * Lấy lại mật khẩu.
      * @param email
      * @return
      * @throws SQLException
      */
-    public boolean resetPassword(String username, String email) throws SQLException {
+    public boolean resetPassword(String email) throws SQLException {
         // Kiểm tra tên dăng nhập và email có trùng khớp
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_RESET_PASSWORD_USER)) {
             preparedStatement.setString(1, email);
@@ -178,6 +177,7 @@ public class AccountDAO {
 
             if (resultSet.next()) { //Nếu trùng khớp
                 String OTP = generateOTP();
+                String username = resultSet.getString("username");
                 saveOTP(username, OTP);
                 EmailUtil.sendAsyncEmail(email, "THÔNG BÁO LẤY LẠI MẬT KHẨU", "Mã OTP của bạn là " + OTP);
                 return true;
@@ -195,9 +195,9 @@ public class AccountDAO {
         }
     }
 
-    public boolean verifyOTP(String username, String OTP) throws SQLException {
+    public boolean verifyOTP(String email, String OTP) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(VALIDATE_OTP)) {
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.setString(2, OTP);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -215,12 +215,12 @@ public class AccountDAO {
         return String.valueOf(password);
     }
 
-    public boolean changePassword(String username, String oldPassword, String newPassword) throws SQLException {
+    public boolean changePassword(String email, String oldPassword, String newPassword) throws SQLException {
         try {
-            if (validateMemberLogin(username, oldPassword) != 0) {
+            if (validateMemberLogin(email, oldPassword) != 0) {
                 try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_USER)) {
                     preparedStatement.setString(1, newPassword);
-                    preparedStatement.setString(2, username);
+                    preparedStatement.setString(2, email);
                     return preparedStatement.executeUpdate() > 0;
                 }
             } else {
@@ -231,10 +231,10 @@ public class AccountDAO {
         }
     }
 
-    public boolean changePassword(String username, String newPassword) throws SQLException {
+    public boolean changePassword(String email, String newPassword) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_USER)) {
             preparedStatement.setString(1, newPassword);
-            preparedStatement.setString(2, username);
+            preparedStatement.setString(2, email);
             return preparedStatement.executeUpdate() > 0;
         }
     }

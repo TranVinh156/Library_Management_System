@@ -17,12 +17,13 @@ public class Book {
     private String imagePath;
     private String description;
     private String placeAt;
+    private String preview = "No link available";
     private int quantity;
     private int numberOfLoanedBooks;
     private int numberOfLostBooks;
     private int numberOfReservedBooks;
     private int rate;
-    private BookStatus status;
+    private BookStatus bookStatus;
     private List<Author> authors;
     private List<Category> categories;
 
@@ -208,11 +209,20 @@ public class Book {
         this.numberOfReservedBooks = numberOfReservedBooks;
     }
 
-    public void setStatus(BookStatus status) {
-        this.status = status;
+    public String getPreview() {
+        return preview;
     }
+
+    public void setPreview(String preview) {
+        this.preview = preview;
+    }
+
     public BookStatus getstatus() {
-        return this.status;
+        return bookStatus;
+    }
+
+    public void setBookStatus(BookStatus bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
     @Override

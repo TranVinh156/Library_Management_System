@@ -3,8 +3,6 @@ package com.ooops.lms.Command;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.controller.BasicController;
 import com.ooops.lms.database.dao.AccountDAO;
-import com.ooops.lms.model.Account;
-import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.Role;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -50,19 +48,15 @@ public class LoginCommand extends BasicController implements Command {
         if (role.equals(Role.NONE)) {
             if(AccountDAO.getInstance().validateMemberLogin(username, password) != 0) {
                 this.resultMemberID = AccountDAO.getInstance().validateMemberLogin(username,password);
-                CustomerAlter.showAlter("Đăng nhập thành công");
-                openMenu();
-                return true;
+               return CustomerAlter.showAlter("Hế lô chào mừng bạn tới với chúng tớ nhé");
+
             }
         } else if (role.equals(Role.ADMIN)) {
-            System.out.println(username + " " + password);
             if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
-                CustomerAlter.showAlter("Đăng nhập thành công");
-                openMenu();
-                return true;
+                return CustomerAlter.showAlter("Chào sếp nhé, mời sếp vào");
             }
         }
-        CustomerAlter.showAlter("Thông tin đăng nhập không chính xác.");
+        CustomerAlter.showAlter("Thông tin đăng nhập sai rồi ó.");
         return false;
     }
 
@@ -72,8 +66,11 @@ public class LoginCommand extends BasicController implements Command {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
+                this.stage.setResizable(true);
+                stage.setWidth(stage.getWidth());
+                stage.setHeight(stage.getHeight());
+                this.stage.setScene(scene);
+                this.stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -85,7 +82,9 @@ public class LoginCommand extends BasicController implements Command {
                 UserMenuController userMenu = fxmlLoader.getController();
 
                 userMenu.setMemberID(resultMemberID);
-
+                stage.setResizable(true);
+                stage.setWidth(stage.getWidth());
+                stage.setHeight(stage.getHeight());
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();

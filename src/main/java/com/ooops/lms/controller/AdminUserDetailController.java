@@ -4,9 +4,11 @@ import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.controller.BaseDetailController;
+import com.ooops.lms.database.dao.BookIssueDAO;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.AccountStatus;
+import com.ooops.lms.model.enums.BookIssueStatus;
 import com.ooops.lms.model.enums.Gender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,8 +18,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminUserDetailController extends BaseDetailController<Member> {
     @FXML
@@ -73,7 +78,32 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         memberIDText.setText(String.valueOf(item.getPerson().getId()));
         memberNameText.setText(item.getPerson().getFirstName() + " " + item.getPerson().getLastName());
         numberOfBorrowText.setText(String.valueOf(item.getTotalBooksCheckOut()));
-        numberOfLostText.setText("Chua co");
+        try {
+            Map<String, Object> findCriteriaa = new HashMap<>();
+            findCriteriaa.put("BookIssueStatus", BookIssueStatus.BORROWED);
+            findCriteriaa.put("member_ID", item.getPerson().getId());
+
+            Map<String, Object> findCriteriaaa = new HashMap<>();
+            findCriteriaaa.put("BookIssueStatus", BookIssueStatus.RETURNED);
+            findCriteriaaa.put("member_ID", item.getPerson().getId());
+            int borrowBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size() + BookIssueDAO.getInstance().searchByCriteria(findCriteriaaa).size();
+            item.setTotalBooksCheckOut(borrowBook);
+            numberOfBorrowText.setText(String.valueOf(item.getTotalBooksCheckOut()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Map<String, Object> findCriteriaa = new HashMap<>();
+            findCriteriaa.put("BookIssueStatus", BookIssueStatus.LOST);
+            findCriteriaa.put("member_ID", item.getPerson().getId());
+            int lostBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size();
+            item.setTotalBooksCheckOut(lostBook);
+            numberOfLostText.setText(String.valueOf(lostBook));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         phoneNumberText.setText(item.getPerson().getPhone());
         birthText.setText(reformatDate(item.getPerson().getDateOfBirth().toString()));
         statusBox.setValue(item.getStatus());
@@ -84,17 +114,18 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         resignDateText.setText(formatResignDate);
 
         // Nếu như ảnh của member mà không có hoặc đường dẫn ảnh lỗi thì set mặc định
-        if (item.getPerson().getImagePath() != null && isValidImagePath(item.getPerson().getImagePath())) {
-            userImage.setImage(new Image(item.getPerson().getImagePath()));
-        } else {
-            userImage.setImage(defaultUserImage);
+        try {
+            File file = new File(item.getPerson().getImagePath());
+            userImage.setImage(new Image(file.toURI().toString()));
+        } catch (Exception e) {
+            userImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));
         }
     }
     @Override
     protected void updateAddModeUI() {
         // Xử lý ẩn hiện các nút
         editButton.setVisible(!addMode);
-        choiceImageButton.setVisible(addMode);
+        //choiceImageButton.setVisible(!addMode);
         saveButton.setVisible(addMode);
         saveButton.setText("Add");
 
@@ -126,7 +157,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
     protected void updateEditModeUI() {
         //Xử lý các nút ẩn hiện
         editButton.setVisible(!editMode);
-        choiceImageButton.setVisible(editMode);
+        //choiceImageButton.setVisible(!editMode);
         saveButton.setVisible(editMode);
         saveButton.setText("Save");
         deleteButton.setVisible(editMode);
@@ -211,6 +242,11 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
 
         return true;
 
+    }
+
+    @Override
+    public String getType() {
+        return "độc giả";
     }
 
     @FXML

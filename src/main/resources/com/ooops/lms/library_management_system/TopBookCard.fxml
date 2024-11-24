@@ -7,24 +7,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="152.0" prefWidth="83.0" spacing="5.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminDashboardBookCardController">
+<VBox fx:id="vboxMain" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="152.0" prefWidth="83.0" spacing="5.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.AdminDashboardBookCardController">
    <children>
-      <ImageView fx:id="bookImage" fitHeight="90.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bookImage" fitHeight="90.0" fitWidth="63.0" pickOnBounds="true">
          <image>
             <Image url="@../../../../image/customer/bookCard/Books.png" />
          </image>
       </ImageView>
-      <Label fx:id="bookNameLabel" text="Book name">
+      <Label fx:id="bookNameLabel" text="Book name" textOverrun="CLIP" VBox.vgrow="NEVER">
          <font>
             <Font name="Berlin Sans FB Bold" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="authorNameLabel" text="Author name">
+      <Label fx:id="authorNameLabel" text="Author name" VBox.vgrow="NEVER">
          <font>
             <Font name="Berlin Sans FB" size="10.0" />
          </font>
       </Label>
-      <ImageView fx:id="starImage" fitHeight="9.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="starImage" fitHeight="9.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
          <image>
             <Image url="@../../../../image/customer/bookCard/5Star.png" />
          </image>

@@ -50,7 +50,9 @@ public class AdminBorrowPageController extends BasePageController<BookIssue, Adm
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
-        getTitlePageStack().pop();
+        while (getTitlePageStack().peek() != "Quản lý mượn sách") {
+            getTitlePageStack().pop();
+        }
         loadData();
         alterPage();
     }

@@ -3,8 +3,10 @@ package com.ooops.lms.controller;
 import com.ooops.lms.controller.BaseTableController;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.ReportDAO;
 import com.ooops.lms.model.BookIssue;
+import com.ooops.lms.model.enums.BookItemStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -64,8 +66,8 @@ public class AdminBorrowTableController extends BaseTableController<BookIssue, A
         itemsList.addAll(BookIssueDAO.getInstance().selectAll());
         //Xu ly set total cho Dashboard
         findCriteria.clear();
-        findCriteria.put("status","BORROWED");
-        int totalBorrow = ReportDAO.getInstance().searchByCriteria(findCriteria).size();
+        findCriteria.put("BookItemStatus", BookItemStatus.LOANED.toString());
+        int totalBorrow = BookItemDAO.getInstance().searchByCriteria(findCriteria).size();
         adminDashboardController.setTotalBorrowLabel(totalBorrow+"");
         findCriteria.clear();
     }
@@ -91,7 +93,7 @@ public class AdminBorrowTableController extends BaseTableController<BookIssue, A
             findCriteria.put("memnberID",memeberIDFindText.getText());
         }
         if(!statusFindText.getText().isEmpty()){
-            findCriteria.put("status",statusFindText.getText());
+            findCriteria.put("BookIssueStatus",statusFindText.getText());
         }
 
     }

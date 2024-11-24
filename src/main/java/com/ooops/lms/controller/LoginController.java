@@ -39,6 +39,7 @@ public class LoginController extends  BasicController {
     @FXML
     private Button loginButton;
 
+
     @FXML
     private PasswordField passwordText;
 
@@ -122,7 +123,9 @@ public class LoginController extends  BasicController {
             // Tải cửa sổ đăng ký
             Stage stage = (Stage) registerButton.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-            stage.setResizable(resizable);
+            stage.setResizable(true);
+            stage.setWidth(stage.getWidth());
+            stage.setHeight(stage.getHeight());
             stage.setScene(new Scene(root));
 
         } catch (IOException e) {

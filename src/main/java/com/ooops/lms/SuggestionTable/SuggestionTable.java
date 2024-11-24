@@ -1,6 +1,5 @@
 package com.ooops.lms.SuggestionTable;
 
-import com.ooops.lms.Cache.BookQueryCache;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.controller.BookSuggestionCardController;
 import com.ooops.lms.database.dao.BookItemDAO;
@@ -42,7 +41,6 @@ public class SuggestionTable {
     Map<Integer, Member> uniqueMembersMap = new HashMap<>();
     Map<String, Object> searchCriteria = new HashMap<>();
     private TextField activeTextField;
-    BookQueryCache cache = new BookQueryCache(5);
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -70,7 +68,6 @@ public class SuggestionTable {
                     if (count == 30) break;
 
                     try {
-                        System.out.println("dsaidhsadu");
                         FXMLLoader loader = new FXMLLoader(SuggestionTable.class.getResource(
                                 "/com/ooops/lms/library_management_system/AdminSuggestRow.fxml"));
                         Node row = loader.load();
@@ -80,7 +77,8 @@ public class SuggestionTable {
                         rowController.setSuggestion(o);
                         if(row instanceof HBox) {
                             HBox cardBox = (HBox) row;
-                            cardBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(16));
+                            cardBox.setMinWidth(200);
+                           // cardBox.prefWidthProperty().bind(activeTextField.widthProperty().subtract(16));
                         }
                         final Object suggestion = o;
                         row.setOnMouseClicked(event -> {
@@ -125,15 +123,10 @@ public class SuggestionTable {
         try {
             switch (typeData) {
                 case "memberName":
-                    System.out.println("dheushui");
                     searchCriteria.clear();
-                    searchCriteria.put("first_name", value);
+                    searchCriteria.put("fullname", value);
                     suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
 
-                    searchCriteria.clear();
-                    searchCriteria.put("last_name", value);
-                    suggestList.addAll(MemberDAO.getInstance().searchByCriteria(searchCriteria));
-                    System.out.println(suggestList.size());
                     break;
                 case "memberID":
                     searchCriteria.put("member_id", value);
@@ -148,30 +141,16 @@ public class SuggestionTable {
                     break;
                 case "bookItemName":
                     searchCriteria.put("title", value);
-                    searchCriteria.put("status", BookItemStatus.AVAILABLE);
+                    searchCriteria.put("BookItemStatus", BookItemStatus.AVAILABLE);
                     suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
                     break;
                 case "bookNameAPI":
-                    if (cache.findBookInCache("title", value) != null) {
-                        suggestList.addAll(cache.findBookInCache("title", value));
-                    }
-                    if (suggestList.size() == 0) {
-                        System.out.println("Tim API1");
                         List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
                         suggestList.addAll(listbook);
-                        cache.storeQueryResult("title", listbook);
-                    }
                     break;
                 case "bookISBNAPI":
-                    if (cache.findBookInCache("ISBN", value) != null) {
-                        suggestList.addAll(cache.findBookInCache("ISBN", value));
-                    }
-                    if (suggestList.size() == 0) {
-                        System.out.println("Tim API2");
-                        List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
-                        suggestList.addAll(listbook);
-                        cache.storeQueryResult("ISBN", listbook);
-                    }
+                        Book book = BookInfoFetcher.searchBookByISBN(value);
+                        suggestList.addAll((Collection<?>) book);
                     break;
                 default:
                     break;
@@ -219,8 +198,8 @@ public class SuggestionTable {
         scrollPane.setMaxWidth(textField.getWidth());
         scrollPane.setMinWidth(textField.getWidth());
 
-        suggestionTable.setMinWidth(scrollPane.getWidth());
-        suggestionTable.setMaxWidth(scrollPane.getWidth());
+        suggestionTable.setMinWidth(1000);
+        suggestionTable.setMaxWidth(1000);
 
         suggestionListView.setMinWidth(scrollPane.getWidth());
         suggestionListView.setMaxWidth(scrollPane.getWidth());

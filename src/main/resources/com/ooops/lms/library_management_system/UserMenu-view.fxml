@@ -20,23 +20,65 @@
          <top>
             <HBox prefHeight="70.0" prefWidth="950.0" styleClass="topBackground" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="70.0" prefWidth="262.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="103.0">
                      <children>
-                        <AnchorPane prefHeight="70.0" prefWidth="290.0" HBox.hgrow="NEVER">
+                        <ImageView fitHeight="51.0" fitWidth="67.0" onMouseClicked="#onDashBoardMouseClicked" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../image/customer/menu/Logo.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <AnchorPane prefHeight="39.0" prefWidth="323.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <ImageView fitHeight="51.0" fitWidth="67.0" layoutX="29.7" layoutY="9.24" onMouseClicked="#onDashBoardMouseClicked" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../image/customer/menu/Logo.png" />
-                                 </image>
-                              </ImageView>
+                              <HBox alignment="CENTER_LEFT" layoutX="21.0" layoutY="19.0" onMouseClicked="#onMusicMouseClicked" prefHeight="33.0" prefWidth="231.0" spacing="5.0" styleClass="musicBar" AnchorPane.leftAnchor="21.0">
+                                 <children>
+                                    <ImageView fitHeight="28.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../image/customer/music/Disk.gif" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="musicNameText" prefHeight="17.0" prefWidth="136.0" text="Nghe nhạc?" />
+                                    <Button mnemonicParsing="false" onAction="#onPreviousButtonAction" prefHeight="26.0" prefWidth="32.0" styleClass="button-transparent">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../image/customer/music/right.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#onContinueButtonAction" prefHeight="28.0" prefWidth="23.0" styleClass="button-transparent">
+                                       <graphic>
+                                          <ImageView fx:id="pauseImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../image/customer/music/pause-button.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#onNextButtonAction" styleClass="button-transparent">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../image/customer/music/right.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                         </AnchorPane>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="445.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <AnchorPane prefHeight="70.0" prefWidth="157.0" HBox.hgrow="NEVER" />
-                        <TextField fx:id="searchText" prefHeight="25.0" prefWidth="292.0" />
+                        <TextField fx:id="searchText" prefHeight="25.0" prefWidth="292.0" promptText="Tìm sách gì?" />
                         <Button fx:id="advancedSearchButton" mnemonicParsing="false" onAction="#onAdvancedSearchButtonAction" prefHeight="27.0" prefWidth="0.0" style="-fx-background-color: transparent;">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
@@ -61,8 +103,10 @@
                                     <Image url="@../../../../image/customer/menu/ava.png" />
                                  </image>
                               </ImageView>
-                              <AnchorPane prefHeight="70.0" prefWidth="95.0" HBox.hgrow="NEVER" />
                            </children>
+                           <padding>
+                              <Insets right="50.0" />
+                           </padding>
                         </HBox>
                      </children>
                   </HBox>
@@ -72,20 +116,20 @@
          <left>
             <VBox fx:id="menuBar" prefHeight="605.0" prefWidth="58.0" styleClass="sideBackground" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="BOTTOM_LEFT" prefHeight="231.0" prefWidth="53.0">
+                  <VBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="53.0" spacing="2.0">
                      <children>
                         <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#onDashboardButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fitHeight="33.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="30.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../image/customer/menu/menu.png" />
+                                    <Image url="@../../../../image/customer/menu/list.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
                         <Button fx:id="bookmarkButton" mnemonicParsing="false" onAction="#onBookmarkButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fitHeight="38.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/bookmark.png" />
                                  </image>
@@ -94,32 +138,31 @@
                         </Button>
                         <Button fx:id="bookRankingButton" mnemonicParsing="false" onAction="#onBookRankingButtonAction" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../image/customer/menu/ranking.png" />
+                                    <Image url="@../../../../image/customer/menu/rank.png" />
                                  </image>
                               </ImageView>
-                           </graphic>
-                        </Button>
+                           </graphic></Button>
                      </children>
                   </VBox>
                   <HBox prefHeight="261.0" prefWidth="58.0" VBox.vgrow="ALWAYS" />
-                  <VBox prefHeight="90.0" prefWidth="58.0">
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="90.0" prefWidth="58.0" spacing="5.0">
                      <children>
-                        <Button fx:id="settingButton" mnemonicParsing="false" onAction="#onSettingButtonAction" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button fx:id="settingButton" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="28.0" prefWidth="32.0" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="28.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../image/admin/menu/Vector.png" />
+                                    <Image url="@../../../../image/customer/menu/settings.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="39.0" prefWidth="49.0" style="-fx-background-color: transparent;" styleClass="button-transparent">
+                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="37.0" prefWidth="43.0" style="-fx-background-color: transparent;" styleClass="button-transparent">
                            <graphic>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../image/admin/menu/Vector%20(1).png" />
+                                    <Image url="@../../../../image/customer/menu/logout.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -137,7 +180,7 @@
                <children>
                   <VBox fx:id="menuBarPlus" prefHeight="605.0" prefWidth="0.0" styleClass="sideBackground" visible="false" HBox.hgrow="NEVER">
                      <children>
-                        <VBox alignment="BOTTOM_LEFT" prefHeight="256.0" prefWidth="181.0">
+                        <VBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="236.0" prefWidth="179.0">
                            <children>
                               <Button fx:id="dashboardButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="181.0" styleClass="menu-bar-button" text="Dashboard" />
                               <Button fx:id="bookmarkButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookmarkButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Đánh dấu" />
@@ -145,15 +188,15 @@
                            </children>
                         </VBox>
                         <HBox prefHeight="306.0" prefWidth="181.0" VBox.vgrow="ALWAYS" />
-                        <VBox prefHeight="100.0" prefWidth="100.0">
+                        <VBox prefHeight="0.0" prefWidth="179.0">
                            <children>
-                              <VBox prefHeight="70.0" prefWidth="161.0">
+                              <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="161.0">
                                  <children>
                                     <Button fx:id="settingButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Cài đặt" />
                                     <Button fx:id="logoutButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="20.0" prefWidth="181.0" styleClass="menu-bar-button" text="Logout" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets bottom="5.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </VBox>
                            </children>
