@@ -94,4 +94,5 @@ public class AdminIssuePageController extends BasePageController<Report, AdminIs
         loadData();
         alterPage();
     }
+
 }
