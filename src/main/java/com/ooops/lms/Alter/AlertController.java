@@ -36,7 +36,6 @@ public class AlertController {
     }
 
     private void closeAlert() {
-        System.out.println("Close");
         Stage stage = (Stage) alertMessageLabel.getScene().getWindow();
         stage.close();
     }

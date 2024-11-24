@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Cache.ImageCache;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
@@ -133,28 +134,33 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         locationText.setText(item.getPlaceAt());
         bookContentText.setText(item.getDescription());
 
-        if (item.getImagePath() != null && isValidImagePath(item.getImagePath())) {
-            // Tải ảnh bất đồng bộ
-            Task<Image> loadImageTask = new Task<>() {
-                @Override
-                protected Image call() throws Exception {
-                    try {
-                        return new Image(item.getImagePath(), true);
-                    } catch (Exception e) {
-                        System.out.println("Length: " + item.getImagePath().length());
-
-                        File file = new File("bookImage/default.png");
-                        return new Image(file.toURI().toString());
+        // Tải ảnh bất đồng bộ
+        Task<Image> loadImageTask = new Task<>() {
+            @Override
+            protected Image call() throws Exception {
+                try {
+                    Image image = ImageCache.getImageLRUCache().get(item.getImagePath());
+                    if(image != null) {
+                        System.out.println("tai anh trong cache");
+                        return image;
+                    } else {
+                        System.out.println("Khong co anh trong cache");
+                        Image image1 = new Image(item.getImagePath(), true);
+                        ImageCache.getImageLRUCache().put(item.getImagePath(), image1);
+                        return new Image(image1.getUrl());
                     }
+                } catch (Exception e) {
+                    System.out.println("Length: " + item.getImagePath().length());
+
+                    File file = new File("bookImage/default.png");
+                    return new Image(file.toURI().toString());
                 }
-            };
+            }
+        };
 
-            loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
 
-            executor.submit(loadImageTask);
-        } else {
-            bookImage.setImage(defaultBookImage);
-        }
+        executor.submit(loadImageTask);
         loadBookItem();
     }
 

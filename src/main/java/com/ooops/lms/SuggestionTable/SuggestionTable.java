@@ -68,7 +68,6 @@ public class SuggestionTable {
                     if (count == 30) break;
 
                     try {
-                        System.out.println("dsaidhsadu");
                         FXMLLoader loader = new FXMLLoader(SuggestionTable.class.getResource(
                                 "/com/ooops/lms/library_management_system/AdminSuggestRow.fxml"));
                         Node row = loader.load();
@@ -78,7 +77,8 @@ public class SuggestionTable {
                         rowController.setSuggestion(o);
                         if(row instanceof HBox) {
                             HBox cardBox = (HBox) row;
-                            cardBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(16));
+                            cardBox.setMinWidth(200);
+                           // cardBox.prefWidthProperty().bind(activeTextField.widthProperty().subtract(16));
                         }
                         final Object suggestion = o;
                         row.setOnMouseClicked(event -> {
@@ -198,8 +198,8 @@ public class SuggestionTable {
         scrollPane.setMaxWidth(textField.getWidth());
         scrollPane.setMinWidth(textField.getWidth());
 
-        suggestionTable.setMinWidth(scrollPane.getWidth());
-        suggestionTable.setMaxWidth(scrollPane.getWidth());
+        suggestionTable.setMinWidth(1000);
+        suggestionTable.setMaxWidth(1000);
 
         suggestionListView.setMinWidth(scrollPane.getWidth());
         suggestionListView.setMaxWidth(scrollPane.getWidth());

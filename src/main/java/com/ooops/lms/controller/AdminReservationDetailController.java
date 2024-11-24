@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.Cache.ImageCache;
 import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
@@ -314,6 +315,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                     if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("memberName", newValue);
                         suggestionTable.updateSuggestionPanePosition(memberNameText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
                     }
                 }
             }
@@ -326,6 +331,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                     if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("memberID", newValue);
                         suggestionTable.updateSuggestionPanePosition(memberIDText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
                     }
                 }
                 isSettingMember = false;
@@ -338,6 +347,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                     if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("bookItemName", newValue);
                         suggestionTable.updateSuggestionPanePosition(bookNameText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
                     }
                 }
             }
@@ -349,6 +362,10 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
                     if (newValue != null && !newValue.isEmpty()) {
                         suggestionTable.loadFindData("bookBarCode", newValue);
                         suggestionTable.updateSuggestionPanePosition(barCodeText);
+                    } else {
+                        suggestionPane.setLayoutX(0);
+                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setVisible(false);
                     }
                 }
                 isSettingBook = false;
@@ -458,8 +475,17 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
             @Override
             protected Image call() throws Exception {
                 try {
-                    return new Image(bookItem.getImagePath(), true);
+                    Image image = ImageCache.getImageLRUCache().get(bookItem.getImagePath());
+                    if(image != null) {
+                        System.out.println("tai anh trong cache");
+                        return image;
+                    } else {
+                        Image image1 = new Image(bookItem.getImagePath(), true);
+                        ImageCache.getImageLRUCache().put(bookItem.getImagePath(), image1);
+                        return new Image(image1.getUrl());
+                    }
                 } catch (Exception e) {
+                    System.out.println("Khong co anh trong cache");
                     System.out.println("Length: " + bookItem.getImagePath().length());
 
                     File file = new File("bookImage/default.png");

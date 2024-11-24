@@ -1,5 +1,6 @@
 package com.ooops.lms.SuggestionTable;
 
+import com.ooops.lms.Cache.ImageCache;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Member;
@@ -63,7 +64,16 @@ public class AdminSugesstionRowController {
                 @Override
                 protected Image call() throws Exception {
                     try {
-                        return new Image(bookItem.getImagePath(), true);
+                        Image image = ImageCache.getImageLRUCache().get(bookItem.getImagePath());
+                        if(image != null) {
+                            System.out.println("tai anh trong cache");
+                            return image;
+                        } else {
+                            System.out.println("Khong co anh trong cache");
+                            Image image1 = new Image(bookItem.getImagePath(), true);
+                            ImageCache.getImageLRUCache().put(bookItem.getImagePath(), image1);
+                            return new Image(image1.getUrl());
+                        }
                     } catch (Exception e) {
                         System.out.println("Length: " + bookItem.getImagePath().length());
 
@@ -85,7 +95,16 @@ public class AdminSugesstionRowController {
                 @Override
                 protected Image call() throws Exception {
                     try {
-                        return new Image(book.getImagePath(), true);
+                        Image image = ImageCache.getImageLRUCache().get(book.getImagePath());
+                        if(image != null) {
+                            System.out.println("tai anh trong cache");
+                            return image;
+                        } else {
+                            System.out.println("Khong co anh trong cache");
+                            Image image1 = new Image(book.getImagePath(), true);
+                            ImageCache.getImageLRUCache().put(book.getImagePath(), image1);
+                            return new Image(image1.getUrl());
+                        }
                     } catch (Exception e) {
                         System.out.println("Length: " + book.getImagePath().length());
 

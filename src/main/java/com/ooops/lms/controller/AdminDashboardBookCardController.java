@@ -1,5 +1,6 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Cache.ImageCache;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.util.BookManager;
@@ -53,11 +54,19 @@ public class AdminDashboardBookCardController {
         }
         starImage.setImage(starImage(book.getRate()));
 
+        // Tải ảnh bất đồng bộ
         Task<Image> loadImageTask = new Task<>() {
             @Override
             protected Image call() throws Exception {
                 try {
-                    return new Image(book.getImagePath(), true);
+                    Image image = ImageCache.getImageLRUCache().get(book.getImagePath());
+                    if(image != null) {
+                        return image;
+                    } else {
+                        Image image1 = new Image(book.getImagePath(), true);
+                        ImageCache.getImageLRUCache().put(book.getImagePath(), image1);
+                        return new Image(image1.getUrl());
+                    }
                 } catch (Exception e) {
                     System.out.println("Length: " + book.getImagePath().length());
 
@@ -70,6 +79,7 @@ public class AdminDashboardBookCardController {
         loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
 
         executor.submit(loadImageTask);
+
 
     }
     private Image starImage(int numOfStar) {

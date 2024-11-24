@@ -50,10 +50,7 @@ public class AdminReservationPageController extends BasePageController<BookReser
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
-        if(getTitlePageStack().peek() !="Edit") {
-            getTitlePageStack().pop();
-        } else {
-            getTitlePageStack().pop();
+        while (getTitlePageStack().peek() != "Quản lý đặt trước sách") {
             getTitlePageStack().pop();
         }
         loadData();
