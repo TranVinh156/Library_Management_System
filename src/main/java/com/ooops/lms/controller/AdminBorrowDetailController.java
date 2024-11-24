@@ -122,6 +122,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
     @FXML
     private ListView<HBox> sugestionList;
 
+
+
     private Member member;
     private BookItem bookItem;
     private SuggestionTable suggestionTable;
