@@ -110,6 +110,7 @@ public class MoreBookController {
                 moreBookBox.getChildren().remove(content);
             }
             fxmlLoaderUtil.updateContentBox(content);
+            FXMLLoaderUtil.getInstance().changeColorWhenBack();
         }
     }
 
