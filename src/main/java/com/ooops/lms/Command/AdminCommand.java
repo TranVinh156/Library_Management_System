@@ -125,7 +125,7 @@ public class AdminCommand implements Command {
                 case "block":
                     if (object instanceof Member) {
                         Member member = (Member) object;
-                        member.setStatus(AccountStatus.BLOCKED);
+                        member.setStatus(AccountStatus.CLOSED);
                     }
                     return true;
                 case "unblock":
