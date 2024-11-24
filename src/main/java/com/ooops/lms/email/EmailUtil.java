@@ -22,6 +22,9 @@ public class EmailUtil implements Runnable {
         sendEmail();
     }
 
+    /**
+     * gửi email.
+     */
     public void sendEmail() {
         String from = "ooopslibrary@gmail.com";
         String host = "smtp.gmail.com";
@@ -54,6 +57,12 @@ public class EmailUtil implements Runnable {
         }
     }
 
+    /**
+     * gửi email.
+     * @param toEmail đến
+     * @param subject tiêu đề
+     * @param body nội dung
+     */
     public static void sendAsyncEmail(String toEmail, String subject, String body) {
         EmailUtil emailUtil = new EmailUtil(toEmail, subject, body);
         Thread emailThread = new Thread(emailUtil);
