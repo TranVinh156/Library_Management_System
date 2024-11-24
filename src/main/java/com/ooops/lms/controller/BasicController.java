@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.google.api.services.books.v1.model.Volumeseriesinfo;
+import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.CommandInvoker;
 import com.ooops.lms.database.dao.BookDAO;
@@ -159,7 +160,6 @@ public class BasicController {
 
         try {
             pane = fxml.load(); // Tải FXML và gán cho pane
-            System.out.println("Successfully loaded FXML: " + fxml);
 
             // Thiết lập các ràng buộc cho AnchorPane (nếu T là AnchorPane)
             if (pane instanceof AnchorPane) {
@@ -180,7 +180,6 @@ public class BasicController {
             }
 
         } catch (IOException e) {
-            System.err.println("Failed to load FXML: " + fxml);
             e.printStackTrace();
         }
         return pane; // Trả về pane
