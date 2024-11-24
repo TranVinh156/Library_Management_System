@@ -76,7 +76,7 @@
                               </Button>
                               <Button mnemonicParsing="false" onAction="#onOnOffButtonAction" styleClass="button-transparent">
                                  <graphic>
-                                    <ImageView fitHeight="45.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="pauseImage" fitHeight="45.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../../../image/customer/music/play-button.png" />
                                        </image>
@@ -105,7 +105,10 @@
                            <children>
                               <VBox alignment="CENTER" prefHeight="105.0" prefWidth="245.0" styleClass="musicNameIn">
                                  <children>
-                                    <Text fx:id="musicNameLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="225.13671875" />
+                                    <Text fx:id="musicNameLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Nghe nhạc?" wrappingWidth="211.13671875">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font></Text>
                                  </children>
                               </VBox>
                            </children>
@@ -115,7 +118,7 @@
                         </VBox>
                         <AnchorPane prefHeight="400.0" prefWidth="317.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <ImageView fx:id="musicDanceImage" fitHeight="114.0" fitWidth="133.0" layoutX="143.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="musicDanceImage" fitHeight="114.0" fitWidth="133.0" layoutX="143.0" layoutY="277.0" onMouseClicked="#onDanceMouseClicked" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/customer/music/Feel.gif" />
                                  </image>
@@ -125,7 +128,7 @@
                                     <Image url="@../../../../image/customer/music/headphone.png" />
                                  </image>
                               </ImageView>
-                              <WebView fx:id="webView" layoutX="14.0" layoutY="14.0" prefHeight="79.0" prefWidth="83.0" visible="false" />
+                              <WebView fx:id="webView" layoutX="184.0" layoutY="23.0" prefHeight="74.0" prefWidth="89.0" visible="false" />
                            </children>
                         </AnchorPane>
                      </children>
