@@ -35,7 +35,7 @@
             </Button>
          </children>
       </HBox>
-      <VBox alignment="CENTER" prefHeight="527.0" prefWidth="467.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10;">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="474.0" prefWidth="665.0" style="-fx-background-radius: 20;" styleClass="background-part">
          <children>
             <Pagination fx:id="pagination" maxPageIndicatorCount="7" pageCount="1" prefHeight="425.0" prefWidth="467.0" />
          </children>

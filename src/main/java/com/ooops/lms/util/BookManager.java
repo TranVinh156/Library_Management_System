@@ -31,7 +31,7 @@ public class BookManager {
     private List<BookIssue> borrowedBooks;
     private List<BookIssue> borrowingBooks;
 
-    private static LRUCache<String, Image> bookImageCache = new LRUCache<>(20);
+    private static final LRUCache<String, Image> bookImageCache = new LRUCache<>(50);
 
     private BookManager() {
         try {
@@ -91,7 +91,7 @@ public class BookManager {
         if (borrowingBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
-            criteria.put("status", BookIssueStatus.BORROWED);
+            criteria.put("bookIssueStatus", BookIssueStatus.BORROWED);
             borrowingBooks = BookIssueDAO.getInstance().searchByCriteria(criteria);
         }
         return borrowingBooks;
@@ -171,6 +171,35 @@ public class BookManager {
         }
         reservedBooks.add(bookReservation);
     }
+    public void addMarkedBook(BookMark bookMark) {
+        try {
+            getMarkedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        markedBooks.add(bookMark);
+    }
+
+    public void deleteMarkedBook(BookMark bookMark) {
+        try {
+            getMarkedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        int index = findBookMark(bookMark.getBook().getISBN());
+        if(index!=-1) {
+            markedBooks.remove(index);
+        }
+    }
+    private int findBookMark(long ISBN) {
+        for (int i = 0;i<markedBooks.size();i++) {
+            if (markedBooks.get(i).getBook().getISBN() == ISBN) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     public List<Book> searchBookByAPI(String searchText) {
         // Tạo Task để tìm kiếm sách bất đồng bộ
@@ -227,15 +256,29 @@ public class BookManager {
         if (reservedBooks != null) {
             reservedBooks.clear();
         }
-        if(markedBooks!=null) {
+        if (markedBooks != null) {
             markedBooks.clear();
         }
-        if(borrowedBooks!=null) {
+        if (borrowedBooks != null) {
             borrowedBooks.clear();
         }
-        if(borrowingBooks!=null) {
+        if (borrowingBooks != null) {
             borrowingBooks.clear();
         }
+    }
+
+    public boolean isContainedInMarkedBookList(Long ISBN) {
+        try {
+            getMarkedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        for (BookMark bookMark : markedBooks) {
+            if (bookMark.getBook().getISBN() == ISBN) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
