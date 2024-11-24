@@ -47,8 +47,10 @@ public class AdminBorrowTableRowController extends BaseRowController<BookIssue, 
         statusLabel.setText(item.getStatus().toString());
         if(statusLabel.getText().equals("LOST")) {
             statusLabel.setStyle("-fx-text-fill: red;");
-        } else {
-            statusLabel.setStyle("-fx-text-fill: black;");
+        } else if (statusLabel.getText().equals("BORROWED")) {
+            statusLabel.setStyle("-fx-text-fill: blue;");
+        } else if (statusLabel.getText().equals("RETURNED")) {
+            statusLabel.setStyle("-fx-text-fill: green;");
         }
     }
 
