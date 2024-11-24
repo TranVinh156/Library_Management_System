@@ -66,8 +66,8 @@ public class AdminReservationTableRowController extends BaseRowController<BookRe
             statusLabel.setStyle("-fx-text-fill: red;");
         } else if(item.getStatus().equals(BookReservationStatus.WAITING)) {
             statusLabel.setStyle("-fx-text-fill: blue");
-        } else{
-            statusLabel.setStyle("-fx-text-fill: black;");
+        } else if (item.getStatus().equals(BookReservationStatus.COMPLETED)) {
+            statusLabel.setStyle("-fx-text-fill:green;");
         }
     }
 
