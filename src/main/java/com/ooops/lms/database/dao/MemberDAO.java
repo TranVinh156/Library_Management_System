@@ -28,6 +28,10 @@ public class MemberDAO implements DatabaseQuery<Member> {
         memberCache = new LRUCache<>(100);
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized MemberDAO getInstance() {
         if (memberDAO == null) {
             memberDAO = new MemberDAO();
@@ -60,6 +64,14 @@ public class MemberDAO implements DatabaseQuery<Member> {
     // select all
     private static final String SELECT_ALL = "Select * from members m join Users u on m.member_ID = u.member_ID";
 
+    /**
+     * thêm.
+     * @param username tên tài khoản
+     * @param password mật khẩu
+     * @param memberID id
+     * @return true false
+     * @throws SQLException lỗi
+     */
     private boolean insertUser(String username, String password, int memberID) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_USER)) {
             preparedStatement.setString(1, username);
@@ -80,6 +92,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
         return String.valueOf(password);
     }
 
+    /**
+     * thêm.
+     * @param entity thành viên
+     * @throws SQLException lỗi
+     */
     @Override
     public void add(Member entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_MEMBER, Statement.RETURN_GENERATED_KEYS)) {
@@ -111,6 +128,13 @@ public class MemberDAO implements DatabaseQuery<Member> {
         }
     }
 
+    /**
+     * thêm tài khoản
+     * @param status trạng thái
+     * @param memberID id
+     * @return true false
+     * @throws SQLException lỗi
+     */
     private boolean updateAccount(AccountStatus status, int memberID) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_ACCOUNT)) {
             preparedStatement.setString(1, status.name());
@@ -120,6 +144,12 @@ public class MemberDAO implements DatabaseQuery<Member> {
         }
     }
 
+    /**
+     * cập nhật.
+     * @param entity thành viên
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean update(Member entity) throws SQLException {
         try {
@@ -158,6 +188,12 @@ public class MemberDAO implements DatabaseQuery<Member> {
         }
     }
 
+    /**
+     * xoá.
+     * @param entity thành viên
+     * @return true false
+     * @throws SQLException lỗi
+     */
     // ko dung
     @Override
     public boolean delete(Member entity) throws SQLException {
@@ -185,7 +221,12 @@ public class MemberDAO implements DatabaseQuery<Member> {
         }
     }
 
-
+    /**
+     * tìm.
+     * @param keywords khoá
+     * @return thành viên
+     * @throws SQLException lỗi
+     */
     @Override
     public Member find(Number keywords) throws SQLException {
         if (memberCache.containsKey(keywords.intValue())) {
@@ -218,6 +259,12 @@ public class MemberDAO implements DatabaseQuery<Member> {
         return null;
     }
 
+    /**
+     * tìm.
+     * @param criteria tiêu chí
+     * @return danh sách thành viên
+     * @throws SQLException lỗi
+     */
     // search theo id, tên, sđt
     @Override
     public List<Member> searchByCriteria(Map<String, Object> criteria) throws SQLException {
@@ -252,6 +299,11 @@ public class MemberDAO implements DatabaseQuery<Member> {
         }
     }
 
+    /**
+     * tất cả.
+     * @return tất cả thành viên
+     * @throws SQLException lỗi
+     */
     @Override
     public List<Member> selectAll() throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL)) {
@@ -265,6 +317,10 @@ public class MemberDAO implements DatabaseQuery<Member> {
         }
     }
 
+    /**
+     * fetch cache.
+     * @param memberID id
+     */
     public void fetchCache(int memberID) {
         memberCache.remove(memberID);
     }

@@ -24,7 +24,7 @@
                      <children>
                         <AnchorPane prefHeight="90.0" prefWidth="474.0" HBox.hgrow="NEVER">
                            <children>
-                              <ImageView fitHeight="51.0" fitWidth="67.0" layoutX="29.7" layoutY="9.24" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="logo" fitHeight="51.0" fitWidth="67.0" layoutX="29.7" layoutY="9.24" onDragDetected="#onLogoAction" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../image/admin/menu/logo1%201.png" />
                                  </image>

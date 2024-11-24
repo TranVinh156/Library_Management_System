@@ -53,7 +53,7 @@ public class LoginCommand extends BasicController implements Command {
             }
         } else if (role.equals(Role.ADMIN)) {
             if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
-                return CustomerAlter.showAlter("Chào sếp nhé, mời sếp vào");
+                return CustomerAlter.showAlter("Hế lô chào mừng bạn tới với chúng tớ nhé");
             }
         }
         CustomerAlter.showAlter("Thông tin đăng nhập sai rồi ó.");

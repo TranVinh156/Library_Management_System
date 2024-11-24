@@ -183,6 +183,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
         //Nếu như mà là mở addMode thì các trường thông tin set về rỗng
         if (addMode) {
+            copyBookTableVbox.getChildren().clear();
             deleteButton.setVisible(!addMode);
             saveButton.setVisible(!addMode);
             ISBNText.setText(null);
