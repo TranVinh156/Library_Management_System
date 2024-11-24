@@ -75,6 +75,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
 
     @Override
     protected void loadItemDetails() {
+        getTitlePageStack().push(item.getPerson().getId() + "");
         emailText.setText(item.getPerson().getEmail());
         adminMessageController.setToEmail(item.getPerson().getEmail());
         genderBox.setValue(item.getPerson().getGender());
@@ -86,10 +87,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
             findCriteriaa.put("BookIssueStatus", BookIssueStatus.BORROWED);
             findCriteriaa.put("member_ID", item.getPerson().getId());
 
-            Map<String, Object> findCriteriaaa = new HashMap<>();
-            findCriteriaaa.put("BookIssueStatus", BookIssueStatus.RETURNED);
-            findCriteriaaa.put("member_ID", item.getPerson().getId());
-            int borrowBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size() + BookIssueDAO.getInstance().searchByCriteria(findCriteriaaa).size();
+            int borrowBook = BookIssueDAO.getInstance().searchByCriteria(findCriteriaa).size();
             item.setTotalBooksCheckOut(borrowBook);
             numberOfBorrowText.setText(String.valueOf(item.getTotalBooksCheckOut()));
         } catch (Exception e) {
@@ -219,8 +217,12 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         String memberName = memberNameText.getText();
         if (memberName != null) {
             String[] nameParts = memberName.trim().split("\\s+");
-            item.getPerson().setFirstName(nameParts[0]); // Tên đầu tiên
-            item.getPerson().setLastName(nameParts.length > 1 ? nameParts[nameParts.length - 1] : "");
+            item.getPerson().setLastName(nameParts[0]); // Tên đầu tiên
+            StringBuilder firstName = new StringBuilder();
+            for(int i = 1; i < nameParts.length; i++) {
+                firstName.append(nameParts[i]).append(" ");
+            }
+            item.getPerson().setFirstName(firstName.toString().trim());
         } else {
             item.getPerson().setFirstName(null);
             item.getPerson().setLastName(null);
@@ -274,6 +276,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
 
     @FXML
     void onEditButtonAction(ActionEvent event) {
+        getTitlePageStack().push("Edit");
         if (item != null) {
             setEditMode(true);
         }
