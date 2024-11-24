@@ -243,12 +243,13 @@ public class AdminMenuController extends BasicController {
 
     @FXML
     void onLogoutButtonAction(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thoát?");
+        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thoát à?");
         if (confirmYes) {
             try {
                 Stage stage = (Stage) mainPane.getScene().getWindow();
                 Parent root = FXMLLoader.load(getClass().getResource("/com/ooops/lms/library_management_system/UserLogin.fxml"));
-                stage.setResizable(false);
+                stage.setWidth(stage.getWidth());
+                stage.setHeight(stage.getHeight());
                 stage.setScene(new Scene(root));
             } catch (IOException e) {
                 e.printStackTrace();

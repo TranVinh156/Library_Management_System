@@ -33,6 +33,9 @@ public class ResignController extends BasicController {
     private Button backStepButton;
 
     @FXML
+    private Button haveAccountButton;
+
+    @FXML
     private DatePicker birthDate;
 
     @FXML
@@ -121,6 +124,14 @@ public class ResignController extends BasicController {
             }
 
     }
+    @FXML
+    void onHaveAccountButtonAction(ActionEvent event) {
+        boolean confirmYes = CustomerAlter.showAlter("Bạn có tài khoản rồi ư, thế đi đăng nhập nha?");
+        if(confirmYes) {
+            openLoginView();
+        }
+    }
+
 
     @FXML
     void onReturnLoginButtonAction(ActionEvent event) {
