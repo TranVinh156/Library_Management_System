@@ -170,7 +170,7 @@ public class AdminMenuController extends BasicController {
     @FXML
     void onAddNewReservationButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý đặt trước");
+        getTitlePageStack().push("Quản lý đặt trước sách");
         openPage(reservationPagePane);
         adminReservationPageController.loadAddPane();
         addTablePane.setVisible(false);
