@@ -23,7 +23,7 @@ public class AdminUserTableRowController extends BaseRowController<Member, Admin
     @Override
     protected void updateRowDisplay() {
         memberIDlabel.setText(String.valueOf(item.getPerson().getId()));
-        memberNameLabel.setText(item.getPerson().getFirstName() + " " + item.getPerson().getLastName());
+        memberNameLabel.setText(item.getPerson().getLastName() + " " + item.getPerson().getFirstName());
         phoneNumberLabel.setText(item.getPerson().getPhone());
     }
 
