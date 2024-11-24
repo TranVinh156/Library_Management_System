@@ -3,6 +3,7 @@ package com.ooops.lms.barcode;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import com.ooops.lms.Alter.CustomerAlter;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
@@ -25,11 +26,20 @@ public class BarcodeScanner extends JPanel {
 
     private Hashtable<DecodeHintType, Object> hints;
 
+    /**
+     * định dạng mã vạch.
+     */
     public BarcodeScanner() {
         hints = new Hashtable<>();
         hints.put(DecodeHintType.POSSIBLE_FORMATS, Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_128));
     }
 
+    /**
+     * tạo hiệu ứng camera.
+     * @param image hình ảnh
+     * @param scanLineY vạch quét
+     * @return
+     */
     // camera
     private BufferedImage drawScanningFrame(BufferedImage image, int scanLineY) {
         Graphics2D g = image.createGraphics();
@@ -124,6 +134,11 @@ public class BarcodeScanner extends JPanel {
         return image;
     }
 
+    /**
+     * Quét mã vạch từ hình ảnh.
+     * @param filePath đường dẫn đê barcode
+     * @return
+     */
     public String scanBarcodeFromImage(String filePath) {
         try {
             BufferedImage image = ImageIO.read(new File(filePath));
@@ -134,10 +149,14 @@ public class BarcodeScanner extends JPanel {
         }
     }
 
+    /**
+     *  Quét mã vạch từ camera.
+     * @return trả về mã vạch
+     */
     public String scanBarcodeFromCamera() {
         VideoCapture camera = new VideoCapture(0);
         if (!camera.isOpened()) {
-            System.out.println("Không thể mở camera!");
+            CustomerAlter.showMessage("Không thể mở camera!");
             return null;
         }
 
@@ -148,13 +167,14 @@ public class BarcodeScanner extends JPanel {
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            /**
+             * Tắt quét mã vạch mà không dừng chương trình.
+             * @param windowEvent the event to be processed
+             */
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tại đây bạn có thể xử lý việc khi đóng cửa sổ mà không thoát chương trình
-                // Ví dụ: thông báo, đóng camera, v.v.
                 flag[0] = false;
-                System.out.println("Cửa sổ đang được đóng, nhưng chương trình vẫn tiếp tục.");
-                return;
+                //System.out.println("Cửa sổ đang được đóng, nhưng chương trình vẫn tiếp tục.");
             }
         });
         frame.setVisible(true);
@@ -206,7 +226,7 @@ public class BarcodeScanner extends JPanel {
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("Không đọc được khung hình.");
+                CustomerAlter.showMessage("Không đọc được khung hình.");
                 break;
             }
         }
