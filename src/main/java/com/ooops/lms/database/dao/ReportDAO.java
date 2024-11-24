@@ -24,6 +24,10 @@ public class ReportDAO implements DatabaseQuery<Report> {
         memberDAO = MemberDAO.getInstance();
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized ReportDAO getInstance() {
         if (reportDAO == null) {
             reportDAO = new ReportDAO();
@@ -46,6 +50,11 @@ public class ReportDAO implements DatabaseQuery<Report> {
     // select all
     private static final String SELLECT_ALL = "SELECT * FROM Reports";
 
+    /**
+     * thêm.
+     * @param entity báo cáo
+     * @throws SQLException lỗi
+     */
     @Override
     public void add(@NotNull Report entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_REPORT)) {
@@ -57,6 +66,12 @@ public class ReportDAO implements DatabaseQuery<Report> {
         }
     }
 
+    /**
+     * cập nhật.
+     * @param entity báo cáo
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean update(@NotNull Report entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_REPORT)) {
@@ -69,6 +84,12 @@ public class ReportDAO implements DatabaseQuery<Report> {
         }
     }
 
+    /**
+     * xoá.
+     * @param entity báo cáo
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean delete(@NotNull Report entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_REPORT)) {
@@ -77,31 +98,46 @@ public class ReportDAO implements DatabaseQuery<Report> {
         }
     }
 
+    /**
+     * tìm.
+     * @param keywords khoá
+     * @return báo cáo
+     * @throws SQLException lỗi
+     */
     @Override
     public Report find(@NotNull Number keywords) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_REPORT)) {
             preparedStatement.setInt(1, keywords.intValue());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Report report = new Report(resultSet.getInt("report_ID")
+                return new Report(resultSet.getInt("report_ID")
                         , memberDAO.find(resultSet.getInt("member_ID"))
                         , resultSet.getString("title")
                         , resultSet.getString("content")
                         , ReportStatus.valueOf(resultSet.getString("ReportStatus")));
-                return report;
             }
         }
         return null;
     }
 
+    /**
+     * tìm.
+     * @param criteria tiêu chí
+     * @return danh sách báo cáo
+     * @throws SQLException lỗi
+     */
     @Override
     public List<Report> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
-        StringBuilder findReportByCriteria = new StringBuilder("SELECT * FROM reports WHERE ");
+        StringBuilder findReportByCriteria = new StringBuilder("SELECT * FROM reports JOIN Members on reports.member_ID = Members.member_ID WHERE ");
         Iterator<String> iterator = criteria.keySet().iterator();
 
         while (iterator.hasNext()) {
             String key = iterator.next();
-            findReportByCriteria.append(key).append(" LIKE ?");
+            if (key.equals("fullname")) {
+                findReportByCriteria.append("CONCAT(Members.last_name, ' ', Members.first_name) LIKE ?");
+            } else {
+                findReportByCriteria.append(key).append(" LIKE ?");
+            }
             if (iterator.hasNext()) {
                 findReportByCriteria.append(" AND ");
             }
@@ -121,31 +157,25 @@ public class ReportDAO implements DatabaseQuery<Report> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Report> reports = new ArrayList<>();
                 while (resultSet.next()) {
-                    Report report = new Report(resultSet.getInt("report_ID"),
-                            memberDAO.find(resultSet.getInt("member_ID")),
-                            resultSet.getString("title"),
-                            resultSet.getString("content"),
-                            ReportStatus.valueOf(resultSet.getString("ReportStatus")));
-                    reports.add(report);
+                    reports.add(find(resultSet.getInt("report_ID")));
                 }
                 return reports;
             }
         }
     }
 
-
+    /**
+     * tất cả.
+     * @return tất cả báo cáo
+     * @throws SQLException lỗi
+     */
     @Override
     public List<Report> selectAll() throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELLECT_ALL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Report> reports = new ArrayList<>();
             while (resultSet.next()) {
-                Report report = new Report(resultSet.getInt("report_ID")
-                        , memberDAO.find(resultSet.getInt("member_ID"))
-                        , resultSet.getString("title")
-                        , resultSet.getString("content")
-                        , ReportStatus.valueOf(resultSet.getString("ReportStatus")));
-                reports.add(report);
+                reports.add(find(resultSet.getInt("report_ID")));
             }
             return reports;
         }
