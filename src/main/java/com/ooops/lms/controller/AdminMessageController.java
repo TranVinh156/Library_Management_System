@@ -61,4 +61,8 @@ public class AdminMessageController extends BasicController {
         detailText.setText(null);
         toText.setText(null);
     }
+
+    public void setToEmail(String toEmail) {
+        this.toText.setText(toEmail);
+    }
 }
