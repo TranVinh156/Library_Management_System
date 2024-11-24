@@ -69,10 +69,14 @@ public class AdminDashboardController extends BasicController {
                 "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12");
         dateReportBox2.getItems().addAll(2024);
         dateReportBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            loadLineChartDataForMonth(); // Gọi lại để tải dữ liệu mới
+            if(dateReportBox2.getValue() != null) {
+                loadLineChartDataForMonth(); // Gọi lại để tải dữ liệu mới
+            }
         });
         dateReportBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            loadLineChartDataForMonth(); // Gọi lại để tải dữ liệu mới
+            if(dateReportBox.getValue() != null) {
+                loadLineChartDataForMonth(); // Gọi lại để tải dữ liệu mới
+            }
         });
     }
 
