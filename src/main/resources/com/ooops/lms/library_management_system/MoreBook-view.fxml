@@ -12,7 +12,7 @@
 
 <VBox fx:id="moreBookBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.MoreBookController">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
             <Button mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="31.0" prefWidth="42.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                <graphic>
@@ -33,9 +33,9 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </HBox>
-      <VBox prefHeight="623.0" prefWidth="713.0" VBox.vgrow="ALWAYS">
+      <VBox alignment="CENTER" prefHeight="623.0" prefWidth="713.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="766.0" spacing="5.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="766.0" spacing="5.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
                <children>
                   <Pagination fx:id="pagination" maxPageIndicatorCount="7" pageCount="10" prefHeight="454.0" prefWidth="718.0" />
                </children>

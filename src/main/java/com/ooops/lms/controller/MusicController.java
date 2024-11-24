@@ -2,6 +2,7 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.model.Music;
 import com.ooops.lms.music.MusicInfoFetcher;
+import com.ooops.lms.util.FXMLLoaderUtil;
 import com.ooops.lms.util.Sound;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,23 +13,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import javafx.scene.image.Image;
 
 public class MusicController {
     private static final String MUSIC_SEARCH_CARD_FXML = "/com/ooops/lms/library_management_system/MusicSearchCard-view.fxml";
@@ -41,29 +37,40 @@ public class MusicController {
     @FXML
     private Text musicNameLabel;
     @FXML
-    private ImageView musicDanceImage;
+    private ImageView musicDanceImage, pauseImage;
     @FXML
     WebView webView;
+    private Image pause, play;
+    private boolean isPlayingMusic = false;
 
-    List<Music> musicList = Arrays.asList(new Music("1","1","1"),new Music("1","1","1"),new Music("1","1","1"));
+    List<Music> musicList = new ArrayList<>();
+    public static int currentMusic = 0;
 
     private WebEngine webEngine;
     private ObservableList<HBox> filteredSuggestions = FXCollections.observableArrayList();
 
     public void initialize() {
-        Sound.getInstance().playSound("musicView.mp3");
+        //Sound.getInstance().playSound("musicView.mp3");
+        webEngine = webView.getEngine();
+        String htmlPath = getClass().getResource("/html/youtubeMusic.html").toExternalForm();
+        webEngine.load(htmlPath);
+        try {
+            pause = new Image(getClass().getResourceAsStream("/image/customer/music/pause-button.png"));
+            play = new Image(getClass().getResourceAsStream("/image/customer/music/play-button.png"));
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void playMusic(Music music) {
         clearSuggestions();
-        webEngine = webView.getEngine();
-
-        //String youtubeUrl = "https://www.youtube.com/watch?v=uKxyLmbOc0Q";
-        String youtubeUrl = "https://www.youtube.com/watch?v=" +music.getMusicId();
-
-        webEngine.load(youtubeUrl);
-
+        webView.getEngine().executeScript("playVideo('" + music.getMusicId() + "');");
         musicNameLabel.setText(music.getTitle());
+        pauseImage.setImage(pause);
+        isPlayingMusic = true;
+        System.out.println(music.getMusicId());
+        FXMLLoaderUtil.getInstance().changMusicName(musicNameLabel.getText());
+
     }
 
     private void fetchMusicFromApi(String keyword) {
@@ -76,8 +83,9 @@ public class MusicController {
 
         // Xử lý kết quả sau khi API trả về
         fetchMusicTask.setOnSucceeded(event -> {
-            List<Music> musicList = fetchMusicTask.getValue();
-            updateSuggestions(musicList);
+            List<Music> musicList2 = fetchMusicTask.getValue();
+            musicList.addAll(musicList2);
+            updateSuggestions(musicList2);
         });
 
         // Khởi chạy task trong một thread khác
@@ -119,30 +127,58 @@ public class MusicController {
         searchMusicText.clear();
     }
 
-    public void onPreviousButtonAction(ActionEvent actionEvent) {
+    public Image getPauseImage() {
+        return pauseImage.getImage();
     }
 
     public void onOnOffButtonAction(ActionEvent actionEvent) {
-        WebEngine webEngine = webView.getEngine();
-
-        boolean isPlaying = (boolean) webEngine.executeScript("var video = document.querySelector('video');" +
-                "if (video) { return !video.paused; } else { return false; }"); // Kiểm tra video có đang phát không
-
-        if (isPlaying) {
-            webEngine.executeScript("document.querySelector('video').pause();");
-            System.out.println("Video đã tạm dừng.");
+        if (isPlayingMusic) {
+            webView.getEngine().executeScript("pauseVideo();");
+            pauseImage.setImage(play);
+            isPlayingMusic = false;
         } else {
-            webEngine.executeScript("document.querySelector('video').play();");
-            System.out.println("Video đã tiếp tục.");
+            webView.getEngine().executeScript("continueVideo();");
+            pauseImage.setImage(pause);
+            isPlayingMusic = true;
         }
+        FXMLLoaderUtil.getInstance().setPauseImage(pauseImage.getImage());
     }
 
     public void onNextButtonAction(ActionEvent actionEvent) {
-        webEngine.executeScript("document.querySelector('video').pause();");
+        playMusic(findMusic("previous"));
+        webView.getEngine().executeScript("continueVideo();");
+        FXMLLoaderUtil.getInstance().changMusicName(musicNameLabel.getText());
+    }
+
+    public void onPreviousButtonAction(ActionEvent actionEvent) {
+        playMusic(findMusic("next"));
+        webView.getEngine().executeScript("continueVideo();");
+        FXMLLoaderUtil.getInstance().changMusicName(musicNameLabel.getText());
+
+    }
+
+    private Music findMusic(String status) {
+        System.out.println(musicList.size());
+        if (status.equals("next")) {
+            currentMusic++;
+            if (currentMusic == musicList.size()) {
+                currentMusic = 0;
+            }
+        } else {
+            currentMusic--;
+            if (currentMusic == -1) {
+                currentMusic = musicList.size() - 1;
+            }
+        }
+        return musicList.get(currentMusic);
     }
 
     public void onSearchButtonAction(ActionEvent actionEvent) {
         String keyword = searchMusicText.getText();
-            fetchMusicFromApi(keyword);
+        fetchMusicFromApi(keyword);
+    }
+
+    public void onDanceMouseClicked(MouseEvent mouseEvent) {
+        Sound.getInstance().playSound("musicView.mp3");
     }
 }

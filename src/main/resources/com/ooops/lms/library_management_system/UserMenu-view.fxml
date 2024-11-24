@@ -43,8 +43,8 @@
                                           <Image url="@../../../../image/customer/music/Disk.gif" />
                                        </image>
                                     </ImageView>
-                                    <Label prefHeight="17.0" prefWidth="136.0" text="Nghe nhạc?" />
-                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="32.0" styleClass="button-transparent">
+                                    <Label fx:id="musicNameText" prefHeight="17.0" prefWidth="136.0" text="Nghe nhạc?" />
+                                    <Button mnemonicParsing="false" onAction="#onPreviousButtonAction" prefHeight="26.0" prefWidth="32.0" styleClass="button-transparent">
                                        <graphic>
                                           <ImageView fitHeight="20.0" fitWidth="20.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -53,16 +53,16 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button mnemonicParsing="false" prefHeight="28.0" prefWidth="23.0" styleClass="button-transparent">
+                                    <Button mnemonicParsing="false" onAction="#onContinueButtonAction" prefHeight="28.0" prefWidth="23.0" styleClass="button-transparent">
                                        <graphic>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="pauseImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../../../image/customer/music/pause-button.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button mnemonicParsing="false" styleClass="button-transparent">
+                                    <Button mnemonicParsing="false" onAction="#onNextButtonAction" styleClass="button-transparent">
                                        <graphic>
                                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
