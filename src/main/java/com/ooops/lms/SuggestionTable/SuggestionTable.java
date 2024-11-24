@@ -198,8 +198,8 @@ public class SuggestionTable {
         scrollPane.setMaxWidth(textField.getWidth());
         scrollPane.setMinWidth(textField.getWidth());
 
-        suggestionTable.setMinWidth(600);
-        suggestionTable.setMaxWidth(600);
+        suggestionTable.setMinWidth(1000);
+        suggestionTable.setMaxWidth(1000);
 
         suggestionListView.setMinWidth(scrollPane.getWidth());
         suggestionListView.setMaxWidth(scrollPane.getWidth());
