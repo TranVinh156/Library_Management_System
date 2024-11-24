@@ -60,10 +60,7 @@ public class AdminBookPageController extends BasePageController<Book, AdminBookD
      */
     @FXML
     void onReturnButton(ActionEvent event) {
-        if(getTitlePageStack().peek() !="Edit") {
-            getTitlePageStack().pop();
-        } else {
-            getTitlePageStack().pop();
+        while (getTitlePageStack().peek() != "Quản lý sách") {
             getTitlePageStack().pop();
         }
         loadData();
