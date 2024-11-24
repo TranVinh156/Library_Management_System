@@ -253,15 +253,15 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
                     isSettingMember = true;
                     setMember((Member) o);
                     suggestionVbox.getChildren().clear();
-                    suggestionPane.setLayoutX(0);
-                    suggestionPane.setLayoutY(0);
+                    suggestionPane.setLayoutX(30);
+                    suggestionPane.setLayoutY(30);
                     suggestionPane.setVisible(false);
                 } else if (o instanceof BookItem) {
                     isSettingBook = true;
                     setBookItem((BookItem) o);
                     suggestionVbox.getChildren().clear();
-                    suggestionPane.setLayoutX(0);
-                    suggestionPane.setLayoutY(0);
+                    suggestionPane.setLayoutX(30);
+                    suggestionPane.setLayoutY(30);
                     suggestionPane.setVisible(false);
                 }
             }
@@ -277,8 +277,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
                         // Kiểm tra xem click có nằm ngoài suggestionPane không
                         if (!suggestionPane.contains(point)) {
-                            suggestionPane.setLayoutX(0);
-                            suggestionPane.setLayoutY(0);
+                            suggestionPane.setLayoutX(30);
+                            suggestionPane.setLayoutY(30);
                             suggestionPane.setVisible(false);
                             suggestionVbox.getChildren().clear();
                         }
@@ -293,8 +293,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
                 stage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
                     if (Math.abs(newWidth.doubleValue() - oldWidth.doubleValue()) > 100) { // Kiểm tra chênh lệch
-                        suggestionPane.setLayoutX(0);
-                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setLayoutX(30);
+                        suggestionPane.setLayoutY(30);
                         suggestionPane.setVisible(false); // Không hiển thị suggestionTable
                     } else {
                         Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
@@ -303,8 +303,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
                 stage.heightProperty().addListener((obs, oldHeight, newHeight) -> {
                     if (Math.abs(newHeight.doubleValue() - oldHeight.doubleValue()) > 100) { // Kiểm tra chênh lệch
-                        suggestionPane.setLayoutX(0);
-                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setLayoutX(30);
+                        suggestionPane.setLayoutY(30);
                         suggestionPane.setVisible(false); // Không hiển thị suggestionTable
                     } else {
                         Platform.runLater(() -> suggestionTable.updateSuggestionPaneForActiveField());
@@ -320,8 +320,8 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
                         suggestionTable.loadFindData("memberName", newValue);
                         suggestionTable.updateSuggestionPanePosition(memberNameText);
                     } else {
-                        suggestionPane.setLayoutX(0);
-                        suggestionPane.setLayoutY(0);
+                        suggestionPane.setLayoutX(30);
+                        suggestionPane.setLayoutY(30);
                         suggestionPane.setVisible(false);
                     }
                 }
