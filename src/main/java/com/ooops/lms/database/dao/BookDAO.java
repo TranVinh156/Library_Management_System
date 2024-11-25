@@ -301,7 +301,9 @@ public class BookDAO implements DatabaseQuery<Book> {
                 preparedStatement.setString(2, entity.getImagePath());
                 preparedStatement.setString(3, entity.getDescription());
                 preparedStatement.setString(4, entity.getPlaceAt());
-                preparedStatement.setLong(5, entity.getISBN());
+                preparedStatement.setString(5,entity.getstatus().toString());
+                preparedStatement.setLong(6, entity.getISBN());
+                System.out.println(preparedStatement);
                 preparedStatement.executeUpdate();
 
                 database.getConnection().commit();

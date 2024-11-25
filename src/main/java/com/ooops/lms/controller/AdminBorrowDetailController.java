@@ -231,7 +231,11 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         }
         String reformattedDate = reformatDate(borowDateText.getText());
         String reformattedReturnDate = reformatDate(returnDateText.getText());
-        item = new BookIssue(member, bookItem, reformattedDate, reformattedReturnDate);
+        item.setBookItem(bookItem);
+        item.setMember(member);
+        item.setCreatedDate(reformattedDate);
+        item.setDueDate(reformattedReturnDate);
+        //item = new BookIssue(member, bookItem, reformattedDate, reformattedReturnDate);
         item.setStatus(borrowStatus.getValue());
         if (borrowIDLabel != null && borrowIDLabel.getText() != null) {
             item.setIssueID(Integer.valueOf(borrowIDLabel.getText()));
