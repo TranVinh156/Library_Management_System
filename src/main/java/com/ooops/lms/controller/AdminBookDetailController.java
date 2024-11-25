@@ -132,7 +132,9 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected void loadItemDetails() {
-        getTitlePageStack().push(item.getISBN() + "");
+        if (!getTitlePageStack().peek().equals(item.getISBN() + "")) {
+            getTitlePageStack().push(item.getISBN() + "");
+        }
         isSettingItem = true;
         isSettingItem2 = true;
 
