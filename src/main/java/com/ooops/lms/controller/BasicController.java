@@ -334,12 +334,14 @@ public class BasicController {
         if (selectedFile != null) {
             // Tạo tên tệp mới dựa trên ID người dùng
             String imageFile = o.toString() + getFileExtension(selectedFile.toPath());
-            //newImageFile = "Library_Management_System/avatar/" + imageFile;
+            String newImageFile = "";
             Path avatarFolder =Paths.get("");
             if(o instanceof Member) {
-                avatarFolder = Paths.get("Library_Management_System/avatar");
-            } else {
-                avatarFolder = Paths.get("Library_Management_System/avatar");
+                avatarFolder = Paths.get("avatar");
+                newImageFile = "avatar/" + imageFile;
+            } else if (o instanceof Book){
+                avatarFolder = Paths.get("bookImage");
+                newImageFile = "bookImage/" + imageFile;
             }
             try {
                 // Tạo thư mục nếu chưa tồn tại
@@ -354,7 +356,11 @@ public class BasicController {
                     Files.delete(destinationPath);
                 }
 
-                return destinationPath.toString();
+                BufferedImage originalImage = ImageIO.read(selectedFile);
+
+                ImageIO.write(originalImage, "PNG",destinationPath.toFile());
+
+                return destinationPath.toUri().toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }
