@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.List;
 
 public class CommentController {
-    private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
 
     private Comment comment;
     @FXML
@@ -46,15 +45,13 @@ public class CommentController {
         nameLabel.setText("book name");
     }
 
-    public void setData(Comment comment,String style) {
+    public void setData(Comment comment) {
         this.comment = comment;
         Image image = new Image(new File(UserMenuController.getMember().getPerson().getImagePath()).toURI().toString());
         avatarImage.setFill(new ImagePattern((image)));
         nameLabel.setText(comment.getMember().getUsername());
         starImage.setImage(starImage(comment.getRate()));
         commentText.setText(comment.getContent());
-        commentBox.getStyleClass().clear();
-        commentBox.getStyleClass().add(style);
     }
 
     private Image starImage(int numOfStar) {

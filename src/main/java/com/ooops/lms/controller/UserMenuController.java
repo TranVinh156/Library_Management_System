@@ -2,6 +2,7 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.UserCommand;
+import com.ooops.lms.animation.Animation;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Author;
@@ -41,6 +42,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.util.Duration;
 import javafx.concurrent.Task;
+import org.checkerframework.checker.units.qual.A;
 
 
 import java.io.BufferedInputStream;
@@ -68,7 +70,7 @@ public class UserMenuController implements Initializable {
     Label userNameLabel;
 
     @FXML
-    ImageView avatarImage,pauseImage;
+    ImageView avatarImage,pauseImage,pullMenuBarImage,talkImage;
 
     @FXML
     TextField searchText;
@@ -87,8 +89,12 @@ public class UserMenuController implements Initializable {
     @FXML
     Label musicNameText;
 
+    @FXML
+    Text talkText;
+
     private FXMLLoaderUtil fxmlLoaderUtil;
     private Button[] buttons;
+    private ObservableList<HBox> filteredSuggestions;
 
     private int memberID = 0;
     private static Member member;
@@ -122,6 +128,7 @@ public class UserMenuController implements Initializable {
         buttons = new Button[]{
                 dashboardButton, bookmarkButton, bookRankingButton, settingButton};
         ThemeManager.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+        Animation.getInstance().setAll(pullMenuBarImage,talkImage,talkText);
     }
 
     public void setMusicNameText(String musicNameText) {
@@ -140,6 +147,13 @@ public class UserMenuController implements Initializable {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(ADVANCED_SEARCH_FXML);
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
+            try {
+                AdvancedSearchController advancedSearchController =FXMLLoaderUtil.getInstance().getController(ADVANCED_SEARCH_FXML);
+                advancedSearchController.setSearchText(searchText.getText());
+                clearSuggestions();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -209,7 +223,7 @@ public class UserMenuController implements Initializable {
     }
 
     public void searchBookSuggestion() {
-        ObservableList<HBox> filteredSuggestions = FXCollections.observableArrayList();
+        filteredSuggestions = FXCollections.observableArrayList();
         suggestionList.setItems(filteredSuggestions);
 
         searchText.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -217,8 +231,8 @@ public class UserMenuController implements Initializable {
 
             fetchBooksFromApi(newValue, filteredSuggestions);
 
-            suggestionList.setOnMouseClicked(event -> clearSuggestions(filteredSuggestions));
-            suggestionContainer.setOnMouseClicked(event -> clearSuggestions(filteredSuggestions));
+            suggestionList.setOnMouseClicked(event -> clearSuggestions());
+            suggestionContainer.setOnMouseClicked(event -> clearSuggestions());
         });
     }
 
@@ -265,7 +279,7 @@ public class UserMenuController implements Initializable {
         suggestionList.setVisible(!filteredSuggestions.isEmpty());
     }
 
-    private void clearSuggestions(ObservableList<HBox> filteredSuggestions) {
+    private void clearSuggestions() {
         suggestionContainer.setVisible(false);
         filteredSuggestions.clear();
         searchText.clear();
@@ -289,7 +303,7 @@ public class UserMenuController implements Initializable {
 
     private void setupHoverMenuBar() {
         menuBar.setOnMouseEntered(event -> {
-//            Animation.getInstance().changeImage1(pullMenuBarImage);
+            Animation.getInstance().changeImage1();
             menuBarPlus.setVisible(true);
 
             // Tạo hiệu ứng tăng chiều rộng
@@ -311,13 +325,12 @@ public class UserMenuController implements Initializable {
                     );
                     collapseMenu.play();
                     collapseMenu.setOnFinished(ev -> menuBarPlus.setVisible(false));
-//                    Animation.getInstance().changeImage2(pullMenuBarImage);
+                    Animation.getInstance().changeImage2();
                 }
             });
             pause.play();
         });
     }
-
     public void showInfo() {
         userNameLabel.setText(member.getPerson().getFirstName());
 

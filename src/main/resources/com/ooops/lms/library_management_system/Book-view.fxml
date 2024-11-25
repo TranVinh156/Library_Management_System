@@ -23,7 +23,7 @@
                      <graphic>
                         <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../image/customer/book/back.png" />
+                              <Image url="@../../../../image/customer/general/arrowBrown.png" />
                            </image>
                         </ImageView>
                      </graphic>

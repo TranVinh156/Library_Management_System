@@ -1,28 +1,20 @@
 package com.ooops.lms.controller;
 
-import com.google.api.services.books.v1.model.Volumeseriesinfo;
-import com.mysql.cj.util.LRUCache;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Command.CommandInvoker;
-import com.ooops.lms.database.dao.BookDAO;
-import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -467,7 +459,7 @@ public class BasicController {
     protected static final String DEFAULT_BOOK_IMAGE = "/image/book/default.png";
     protected static Image defaultBookImage;
 
-    protected ObservableList<Category> categoriesList = FXCollections.observableArrayList();
+    protected ObservableList<CategoryController> categoriesList = FXCollections.observableArrayList();
 
     static {
         defaultBookImage = new Image(BasicController.class.getResource(DEFAULT_BOOK_IMAGE).toExternalForm());

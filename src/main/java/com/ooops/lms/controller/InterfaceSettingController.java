@@ -1,25 +1,49 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.animation.Animation;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import com.ooops.lms.util.Sound;
 import com.ooops.lms.util.ThemeManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class InterfaceSettingController {
     @FXML
     VBox interfaceSettingBox;
+    @FXML
+    CheckBox soundCheckBox,characterCheckBox;
 
     private static final String SETTING_FXML = "/com/ooops/lms/library_management_system/Setting-view.fxml";
 
-    private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
+    public void initialize() {
+        soundCheckBox.setSelected(true);
+
+        soundCheckBox.setOnAction(event -> {
+            if (soundCheckBox.isSelected()) {
+                Sound.getInstance().turnOnSound();
+            } else {
+                Sound.getInstance().turnOffSound();
+            }
+        });
+
+        characterCheckBox.setSelected(true);
+
+        characterCheckBox.setOnAction(event -> {
+            if(characterCheckBox.isSelected()) {
+                Animation.getInstance().turnOnAnimation();
+            } else {
+                Animation.getInstance().turnOffAnimation();
+            }
+        });
+    }
 
     public void onBackButtonAction(ActionEvent actionEvent) {
-        VBox content = (VBox) fxmlLoaderUtil.loadFXML(SETTING_FXML);
+        VBox content = (VBox) FXMLLoaderUtil.getInstance().loadFXML(SETTING_FXML);
         if (content != null) {
-            fxmlLoaderUtil.updateContentBox(content);
+            FXMLLoaderUtil.getInstance().updateContentBox(content);
         }
     }
 

@@ -40,6 +40,8 @@ public class SettingController {
     private static final String INTERFACE_SETTING_FXML = "/com/ooops/lms/library_management_system/InterfaceSetting-view.fxml";
     private static final String USER_REPORT_FXML = "/com/ooops/lms/library_management_system/UserReport-view.fxml";
 
+    public static int numOfReservedBook;
+
     public void initialize() {
         showInfo();
     }
