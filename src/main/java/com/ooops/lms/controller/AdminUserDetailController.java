@@ -5,6 +5,7 @@ import com.ooops.lms.Command.AdminCommand;
 import com.ooops.lms.Command.Command;
 import com.ooops.lms.controller.BaseDetailController;
 import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.datatype.Person;
 import com.ooops.lms.model.enums.AccountStatus;
@@ -12,16 +13,21 @@ import com.ooops.lms.model.enums.BookIssueStatus;
 import com.ooops.lms.model.enums.Gender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AdminUserDetailController extends BaseDetailController<Member> {
@@ -72,6 +78,12 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
 
     private AdminMessageController adminMessageController;
 
+    @FXML
+    private ScrollPane historyScrollpane;
+
+    @FXML
+    private VBox historyTableVbox;
+
 
     @Override
     protected void loadItemDetails() {
@@ -121,6 +133,8 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         } catch (Exception e) {
             userImage.setImage(new Image(getClass().getResourceAsStream("/image/avatar/default.png")));
         }
+
+        loadHistoryUser();
     }
     @Override
     protected void updateAddModeUI() {
@@ -210,9 +224,6 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
     }
     @Override
     protected boolean getNewItemInformation() throws Exception {
-        if (item == null) {
-            item = new Member(null,null,new Person());
-        }
         // Xử lý firstName và lastName
         String memberName = memberNameText.getText();
         if (memberName != null) {
@@ -335,6 +346,26 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         // Set trạng thái bảng về noneMode
         setAddMode(false);
         setEditMode(false);
+    }
+    private void loadHistoryUser() {
+        historyTableVbox.getChildren().clear();
+        Map<String, Object> findCriteria2 = new HashMap<>();
+        findCriteria2.put("member_ID", item.getPerson().getId());
+        try {
+            List<BookIssue> bookIssueList = BookIssueDAO.getInstance().searchByCriteria(findCriteria2);
+            for (BookIssue bookIssue : bookIssueList) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminUserHistoryRow.fxml"));
+                HBox row = loader.load();
+
+                AdminUserHistoryRowController rowController = loader.getController();
+                rowController.setBookItem(bookIssue);
+
+                row.prefWidthProperty().bind(historyScrollpane.widthProperty());
+                historyTableVbox.getChildren().add(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
