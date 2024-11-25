@@ -154,7 +154,9 @@ public class SuggestionTable {
                     break;
                 case "bookISBNAPI":
                     Book book = BookInfoFetcher.searchBookByISBN(value);
-                    suggestList.addAll((Collection<?>) book);
+                    if(book!= null) {
+                        suggestList.add(book);
+                    }
                     break;
                 default:
                     break;
