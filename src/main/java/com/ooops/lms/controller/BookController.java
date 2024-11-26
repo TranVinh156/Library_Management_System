@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.animation.Animation;
 import com.ooops.lms.database.dao.*;
 import com.ooops.lms.model.*;
 import com.ooops.lms.model.enums.BookItemStatus;
@@ -9,6 +10,7 @@ import com.ooops.lms.util.FXMLLoaderUtil;
 import com.ooops.lms.util.ThemeManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.ooops.lms.controller.BookSuggestionCardController.executor;
 
 public class BookController {
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
@@ -77,7 +81,12 @@ public class BookController {
     }
 
     public void setData() {
-        bookImage.setImage(new Image(book.getImagePath()));
+        Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
+
+
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+        executor.submit(loadImageTask);
 
         bookNameLabel.setText(book.getTitle());
         String author = "";
@@ -104,7 +113,7 @@ public class BookController {
                 fxmlLoader.setLocation(getClass().getResource(COMMENT_FXML));
                 VBox cardBox = fxmlLoader.load();
                 CommentController cardController = fxmlLoader.getController();
-                cardController.setData(comments.get(i),authorNameLabel.getStyleClass().toString());
+                cardController.setData(comments.get(i));
                 commentsVBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -117,9 +126,8 @@ public class BookController {
             label.getStyleClass().add("label-4");
             categoryHbox.getChildren().add(label);
         }
-
         //mark
-        if(BookManager.getInstance().isContainedInMarkedBookList(book.getISBN())){
+        if (BookManager.getInstance().isContainedInMarkedBookList(book.getISBN())) {
             bookmarkButton.setText("Huỷ Đánh Dấu");
         }
     }
@@ -135,13 +143,13 @@ public class BookController {
             throw new RuntimeException(e);
         }
         for (int i = 0; i < comments.size(); i++) {
-            if (comments.get(i).getRate() == star) {
+            if (star == 0 || comments.get(i).getRate() == star) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource(COMMENT_FXML));
                     VBox cardBox = fxmlLoader.load();
                     CommentController cardController = fxmlLoader.getController();
-                    cardController.setData(comments.get(i),authorNameLabel.getStyleClass().toString());
+                    cardController.setData(comments.get(i));
                     commentsVBox.getChildren().add(cardBox);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -165,16 +173,11 @@ public class BookController {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đặt trước sách chứ gì?");
         if (confirmYes) {
             try {
-                HistoryController historyController =
-                        FXMLLoaderUtil.getInstance().getController(HISTORY_FXML);
-                if (historyController != null) {
-                    historyController.addReservedBook(this.book);
-                }
                 Map<String, Object> criteria = new HashMap<>();
                 criteria.put("ISBN", book.getISBN());
                 criteria.put("BookItemStatus", "AVAILABLE");
                 List<BookItem> bookItems = BookItemDAO.getInstance().searchByCriteria(criteria);
-                if(bookItems.size()>0) {
+                if (bookItems.size() > 0) {
                     BookItem bookItem = BookItemDAO.getInstance().find(bookItems.get(0).getBarcode());
                     bookItem.setStatus(BookItemStatus.RESERVED);
                     BookItemDAO.getInstance().update(bookItem);
@@ -186,12 +189,13 @@ public class BookController {
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                    CustomerAlter.showMessage("Đã ghi nhận, vui lòng n mượn trong 3 ngày");
-                    BookManager.getInstance().addReservedBook(bookReservation);
-                    SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
-                    if (settingController != null) {
-                        settingController.updateReservedBookSize();
+                    HistoryController historyController =
+                            FXMLLoaderUtil.getInstance().getController(HISTORY_FXML);
+                    if (historyController != null) {
+                        historyController.addReservedBook(bookReservation);
                     }
+                    Animation.getInstance().showMessage("Đã ghi nhận, vui lòng mượn trong 3 ngày");
+
                 } else {
                     CustomerAlter.showMessage("Hết mất sách cho cậu mượn rùi T.T");
                 }
@@ -204,9 +208,9 @@ public class BookController {
     }
 
     public void onBookmarkButtonAction(ActionEvent actionEvent) {
-        if(bookmarkButton.getText().equals("Đánh dấu")) {
+        if (bookmarkButton.getText().equals("Đánh dấu")) {
             markedBook();
-        }else {
+        } else {
             cancelMarkedBook();
         }
     }
@@ -268,10 +272,11 @@ public class BookController {
     }
 
     private Image starImage(int numOfStar) {
+        System.out.println(numOfStar);
         String imagePath = "/image/book/" + numOfStar + "Star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {
             System.out.println("Image not found: " + imagePath);
-            return new Image(getClass().getResourceAsStream("/image/book/1Star.png"));
+            return new Image(getClass().getResourceAsStream("/image/book/5Star.png"));
         }
         return new Image(getClass().getResourceAsStream(imagePath));
     }
@@ -287,6 +292,9 @@ public class BookController {
 
     private int fromRateToInt(String rate) {
         char firstChar = rate.charAt(0);
+        if (Character.isAlphabetic(firstChar)) {
+            return 0;
+        }
         return Character.getNumericValue(firstChar);
     }
 

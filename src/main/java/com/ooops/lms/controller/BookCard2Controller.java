@@ -1,12 +1,17 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
+import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,9 +27,12 @@ import java.util.List;
 import static com.ooops.lms.controller.BookSuggestionCardController.executor;
 
 public class BookCard2Controller {
-    private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
 
     private Book book;
+    private BookItem bookItem;
+
+    private HistoryController historyController;
+
 
     private static final String BOOK_FXML = "/com/ooops/lms/library_management_system/Book-view.fxml";
     @FXML
@@ -41,6 +49,9 @@ public class BookCard2Controller {
 
     @FXML
     private ImageView starImage;
+
+    @FXML
+    Button cancelReservedButton;
 
     public void setData(Book book) {
         this.book =book;
@@ -78,11 +89,25 @@ public class BookCard2Controller {
                 System.err.println("Book object is null!");
             }
 
-            fxmlLoaderUtil.updateContentBox(newContent);
+            FXMLLoaderUtil.getInstance().updateContentBox(newContent);
 
         } catch (IOException e) {
             e.printStackTrace();  // In ra lỗi nếu gặp ngoại lệ
         }
+    }
+
+    public void onCancelReservedButtonAction(ActionEvent actionEvent) {
+        try {
+            historyController.deleteBookReserved(this.bookItem,vBox);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setReservedBook(HistoryController historyController,BookItem bookItem) {
+        this.historyController = historyController;
+        this.bookItem = bookItem;
+        cancelReservedButton.setVisible(true);
     }
 
     private Image starImage(int numOfStar) {

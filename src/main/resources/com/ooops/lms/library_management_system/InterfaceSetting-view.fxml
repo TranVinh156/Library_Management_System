@@ -42,11 +42,20 @@
             <Insets bottom="50.0" left="50.0" right="50.0" top="10.0" />
          </VBox.margin>
          <children>
-            <CheckBox mnemonicParsing="false" text="Sound">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </CheckBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0">
+               <children>
+                  <CheckBox fx:id="soundCheckBox" focusTraversable="false" mnemonicParsing="false" text="Hiệu ứng âm thanh" textFill="#0772b5">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox fx:id="characterCheckBox" focusTraversable="false" mnemonicParsing="false" text="Hiện con nhân vật" textFill="#ff21b2">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </CheckBox>
+               </children>
+            </HBox>
             <Label styleClass="label-1" text="Chọn màu giao diện:">
                <font>
                   <Font size="29.0" />

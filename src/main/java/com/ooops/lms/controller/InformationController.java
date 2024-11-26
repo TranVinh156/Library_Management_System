@@ -71,7 +71,7 @@ public class InformationController {
         emailText.setText(UserMenuController.getMember().getPerson().getEmail());
         genderChoiceBox.setValue(getGender(UserMenuController.getMember().getPerson().getGender().toString()));
         String dateString = UserMenuController.getMember().getPerson().getDateOfBirth();
-        userIDText.setText(Integer.toString(UserMenuController.getMember().getPerson().getId()));
+        userIDText.setText("user ID : " + UserMenuController.getMember().getPerson().getId());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate parsedDate = LocalDate.parse(dateString, formatter);

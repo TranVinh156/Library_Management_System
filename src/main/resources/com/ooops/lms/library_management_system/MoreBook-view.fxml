@@ -35,7 +35,7 @@
       </HBox>
       <VBox alignment="CENTER" prefHeight="623.0" prefWidth="713.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="766.0" spacing="5.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="766.0" spacing="5.0" style="-fx-background-radius: 20;" styleClass="background-part" VBox.vgrow="ALWAYS">
                <children>
                   <Pagination fx:id="pagination" maxPageIndicatorCount="7" pageCount="10" prefHeight="454.0" prefWidth="718.0" />
                </children>

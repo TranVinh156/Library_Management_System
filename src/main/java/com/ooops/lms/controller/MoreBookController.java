@@ -47,8 +47,8 @@ public class MoreBookController {
         }
         System.out.println(bookList.size());
 
-        scrollPane1.setStyle("-fx-background-color: transparent;");
-        scrollPane2.setStyle("-fx-background-color: transparent;");
+        scrollPane1.getStyleClass().add("real-transparent-scrollpane");
+        scrollPane2.getStyleClass().add("real-transparent-scrollpane");
 
         scrollPane1.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

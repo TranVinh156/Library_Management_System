@@ -1,12 +1,14 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.database.dao.BookIssueDAO;
+import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.model.enums.BookIssueStatus;
+import com.ooops.lms.model.enums.BookItemStatus;
 import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
@@ -90,6 +92,7 @@ public class HistoryController implements Initializable {
                 VBox cardBox = fxmlLoader.load();
                 BookCard2Controller cardController = fxmlLoader.getController();
                 cardController.setData(bookReservationList.get(i).getBookItem());
+                cardController.setReservedBook(this,bookReservationList.get(i).getBookItem());
                 reservedHBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -123,14 +126,60 @@ public class HistoryController implements Initializable {
         }
     }
 
-    public boolean addReservedBook(Book book) throws IOException {
-        if(bookReservationList.contains(book)) return false;
+    public void addReservedBook(BookReservation bookReservation) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard2-view.fxml"));
         VBox cardBox = fxmlLoader.load();
         BookCard2Controller cardController = fxmlLoader.getController();
-        cardController.setData(book);
+        cardController.setData(bookReservation.getBookItem());
+        bookReservationList.add(bookReservation);
+        cardController.setReservedBook(this,bookReservation.getBookItem());
+        System.out.println("add and size =" + bookReservationList.size());
         reservedHBox.getChildren().add(cardBox);
-        return true;
+        SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
+        settingController.updateReservedBookSize();
+    }
+
+    public void deleteBookReserved(BookItem bookItem,VBox vBox) throws IOException {
+        Map<String,Object> criteria = new HashMap<>();
+        criteria.put("barcode",bookItem.getBarcode());
+        int index = findBookReserved(bookItem.getBarcode());
+
+        try {
+            List<BookReservation> bookReservations = BookReservationDAO.getInstance().searchByCriteria(criteria);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if(index!=-1) {
+            try {
+                List<BookReservation> bookReservations = BookReservationDAO.getInstance().searchByCriteria(criteria);
+                if(bookReservations.size()>0) {
+                    bookItem.setStatus(BookItemStatus.AVAILABLE);
+                    BookItemDAO.getInstance().update(bookItem);
+                    BookReservation bookReservation = BookReservationDAO.getInstance().find(bookReservations.getFirst().getReservationId());
+                    BookReservationDAO.getInstance().delete(bookReservation);
+                    bookReservationList.remove(index);
+                    SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
+                    settingController.updateReservedBookSize();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        reservedHBox.getChildren().remove(vBox);
+    }
+
+    private int findBookReserved(long barCode) {
+        try {
+            bookReservationList = BookManager.getInstance().getReservedBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0;i<bookReservationList.size();i++) {
+            if (bookReservationList.get(i).getBookItem().getBarcode() == barCode) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
