@@ -174,11 +174,11 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
 
             memberIDText.setText(null);
             setMemberTextFieldNull();
-            memberImage.setImage(defaultUserImage);
+            //memberImage.setImage(defaultUserImage);
 
             barCodeText.setText(null);
             setBookTextFielNull();
-            bookImage.setImage(defaultUserImage);
+            //bookImage.setImage(defaultUserImage);
 
             borrowStatus.setValue(BookIssueStatus.BORROWED);
             //Xử lý ngày tháng mượn
