@@ -169,16 +169,17 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
         borrowIDLabel.setText(null);
 
         if (addMode) {
+            item = new BookIssue(null, null, null, null);
             saveButton.setVisible(!addMode);
             savePane.setVisible(!addMode);
 
             memberIDText.setText(null);
             setMemberTextFieldNull();
-            //memberImage.setImage(defaultUserImage);
+            memberImage.setImage(null);
 
             barCodeText.setText(null);
             setBookTextFielNull();
-            //bookImage.setImage(defaultUserImage);
+            bookImage.setImage(null);
 
             borrowStatus.setValue(BookIssueStatus.BORROWED);
             //Xử lý ngày tháng mượn
@@ -378,7 +379,7 @@ public class AdminBorrowDetailController extends BaseDetailController<BookIssue>
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!isSettingBook && addMode) {
                     if (newValue != null && !newValue.isEmpty()) {
-                        if(memberIDText.getText() != null) {
+                        if (memberIDText.getText() != null) {
                             System.out.println("Cos mmeber ID r");
                             suggestionTable.loadFindData("bookBarCode", newValue, memberIDText.getText());
                         } else {
