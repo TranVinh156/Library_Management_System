@@ -187,7 +187,7 @@
                                  <children>
                                     <AnchorPane style="-fx-background-color: FFFFFF;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="50.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" stylesheets="@../../../../style/AdminStyle.css" textOverrun="CLIP" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                          <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="50.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;" stylesheets="@../../../../style/AdminStyle.css" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                              <styleClass>
                                                 <String fx:value="menu-bar-button" />
                                                 <String fx:value="font" />
@@ -296,5 +296,6 @@
             </HBox>
          </center>
       </BorderPane>
+      <AnchorPane fx:id="overlay" opacity="0.5" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" />
    </children>
 </StackPane>
