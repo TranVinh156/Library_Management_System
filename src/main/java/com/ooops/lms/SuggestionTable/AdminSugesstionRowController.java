@@ -36,7 +36,7 @@ public class AdminSugesstionRowController {
         this.object = o;
         if (object instanceof Member) {
             Member member = (Member) object;
-            textLabel.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName() + " - " + member.getPerson().getId());
+            textLabel.setText(member.getPerson().getLastName() + " " + member.getPerson().getFirstName() + " - " + member.getPerson().getId());
             // Tải ảnh bất đồng bộ
             Task<Image> loadImageTask = new Task<>() {
                 @Override
