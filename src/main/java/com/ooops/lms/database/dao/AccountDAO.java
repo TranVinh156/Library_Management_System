@@ -297,7 +297,7 @@ public class AccountDAO {
             preparedStatement.setInt(1, userID);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return userID;
+                return resultSet.getInt("member_ID");
             } else {
                 return -1;
             }
