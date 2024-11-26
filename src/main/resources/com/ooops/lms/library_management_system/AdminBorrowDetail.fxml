@@ -109,7 +109,7 @@
                                                                <children>
                                                                   <ImageView fx:id="memberImage" fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                                      <image>
-                                                                        <Image url="@../../../../../../../../../Users/ADMIN/Downloads/user%201.png" />
+                                                                        <Image url="@../../../../image/icon/%23E4E4E4_color.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                   <Button fx:id="scanMemberButton" layoutX="3.0" layoutY="138.0" mnemonicParsing="false" mouseTransparent="true" onAction="#onScanMemberButtonAction" prefHeight="8.0" prefWidth="94.0" styleClass="scan-button" text="Quét mã vạch" visible="false" />
@@ -187,7 +187,7 @@
                                                                <children>
                                                                   <ImageView fx:id="bookImage" fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                                      <image>
-                                                                        <Image url="@../../../../../../../../../Users/ADMIN/Downloads/user%201.png" />
+                                                                        <Image url="@../../../../image/icon/%23E4E4E4_color.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                   <Button fx:id="scanBookButton" layoutX="3.0" layoutY="138.0" mnemonicParsing="false" mouseTransparent="true" onAction="#onScanBookButtonAction" prefHeight="8.0" prefWidth="94.0" styleClass="scan-button" text="Quét mã vạch" visible="false" />
