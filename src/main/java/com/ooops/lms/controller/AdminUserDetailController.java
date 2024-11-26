@@ -155,6 +155,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
 
         //Nếu như mà là mở addMode thì các trường sẽ rỗng (addMode == true)
         if (addMode) {
+            item = new Member(new Person());
             userImage.setImage(defaultUserImage);
             emailText.setText(null);
             genderBox.setValue(null);
