@@ -217,3 +217,12 @@
     -fx-background-color: linear-gradient(white, #C8C8C8,white);
     -fx-background-radius:20;
 }
+.real-transparent-scrollpane {
+    -fx-background-color: transparent;
+    -fx-background-radius:0;
+}
+.real-transparent-scrollpane .viewport {
+    -fx-background-color: transparent; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-radius: 0; /* Bo tròn các góc bên trong */
+    -fx-border-radius: 0;
+}

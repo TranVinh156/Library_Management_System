@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="contentBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" spacing="5.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.RatingBookController">
+<VBox fx:id="ratingBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" spacing="5.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.RatingBookController">
    <children>
       <HBox prefHeight="55.0" prefWidth="850.0" spacing="50.0">
          <children>
@@ -43,7 +43,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="533.0" prefWidth="750.0" spacing="20.0">
                <children>
-                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="517.0" prefWidth="432.0" styleClass="rounded-scrollpane">
+                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="517.0" prefWidth="432.0" styleClass="rounded-scrollpane" HBox.hgrow="ALWAYS">
                      <content>
                         <VBox fx:id="borrowedBookBox" alignment="TOP_CENTER" spacing="10.0">
                            <padding>
@@ -54,7 +54,7 @@
                   </ScrollPane>
                   <VBox alignment="TOP_RIGHT" prefHeight="517.0" prefWidth="417.0" spacing="20.0">
                      <children>
-                        <VBox prefHeight="467.0" prefWidth="376.0" spacing="10.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+                        <VBox prefHeight="467.0" prefWidth="376.0" spacing="10.0" style="-fx-background-radius: 20;" styleClass="background-part" VBox.vgrow="ALWAYS">
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
@@ -79,9 +79,9 @@
                                                 <Image url="@../../../../image/book/5Star.png" />
                                              </image>
                                           </ImageView>
-                                          <ScrollPane prefHeight="57.0" prefWidth="115.0">
+                                          <ScrollPane prefHeight="57.0" prefWidth="115.0" styleClass="real-transparent-scrollpane">
                                              <content>
-                                                <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="159.61394500732422" />
+                                                <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="146.61394500732422" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -93,11 +93,12 @@
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <HBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="327.0" spacing="10.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="318.0" spacing="10.0">
                                  <children>
                                     <Circle fx:id="avatarImage" fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Label fx:id="userNameText" text="user name" />
-                                    <ChoiceBox fx:id="ratingChoiceBox" prefWidth="150.0" />
+                                    <Label fx:id="userNameText" prefHeight="29.0" prefWidth="70.0" styleClass="label-4" text="user name" />
+                                    <AnchorPane prefHeight="38.0" prefWidth="70.0" HBox.hgrow="ALWAYS" />
+                                    <ChoiceBox fx:id="ratingChoiceBox" prefHeight="21.0" prefWidth="84.0" styleClass="choiceBox" />
                                  </children>
                               </HBox>
                               <TextArea fx:id="commentTitleText" prefHeight="12.0" prefWidth="327.0" promptText="viết tiêu đề đánh giá của bạn ở đây" />
@@ -115,11 +116,30 @@
                   </VBox>
                </children>
             </HBox>
-            <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <AnchorPane fx:id="shyPane" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
                   <ImageView fitHeight="189.0" fitWidth="232.0" layoutX="281.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../image/customer/general/shy.png" />
+                        <Image url="@../../../../image/customer/general/shy.gif" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="517.0" fitWidth="525.0" layoutX="117.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-10.0">
+                     <image>
+                        <Image url="@../../../../image/customer/general/love4.gif" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="sadPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <ImageView fitHeight="167.0" fitWidth="163.0" layoutX="308.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../image/customer/general/365516163_305484018810000_2356862239138325891_n.gif" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="310.0" fitWidth="288.0" layoutX="231.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="215.0">
+                     <image>
+                        <Image url="@../../../../image/customer/general/rain.gif" />
                      </image>
                   </ImageView>
                </children>

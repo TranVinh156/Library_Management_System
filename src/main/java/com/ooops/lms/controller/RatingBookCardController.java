@@ -11,10 +11,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class RatingBookCardController {
@@ -61,7 +58,9 @@ public class RatingBookCardController {
             throw new RuntimeException(e);
         }
     }
-    public void setColorGreen() {
+    public void setColorGreen(Comment comment) {
+        this.comment = comment;
+        statusText.setText("đã đánh giá");
         ratingCardBox.setStyle("-fx-background-color: #AFFF84;-fx-background-radius: 20;");
     }
 
