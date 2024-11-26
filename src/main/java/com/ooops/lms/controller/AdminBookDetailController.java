@@ -210,7 +210,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
             numberOfBorrowText.setText(null);
             numberOfLostText.setText(null);
             bookContentText.setText(null);
-            bookImage.setImage(defaultBookImage);
+            bookImage.setImage(null);
         }
     }
 
