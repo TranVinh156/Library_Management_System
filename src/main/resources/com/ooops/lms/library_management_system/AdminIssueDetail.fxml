@@ -125,7 +125,11 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <TextArea fx:id="detailIssueText" editable="false" layoutX="1.0" layoutY="35.0" mouseTransparent="true" prefHeight="172.0" prefWidth="460.0" styleClass="box-information" AnchorPane.bottomAnchor="2.5999999999999943" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.599999999999966" AnchorPane.topAnchor="34.39999999999998" />
+                        <TextArea fx:id="detailIssueText" editable="false" layoutX="1.0" layoutY="35.0" mouseTransparent="true" prefHeight="172.0" prefWidth="460.0" AnchorPane.bottomAnchor="2.5999999999999943" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.599999999999966" AnchorPane.topAnchor="34.39999999999998">
+                           <styleClass>
+                              <String fx:value="box-information" />
+                              <String fx:value="black-text-Cabin" />
+                           </styleClass></TextArea>
                      </children>
                   </AnchorPane>
                </children>

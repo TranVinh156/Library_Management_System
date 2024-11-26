@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -74,6 +75,9 @@ public class AdminMenuController extends BasicController {
     private ImageView logoutLogo;
 
     @FXML
+    private ImageView logo;
+
+    @FXML
     private AnchorPane mainPane;
 
     @FXML
@@ -108,6 +112,8 @@ public class AdminMenuController extends BasicController {
     private AdminReservationPageController adminReservationPageController;
     private AdminIssuePageController adminIssuePageController;
 
+    private Button currentActiveButton = null;
+
     public void initialize() throws IOException {
        // titlePageStack.push("Dashboard");
         setTitleLabel();
@@ -123,6 +129,7 @@ public class AdminMenuController extends BasicController {
         hideButtonTexts();
         openMenuIcon.setOnMouseClicked(event -> toggleMenu());
         hanleAddTablePaneClose();
+        logo.setOnMouseClicked(event -> {onDashboardButtonAction(new ActionEvent());});
     }
 
     private void hanleAddTablePaneClose() {
@@ -142,10 +149,16 @@ public class AdminMenuController extends BasicController {
     }
 
     @FXML
+    void onLogoAction(MouseEvent event) {
+    }
+
+
+    @FXML
     void onAddNewBookButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
         getTitlePageStack().push("Quản lý sách");
         openPage(bookPagePane);
+        setActiveButton(bookManagementButton);
         adminBookPageController.loadAddPane();
         addTablePane.setVisible(false);
     }
@@ -155,6 +168,7 @@ public class AdminMenuController extends BasicController {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
         getTitlePageStack().push("Quản lý mượn sách");
         openPage(borrowPagePane);
+        setActiveButton(borrowButton);
         adminBorrowPageController.loadAddPane();
         addTablePane.setVisible(false);
     }
@@ -164,14 +178,16 @@ public class AdminMenuController extends BasicController {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
         getTitlePageStack().push("Quản lý độc giả");
         openPage(userPagePane);
+        setActiveButton(readerManagementButton);
         adminUserPageController.loadAddPane();
         addTablePane.setVisible(false);
     }
     @FXML
     void onAddNewReservationButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý đặt trước");
+        getTitlePageStack().push("Quản lý đặt trước sách");
         openPage(reservationPagePane);
+        setActiveButton(reservationButton);
         adminReservationPageController.loadAddPane();
         addTablePane.setVisible(false);
     }
@@ -183,6 +199,8 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        setActiveButton(dashboardButton);
+
         adminDashboardController.loadRecentIssuel();
         openPage(dashboardPane);
     }
@@ -194,6 +212,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        setActiveButton(borrowButton);
         adminBorrowPageController.startPage();
         openPage(borrowPagePane);
     }
@@ -204,6 +223,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        setActiveButton(reservationButton);
         adminReservationPageController.startPage();
         openPage(reservationPagePane);
     }
@@ -215,6 +235,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        setActiveButton(bookManagementButton);
         adminBookPageController.startPage();
         openPage(bookPagePane);
     }
@@ -226,6 +247,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        setActiveButton(readerManagementButton);
         adminUserPageController.loadData();
         openPage(userPagePane);
     }
@@ -237,6 +259,7 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
+        setActiveButton(issuesButton);
         adminIssuePageController.startPage();
         openPage(issuePagePane);
     }
@@ -270,8 +293,6 @@ public class AdminMenuController extends BasicController {
     void onAddButtonAction(ActionEvent event) {
         addTablePane.setVisible(!addTablePane.isVisible());
     }
-
-
 
     private void toggleMenu() {
         if (!isMenuExpanded) {
@@ -324,6 +345,19 @@ public class AdminMenuController extends BasicController {
 
     public void setTitleLabel() {
       //  titleLabel.setText(getAllTitles());
+    }
+
+    private void setActiveButton(Button button) {
+        if (currentActiveButton != null) {
+            // Reset lại kiểu dáng của nút trước đó
+            currentActiveButton.setStyle("");
+        }
+
+        // Gán nút hiện tại vào trạng thái đang hoạt động
+        currentActiveButton = button;
+
+        // Đặt kiểu dáng in đậm màu cho nút đang được chọn
+        currentActiveButton.setStyle("-fx-font-weight: bold; -fx-background-color: #E0E0E0;"); // Kiểu CSS
     }
 
 

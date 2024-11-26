@@ -3,10 +3,14 @@ package com.ooops.lms.SuggestionTable;
 import com.ooops.lms.bookapi.BookInfoFetcher;
 import com.ooops.lms.controller.BookSuggestionCardController;
 import com.ooops.lms.database.dao.BookItemDAO;
+import com.ooops.lms.database.dao.BookReservationDAO;
 import com.ooops.lms.database.dao.MemberDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.BookItem;
+import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.enums.BookItemStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,10 +79,10 @@ public class SuggestionTable {
                         AdminSugesstionRowController rowController = loader.getController();
                         rowController.setMainController(SuggestionTable.this);
                         rowController.setSuggestion(o);
-                        if(row instanceof HBox) {
+                        if (row instanceof HBox) {
                             HBox cardBox = (HBox) row;
                             cardBox.setMinWidth(200);
-                           // cardBox.prefWidthProperty().bind(activeTextField.widthProperty().subtract(16));
+                            // cardBox.prefWidthProperty().bind(activeTextField.widthProperty().subtract(16));
                         }
                         final Object suggestion = o;
                         row.setOnMouseClicked(event -> {
@@ -136,7 +140,7 @@ public class SuggestionTable {
                     suggestList.addAll(uniqueMembersMap.values());
                     break;
                 case "bookBarCode":
-                    searchCriteria.put("title", value);
+                    searchCriteria.put("ISBN", value);
                     suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
                     break;
                 case "bookItemName":
@@ -145,12 +149,14 @@ public class SuggestionTable {
                     suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
                     break;
                 case "bookNameAPI":
-                        List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
-                        suggestList.addAll(listbook);
+                    List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
+                    suggestList.addAll(listbook);
                     break;
                 case "bookISBNAPI":
-                        Book book = BookInfoFetcher.searchBookByISBN(value);
-                        suggestList.addAll((Collection<?>) book);
+                    Book book = BookInfoFetcher.searchBookByISBN(value);
+                    if(book!= null) {
+                        suggestList.add(book);
+                    }
                     break;
                 default:
                     break;
@@ -180,6 +186,82 @@ public class SuggestionTable {
         loaded = false;
 
     }
+
+    public void loadFindData(String typeData, String value, String member_ID) {
+        suggestList.clear();
+        searchCriteria.clear();
+        uniqueMembersMap.clear();
+        suggestionTable.getChildren().clear();
+        if (value == null || value.isEmpty()) {
+            scrollPane.setVisible(false);
+            scrollPane.setLayoutX(0);
+            scrollPane.setLayoutY(0);
+            return;
+        }
+        try {
+            switch (typeData) {
+                case "bookBarCode":
+                    //Tim dat truoc
+                    searchCriteria.put("member_ID", member_ID);
+                    searchCriteria.put("barcode", value);
+                    searchCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
+                    List<BookReservation> listbook = BookReservationDAO.getInstance().searchByCriteria(searchCriteria);
+                    if(listbook.size() > 0) {
+                        System.out.println("Co dat truoc ne");
+                        for (BookReservation bookReservation : listbook) {
+                            suggestList.add(bookReservation.getBookItem());
+                        }
+                    }
+                    searchCriteria.clear();
+                    searchCriteria.put("barcode", value);
+                    searchCriteria.put("BookItemStatus", BookItemStatus.AVAILABLE);
+                    suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
+                    break;
+                case "bookItemName":
+                    //Tim dat truoc
+                    searchCriteria.put("member_ID", member_ID);
+                    searchCriteria.put("title", value);
+                    searchCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
+                    List<BookReservation> listbook2 = BookReservationDAO.getInstance().searchByCriteria(searchCriteria);
+                    if(listbook2.size() > 0) {
+                        System.out.println("Co dat truoc ne");
+                        for (BookReservation bookReservation : listbook2) {
+                            suggestList.add(bookReservation.getBookItem());
+                        }
+                    }
+                    searchCriteria.clear();
+                    searchCriteria.put("title", value);
+                    searchCriteria.put("BookItemStatus", BookItemStatus.AVAILABLE);
+                    suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
+                    break;
+                default:
+                    break;
+            }
+            if (!suggestList.isEmpty()) {
+                long startTime = System.currentTimeMillis();
+                Platform.runLater(() -> scrollPane.setVisible(true));
+                loadSuggestionRowsAsync();
+                long endTime = System.currentTimeMillis();
+                long duration = endTime - startTime;
+                System.out.println("Thời gian load hàng vào Vbox: " + duration + " milliseconds");
+            } else {
+                Platform.runLater(() -> {
+                    scrollPane.setVisible(false);
+                    scrollPane.setLayoutX(0);
+                    scrollPane.setLayoutY(0);
+                });
+            }
+
+        } catch (SQLException e) {
+            Platform.runLater(() -> {
+                scrollPane.setVisible(false);
+                // Xử lý lỗi nếu cần
+            });
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     public void updateSuggestionPaneForActiveField() {
         if (activeTextField != null) {

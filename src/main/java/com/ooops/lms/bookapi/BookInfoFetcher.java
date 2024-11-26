@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.cj.util.LRUCache;
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
@@ -22,6 +23,12 @@ public class BookInfoFetcher {
     private static final int MAX_BOOK = 100;
     private static LRUCache<String, List<Book>> bookCache = new LRUCache<>(20);
 
+    /**
+     * Giảm truy vấn tới api.
+     * @param url đường dẫn
+     * @return trả về reponse
+     * @throws Exception lỗi http
+     */
     private static String fetchResponse(URL url) throws Exception {
         HttpURLConnection conn;
         int responseCode;
@@ -32,7 +39,7 @@ public class BookInfoFetcher {
             responseCode = conn.getResponseCode();
 
             if (responseCode == 429 && retryCount < 3) {
-                System.out.println("Rate limit exceeded. Retrying...");
+                //System.out.println("Rate limit exceeded. Retrying...");
                 Thread.sleep(2000); // Chờ 2 giây trước khi thử lại
                 retryCount++;
             } else if (responseCode >= 200 && responseCode < 300) {
@@ -45,15 +52,20 @@ public class BookInfoFetcher {
                     return response.toString();
                 }
             } else {
-                throw new Exception("HTTP error: " + responseCode);
+                CustomerAlter.showMessage("HTTP error: " + responseCode);
+                //throw new Exception("HTTP error: " + responseCode);
             }
         }
     }
 
-
+    /**
+     * Tìm kiếm sách theo từ khoá.
+     * @param title từ khoá
+     * @return danh sách các sách tương ứng
+     */
     public static List<Book> searchBooksByKeyword(String title) {
         if (bookCache.containsKey(title)) {
-            System.out.println("Cache Hoạt động " + title + " " + bookCache.get(title).size());
+            //System.out.println("Cache Hoạt động " + title + " " + bookCache.get(title).size());
             return bookCache.get(title);
         }
         List<Book> books = new ArrayList<>();
@@ -121,18 +133,23 @@ public class BookInfoFetcher {
                     books.add(book);
                 }
             } else {
-                System.out.println("No book information found for title: " + title);
+
+                //System.out.println("No book information found for title: " + title);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return List.of();
         }
-        System.out.println("cache " + title + " " + books.size());
         return books;
     }
 
+    /**
+     * Tìm kiếm sách theo isbn.
+     * @param isbn isbn
+     * @return sách có isbn tương ứng
+     */
     public static Book searchBookByISBN(String isbn) {
         if (bookCache.containsKey(isbn)) {
-            System.out.println("cache hoạt động");
             return bookCache.get(isbn).getFirst();
         }
         try {
@@ -179,10 +196,10 @@ public class BookInfoFetcher {
                 book.setPreview(webReaderLink);
                 return book;
             } else {
-                System.out.println("No book information found for ISBN: " + isbn);
+
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
         return null;
     }

@@ -33,6 +33,10 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
         bookIssueCache = new LRUCache<>(100);
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized BookIssueDAO getInstance() {
         if (bookIssueDAO == null) {
             bookIssueDAO = new BookIssueDAO();
@@ -58,6 +62,11 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
     // select all
     private static final String SELECT_ALL = "Select * from BookIssue";
 
+    /**
+     * thêm.
+     * @param entity đơn mượn
+     * @throws SQLException lỗi
+     */
     @Override
     public void add(@NotNull BookIssue entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(ADD_BOOK_ISSUE, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -73,6 +82,12 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
         }
     }
 
+    /**
+     * cập nhật.
+     * @param entity đơn mượn
+     * @return true và false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean update(@NotNull BookIssue entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_BOOK_ISSUE)) {
@@ -96,6 +111,12 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
         }
     }
 
+    /**
+     * xoá.
+     * @param entity đơn mượn
+     * @return true false
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean delete(@NotNull BookIssue entity) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(DELETE_BOOK_ISSUE)) {
@@ -113,10 +134,15 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
         }
     }
 
+    /**
+     * tìm.
+     * @param keywords từ khoá
+     * @return đơn mượn
+     * @throws SQLException lỗi
+     */
     @Override
     public BookIssue find(@NotNull Number keywords) throws SQLException {
         if (bookIssueCache.containsKey(keywords.intValue())) {
-            System.out.println("cache issue");
             return bookIssueCache.get(keywords.intValue());
         }
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(FIND_BOOK_ISSUE)) {
@@ -138,6 +164,12 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
         return null;
     }
 
+    /**
+     * tìm.
+     * @param criteria tiêu chí
+     * @return danh sách đơn mượn
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookIssue> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         StringBuilder findBookIssueByCriteria = new StringBuilder("Select distinct (issue_ID) from BookIssue " +
@@ -191,6 +223,11 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
         }
     }
 
+    /**
+     * lấy toàn bộ sách.
+     * @return toàn bộ đơn mượn
+     * @throws SQLException lỗi
+     */
     @Override
     public List<BookIssue> selectAll() throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL)) {
@@ -204,6 +241,10 @@ public class BookIssueDAO implements DatabaseQuery<BookIssue> {
         }
     }
 
+    /**
+     * fetch lại cache.
+     * @param issueID id
+     */
     public void fetchCache(int issueID) {
         bookIssueCache.remove(issueID);
     }

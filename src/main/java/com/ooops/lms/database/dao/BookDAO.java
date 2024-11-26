@@ -26,6 +26,10 @@ public class BookDAO implements DatabaseQuery<Book> {
         bookCache = new LRUCache<>(100);
     }
 
+    /**
+     * singleton.
+     * @return dao
+     */
     public static synchronized BookDAO getInstance() {
         if (bookDAO == null) {
             bookDAO = new BookDAO();
@@ -74,7 +78,7 @@ public class BookDAO implements DatabaseQuery<Book> {
     private static final String FIND_BOOK_CATEGORY
             = "Select * from Category c join Books_Category b_c on c.category_ID = b_c.category_ID where ISBN = ?";
 
-    //
+    // lấy tất cả
     private static final String SELECT_ALL = "Select * from Books";
     private static final String SELECT_ALL_CATEGORY = "Select * from Category ORDER BY category_name ASC";
     private static final String SELECT_ALL_AUTHOR = "Select * from Authors ORDER BY author_name ASC";
@@ -83,7 +87,7 @@ public class BookDAO implements DatabaseQuery<Book> {
      * Thêm book vào csdl.
      *
      * @param book book
-     * @throws SQLException
+     * @throws SQLException lỗi
      */
     private void insertBook(@NotNull Book book) throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_NEW_BOOK)) {
@@ -227,12 +231,6 @@ public class BookDAO implements DatabaseQuery<Book> {
         }
     }
 
-    /*
-    public void addNewBook(@NotNull Book book) throws SQLException {
-
-    }
-     */
-
     /**
      * Thêm sách mới.
      *
@@ -303,7 +301,9 @@ public class BookDAO implements DatabaseQuery<Book> {
                 preparedStatement.setString(2, entity.getImagePath());
                 preparedStatement.setString(3, entity.getDescription());
                 preparedStatement.setString(4, entity.getPlaceAt());
-                preparedStatement.setLong(5, entity.getISBN());
+                preparedStatement.setString(5,entity.getstatus().toString());
+                preparedStatement.setLong(6, entity.getISBN());
+                System.out.println(preparedStatement);
                 preparedStatement.executeUpdate();
 
                 database.getConnection().commit();
@@ -320,6 +320,12 @@ public class BookDAO implements DatabaseQuery<Book> {
 
     }
 
+    /**
+     * xoá sách.
+     * @param entity sách cần xoá
+     * @return true ngược lại
+     * @throws SQLException lỗi
+     */
     @Override
     public boolean delete(@NotNull Book entity) throws SQLException {
         if (find(entity.getISBN()) == null) {
@@ -368,7 +374,7 @@ public class BookDAO implements DatabaseQuery<Book> {
      *
      * @param keywords mã
      * @return sách
-     * @throws SQLException
+     * @throws SQLException lỗi
      */
     @Override
     public Book find(Number keywords) throws SQLException {
@@ -432,7 +438,7 @@ public class BookDAO implements DatabaseQuery<Book> {
      *
      * @param criteria danh sách tiêu chí
      * @return danh sách sách
-     * @throws SQLException
+     * @throws SQLException lỗi
      */
     @Override
     public List<Book> searchByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
@@ -478,7 +484,7 @@ public class BookDAO implements DatabaseQuery<Book> {
      * Lấy tất cả sách.
      *
      * @return danh sách book
-     * @throws SQLException
+     * @throws SQLException lỗi
      */
     @Override
     public List<Book> selectAll() throws SQLException {
@@ -488,7 +494,6 @@ public class BookDAO implements DatabaseQuery<Book> {
                 while (resultSet.next()) {
                     bookList.add(find(resultSet.getLong("ISBN")));
                 }
-
                 return bookList;
             }
         }
@@ -517,6 +522,11 @@ public class BookDAO implements DatabaseQuery<Book> {
         return keywords.toString();
     }
 
+    /**
+     * Lấy tất cả thể loại.
+     * @return danh sách thể loại
+     * @throws SQLException lỗi
+     */
     public List<Category> selectAllCategory() throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL_CATEGORY)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -529,6 +539,11 @@ public class BookDAO implements DatabaseQuery<Book> {
         }
     }
 
+    /**
+     * Lấy tất cả tác giả.
+     * @return danh sách tác giả
+     * @throws SQLException lỗi
+     */
     public List<Author> selectAllAuthor() throws SQLException {
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(SELECT_ALL_AUTHOR)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -541,6 +556,10 @@ public class BookDAO implements DatabaseQuery<Book> {
         }
     }
 
+    /**
+     * fetch lại cache.
+     * @param isbn isbn
+     */
     public void fetchBook(Long isbn) {
         bookCache.remove(isbn);
     }

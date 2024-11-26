@@ -3,7 +3,7 @@ package com.ooops.lms.model.enums;
 public enum AccountStatus {
     ACTIVE("ACTIVE"),
     BLACKLISTED("BLACKLISTED"),
-    BLOCKED("BLOCKED"),
+    CLOSED("CLOSED"),
     NONE("NONE");
     private final String displayName;
 

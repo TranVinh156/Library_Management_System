@@ -106,10 +106,6 @@ public class AdminReservationTableController extends BaseTableController<BookRes
     @FXML
     protected void searchCriteria() {
         getCriteria();
-        if (findCriteria.isEmpty()) {
-            loadData();
-            return;
-        }
         try {
             itemsList.clear();
             itemsList.addAll(BookReservationDAO.getInstance().searchByCriteria(findCriteria));

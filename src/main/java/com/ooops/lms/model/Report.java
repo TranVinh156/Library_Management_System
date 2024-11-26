@@ -68,4 +68,18 @@ public class Report {
     public void setStatus(ReportStatus status) {
         this.status = status;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Report) {
+            Report report = (Report) obj;
+            return report.getReportID() == this.getReportID();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(this.getReportID());
+    }
 }

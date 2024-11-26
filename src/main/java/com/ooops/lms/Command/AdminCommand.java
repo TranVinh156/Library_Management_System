@@ -63,10 +63,9 @@ public class AdminCommand implements Command {
                         Map<String, Object> findCriteria = new HashMap<>();
                         findCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
                         findCriteria.put("member_ID", ((BookIssue) object).getMember().getPerson().getId());
-                       // findCriteria.put("ISBN", ((BookIssue) object).getBookItem().getISBN());
+                        findCriteria.put("barcode", ((BookIssue) object).getBookItem().getBarcode());
                         List<BookReservation> bookReservationsList = BookReservationDAO.getInstance().searchByCriteria(findCriteria);
                         if (bookReservationsList.size() > 0) {
-                            System.out.println("Coooo");
                             BookIssue newBookIssue = new BookIssue(((BookIssue) object).getMember(),bookReservationsList.getFirst().getBookItem(),((BookIssue) object).getCreatedDate(),((BookIssue) object).getDueDate());
                             BookIssueDAO.getInstance().add(newBookIssue);
 
@@ -126,7 +125,7 @@ public class AdminCommand implements Command {
                 case "block":
                     if (object instanceof Member) {
                         Member member = (Member) object;
-                        member.setStatus(AccountStatus.BLOCKED);
+                        member.setStatus(AccountStatus.CLOSED);
                     }
                     return true;
                 case "unblock":
