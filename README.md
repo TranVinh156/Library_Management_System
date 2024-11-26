@@ -14,7 +14,7 @@ Group Ooops:
 - Nguyễn Đoàn Hoài Thương
 
 # Giới thiệu <a name="introduction"></a>
-Ứng dụng giúp độc giả có thể dễ dàng hơn trong việc đặt trước, mượn, trả sách. Độc giả có thể để lại đánh giá đóng góp ý kiến cho cuốn sách, 
+Ứng dụng giúp độc giả có thể dễ dàng hơn trong việc đặt trước, mượn, trả sách và thủ thư dễ dàng quản lý sách, các đơn mượn, đặt, độc giả. Độc giả có thể dễ dàng báo cáo các vấn đề tới thủ thư và thủ thư cũng dễ dàng giải quyết các báo cáo đấy.
 
 # Tính năng nổi bật <a name="features"></a>
 User:
