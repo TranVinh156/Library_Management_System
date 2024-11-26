@@ -40,7 +40,7 @@ public class AccountDAO {
 
     // lấy thông tin tài khoản user
     private static final String GET_ACCOUNT_USER =
-            "Select * from Users where username = ? and password = ?";
+            "Select * from Users where username = ? and password = ? and AccountStatus != 'CLOSED'";
 
     // Thêm tài khoản user
     private static final String INSERT_USER =

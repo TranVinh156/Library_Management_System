@@ -94,6 +94,7 @@ public class AdminUserDetailController extends BaseDetailController<Member> {
         memberIDText.setText(String.valueOf(item.getPerson().getId()));
         memberNameText.setText(item.getPerson().getLastName() + " " + item.getPerson().getFirstName());
         numberOfBorrowText.setText(String.valueOf(item.getTotalBooksCheckOut()));
+        phoneNumberText.setText(item.getPerson().getPhone());
         try {
             Map<String, Object> findCriteriaa = new HashMap<>();
             findCriteriaa.put("BookIssueStatus", BookIssueStatus.BORROWED);
