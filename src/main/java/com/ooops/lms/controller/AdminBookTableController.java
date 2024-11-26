@@ -90,7 +90,7 @@ public class AdminBookTableController extends BaseTableController<Book, AdminBoo
     protected void initialize() {
         setCategoryFindList();
         statusFindBox.getItems().add("None");
-        statusFindBox.getItems().addAll(BookStatus.AVAILABLE.toString(), BookStatus.UNAVAILAVBLE.toString().toString());
+        statusFindBox.getItems().addAll(BookStatus.AVAILABLE.toString(), BookStatus.UNAVAILABLE.toString().toString());
         bookNameFindTExt.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
                 Stage stage = (Stage) bookNameFindTExt.getScene().getWindow();
