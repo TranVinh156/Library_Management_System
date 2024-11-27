@@ -1,18 +1,20 @@
 import cv2
+import sys
 
 # Đường dẫn tới mô hình đã đào tạo
 model_path = "face/face_recognizer.yml"
 
-# Tải mô hình nhận diện khuôn mặt
+# Tạo mô hình
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read(model_path)
 
 # Đường dẫn tới Haar Cascade
 cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 face_cascade = cv2.CascadeClassifier(cascade_path)
 
-def face_login():
+def face_login(modelPath):
     # Mở camera
+    #Tải mô hình
+    recognizer.read(modelPath)
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         return False
@@ -62,4 +64,5 @@ def face_login():
 
 # Gọi hàm để thực thi
 if __name__ == "__main__":
-    face_login()
+    modelPath = sys.argv[1]
+    face_login(modelPath)
