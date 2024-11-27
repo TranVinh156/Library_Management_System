@@ -73,7 +73,7 @@
                                                 <Font name="System Bold" size="21.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="authorNameText" text="by  thangcho +  2 con ngựa" />
+                                          <Label fx:id="authorNameText" prefHeight="17.0" prefWidth="149.0" text="by  thangcho +  2 con ngựa" />
                                           <ImageView fx:id="starImage" fitHeight="21.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../../../image/book/5Star.png" />
@@ -81,7 +81,7 @@
                                           </ImageView>
                                           <ScrollPane prefHeight="57.0" prefWidth="115.0" styleClass="real-transparent-scrollpane">
                                              <content>
-                                                <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="146.61394500732422" />
+                                                <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="gút app" wrappingWidth="141.94731903076172" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -105,7 +105,7 @@
                               <TextArea fx:id="commentContentText" prefHeight="191.0" prefWidth="327.0" promptText="viết đánh giá của bạn ở đây" />
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="366.0" spacing="10.0">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="345.0" spacing="10.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#onComplimentButtonAction" styleClass="button-1" text="Khen app" />
                               <Button mnemonicParsing="false" onAction="#onCriticizeButtonAction" styleClass="button-1" text="Chê app" />
@@ -132,9 +132,9 @@
             </AnchorPane>
             <AnchorPane fx:id="sadPane" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
-                  <ImageView fitHeight="167.0" fitWidth="163.0" layoutX="308.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="167.0" fitWidth="163.0" layoutX="308.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../image/customer/general/365516163_305484018810000_2356862239138325891_n.gif" />
+                        <Image url="@../../../../image/customer/general/sadGuy.gif" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="310.0" fitWidth="288.0" layoutX="231.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="215.0">

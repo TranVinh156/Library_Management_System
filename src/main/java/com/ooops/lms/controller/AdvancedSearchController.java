@@ -40,6 +40,9 @@ public class AdvancedSearchController {
     private VBox test = new VBox();
     private HBox row1Box = new HBox(), row2Box = new HBox();
 
+    /**
+     * hàm khởi tạo cho AdvancedSearch
+     */
     public void initialize() {
         categoryChoiceBox.getItems().addAll("title", "category_name", "author_name");
         categoryChoiceBox.setValue("title");
@@ -74,15 +77,27 @@ public class AdvancedSearchController {
         Animation.getInstance().showMessage("Bạn yêu ơi, vì 1 sách có 1 thể thoi nên nó sẽ tìm thể loại cuối bạn chọn nhé! Mình lười code chỉ được chọn 1 cho bạn yêu quá");
     }
 
+    /**
+     * từ thanh tìm kiếm truyền vào tìm kiếm cụ thể.
+     * @param keyword từ khoá truyền vào
+     */
     public void setSearchText(String keyword) {
         searchText.setText(keyword);
         onSearchButtonAction(new ActionEvent());
     }
 
+    /**
+     * thêm điều kiện.
+     * @param category điều kiện
+     */
     public void addCategoryCriteria(String category) {
         criteria.put("category_name",category);
     }
 
+    /**
+     * xoá điều kiện.
+     * @param category điều kiện
+     */
     public void deleteCategoryCriteria(String category) {
         Iterator<Map.Entry<String, Object>> iterator = criteria.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -95,9 +110,9 @@ public class AdvancedSearchController {
     }
 
     /**
-     * quay lại
+     * quay lại dashboard
      *
-     * @param event ấn vao
+     * @param event ấn vào để quay dashboard
      */
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
@@ -107,9 +122,9 @@ public class AdvancedSearchController {
     }
 
     /**
-     * tìm sách
+     * tìm sách theo điều kiện
      *
-     * @param event tim
+     * @param event tìm sách theo điều kiện
      */
     public void onSearchButtonAction(ActionEvent event) {
         String keyword = searchText.getText();
@@ -162,6 +177,11 @@ public class AdvancedSearchController {
         return test;
     }
 
+    /**
+     * tải lên các sách tìm được.
+     * @param index thứ tự của sách
+     * @param rowBox hàng chứa sách
+     */
     private void loadBookCard(int index, HBox rowBox) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();

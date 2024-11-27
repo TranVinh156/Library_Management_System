@@ -241,3 +241,14 @@
     -fx-background-radius: 0; /* Bo tròn các góc bên trong */
     -fx-border-radius: 0;
 }
+
+.button-3 {
+    -fx-padding:4 15 8 15;
+            -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+            -fx-background-radius: 15;
+            -fx-background-color: #D9D9D9;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+            -fx-font-weight: bold;
+            -fx-font-size: 1.3em;
+            -fx-text-fill: white;
+}

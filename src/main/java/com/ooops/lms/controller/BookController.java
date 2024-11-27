@@ -47,24 +47,23 @@ public class BookController {
     private Book book;
 
     @FXML
-    VBox bookBox;
+    VBox bookBox,commentsVBox;
     @FXML
     private ChoiceBox<String> starChoiceBox;
     @FXML
-    private Label authorNameLabel;
+    private Label authorNameLabel,bookNameLabel;
     @FXML
     private ImageView bookImage, starImage;
     @FXML
-    private Label bookNameLabel;
-    @FXML
     private Text contentText;
-    @FXML
-    private VBox commentsVBox;
     @FXML
     HBox categoryHbox;
     @FXML
     Button bookmarkButton;
 
+    /**
+     * hàm khởi tạo.
+     */
     public void initialize() {
         starChoiceBox.getItems().addAll("tất cả", "5 sao", "4 sao", "3 sao", "2 sao", "1 sao");
         starChoiceBox.setValue("tất cả");
@@ -80,9 +79,11 @@ public class BookController {
         ThemeManager.getInstance().addPane(bookBox);
     }
 
+    /**
+     * thiết lập dữ liệu cho sách.
+     */
     public void setData() {
         Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
-
 
         loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
 
@@ -98,7 +99,6 @@ public class BookController {
         starImage.setImage(starImage(book.getRate()));
         contentText.setText(book.getDescription());
 
-        //comment
         List<Comment> comments = new ArrayList<>();
         try {
             Map<String, Object> criteria = new HashMap<>();
@@ -132,6 +132,10 @@ public class BookController {
         }
     }
 
+    /**
+     * hiển thị các comment.
+     * @param star rate của comment
+     */
     private void showComment(int star) {
         commentsVBox.getChildren().clear();
         List<Comment> comments = new ArrayList<>();
@@ -158,6 +162,10 @@ public class BookController {
         }
     }
 
+    /**
+     * quay về dashboard.
+     * @param event khi ấn vào
+     */
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) FXMLLoaderUtil.getInstance().loadFXML(DASHBOARD_FXML);
         if (content != null) {
@@ -169,6 +177,10 @@ public class BookController {
         }
     }
 
+    /**
+     * đặt trước sách.
+     * @param actionEvent khi ấn vào
+     */
     public void onReserveBookButtonAction(ActionEvent actionEvent) {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đặt trước sách chứ gì?");
         if (confirmYes) {
@@ -207,6 +219,10 @@ public class BookController {
 
     }
 
+    /**
+     * đánh dấu sách.
+     * @param actionEvent khi ấn vào
+     */
     public void onBookmarkButtonAction(ActionEvent actionEvent) {
         if (bookmarkButton.getText().equals("Đánh dấu")) {
             markedBook();
@@ -215,6 +231,9 @@ public class BookController {
         }
     }
 
+    /**
+     * huỷ đánh dấu.
+     */
     private void cancelMarkedBook() {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn huỷ đánh dấu sách này à?");
         if (confirmYes) {
@@ -243,6 +262,9 @@ public class BookController {
         }
     }
 
+    /**
+     * đánh dấu sách.
+     */
     private void markedBook() {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đánh dấu sách này à?");
         if (confirmYes) {
@@ -257,6 +279,7 @@ public class BookController {
                 List<BookItem> bookItem = BookItemDAO.getInstance().searchByCriteria(criteria);
                 BookMark bookMark = new BookMark(UserMenuController.getMember()
                         , bookItem.getFirst());
+                bookMark.getBook().setRate(book.getRate());
                 try {
                     BookMarkDAO.getInstance().add(bookMark);
                 } catch (SQLException e) {
@@ -271,6 +294,11 @@ public class BookController {
         }
     }
 
+    /**
+     * từ rate sang Image.
+     * @param numOfStar số rate
+     * @return ảnh của rate
+     */
     private Image starImage(int numOfStar) {
         System.out.println(numOfStar);
         String imagePath = "/image/book/" + numOfStar + "Star.png";
@@ -281,6 +309,10 @@ public class BookController {
         return new Image(getClass().getResourceAsStream(imagePath));
     }
 
+    /**
+     * trả về sách.
+     * @return sách
+     */
     public Book getBook() {
         return book;
     }
@@ -290,6 +322,11 @@ public class BookController {
         setData();
     }
 
+    /**
+     * từ rate choiceBox sang int
+     * @param rate rate
+     * @return số rate
+     */
     private int fromRateToInt(String rate) {
         char firstChar = rate.charAt(0);
         if (Character.isAlphabetic(firstChar)) {
@@ -298,11 +335,19 @@ public class BookController {
         return Character.getNumericValue(firstChar);
     }
 
+    /**
+     * mở preview.
+     * @param mouseEvent
+     */
     public void onOpenPreviewMouseClicked(MouseEvent mouseEvent) {
         System.out.println(book.getPreview());
         openWebLink(book.getPreview());
     }
 
+    /**
+     * mở web .
+     * @param url link
+     */
     private void openWebLink(String url) {
         try {
             // Kiểm tra nếu hệ thống hỗ trợ Desktop API

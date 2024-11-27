@@ -44,7 +44,7 @@ public class BookmarkController implements Initializable {
                 cardController.setData(bookMarkList.get(i).getBook());
                 bookmarkHBox.getChildren().add(cardBox);
             } catch (IOException e) {
-                e.printStackTrace();  // In ra lỗi để dễ dàng theo dõi nếu gặp vấn đề
+                e.printStackTrace();
             }
         }
 
@@ -58,7 +58,7 @@ public class BookmarkController implements Initializable {
                 cardController.setData(popularBooks.get(i));
                 suggestHBox.getChildren().add(cardBox);
             } catch (IOException e) {
-                e.printStackTrace();  // In ra lỗi để dễ dàng theo dõi nếu gặp vấn đề
+                e.printStackTrace();
             }
             if (i == 5) {
                 break;
@@ -66,6 +66,11 @@ public class BookmarkController implements Initializable {
         }
     }
 
+    /**
+     * thêm sách đánh dấu.
+     * @param book sách
+     * @throws IOException ném ngoại lệ
+     */
     public void addBookmark(Book book) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard1-view.fxml"));
@@ -75,6 +80,11 @@ public class BookmarkController implements Initializable {
         bookmarkHBox.getChildren().add(cardBox);
     }
 
+    /**
+     * xoá sách đánh dấu.
+     * @param book sách
+     * @throws IOException ném ngoại lệ
+     */
     public void deleteBookmark(Book book) throws IOException {
         int index = findBookMark(book.getISBN());
         if(index!=-1) {
@@ -82,6 +92,11 @@ public class BookmarkController implements Initializable {
         }
     }
 
+    /**
+     * tìm sách.
+     * @param ISBN isbn
+     * @return sách cần tìm
+     */
     private int findBookMark(long ISBN) {
         for (int i = 0;i<bookMarkList.size();i++) {
             if (bookMarkList.get(i).getBook().getISBN() == ISBN) {

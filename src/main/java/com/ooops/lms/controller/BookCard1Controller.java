@@ -50,6 +50,10 @@ public class BookCard1Controller {
 
     private String [] colors = {"DABEEA","E0FFCC"};
 
+    /**
+     * thiết lập dữ liệu cho book card.
+     * @param book sách truyền vào
+     */
     public void setData(Book book) {
         this.book = book;
         bookNameLabel.setText(book.getTitle());
@@ -70,6 +74,10 @@ public class BookCard1Controller {
         executor.submit(loadImageTask);
     }
 
+    /**
+     * ấn vào sách.
+     * @param mouseEvent khi chuột trỏ vào
+     */
     public void onBookMouseClicked(MouseEvent mouseEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -92,6 +100,11 @@ public class BookCard1Controller {
         }
     }
 
+    /**
+     * chuyển từ rate sang Inage.
+     * @param numOfStar số rate
+     * @return ảnh của rate
+     */
     private Image starImage(int numOfStar) {
         String imagePath = "/image/book/" + numOfStar + "Star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {

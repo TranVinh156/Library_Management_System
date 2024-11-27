@@ -91,6 +91,12 @@ public class RatingBookController {
         }
     }
 
+    /**
+     * hiển thị thông tin về sách
+     * @param bookItem
+     * @param comment
+     * @param ratingBookCardController
+     */
     public void showBookData(BookItem bookItem,Comment comment,RatingBookCardController ratingBookCardController) {
         commentContentText.clear();
         commentTitleText.clear();
@@ -117,6 +123,10 @@ public class RatingBookController {
         }
     }
 
+    /**
+     * save thông tin.
+     * @param actionEvent
+     */
     public void onSaveButtonAction(ActionEvent actionEvent) {
         if(currrentBookItem == null) {
             CustomerAlter.showMessage("Vui l chọn sách");
@@ -140,6 +150,10 @@ public class RatingBookController {
         }
     }
 
+    /**
+     * xử lý khi khen app.
+     * @param actionEvent
+     */
     public void onComplimentButtonAction(ActionEvent actionEvent) {
         sadPane.setVisible(false);
 
@@ -158,14 +172,16 @@ public class RatingBookController {
         pause.play();
     }
 
+    /**
+     * xử lý khi chê app.
+     * @param actionEvent
+     */
     public void onCriticizeButtonAction(ActionEvent actionEvent)  {
         shyPane.setVisible(false);
 
         Sound.getInstance().playSound("sad.mp3");
         ThemeManager.getInstance().changeTheme("dark");
         ThemeManager.getInstance().applyTheme(ratingBox);
-
-//        CustomerAlter.showMessage("t ban m nè");
 
         sadPane.setVisible(true);
         PauseTransition pause = new PauseTransition(Duration.seconds(7));
@@ -178,6 +194,11 @@ public class RatingBookController {
         pause.play();
     }
 
+    /**
+     * từ rate về int.
+     * @param rate
+     * @return
+     */
     private int rate(String rate) {
         switch (rate) {
             case "1 sao" :
@@ -194,6 +215,10 @@ public class RatingBookController {
         return 5;
     }
 
+    /**
+     * setData.
+     * @param bookIssueList bookIssueList
+     */
     public void setData(List<BookIssue> bookIssueList) {
         if(this.borrowedBookList==null) {
             this.borrowedBookList = bookIssueList;

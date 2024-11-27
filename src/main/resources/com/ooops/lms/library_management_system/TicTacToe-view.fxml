@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="contentBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" spacing="5.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.TicTacToeController">
+   <children>
+      <HBox alignment="CENTER" maxWidth="-Infinity" prefHeight="22.0" prefWidth="750.0" spacing="40.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="31.0" prefWidth="42.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fx:id="backButton" fitHeight="22.0" fitWidth="21.0" onDragDetected="#onBackButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../image/customer/general/arrowBrown.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Label fx:id="playModeLabel" styleClass="label-1" text="Game lấy 0,5 - 1 điểm :&gt;" textFill="#a64f3c" HBox.hgrow="NEVER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#onPlayComputerButtonAction" styleClass="button-1" text="Chơi với Ooops" />
+            <Button mnemonicParsing="false" onAction="#onSelfPlayButtonAction" styleClass="button-2" text="Chơi tự kỉ" />
+            <Button mnemonicParsing="false" onAction="#onReplayButtonAction" styleClass="button-1" text="Chơi lại" />
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <AnchorPane maxWidth="-Infinity" prefHeight="562.0" prefWidth="759.0">
+         <children>
+            <Button fx:id="button1" alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="57.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button2" alignment="CENTER" contentDisplay="CENTER" layoutX="265.0" layoutY="57.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button3" alignment="CENTER" contentDisplay="CENTER" layoutX="472.0" layoutY="57.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button4" alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="211.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button5" alignment="CENTER" contentDisplay="CENTER" layoutX="265.0" layoutY="211.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button6" alignment="CENTER" contentDisplay="CENTER" layoutX="472.0" layoutY="211.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button7" alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="366.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button8" alignment="CENTER" contentDisplay="CENTER" layoutX="265.0" layoutY="366.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+            <Button fx:id="button9" alignment="CENTER" contentDisplay="CENTER" layoutX="472.0" layoutY="366.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="152.0" style="-fx-background-radius: 20;" styleClass="button-3" />
+         </children>
+      </AnchorPane>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="50.0" right="50.0" />
+   </padding>
+</VBox>

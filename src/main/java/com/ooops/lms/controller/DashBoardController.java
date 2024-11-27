@@ -80,6 +80,10 @@ public class DashBoardController implements Initializable {
         }
     }
 
+    /**
+     * sang MoreBook
+     * @param event khi án
+     */
     public void onMoreButtonAction(ActionEvent event) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(MORE_BOOK_FXML);
         if (content != null) {
