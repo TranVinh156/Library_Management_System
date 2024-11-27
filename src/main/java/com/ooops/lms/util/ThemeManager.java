@@ -85,7 +85,6 @@ public class ThemeManager {
             case GOLD_THEME:
                 button.setStyle("-fx-background-color : #7300FF");
                 break;
-
         }
     }
 }

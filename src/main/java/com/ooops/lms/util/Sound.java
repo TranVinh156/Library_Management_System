@@ -40,4 +40,10 @@ public class Sound {
         mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
         mediaPlayer.setOnError(() -> System.err.println("Lỗi: " + mediaPlayer.getError()));
     }
+
+    public void closeSound() {
+        if (mediaPlayer != null) {
+            mediaPlayer.dispose();
+        }
+    }
 }

@@ -50,12 +50,15 @@ public class InformationController {
     private static final String USER_MENU_FXML = "/com/ooops/lms/library_management_system/UserMenu-view.fxml";
     private static final String SETTING_FXML = "/com/ooops/lms/library_management_system/Setting-view.fxml";
     private String newImageFile;
-    private FXMLLoaderUtil fxmlLoaderUtil = FXMLLoaderUtil.getInstance();
 
+    /**
+     * về Setting.
+     * @param actionEvent khi ấn
+     */
     public void onBackButtonAction(ActionEvent actionEvent) {
-        VBox content = (VBox) fxmlLoaderUtil.loadFXML(SETTING_FXML);
+        VBox content = (VBox) FXMLLoaderUtil.getInstance().loadFXML(SETTING_FXML);
         if (content != null) {
-            fxmlLoaderUtil.updateContentBox(content);
+            FXMLLoaderUtil.getInstance().updateContentBox(content);
         }
     }
 
@@ -64,14 +67,17 @@ public class InformationController {
         showInfo();
     }
 
-    private void showInfo() {
+    /**
+     * hiển thị thông tin của user
+     */
+    public void showInfo() {
         lastNameText.setText(UserMenuController.getMember().getPerson().getLastName());
         firstNameText.setText(UserMenuController.getMember().getPerson().getFirstName());
         phoneText.setText(UserMenuController.getMember().getPerson().getPhone());
         emailText.setText(UserMenuController.getMember().getPerson().getEmail());
         genderChoiceBox.setValue(getGender(UserMenuController.getMember().getPerson().getGender().toString()));
         String dateString = UserMenuController.getMember().getPerson().getDateOfBirth();
-        userIDText.setText("user ID : " + UserMenuController.getMember().getPerson().getId());
+        userIDText.setText(Integer.toString(UserMenuController.getMember().getPerson().getId()));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate parsedDate = LocalDate.parse(dateString, formatter);
@@ -87,6 +93,10 @@ public class InformationController {
         }
     }
 
+    /**
+     * tải ảnh lên từ local folder.
+     * @param actionEvent khi ấn
+     */
     public void onLoadImageButtonAction(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Chọn ảnh để tải lên");
@@ -97,46 +107,38 @@ public class InformationController {
 
         File selectedFile = fileChooser.showOpenDialog((Stage) this.userIDText.getScene().getWindow());
         if (selectedFile != null) {
-            // Tạo tên tệp mới dựa trên ID người dùng
             String imageFile = userIDText.getText() + getFileExtension(selectedFile.toPath());
             newImageFile = "avatar/" + imageFile;
 
             Path avatarFolder = Paths.get("avatar");
 
             try {
-                // Tạo thư mục nếu chưa tồn tại
                 if (Files.notExists(avatarFolder)) {
                     Files.createDirectories(avatarFolder);
                 }
 
                 Path destinationPath = avatarFolder.resolve(imageFile);
 
-                // Xóa file nếu nó đã tồn tại
                 if (Files.exists(destinationPath)) {
                     Files.delete(destinationPath);
                 }
 
-                // Đọc ảnh gốc từ file
                 BufferedImage originalImage = ImageIO.read(selectedFile);
 
-                // Tính toán chiều dài của hình vuông
                 int width = originalImage.getWidth();
                 int height = originalImage.getHeight();
-                int size = Math.min(width, height);  // Lấy cạnh nhỏ nhất làm kích thước vuông
+                int size = Math.min(width, height);
 
-                // Cắt ảnh thành hình vuông ở giữa
                 int x = (width - size) / 2;
                 int y = (height - size) / 2;
 
                 BufferedImage squareImage = originalImage.getSubimage(x, y, size, size);
 
-                // Lưu ảnh vuông vào tệp
                 ImageIO.write(squareImage, "PNG", destinationPath.toFile());
 
-                // Tải ảnh vuông vào ImageView
                 Image image = new Image(destinationPath.toUri().toString());
                 avatarImage.setImage(image);
-                avatarImage.setPreserveRatio(true); // Đảm bảo tỉ lệ ảnh được giữ nguyên trong ImageView
+                avatarImage.setPreserveRatio(true);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -144,6 +146,11 @@ public class InformationController {
         }
     }
 
+    /**
+     * tìm cái đuôi file ảnh.
+     * @param path đường dẫn
+     * @return đuôi file ảnh
+     */
     private String getFileExtension(Path path) {
         String fileName = path.toString();
         int dotIndex = fileName.lastIndexOf('.');
@@ -153,6 +160,10 @@ public class InformationController {
         return "";
     }
 
+    /**
+     * lưu ảnh.
+     * @param actionEvent ấn vào
+     */
     public void onSaveButtonAction(ActionEvent actionEvent) {
         if(newImageFile == null) {
             System.out.println("there is no image to save");
@@ -177,15 +188,20 @@ public class InformationController {
         }
 
         try {
-            UserMenuController userMenuController = fxmlLoaderUtil.getController(USER_MENU_FXML);
+            UserMenuController userMenuController = FXMLLoaderUtil.getInstance().getController(USER_MENU_FXML);
             userMenuController.showInfo();
-            SettingController settingController = fxmlLoaderUtil.getController(SETTING_FXML);
+            SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
             settingController.showInfo();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * trả về String giới tính
+     * @param genderEnum enum giới tính
+     * @return String giới tính
+     */
     private String getGender(String genderEnum) {
         if(genderEnum.equals("MALE")) {
             return "nam";
@@ -194,6 +210,12 @@ public class InformationController {
         }
         return "bê đê slay";
     }
+
+    /**
+     * trả về enum giới tính
+     * @param gender String
+     * @return enum
+     */
     private Gender getGenderEnum(String gender) {
         if(gender.equals("nữ")) {
             return Gender.FEMALE;

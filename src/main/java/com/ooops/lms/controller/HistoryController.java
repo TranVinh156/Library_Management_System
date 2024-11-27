@@ -1,5 +1,6 @@
 package com.ooops.lms.controller;
 
+import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.database.dao.BookIssueDAO;
 import com.ooops.lms.database.dao.BookItemDAO;
 import com.ooops.lms.database.dao.BookReservationDAO;
@@ -44,6 +45,10 @@ public class HistoryController implements Initializable {
     private List<BookIssue> bookBorrowedList = new ArrayList<>();
 
 
+    /**
+     * về Setting.
+     * @param actionEvent khi ấn
+     */
     public void onBackButtonAction(ActionEvent actionEvent) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(SETTING_FXML);
         if (content != null) {
@@ -113,6 +118,10 @@ public class HistoryController implements Initializable {
         }
     }
 
+    /**
+     * sang đánh giá
+     * @param actionEvent khi ấn
+     */
     public void onRatingButtonAction(ActionEvent actionEvent) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(RATINGBOOK_FXML);
         if (content != null) {
@@ -126,6 +135,11 @@ public class HistoryController implements Initializable {
         }
     }
 
+    /**
+     * thêm sách đặt trước vào vị trí.
+     * @param bookReservation sách đặt trước
+     * @throws IOException ném ngoại lệ
+     */
     public void addReservedBook(BookReservation bookReservation) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/BookCard2-view.fxml"));
@@ -140,7 +154,16 @@ public class HistoryController implements Initializable {
         settingController.updateReservedBookSize();
     }
 
+    /**
+     * xoá sách đặt trước.
+     * @param bookItem sách
+     * @param vBox hộp chứa sách
+     * @throws IOException ngoại lệ
+     */
     public void deleteBookReserved(BookItem bookItem,VBox vBox) throws IOException {
+        if(!CustomerAlter.showAlter("Bạn huỷ đặt trước sách này?")) {
+            return;
+        }
         Map<String,Object> criteria = new HashMap<>();
         criteria.put("barcode",bookItem.getBarcode());
         int index = findBookReserved(bookItem.getBarcode());
@@ -169,6 +192,11 @@ public class HistoryController implements Initializable {
         reservedHBox.getChildren().remove(vBox);
     }
 
+    /**
+     * tìm sách theo barCode
+     * @param barCode barCode
+     * @return sách
+     */
     private int findBookReserved(long barCode) {
         try {
             bookReservationList = BookManager.getInstance().getReservedBooks();

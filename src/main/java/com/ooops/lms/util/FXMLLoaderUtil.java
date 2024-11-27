@@ -106,10 +106,22 @@ public class FXMLLoaderUtil {
     }
 
     public void deleteAllInCache() {
+        deleteAllSource();
         controllerCache.clear();
         fxmlCache.clear();
         System.out.println(fxmlCache.size());
         BookManager.getInstance().clearCache();
+    }
+    private void deleteAllSource() {
+        Sound.getInstance().closeSound();
+        try{
+            MusicController musicController = getController(MUSIC_FXML);
+            if(musicController!=null) {
+                musicController.closeMusic();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void refreshUpdateBook() {

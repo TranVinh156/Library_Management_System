@@ -50,7 +50,6 @@ public class MusicController {
     private ObservableList<HBox> filteredSuggestions = FXCollections.observableArrayList();
 
     public void initialize() {
-        //Sound.getInstance().playSound("musicView.mp3");
         webEngine = webView.getEngine();
         String htmlPath = getClass().getResource("/html/youtubeMusic.html").toExternalForm();
         webEngine.load(htmlPath);
@@ -62,6 +61,10 @@ public class MusicController {
         }
     }
 
+    /**
+     * phát nhạc.
+     * @param music nhạc
+     */
     public void playMusic(Music music) {
         clearSuggestions();
         webView.getEngine().executeScript("playVideo('" + music.getMusicId() + "');");
@@ -73,6 +76,10 @@ public class MusicController {
 
     }
 
+    /**
+     * lâý nhạc từ api
+     * @param keyword key
+     */
     private void fetchMusicFromApi(String keyword) {
         Task<List<Music>> fetchMusicTask = new Task<>() {
             @Override
@@ -81,17 +88,19 @@ public class MusicController {
             }
         };
 
-        // Xử lý kết quả sau khi API trả về
         fetchMusicTask.setOnSucceeded(event -> {
             List<Music> musicList2 = fetchMusicTask.getValue();
             musicList.addAll(musicList2);
             updateSuggestions(musicList2);
         });
 
-        // Khởi chạy task trong một thread khác
         new Thread(fetchMusicTask).start();
     }
 
+    /**
+     * tải các nhạc tìm được lên thanh tìm kiếm.
+     * @param musicList list nhạc
+     */
     private void updateSuggestions(List<Music> musicList) {
         for (int i = 0; i < musicList.size(); i++) {
             try {
@@ -110,6 +119,9 @@ public class MusicController {
         adjustSuggestionListHeight();
     }
 
+    /**
+     * điều chỉnh height cho vừa list
+     */
     private void adjustSuggestionListHeight() {
         musicSuggestionList.setPrefHeight(filteredSuggestions.size() * 60);
         musicSuggestionList.setItems(filteredSuggestions);
@@ -121,6 +133,9 @@ public class MusicController {
         musicSuggestionList.setVisible(!filteredSuggestions.isEmpty());
     }
 
+    /**
+     * xoá hiển thị list.
+     */
     private void clearSuggestions() {
         musicContainer.setVisible(false);
         filteredSuggestions.clear();
@@ -131,6 +146,10 @@ public class MusicController {
         return pauseImage.getImage();
     }
 
+    /**
+     * dừng hoặc phát nhạc.
+     * @param actionEvent
+     */
     public void onOnOffButtonAction(ActionEvent actionEvent) {
         if (isPlayingMusic) {
             webView.getEngine().executeScript("pauseVideo();");
@@ -144,20 +163,33 @@ public class MusicController {
         FXMLLoaderUtil.getInstance().setPauseImage(pauseImage.getImage());
     }
 
+    /**
+     * bài tiếp.
+     * @param actionEvent
+     */
     public void onNextButtonAction(ActionEvent actionEvent) {
-        playMusic(findMusic("previous"));
+        playMusic(findMusicinList("previous"));
         webView.getEngine().executeScript("continueVideo();");
         FXMLLoaderUtil.getInstance().changMusicName(musicNameLabel.getText());
     }
 
+    /**
+     * bài sau.
+     * @param actionEvent
+     */
     public void onPreviousButtonAction(ActionEvent actionEvent) {
-        playMusic(findMusic("next"));
+        playMusic(findMusicinList("next"));
         webView.getEngine().executeScript("continueVideo();");
         FXMLLoaderUtil.getInstance().changMusicName(musicNameLabel.getText());
 
     }
 
-    private Music findMusic(String status) {
+    /**
+     * tìm nhạc tiếp theo hoặc trớc đó.
+     * @param status lệnh next hoặc previous
+     * @return nhạc
+     */
+    private Music findMusicinList(String status) {
         System.out.println(musicList.size());
         if (status.equals("next")) {
             currentMusic++;
@@ -173,12 +205,34 @@ public class MusicController {
         return musicList.get(currentMusic);
     }
 
+    /**
+     * tìm nhạc
+     * @param actionEvent
+     */
     public void onSearchButtonAction(ActionEvent actionEvent) {
         String keyword = searchMusicText.getText();
         fetchMusicFromApi(keyword);
     }
 
+    /**
+     * hành động khi nhấn vào gif.
+     * @param mouseEvent
+     */
     public void onDanceMouseClicked(MouseEvent mouseEvent) {
         Sound.getInstance().playSound("musicView.mp3");
+    }
+
+    /**
+     * đóng nhạc
+     */
+    public void closeMusic() {
+        webView.getEngine().executeScript("pauseVideo();");
+
+        pauseImage.setImage(play);
+        isPlayingMusic = false;
+        musicNameLabel.setText("");
+        searchMusicText.clear();
+
+        webView = null;
     }
 }

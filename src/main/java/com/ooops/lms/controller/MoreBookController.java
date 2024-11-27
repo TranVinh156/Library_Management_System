@@ -60,13 +60,17 @@ public class MoreBookController {
         pagination.setPageFactory(pageIndex -> loadBook(pageIndex * 12, Math.min((pageIndex + 1) * 12, bookList.size())));
     }
 
+    /**
+     * load các sách
+     * @param start chỉ số sách đầu
+     * @param end chỉ số sách cuối
+     * @return VBox chứa tất cả sách
+     */
     public VBox loadBook(int start, int end) {
-        // Xóa nội dung cũ để không lặp lại khi chuyển trang
         row1Box.getChildren().clear();
         row2Box.getChildren().clear();
         test.getChildren().clear();
 
-        // Duyệt và thêm sách vào row1Box
         for (int i = start; i < Math.min(start + 6, end); i++) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -80,7 +84,6 @@ public class MoreBookController {
             }
         }
 
-        // Duyệt và thêm sách vào row2Box
         for (int i = start + 6; i < Math.min(start + 12, end); i++) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -93,7 +96,6 @@ public class MoreBookController {
                 e.printStackTrace();
             }
         }
-        // Thêm row1Box và row2Box vào test
         scrollPane1.setContent(row1Box);
         scrollPane2.setContent(row2Box);
         test.getChildren().addAll(scrollPane1, scrollPane2);
@@ -101,11 +103,13 @@ public class MoreBookController {
         return test;
     }
 
-
+    /**
+     * về dashboard.
+     * @param event khi ấn
+     */
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
         if (content != null) {
-            // Remove content if it's already in the scene graph
             if (moreBookBox.getChildren().contains(content)) {
                 moreBookBox.getChildren().remove(content);
             }
