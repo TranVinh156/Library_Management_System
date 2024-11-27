@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.*;
 
 public class AccountDAO {
     private static Database database;
@@ -291,29 +292,53 @@ public class AccountDAO {
         }
     }
 
-    public int userLoginByFaceID() throws SQLException, IOException {
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER_BY_ID)) {
-            int userID = FaceidLogin.loginFace();
-            preparedStatement.setInt(1, userID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("member_ID");
-            } else {
-                return -1;
+    public int userLoginByFaceID() throws Exception {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Callable<Integer> loginTask = () -> FaceidLogin.loginFace(FaceidLogin.USER);
+
+        Future<Integer> future = executorService.submit(loginTask);
+        try {
+            Integer userID = future.get();
+            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER_BY_ID)) {
+                preparedStatement.setInt(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getInt("member_ID");
+                } else {
+                    return 0;
+                }
             }
+        } catch (ExecutionException e) {
+            return 0;
+        } catch (InterruptedException e) {
+            return 0;
+        } finally {
+            executorService.shutdown();
         }
     }
 
     public int adminLoginByFaceID() throws SQLException, IOException {
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_ADMIN_BY_ID)) {
-            int adminID = FaceidLogin.loginFace();
-            preparedStatement.setInt(1, adminID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("member_ID");
-            } else {
-                return -1;
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Callable<Integer> loginTask = () -> FaceidLogin.loginFace(FaceidLogin.ADMIN);
+
+        Future<Integer> future = executorService.submit(loginTask);
+        try {
+            Integer userID = future.get();
+            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_ADMIN_BY_ID)) {
+                preparedStatement.setInt(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getInt("member_ID");
+                } else {
+                    return 0;
+                }
             }
+        } catch (ExecutionException e) {
+            return 0;
+        } catch (InterruptedException e) {
+            return 0;
+        } finally {
+            executorService.shutdown();
         }
     }
 }
