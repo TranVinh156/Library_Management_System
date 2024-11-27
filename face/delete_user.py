@@ -3,8 +3,8 @@ import numpy as np
 import os
 import sys
 
-MODEL_PATH = "E:/Library_Management_System/face/face_recognizer.yml"
-TRAINING_DATA_PATH = "E:/Library_Management_System/face/training_data"
+MODEL_PATH = "face/face_recognizer.yml"
+TRAINING_DATA_PATH = "face/training_data"
 
 def remove_user_from_model(user_id, model_path=MODEL_PATH, save_path=TRAINING_DATA_PATH):
     """

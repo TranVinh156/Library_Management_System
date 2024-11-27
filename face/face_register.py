@@ -4,8 +4,8 @@ import numpy as np
 import os
 
 # Đường dẫn tới file mô hình
-MODEL_PATH = "E:/Library_Management_System/face/face_recognizer.yml"
-TRAINING_DATA_PATH = "E:/Library_Management_System/face/training_data"
+MODEL_PATH = "face/face_recognizer.yml"
+TRAINING_DATA_PATH = "face/training_data"
 
 def collect_faces(user_id, save_path=TRAINING_DATA_PATH, num_samples=300):
     """

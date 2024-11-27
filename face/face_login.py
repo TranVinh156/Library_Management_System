@@ -33,7 +33,7 @@ def face_login():
             label, confidence = recognizer.predict(roi_gray)  # So sánh khuôn mặt
 
             # Kiểm tra độ tin cậy
-            if confidence < 40:
+            if confidence < 50:
                 color = (0, 255, 0)  # Màu xanh lá
                 cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
                 cv2.putText(frame, f"Login Success: ID {label}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
