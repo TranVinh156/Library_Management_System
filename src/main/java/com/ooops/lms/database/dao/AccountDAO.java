@@ -303,4 +303,17 @@ public class AccountDAO {
             }
         }
     }
+
+    public int adminLoginByFaceID() throws SQLException, IOException {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_ADMIN_BY_ID)) {
+            int adminID = FaceidLogin.loginFace();
+            preparedStatement.setInt(1, adminID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("member_ID");
+            } else {
+                return -1;
+            }
+        }
+    }
 }
