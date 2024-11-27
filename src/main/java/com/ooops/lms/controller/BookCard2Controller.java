@@ -27,32 +27,25 @@ import java.util.List;
 import static com.ooops.lms.controller.BookSuggestionCardController.executor;
 
 public class BookCard2Controller {
+    private static final String BOOK_FXML = "/com/ooops/lms/library_management_system/Book-view.fxml";
 
     private Book book;
     private BookItem bookItem;
-
     private HistoryController historyController;
 
-
-    private static final String BOOK_FXML = "/com/ooops/lms/library_management_system/Book-view.fxml";
     @FXML
-    private Label authorNameLabel;
-
+    private Label authorNameLabel,bookNameLabel;
     @FXML
-    private ImageView bookImage;
-
-    @FXML
-    private Label bookNameLabel;
-
+    private ImageView bookImage,starImage;
     @FXML
     private VBox vBox;
-
-    @FXML
-    private ImageView starImage;
-
     @FXML
     Button cancelReservedButton;
 
+    /**
+     * thiết lập dữ liệu cho book card
+     * @param book book truyền vào card
+     */
     public void setData(Book book) {
         this.book =book;
         bookNameLabel.setText(book.getTitle());
@@ -74,6 +67,10 @@ public class BookCard2Controller {
         executor.submit(loadImageTask);
     }
 
+    /**
+     * vào sách.
+     * @param mouseEvent khi chuột ấn vào
+     */
     public void onBookMouseClicked(MouseEvent mouseEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -96,6 +93,10 @@ public class BookCard2Controller {
         }
     }
 
+    /**
+     * xoá sách đã đặt trước.
+     * @param actionEvent khi ấn vào nút
+     */
     public void onCancelReservedButtonAction(ActionEvent actionEvent) {
         try {
             historyController.deleteBookReserved(this.bookItem,vBox);
@@ -104,12 +105,22 @@ public class BookCard2Controller {
         }
     }
 
+    /**
+     * nếu là sách đã đặt trước thì hển thị nút x ở trên ảnh.
+     * @param historyController controller
+     * @param bookItem sách đã đặt trước
+     */
     public void setReservedBook(HistoryController historyController,BookItem bookItem) {
         this.historyController = historyController;
         this.bookItem = bookItem;
         cancelReservedButton.setVisible(true);
     }
 
+    /**
+     * từ rate sang Image
+     * @param numOfStar số rate
+     * @return ảnh
+     */
     private Image starImage(int numOfStar) {
         String imagePath = "/image/book/" + numOfStar + "Star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {

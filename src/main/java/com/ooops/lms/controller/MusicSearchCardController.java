@@ -17,6 +17,11 @@ public class MusicSearchCardController {
         musicController.playMusic(music);
     }
 
+    /**
+     * thiết lập dữ liệu cho music.
+     * @param music
+     * @param musicController
+     */
     public void setData(Music music,MusicController musicController) {
         musicNameLabel.setText(music.getTitle());
         this.musicController = musicController;

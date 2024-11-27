@@ -214,7 +214,7 @@
                                     <Image url="@../../../../image/customer/menu/chat.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="pullMenuBarImage" fitHeight="58.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-40.0">
+                              <ImageView fx:id="pullMenuBarImage" fitHeight="58.0" fitWidth="30.0" onMouseClicked="#onCharacterMouseClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-40.0">
                                  <image>
                                     <Image url="@../../../../image/customer/menu/animation2.gif" />
                                  </image>

@@ -49,6 +49,10 @@ public class BookSuggestionCardController {
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
 
+    /**
+     * thiết lập dữ liệu cho card.
+     * @param otherBook sách
+     */
     public void setData(Book otherBook) {
         this.book = BookManager.getInstance().isContainInAllBooks(otherBook);
 
@@ -73,7 +77,10 @@ public class BookSuggestionCardController {
         executor.submit(loadImageTask);
     }
 
-
+    /**
+     * xem sách.
+     * @param mouseEvent khi  ấn vào
+     */
     public void onBookMouseClicked(MouseEvent mouseEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -94,13 +101,18 @@ public class BookSuggestionCardController {
             try {
                 BookDAO.getInstance().add(book);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.out.println("book already exist in database");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * từ sao sang image.
+     * @param numOfStar số sao
+     * @return Image
+     */
     private Image starImage(int numOfStar) {
         String imagePath = "/image/book/" + numOfStar + "Star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {

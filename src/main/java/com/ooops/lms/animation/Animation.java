@@ -1,11 +1,13 @@
 package com.ooops.lms.animation;
 
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
 
 public class Animation {
     private static Animation instance;
@@ -59,6 +61,10 @@ public class Animation {
         AnchorPane.setLeftAnchor(characterImage, -40.0);
     }
 
+    /**
+     * nhân vật nói message.
+     * @param message
+     */
     public void showMessage(String message) {
         if(!isOnAnimation) {
             return;
@@ -68,7 +74,7 @@ public class Animation {
         talkText.setText(message);
 
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(7));
+        PauseTransition pause = new PauseTransition(Duration.seconds(4));
 
         pause.setOnFinished(event -> {
             talkImage.setVisible(false);
@@ -78,4 +84,68 @@ public class Animation {
         pause.play();
     }
 
+    /**
+     * thay đổi kích cỡ ảnh từ từ.
+     * @param imageView
+     * @param size
+     */
+    public void changeSizeImage(ImageView imageView, int size) {
+        imageView.setVisible(true);
+
+        Timeline expandImageWidth = new Timeline(
+                new KeyFrame(Duration.millis(1000),
+                        new KeyValue(imageView.fitWidthProperty(), size)
+                )
+        );
+
+        Timeline expandImageHeight = new Timeline(
+                new KeyFrame(Duration.millis(1000),
+                        new KeyValue(imageView.fitHeightProperty(), size)
+                )
+        );
+
+        expandImageWidth.play();
+        expandImageHeight.play();
+    }
+
+    public void zomOutImage(ImageView imageView) {
+        imageView.setFitHeight(1);
+        imageView.setFitWidth(1);
+    }
+
+
+    /**
+     * mở rộng vbox.
+     * @param vBox
+     * @param millis
+     * @param width
+     */
+    public void enlargeVBox(VBox vBox,int millis, int width) {
+        vBox.setVisible(true);
+        Timeline expandMenu = new Timeline(
+                new KeyFrame(Duration.millis(millis),
+                        new KeyValue(vBox.prefWidthProperty(), width))
+        );
+        expandMenu.play();
+    }
+
+
+    /**
+     * thu nhỏ phóng to ảnh liên tục.
+     * @param imageView
+     */
+    public void zoomAnimation(ImageView imageView) {
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
+
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(2), imageView);
+        scaleTransition.setFromX(1);
+        scaleTransition.setFromY(1);
+        scaleTransition.setToX(1.5);
+        scaleTransition.setToY(1.5);
+        scaleTransition.setCycleCount(ScaleTransition.INDEFINITE);
+        scaleTransition.setAutoReverse(true);
+
+        scaleTransition.play();
+    }
 }
