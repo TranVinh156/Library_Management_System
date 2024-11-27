@@ -14,6 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -62,6 +65,37 @@ public class AdminSettingController {
 
     private SettingManger settingManger;
     private Settings settings;
+    private int adminID;
+
+    public void setAdminID(int adminID) {
+        this.adminID = adminID;
+        themeBox.getItems().addAll("Normal", "Dark", "Pink", "Gold");
+
+        themeBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (!themeBox.getSelectionModel().getSelectedItem().equals("Normal")) {
+                CustomerAlter.showMessage("Muốn sử dụng chức năng này thì hãy nạp Vip nhé");
+                themeBox.setValue("Normal");
+            }
+        });
+
+        settingManger = new SettingManger();
+        settings = settingManger.loadSettings();
+
+        if (settings == null) {
+            settings = new Settings("Normal", 50, "chua co", false);
+        }
+
+        themeBox.setValue(settings.getMode().toString());
+        settings.setHaveFaceID(isHaveFaceID(adminID));
+        if (!settings.isHaveFaceID()) {
+            setFaceIDButton.setText("Thiết lập faceID");
+            setFaceIDButton.setStyle("-fx-text-fill: black;");
+        } else {
+            setFaceIDButton.setText("Xóa faceID");
+            setFaceIDButton.setStyle("-fx-text-fill: red;");
+        }
+        
+    }
 
     @FXML
     void onContactButtonAction(ActionEvent event) {
@@ -81,30 +115,6 @@ public class AdminSettingController {
     }
 
     public void initialize() {
-        themeBox.getItems().addAll("Normal","Dark","Pink","Gold");
-
-        themeBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(!themeBox.getSelectionModel().getSelectedItem().equals("Normal")) {
-                CustomerAlter.showMessage("Muốn sử dụng chức năng này thì hãy nạp Vip nhé");
-                themeBox.setValue("Normal");
-            }
-        });
-
-        settingManger = new SettingManger();
-        settings = settingManger.loadSettings();
-
-        if(settings == null) {
-            settings = new Settings("Normal", 50, "chua co",false);
-        }
-
-        themeBox.setValue(settings.getMode().toString());
-        if(!settings.isHaveFaceID()) {
-            setFaceIDButton.setText("Thiết lập faceID");
-            setFaceIDButton.setStyle("-fx-text-fill: black;");
-        } else {
-            setFaceIDButton.setText("Xóa faceID");
-            setFaceIDButton.setStyle("-fx-text-fill: red;");
-        }
 
     }
 
@@ -139,14 +149,10 @@ public class AdminSettingController {
 
     @FXML
     void onSetFaceIDButtonAction(ActionEvent event) {
-        if(setFaceIDButton.getText().equals("Thiết lập faceID")) {
-            FaceidRecognizer.registerUser("55000001");
-            setFaceIDButton.setText("Xóa faceID");
-            setFaceIDButton.setStyle("-fx-text-fill: red;");
-            settings.setHaveFaceID(true);
-            settingManger.saveSettings(settings);
-        } else if(setFaceIDButton.getText().equals("Xóa faceID")) {
-            FaceidUnregister.unregisterUser("55000001");
+        if (setFaceIDButton.getText().equals("Thiết lập faceID")) {
+            setFaceID(adminID);
+        } else if (setFaceIDButton.getText().equals("Xóa faceID")) {
+            FaceidUnregister.unregisterUser(adminID+"");
             setFaceIDButton.setText("Thiết lập faceID");
             setFaceIDButton.setStyle("-fx-text-fill: black;");
             settings.setHaveFaceID(false);
@@ -178,6 +184,61 @@ public class AdminSettingController {
 
         // Đặt kiểu dáng in đậm màu cho nút đang được chọn
         currentActiveButton.setStyle("-fx-background-color: #FFF;"); // Kiểu CSS
+    }
+
+    private boolean isHaveFaceID(int adminID) {
+        try {
+            // Đường dẫn tới thư mục chứa dữ liệu FaceID chung
+            Path faceIDFolder = (Path) Paths.get("face/training_data");
+            // Đường dẫn tới thư mục riêng của adminID
+            Path newFaceIDFolder = faceIDFolder.resolve(String.valueOf(adminID));
+
+            // Kiểm tra nếu thư mục chung không tồn tại thì tạo nó
+            if (Files.notExists( faceIDFolder)) {
+                Files.createDirectories(faceIDFolder);
+            }
+
+            // Kiểm tra thư mục FaceID của adminID
+            if (Files.exists(newFaceIDFolder)) {
+                return true; // Thư mục đã tồn tại
+            } else {
+                System.out.println("Khong coooooooo");
+                return false;
+            }
+        } catch (Exception e) {
+            // Xử lý ngoại lệ (nếu có lỗi)
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void setFaceID(int adminID) {
+        try {
+            // Đường dẫn tới thư mục chứa dữ liệu FaceID chung
+            Path faceIDFolder = (Path) Paths.get("face/training_data");
+            // Đường dẫn tới thư mục riêng của adminID
+            Path newFaceIDFolder = faceIDFolder.resolve(String.valueOf(adminID));
+
+            // Kiểm tra nếu thư mục chung không tồn tại thì tạo nó
+            if (Files.notExists( faceIDFolder)) {
+                Files.createDirectories(faceIDFolder);
+            }
+
+            // Kiểm tra thư mục FaceID của adminID
+            if (!Files.exists(newFaceIDFolder)) {
+                Files.createDirectories(newFaceIDFolder);
+            }
+            FaceidRecognizer.registerUser(adminID+"");
+            setFaceIDButton.setText("Xóa faceID");
+            setFaceIDButton.setStyle("-fx-text-fill: red;");
+            settings.setHaveFaceID(true);
+            settingManger.saveSettings(settings);
+
+
+        } catch (Exception e) {
+            // Xử lý ngoại lệ (nếu có lỗi)
+            e.printStackTrace();
+        }
     }
 
 }
