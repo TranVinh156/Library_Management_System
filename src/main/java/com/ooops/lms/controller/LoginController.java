@@ -116,7 +116,7 @@ public class LoginController extends BasicController {
     void onFaceIDButtonAction(ActionEvent event) {
         if (role.equals(Role.ADMIN)) {
             try {
-                if (AccountDAO.getInstance().adminLoginByFaceID() != 0) {
+                if (AccountDAO.getInstance().adminLoginByFaceID() > 0) {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
                     Parent root = fxmlLoader.load();
                     Scene scene = new Scene(root);
@@ -135,7 +135,7 @@ public class LoginController extends BasicController {
         } else {
             try {
                 int memberID = AccountDAO.getInstance().userLoginByFaceID();
-                if (memberID != 0) {
+                if (memberID > 0) {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/UserMenu-view.fxml"));
                     Parent root = fxmlLoader.load();
 
