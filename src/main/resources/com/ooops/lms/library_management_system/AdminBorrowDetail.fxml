@@ -107,6 +107,7 @@
                                                          <children>
                                                             <Pane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="105.0" HBox.hgrow="NEVER">
                                                                <children>
+                                                                  <AnchorPane layoutX="6.0" layoutY="14.0" prefHeight="108.0" prefWidth="88.0" style="-fx-background-color: D4D4D4;" />
                                                                   <ImageView fx:id="memberImage" fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                                      <image>
                                                                         <Image url="@../../../../image/icon/%23E4E4E4_color.png" />
@@ -185,6 +186,7 @@
                                                          <children>
                                                             <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="105.0" HBox.hgrow="NEVER">
                                                                <children>
+                                                                  <AnchorPane layoutX="6.0" layoutY="14.0" prefHeight="108.0" prefWidth="88.0" style="-fx-background-color: D4D4D4;" />
                                                                   <ImageView fx:id="bookImage" fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                                      <image>
                                                                         <Image url="@../../../../image/icon/%23E4E4E4_color.png" />

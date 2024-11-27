@@ -41,6 +41,7 @@ public class BasicController {
     protected static final String DEFAULT_BOOK_IMAGE = "/image/book/default.png";
 
     protected static final String ADMIN_MENU_FXML = "/com/ooops/lms/library_management_system/AdminMenu.fxml";
+    protected static final String SETTING_FXML ="/com/ooops/lms/library_management_system/AdminSetting.fxml";
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/AdminDashBoardMain.fxml";
     protected static final String TOPBOOK_CARD_FXML = "/com/ooops/lms/library_management_system/TopBookCard.fxml";

@@ -60,22 +60,24 @@ public class AdminCommand implements Command {
                         BookReservationDAO.getInstance().add((BookReservation) object);
                         return true;
                     } else if (object instanceof BookIssue) {
-                        Map<String, Object> findCriteria = new HashMap<>();
-                        findCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
-                        findCriteria.put("member_ID", ((BookIssue) object).getMember().getPerson().getId());
-                        findCriteria.put("barcode", ((BookIssue) object).getBookItem().getBarcode());
-                        List<BookReservation> bookReservationsList = BookReservationDAO.getInstance().searchByCriteria(findCriteria);
-                        if (bookReservationsList.size() > 0) {
-                            BookIssue newBookIssue = new BookIssue(((BookIssue) object).getMember(),bookReservationsList.getFirst().getBookItem(),((BookIssue) object).getCreatedDate(),((BookIssue) object).getDueDate());
-                            BookIssueDAO.getInstance().add(newBookIssue);
-
-                            bookReservationsList.getFirst().setStatus(BookReservationStatus.COMPLETED);
-                            BookReservationDAO.getInstance().update(bookReservationsList.getFirst());
-                            return true;
-                        } else {
-                            BookIssueDAO.getInstance().add((BookIssue) object);
-                            return true;
-                        }
+                            Map<String, Object> findCriteria = new HashMap<>();
+                            findCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
+                            findCriteria.put("member_ID", ((BookIssue) object).getMember().getPerson().getId());
+                            findCriteria.put("barcode", ((BookIssue) object).getBookItem().getBarcode());
+                            List<BookReservation> bookReservationsList = BookReservationDAO.getInstance().searchByCriteria(findCriteria);
+                            if (bookReservationsList.size() > 0) {
+                                BookIssue newBookIssue = new BookIssue(((BookIssue) object).getMember(),bookReservationsList.getFirst().getBookItem(),((BookIssue) object).getCreatedDate(),((BookIssue) object).getDueDate());
+                                BookIssueDAO.getInstance().add(newBookIssue);
+                                bookReservationsList.getFirst().setStatus(BookReservationStatus.COMPLETED);
+                                BookReservationDAO.getInstance().update(bookReservationsList.getFirst());
+                                return true;
+                            } else  if(BookDAO.getInstance().find(((BookIssue) object).getBookItem().getISBN()).getstatus() == BookStatus.AVAILABLE)  {
+                                BookIssueDAO.getInstance().add((BookIssue) object);
+                                return true;
+                            } else {
+                                CustomerAlter.showMessage("Đã hết sách :<");
+                                return false;
+                            }
                     }
                     return false;
                 case "delete":
