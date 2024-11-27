@@ -74,6 +74,7 @@ public class TicTacToeController {
 
     /**
      * nghe các hành động của người dùng khi ấn vào các button.
+     *
      * @param index
      */
     public void actionPerformed(int index) {
@@ -131,29 +132,25 @@ public class TicTacToeController {
      * random chọn người đi trước.
      */
     public void firstTurn() {
-        if (random.nextInt(2) == 0) {
-            if (playModeLabel.getText().equals(PLAY_WITH_COMPUTER)) {
+        if (playModeLabel.getText().equals(PLAY_WITH_COMPUTER)) {
+            if (random.nextInt(2) == 0) {
                 CustomerAlter.showMessage("Mày đi trước");
             } else {
-                CustomerAlter.showMessage("X đi trước");
-            }
-            player1Turn = true;
-        } else {
-            int k = random.nextInt(9);
-            buttons[k].setText("O");
-            buttons[k].getStyleClass().clear();
-            buttons[k].getStyleClass().add("button-book2");
-            if (playModeLabel.getText().equals(PLAY_WITH_COMPUTER)) {
+                int k = random.nextInt(9);
+                buttons[k].setText("O");
+                buttons[k].getStyleClass().clear();
+                buttons[k].getStyleClass().add("button-book2");
                 CustomerAlter.showMessage("Tao đi trước");
-            } else {
-                CustomerAlter.showMessage("O đi trước");
             }
-            player1Turn = false;
+        } else {
+            player1Turn = true;
+            CustomerAlter.showMessage("X đi trước");
         }
     }
 
     /**
      * điều kiện để win.
+     *
      * @param real
      */
     public void check(boolean real) {
