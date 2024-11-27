@@ -3,6 +3,8 @@ package com.ooops.lms.controller;
 import com.ooops.lms.Alter.CustomerAlter;
 import com.ooops.lms.Settings.SettingManger;
 import com.ooops.lms.Settings.Settings;
+import com.ooops.lms.faceid.FaceidRecognizer;
+import com.ooops.lms.faceid.FaceidUnregister;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -96,6 +98,13 @@ public class AdminSettingController {
         }
 
         themeBox.setValue(settings.getMode().toString());
+        if(!settings.isHaveFaceID()) {
+            setFaceIDButton.setText("Thiết lập faceID");
+            setFaceIDButton.setStyle("-fx-text-fill: black;");
+        } else {
+            setFaceIDButton.setText("Xóa faceID");
+            setFaceIDButton.setStyle("-fx-text-fill: red;");
+        }
 
     }
 
@@ -130,7 +139,19 @@ public class AdminSettingController {
 
     @FXML
     void onSetFaceIDButtonAction(ActionEvent event) {
-
+        if(setFaceIDButton.getText().equals("Thiết lập faceID")) {
+            FaceidRecognizer.registerUser("55000001");
+            setFaceIDButton.setText("Xóa faceID");
+            setFaceIDButton.setStyle("-fx-text-fill: red;");
+            settings.setHaveFaceID(true);
+            settingManger.saveSettings(settings);
+        } else if(setFaceIDButton.getText().equals("Xóa faceID")) {
+            FaceidUnregister.unregisterUser("55000001");
+            setFaceIDButton.setText("Thiết lập faceID");
+            setFaceIDButton.setStyle("-fx-text-fill: black;");
+            settings.setHaveFaceID(false);
+            settingManger.saveSettings(settings);
+        }
     }
 
     @FXML
