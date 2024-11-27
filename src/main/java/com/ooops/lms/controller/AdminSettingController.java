@@ -152,7 +152,7 @@ public class AdminSettingController {
         if (setFaceIDButton.getText().equals("Thiết lập faceID")) {
             setFaceID(adminID);
         } else if (setFaceIDButton.getText().equals("Xóa faceID")) {
-            FaceidUnregister.unregisterUser(adminID+"");
+            FaceidUnregister.unregisterUser(adminID+"", FaceidUnregister.ADMIN);
             setFaceIDButton.setText("Thiết lập faceID");
             setFaceIDButton.setStyle("-fx-text-fill: black;");
             settings.setHaveFaceID(false);
@@ -228,7 +228,7 @@ public class AdminSettingController {
             if (!Files.exists(newFaceIDFolder)) {
                 Files.createDirectories(newFaceIDFolder);
             }
-            FaceidRecognizer.registerUser(adminID+"");
+            FaceidRecognizer.registerUser(adminID+"", FaceidRecognizer.ADMIN);
             setFaceIDButton.setText("Xóa faceID");
             setFaceIDButton.setStyle("-fx-text-fill: red;");
             settings.setHaveFaceID(true);
