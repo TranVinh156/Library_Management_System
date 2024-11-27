@@ -116,9 +116,12 @@ public class LoginController extends BasicController {
     void onFaceIDButtonAction(ActionEvent event) {
         if (role.equals(Role.ADMIN)) {
             try {
-                if (AccountDAO.getInstance().adminLoginByFaceID() > 0) {
+                int adminID = AccountDAO.getInstance().adminLoginByFaceID();
+                if (adminID > 0) {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
                     Parent root = fxmlLoader.load();
+                    AdminMenuController controller = fxmlLoader.getController();
+                    controller.setAdminID(adminID);
                     Scene scene = new Scene(root);
                     Stage stage = (Stage) registerButton.getScene().getWindow();
                     stage.setResizable(true);
