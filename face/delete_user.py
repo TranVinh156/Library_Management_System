@@ -3,10 +3,12 @@ import numpy as np
 import os
 import sys
 
-MODEL_PATH = "face/face_recognizer.yml"
-TRAINING_DATA_PATH = "face/training_data"
+#from face.face_login import model_path
 
-def remove_user_from_model(user_id, model_path=MODEL_PATH, save_path=TRAINING_DATA_PATH):
+MODEL_PATH = "face/face.recognizer.yml"
+TRAINING_DATA_PATH = "face/training_data/"
+
+def remove_user_from_model(user_id, model_path, save_path):
     """
     Xóa dữ liệu của user_id khỏi mô hình nhận diện khuôn mặt.
     Args:
@@ -55,4 +57,5 @@ def remove_user_from_model(user_id, model_path=MODEL_PATH, save_path=TRAINING_DA
 # Xóa dữ liệu của một user trong mô hình
 if __name__ == "__main__":
     user_id = sys.argv[1]
-    remove_user_from_model(user_id)
+    modelPath = sys.argv[2]
+    remove_user_from_model(user_id, modelPath, TRAINING_DATA_PATH)

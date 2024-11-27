@@ -119,7 +119,11 @@ public class AdminMenuController extends BasicController {
     private AdminReservationPageController adminReservationPageController;
     private AdminIssuePageController adminIssuePageController;
 
-    private Scene settingScene;
+    private int AdminID;
+
+    public void setAdminID(int AdminID) {
+        this.AdminID = AdminID;
+    }
 
     private Button currentActiveButton = null;
 
@@ -300,6 +304,7 @@ public class AdminMenuController extends BasicController {
             Parent root = loader.load();
             AdminSettingController controller = loader.getController();
             controller.reset();
+            controller.setAdminID(this.AdminID);
             Stage stage = new Stage();
             stage.setTitle("Settings");
             stage.setResizable(false);
