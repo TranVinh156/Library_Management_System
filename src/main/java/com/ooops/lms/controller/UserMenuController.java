@@ -11,6 +11,7 @@ import com.ooops.lms.model.BookMark;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import com.ooops.lms.util.Sound;
 import com.ooops.lms.util.ThemeManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -150,10 +151,10 @@ public class UserMenuController implements Initializable {
             try {
                 AdvancedSearchController advancedSearchController =FXMLLoaderUtil.getInstance().getController(ADVANCED_SEARCH_FXML);
                 advancedSearchController.setSearchText(searchText.getText());
-                clearSuggestions();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            clearSuggestions();
         }
     }
 
@@ -236,7 +237,15 @@ public class UserMenuController implements Initializable {
         });
     }
 
+    /**
+     * tìm sách ở api.
+     * @param keyword
+     * @param filteredSuggestions
+     */
     private void fetchBooksFromApi(String keyword, ObservableList<HBox> filteredSuggestions) {
+        if(keyword.isEmpty()) {
+            return;
+        }
         Task<List<Book>> fetchBooksTask = new Task<>() {
             @Override
             protected List<Book> call() throws Exception {
@@ -301,24 +310,19 @@ public class UserMenuController implements Initializable {
         }
     }
 
+    /**
+     * animation cho menubar.
+     */
     private void setupHoverMenuBar() {
         menuBar.setOnMouseEntered(event -> {
             Animation.getInstance().changeImage1();
-            menuBarPlus.setVisible(true);
-
-            // Tạo hiệu ứng tăng chiều rộng
-            Timeline expandMenu = new Timeline(
-                    new KeyFrame(Duration.millis(100),
-                            new KeyValue(menuBarPlus.prefWidthProperty(), 350)) // Chiều rộng tối đa
-            );
-            expandMenu.play();
+            Animation.getInstance().enlargeVBox(menuBarPlus,100,350);
         });
 
         menuBarPlus.setOnMouseExited(event -> {
             PauseTransition pause = new PauseTransition(Duration.seconds(0.1));
             pause.setOnFinished(e -> {
                 if (!menuBarPlus.isHover() && !menuBar.isHover()) {
-                    // Tạo hiệu ứng giảm chiều rộng
                     Timeline collapseMenu = new Timeline(
                             new KeyFrame(Duration.millis(50),
                                     new KeyValue(menuBarPlus.prefWidthProperty(), 0)) // Chiều rộng tối thiểu
@@ -349,7 +353,7 @@ public class UserMenuController implements Initializable {
 
     private void findMember() {
         try {
-            member = MemberDAO.getInstance().find(memberID);
+                    member = MemberDAO.getInstance().find(memberID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -375,11 +379,14 @@ public class UserMenuController implements Initializable {
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
             ThemeManager.getInstance().changeMenuBarButtonColor(buttons, settingButton);
-
         }
     }
 
     public void changeColorButtonBack() {
         ThemeManager.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+    }
+
+    public void onCharacterMouseClicked(MouseEvent mouseEvent) {
+        Sound.getInstance().playSound("anime.mp3");
     }
 }

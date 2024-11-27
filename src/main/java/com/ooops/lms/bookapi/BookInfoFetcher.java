@@ -52,8 +52,8 @@ public class BookInfoFetcher {
                     return response.toString();
                 }
             } else {
-                CustomerAlter.showMessage("HTTP error: " + responseCode);
-                //throw new Exception("HTTP error: " + responseCode);
+//                CustomerAlter.showMessage("HTTP error: " + responseCode);
+                throw   new Exception("HTTP error: " + responseCode);
             }
         }
     }

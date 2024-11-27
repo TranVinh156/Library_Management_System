@@ -25,7 +25,6 @@ public class RatingBookCardController {
     @FXML
     private HBox ratingCardBox;
 
-
     public void setData(BookItem bookItem) {
         this.bookItem =bookItem;
         bookNameText.setText("tên sách: "+bookItem.getTitle());
@@ -50,6 +49,10 @@ public class RatingBookCardController {
         }
     }
 
+    /**
+     * hiển th report.
+     * @param mouseEvent
+     */
     public void onShowReportMouseClicked(MouseEvent mouseEvent) {
         try {
             RatingBookController ratingBookController= FXMLLoaderUtil.getInstance().getController(RATING_BOOK_FXML);
@@ -58,6 +61,11 @@ public class RatingBookCardController {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * hiển thị màu xanh cho các rate đã đánh giá.
+     * @param comment
+     */
     public void setColorGreen(Comment comment) {
         this.comment = comment;
         statusText.setText("đã đánh giá");

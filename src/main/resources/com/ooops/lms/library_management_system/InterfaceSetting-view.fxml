@@ -42,14 +42,24 @@
             <Insets bottom="50.0" left="50.0" right="50.0" top="10.0" />
          </VBox.margin>
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0">
+            <HBox alignment="CENTER" prefHeight="196.0" prefWidth="700.0" spacing="100.0">
                <children>
-                  <CheckBox fx:id="soundCheckBox" focusTraversable="false" mnemonicParsing="false" text="Hiệu ứng âm thanh" textFill="#0772b5">
+                  <VBox fx:id="j97VBox" alignment="CENTER" prefHeight="196.0" prefWidth="0.0" spacing="10.0" visible="false">
+                     <children>
+                        <ImageView fx:id="j97Image" fitHeight="1.0" fitWidth="1.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../image/customer/general/jack.jpg" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="j97Button" mnemonicParsing="false" onAction="#onJ97ButtonAction" prefHeight="35.0" prefWidth="147.0" styleClass="button-1" text="lấy làm avatar" />
+                     </children>
+                  </VBox>
+                  <CheckBox fx:id="soundCheckBox" focusTraversable="false" mnemonicParsing="false" text="sound?" textFill="#0772b5">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="characterCheckBox" focusTraversable="false" mnemonicParsing="false" text="Hiện con nhân vật" textFill="#ff21b2">
+                  <CheckBox fx:id="characterCheckBox" focusTraversable="false" mnemonicParsing="false" text="nhân vật?" textFill="#ff21b2">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>

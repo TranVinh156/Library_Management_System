@@ -44,7 +44,7 @@ public class UserReportController {
 
     public void initialize() {
         Map<String, Object> criteria = new HashMap<>();
-        criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+        criteria.put("reports.member_ID", UserMenuController.getMember().getPerson().getId());
 
         try {
             reports = ReportDAO.getInstance().searchByCriteria(criteria);
