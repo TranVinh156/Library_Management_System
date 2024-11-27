@@ -7,12 +7,19 @@ import java.io.InputStreamReader;
 public class FaceidLogin {
     private static final String PYTHON_PATH = "python";
     private static final String SCRIPT_PATH = "face/face_login.py";
-
-    public static Integer loginFace() {
+    public static int ADMIN = 1;
+    public static int USER = 2;
+    public static Integer loginFace(int type) {
         try {
             File file = new File(SCRIPT_PATH);
+            String modelPath = "";
+            if (type == ADMIN) {
+                modelPath = "face/admin.yml";
+            } else if (type == USER) {
+                modelPath = "face/user.yml";
+            }
             ProcessBuilder processBuilder = new ProcessBuilder(
-                    PYTHON_PATH, file.getAbsolutePath()
+                    PYTHON_PATH, file.getAbsolutePath(), modelPath
             );
 
             Process process = processBuilder.start();
@@ -34,15 +41,15 @@ public class FaceidLogin {
                     }
                 }
             }
-            return null;
+            return 0;
         } catch (Exception e) {
-            System.err.println("Lỗi khi đăng nhập: " + e.getMessage());
+            System.err.println("Lỗi khi gọi script Python: " + e.getMessage());
             return null;
         }
     }
 
     public static void main(String[] args) {
-        Integer label = loginFace();
+        Integer label = loginFace(ADMIN);
         if (label != null) {
             System.out.println("Đăng nhập thành công với ID người dùng: " + label);
         } else {

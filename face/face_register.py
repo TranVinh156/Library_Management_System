@@ -3,11 +3,13 @@ import sys
 import numpy as np
 import os
 
-# Đường dẫn tới file mô hình
-MODEL_PATH = "face/face_recognizer.yml"
-TRAINING_DATA_PATH = "face/training_data"
+#from face.delete_user import MODEL_PATH
 
-def collect_faces(user_id, save_path=TRAINING_DATA_PATH, num_samples=300):
+# Đường dẫn tới file mô hình
+TRAINING_DATA_PATH = "face/training_data"
+MODEL_PATH = "face/face.recognizer.yml"
+
+def collect_faces(user_id, save_path=TRAINING_DATA_PATH, num_samples=150):
     """
     Thu thập ảnh từ camera để đăng ký khuôn mặt.
     Args:
@@ -55,7 +57,7 @@ def collect_faces(user_id, save_path=TRAINING_DATA_PATH, num_samples=300):
     cap.release()
     cv2.destroyAllWindows()
 
-def train_and_update_model(user_id, save_path=TRAINING_DATA_PATH, model_path=MODEL_PATH):
+def train_and_update_model(user_id, save_path, model_path):
     """
     Đào tạo và cập nhật mô hình nhận diện khuôn mặt.
     Args:
@@ -97,16 +99,17 @@ def train_and_update_model(user_id, save_path=TRAINING_DATA_PATH, model_path=MOD
     recognizer.update(faces, labels)  # Cập nhật mô hình
     recognizer.save(model_path)
 
-def register_user(user_id):
+def register_user(user_id, model_path=MODEL_PATH):
     """
     Đăng ký một user mới.
     Args:
         user_id (str): ID của người dùng.
     """
     collect_faces(user_id)
-    train_and_update_model(user_id)
+    train_and_update_model(user_id, TRAINING_DATA_PATH, model_path)
 
 # Đăng ký khuôn mặt cho người dùng với user_id
 if __name__ == "__main__":
     user_id = sys.argv[1]
-    register_user(user_id)
+    modelPath = sys.argv[2]
+    register_user(user_id, modelPath)
