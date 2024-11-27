@@ -80,7 +80,7 @@
                               </Button>
                               <ImageView fx:id="imageIBView" fitHeight="343.0" fitWidth="285.0" layoutX="51.0" layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false">
                                  <image>
-                                    <Image url="@../../../../image/icon/qr.jpg" />
+                                    <Image url="@../../../../image/icon/Xuw0.gif" />
                                  </image>
                               </ImageView>
                               <Label fx:id="ibLabel" alignment="CENTER" layoutX="56.0" layoutY="494.0" prefHeight="18.0" prefWidth="273.0" styleClass="black-text-Cabin" text="Muốn ít lỗi thì nạp Vip nhé &lt;3" textOverrun="CLIP" visible="false" />
