@@ -93,20 +93,4 @@ public class LoginCommand extends BasicController implements Command {
             }
         }
     }
-
-    private void loadView(String fxmlPath) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(fxmlLoader.load());
-            //stage.setResizable(false);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int getResultMemberID() {
-        return resultMemberID;
-    }
 }

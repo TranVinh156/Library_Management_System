@@ -209,3 +209,27 @@
     -fx-text-fill: white;
     -fx-font-family: 'Cabin';
 }
+
+/*-------------------------Admin-Setting----------------------------------*/
+.setting-bar-button {
+    -fx-background-color: #F2E0C9;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Cabin';
+}
+
+.setting-bar-button:hover {
+    -fx-background-color: #FFF;
+}
+
+.setting-white-button {
+    -fx-background-color: #FFF;
+    -fx-border-color: #000;
+    -fx-border-width: 0.85px; /* Simplified to just one value */
+    -fx-border-radius: 3.3px;
+}
+.setting-white-button:hover {
+    -fx-background-color: #D4D4D4;
+    -fx-border-color: #000;
+    -fx-border-width: 0.85px; /* Simplified to just one value */
+    -fx-border-radius: 3.3px;
+}
