@@ -2,13 +2,12 @@ import cv2
 import numpy as np
 import os
 import sys
-
-#from face.face_login import model_path
+import shutil
 
 MODEL_PATH = "face/face.recognizer.yml"
-TRAINING_DATA_PATH = "face/training_data/"
+TRAINING_DATA_PATH = "face/training_data"
 
-def remove_user_from_model(user_id, model_path, save_path):
+def remove_user_from_model(user_id, model_path, save_path = TRAINING_DATA_PATH):
     """
     Xóa dữ liệu của user_id khỏi mô hình nhận diện khuôn mặt.
     Args:
@@ -39,6 +38,13 @@ def remove_user_from_model(user_id, model_path, save_path):
                     faces.append(img)
                     labels.append(int(folder))
 
+    user_path = os.path.join(save_path, user_id)
+    if os.path.exists(user_path):
+        try:
+            shutil.rmtree(user_path)  # Xóa thư mục và toàn bộ nội dung bên trong
+        except Exception as e:
+            print(f"Failed to delete folder {user_path}: {e}")
+
     if len(faces) == 0:
         os.remove(model_path)
         return
@@ -47,12 +53,8 @@ def remove_user_from_model(user_id, model_path, save_path):
     recognizer.train(np.array(faces), np.array(labels))
     recognizer.save(model_path)
 
-    # Xóa thư mục chứa ảnh của user_id	
-    user_path = os.path.join(save_path, user_id)
-    if os.path.exists(user_path):
-        for file in os.listdir(user_path):
-            os.remove(os.path.join(user_path, file))
-        os.rmdir(user_path)
+    # Xóa thư mục chứa ảnh của user_id
+
 
 # Xóa dữ liệu của một user trong mô hình
 if __name__ == "__main__":
