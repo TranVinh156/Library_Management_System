@@ -9,6 +9,7 @@ import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.faceid.FaceidRecognizer;
 import com.ooops.lms.model.enums.Role;
 import javafx.animation.TranslateTransition;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class LoginController extends BasicController {
@@ -65,6 +68,7 @@ public class LoginController extends BasicController {
     private StackPane mainPane;
 
     private Role role = Role.NONE;
+    protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
     public void initialize() {
         setSwitchBar();
@@ -115,48 +119,67 @@ public class LoginController extends BasicController {
     @FXML
     void onFaceIDButtonAction(ActionEvent event) {
         if (role.equals(Role.ADMIN)) {
-            try {
-                int adminID = AccountDAO.getInstance().adminLoginByFaceID();
-                if (adminID > 0) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
-                    Parent root = fxmlLoader.load();
-                    AdminMenuController controller = fxmlLoader.getController();
-                    controller.setAdminID(adminID);
-                    Scene scene = new Scene(root);
-                    Stage stage = (Stage) registerButton.getScene().getWindow();
-                    stage.setResizable(true);
-                    stage.setWidth(stage.getWidth());
-                    stage.setHeight(stage.getHeight());
-                    stage.setScene(scene);
-                    stage.show();
-                } else {
-                    CustomerAlter.showMessage("Không nhận ra khuôn mặt.");
+            Task<Integer> loginbyFaceID = new Task<>() {
+                protected Integer call() throws Exception {
+                    return AccountDAO.getInstance().adminLoginByFaceID();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                int memberID = AccountDAO.getInstance().userLoginByFaceID();
-                if (memberID > 0) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/UserMenu-view.fxml"));
-                    Parent root = fxmlLoader.load();
+            };
 
-                    UserMenuController userMenu = fxmlLoader.getController();
-                    Stage stage = (Stage) registerButton.getScene().getWindow();
-                    userMenu.setMemberID(memberID);
-                    stage.setResizable(true);
-                    stage.setWidth(stage.getWidth());
-                    stage.setHeight(stage.getHeight());
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                } else {
-                    CustomerAlter.showMessage("Không nhận ra khuôn mặt.");
+            loginbyFaceID.setOnSucceeded(event1 -> {
+                try {
+                    int adminID = loginbyFaceID.getValue(); // Lấy giá trị từ Task
+                    if (adminID > 0) {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
+                        Parent root = fxmlLoader.load();
+                        AdminMenuController controller = fxmlLoader.getController();
+                        controller.setAdminID(adminID);
+                        Scene scene = new Scene(root);
+                        Stage stage = (Stage) registerButton.getScene().getWindow();
+                        stage.setResizable(true);
+                        stage.setWidth(stage.getWidth());
+                        stage.setHeight(stage.getHeight());
+                        stage.setScene(scene);
+                        stage.show();
+                    } else {
+                        CustomerAlter.showMessage("Không nhận ra khuôn mặt.");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            });
+            executor.submit(loginbyFaceID);
+        } else {
+            Task<Integer> loginbyFaceID = new Task<>() {
+                protected Integer call() throws Exception {
+                    return AccountDAO.getInstance().userLoginByFaceID();
+                }
+            };
+
+            loginbyFaceID.setOnSucceeded(event1 -> {
+                try {
+                    int memberID = loginbyFaceID.getValue();
+                    if (memberID > 0) {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/UserMenu-view.fxml"));
+                        Parent root = fxmlLoader.load();
+
+                        UserMenuController userMenu = fxmlLoader.getController();
+                        Stage stage = (Stage) registerButton.getScene().getWindow();
+                        userMenu.setMemberID(memberID);
+                        stage.setResizable(true);
+                        stage.setWidth(stage.getWidth());
+                        stage.setHeight(stage.getHeight());
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } else {
+                        CustomerAlter.showMessage("Không nhận ra khuôn mặt.");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            executor.submit(loginbyFaceID);
+
         }
     }
 
