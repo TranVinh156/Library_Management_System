@@ -38,10 +38,10 @@ import java.util.Stack;
 public class BasicController {
     private static final String DEFAULT_USER_FXML = "/image/customer/menu/ava.png";
     private static final String LOGIN_FXML = "/com/ooops/lms/library_management_system/UserLogin.fxml";
-    private static final String RESIGN_FXML = "/com/ooops/lms/library_management_system/UserResign-view.fxml";
-    private static final String FORGOT_PASSWORD_FXML = "/com/ooops/lms/library_management_system/ForgotPassword-view.fxml";
+    protected static final String DEFAULT_BOOK_IMAGE = "/image/book/default.png";
 
     protected static final String ADMIN_MENU_FXML = "/com/ooops/lms/library_management_system/AdminMenu.fxml";
+    protected static final String SETTING_FXML ="/com/ooops/lms/library_management_system/AdminSetting.fxml";
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/AdminDashBoardMain.fxml";
     protected static final String TOPBOOK_CARD_FXML = "/com/ooops/lms/library_management_system/TopBookCard.fxml";
@@ -64,6 +64,7 @@ public class BasicController {
     protected static final Node adminMenuPane;
 
     protected static Image defaultUserImage;
+    protected static Image defaultBookImage;
 
     protected static final FXMLLoader dashboardLoader;
     protected static final AnchorPane dashboardPane;
@@ -100,6 +101,7 @@ public class BasicController {
 
         //load default image
         defaultUserImage = new Image(BasicController.class.getResource(DEFAULT_USER_FXML).toExternalForm());
+        defaultBookImage = new Image(BasicController.class.getResource(DEFAULT_BOOK_IMAGE).toExternalForm());
 
         //load dashboard
         dashboardLoader = loadFXML(DASHBOARD_FXML, BasicController.class);
@@ -136,11 +138,6 @@ public class BasicController {
 
         adminMenuPaneLoader = loadFXML(ADMIN_MENU_FXML,BasicController.class);
         adminMenuPane = loadPane(adminMenuPaneLoader, BasicController.class);
-    }
-
-    // Lấy tất cả tiêu đề và kết hợp thành một chuỗi
-    public String getAllTitles() {
-        return String.join(" / ", titlePageStack);
     }
 
     public Stack<String> getTitlePageStack() {
@@ -194,24 +191,6 @@ public class BasicController {
      */
     public static FXMLLoader loadFXML(String fxml, Class<?> clazz) {
         return new FXMLLoader(clazz.getResource(fxml));
-    }
-
-    /**
-     * hàm để lấy Controller
-     *
-     * @param loader FXMLLoader cần lấy controller
-     * @param clazz  nhập vào class
-     * @param <T>    lớp
-     * @return controller cần lấy
-     */
-    private static <T> T loadController(FXMLLoader loader, Class<?> clazz) {
-        try {
-            Node node = loader.load();
-            return loader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
@@ -288,7 +267,11 @@ public class BasicController {
 
     }
 
-
+    /**
+     * Hàm lấy Cat từ List và chuyển về định dạng Cat1, Cat2, Cat3...
+     * @param categories
+     * @return
+     */
     public String getCategories(List<Category> categories) {
         if (categories == null || categories.isEmpty()) {
             return "Không có danh mục"; // Trả về thông báo nếu không có danh mục
@@ -309,6 +292,11 @@ public class BasicController {
         return result.toString(); // Chuyển đổi StringBuilder thành String
     }
 
+    /**
+     * Hàm để lấy tất cả Author từ List và chuyển nó về định dạng Au1, Au2,...
+     * @param authors
+     * @return
+     */
     public String getAuthors(List<Author> authors) {
         if (authors == null || authors.isEmpty()) {
             return "Không có danh mục"; // Trả về thông báo nếu không có danh mục
@@ -347,12 +335,14 @@ public class BasicController {
         if (selectedFile != null) {
             // Tạo tên tệp mới dựa trên ID người dùng
             String imageFile = o.toString() + getFileExtension(selectedFile.toPath());
-            //newImageFile = "Library_Management_System/avatar/" + imageFile;
+            String newImageFile = "";
             Path avatarFolder =Paths.get("");
             if(o instanceof Member) {
-                avatarFolder = Paths.get("Library_Management_System/avatar");
-            } else {
-                avatarFolder = Paths.get("Library_Management_System/avatar");
+                avatarFolder = Paths.get("avatar");
+                newImageFile = "avatar/" + imageFile;
+            } else if (o instanceof Book){
+                avatarFolder = Paths.get("bookImage");
+                newImageFile = "bookImage/" + imageFile;
             }
             try {
                 // Tạo thư mục nếu chưa tồn tại
@@ -367,7 +357,11 @@ public class BasicController {
                     Files.delete(destinationPath);
                 }
 
-                return destinationPath.toString();
+                BufferedImage originalImage = ImageIO.read(selectedFile);
+
+                ImageIO.write(originalImage, "PNG",destinationPath.toFile());
+
+                return destinationPath.toUri().toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -385,27 +379,6 @@ public class BasicController {
             return fileName.substring(dotIndex);
         }
         return "";
-    }
-    /**
-     * hàm này sẽ kiểm tra xem đường dâẫn ảnh có tồn tại trong máy không.
-     *
-     * @param path đường dẫn cần kểm tra
-     * @return true nếu có, false nếu không
-     */
-    public boolean isValidImagePath(String path) {
-        try {
-            // Kiểm tra xem đường dẫn là một file hợp lệ
-            File file = new File(path);
-            if (file.exists() && file.isFile()) {
-                return true;
-            }
-
-            // Kiểm tra xem đường dẫn có phải là một URL hợp lệ không
-            new URL(path).openConnection().connect();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     /**
@@ -463,16 +436,6 @@ public class BasicController {
         }
     }
 
-
-    protected static final String DEFAULT_BOOK_IMAGE = "/image/book/default.png";
-    protected static Image defaultBookImage;
-
-    protected ObservableList<Category> categoriesList = FXCollections.observableArrayList();
-
-    static {
-        defaultBookImage = new Image(BasicController.class.getResource(DEFAULT_BOOK_IMAGE).toExternalForm());
-
-    }
 
 
 }

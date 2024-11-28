@@ -172,11 +172,11 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
             memberIDText.setText(null);
             setMemberTextFieldNull();
-            memberImage.setImage(defaultUserImage);
+            memberImage.setImage(null);
 
             barCodeText.setText(null);
             setBookTextFielNull();
-            bookImage.setImage(defaultUserImage);
+            bookImage.setImage(null);
 
             borrowIDLabel.setText(null);
 
@@ -443,7 +443,7 @@ public class AdminReservationDetailController extends BaseDetailController<BookR
 
     public void setMember(Member member) {
         this.member = member;
-        memberNameText.setText(member.getPerson().getFirstName() + " " + member.getPerson().getLastName());
+        memberNameText.setText(member.getPerson().getLastName() + " " + member.getPerson().getFirstName());
         memberIDText.setText(String.valueOf(member.getPerson().getId()));
         phoneNumberText.setText(member.getPerson().getPhone());
         emailText.setText(member.getPerson().getEmail());

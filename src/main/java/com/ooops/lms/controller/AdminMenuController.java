@@ -14,8 +14,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Stack;
 
@@ -101,6 +104,10 @@ public class AdminMenuController extends BasicController {
     @FXML
     private ImageView settingLogo;
 
+    @FXML
+    private AnchorPane overlay;
+
+
     private boolean isMenuExpanded = false;
     private static Image minimizeIconImage = new Image(BasicController.class.getResource("/image/icon/minimize.png").toExternalForm());;
     private static Image maximizeIconImage = new Image(BasicController.class.getResource("/image/icon/maximize.png").toExternalForm());
@@ -111,6 +118,12 @@ public class AdminMenuController extends BasicController {
     private AdminBorrowPageController adminBorrowPageController;
     private AdminReservationPageController adminReservationPageController;
     private AdminIssuePageController adminIssuePageController;
+
+    private int AdminID;
+
+    public void setAdminID(int AdminID) {
+        this.AdminID = AdminID;
+    }
 
     private Button currentActiveButton = null;
 
@@ -286,7 +299,24 @@ public class AdminMenuController extends BasicController {
         if(addTablePane.isVisible()) {
             addTablePane.setVisible(false);
         }
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(SETTING_FXML));
+            Parent root = loader.load();
+            AdminSettingController controller = loader.getController();
+            controller.reset();
+            controller.setAdminID(this.AdminID);
+            Stage stage = new Stage();
+            stage.setTitle("Settings");
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            overlay.setVisible(true);
+            stage.showAndWait();
+            overlay.setVisible(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="commentBox" spacing="5.0" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.CommentController">
+<VBox fx:id="commentBox" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.CommentController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="307.0" spacing="10.0">
          <children>
@@ -30,7 +30,7 @@
             <Image url="@../../../../image/customer/bookCard/5Star.png" />
          </image>
       </ImageView>
-      <Text fx:id="commentText" strokeType="OUTSIDE" strokeWidth="0.0" text="comment sth" wrappingWidth="292.13671875">
+      <Text fx:id="commentText" strokeType="OUTSIDE" strokeWidth="0.0" text="comment sth" wrappingWidth="305.13671875">
          <font>
             <Font size="18.0" />
          </font>

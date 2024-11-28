@@ -7,6 +7,8 @@ import com.ooops.lms.model.BookIssue;
 import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.Comment;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import com.ooops.lms.util.Sound;
+import com.ooops.lms.util.ThemeManager;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,7 +40,7 @@ public class RatingBookController {
     @FXML
     private ChoiceBox ratingChoiceBox;
     @FXML
-    private VBox borrowedBookBox;
+    private VBox borrowedBookBox,ratingBox;
     @FXML
     private Label bookNameText,authorNameText,userNameText;
     @FXML
@@ -48,7 +50,7 @@ public class RatingBookController {
     @FXML
     private Circle avatarImage;
     @FXML
-    AnchorPane anchorPane;
+    AnchorPane shyPane, sadPane;
     @FXML
     private TextArea commentTitleText,commentContentText;
 
@@ -89,7 +91,15 @@ public class RatingBookController {
         }
     }
 
+    /**
+     * hiển thị thông tin về sách
+     * @param bookItem
+     * @param comment
+     * @param ratingBookCardController
+     */
     public void showBookData(BookItem bookItem,Comment comment,RatingBookCardController ratingBookCardController) {
+        commentContentText.clear();
+        commentTitleText.clear();
         this.currrentBookItem = bookItem;
         this.currentRatingBookCard = ratingBookCardController;
         bookNameText.setText(bookItem.getTitle());
@@ -113,6 +123,10 @@ public class RatingBookController {
         }
     }
 
+    /**
+     * save thông tin.
+     * @param actionEvent
+     */
     public void onSaveButtonAction(ActionEvent actionEvent) {
         if(currrentBookItem == null) {
             CustomerAlter.showMessage("Vui l chọn sách");
@@ -125,7 +139,7 @@ public class RatingBookController {
             try {
                 CommentDAO.getInstance().add(comment);
                 CustomerAlter.showMessage("đã lưu đánh giá");
-                currentRatingBookCard.setColorGreen();
+                currentRatingBookCard.setColorGreen(comment);
                 FXMLLoaderUtil.getInstance().refreshUpdateBook();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -136,24 +150,55 @@ public class RatingBookController {
         }
     }
 
+    /**
+     * xử lý khi khen app.
+     * @param actionEvent
+     */
     public void onComplimentButtonAction(ActionEvent actionEvent) {
-        anchorPane.setVisible(true);
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        sadPane.setVisible(false);
 
-        // Định nghĩa hành động sau 5 giây
+        Sound.getInstance().playSound("yourSmile.mp3");
+        ThemeManager.getInstance().changeTheme("pink");
+        ThemeManager.getInstance().applyTheme(ratingBox);
+
+        shyPane.setVisible(true);
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+
         pause.setOnFinished(event -> {
-            anchorPane.setVisible(false);
+            shyPane.setVisible(false);
 
         });
 
-        // Bắt đầu đếm thời gian
         pause.play();
     }
 
+    /**
+     * xử lý khi chê app.
+     * @param actionEvent
+     */
     public void onCriticizeButtonAction(ActionEvent actionEvent)  {
-        CustomerAlter.showMessage("t ban m nè");
+        shyPane.setVisible(false);
+
+        Sound.getInstance().playSound("sad.mp3");
+        ThemeManager.getInstance().changeTheme("dark");
+        ThemeManager.getInstance().applyTheme(ratingBox);
+
+        sadPane.setVisible(true);
+        PauseTransition pause = new PauseTransition(Duration.seconds(7));
+
+        pause.setOnFinished(event -> {
+            sadPane.setVisible(false);
+
+        });
+
+        pause.play();
     }
 
+    /**
+     * từ rate về int.
+     * @param rate
+     * @return
+     */
     private int rate(String rate) {
         switch (rate) {
             case "1 sao" :
@@ -170,14 +215,18 @@ public class RatingBookController {
         return 5;
     }
 
+    /**
+     * setData.
+     * @param bookIssueList bookIssueList
+     */
     public void setData(List<BookIssue> bookIssueList) {
         if(this.borrowedBookList==null) {
             this.borrowedBookList = bookIssueList;
             for (int i = 0; i < bookIssueList.size(); i++) {
                 loadBook(bookIssueList.get(i));
             }
-            showData();
         }
+        showData();
     }
 
     public void loadBook(BookIssue bookIssue) {

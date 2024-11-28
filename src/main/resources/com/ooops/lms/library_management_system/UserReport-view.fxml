@@ -47,7 +47,7 @@
             </ScrollPane>
             <VBox alignment="TOP_RIGHT" prefHeight="517.0" prefWidth="417.0" spacing="20.0">
                <children>
-                  <VBox fx:id="vbox" alignment="TOP_CENTER" prefHeight="467.0" prefWidth="376.0" spacing="10.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+                  <VBox fx:id="vbox" alignment="TOP_CENTER" prefHeight="467.0" prefWidth="376.0" spacing="10.0" style="-fx-background-radius: 20;" styleClass="background-part" VBox.vgrow="ALWAYS">
                      <children>
                         <TextField fx:id="reportTitleText" onMouseClicked="#onReportTitleTextMouseClicked" promptText="tiêu đề báo cáo" styleClass="textField" />
                         <TextArea fx:id="reportContentText" onMouseClicked="#onReportContentTextMouseClicked" prefHeight="374.0" prefWidth="326.0" promptText="nội dung báo cáo" styleClass="textField" wrapText="true" />

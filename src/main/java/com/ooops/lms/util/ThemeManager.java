@@ -1,5 +1,7 @@
 package com.ooops.lms.util;
 
+import com.ooops.lms.controller.UserMenuController;
+import com.ooops.lms.userInfo.UserInfoManagement;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -54,6 +56,8 @@ public class ThemeManager {
                 currentTheme = DEFAULT_THEME;
                 break;
         }
+        UserMenuController.getUserInfo().setColor(mode);
+        UserInfoManagement.getInstance().updateUserInfo(UserMenuController.getUserInfo());
     }
 
     public String getCurrentTheme() {
@@ -85,7 +89,6 @@ public class ThemeManager {
             case GOLD_THEME:
                 button.setStyle("-fx-background-color : #7300FF");
                 break;
-
         }
     }
 }

@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class AdminBorrowTableController extends BaseTableController<BookIssue, AdminBorrowPageController,AdminBorrowTableRowController> {
 
@@ -87,8 +89,13 @@ public class AdminBorrowTableController extends BaseTableController<BookIssue, A
         if(!bookNameFindText.getText().isEmpty()){
             findCriteria.put("title",bookNameFindText.getText());
         }
-        if(!borrowDateFindText.getText().isEmpty()){
-            findCriteria.put("creation_date",borrowDateFindText.getText());
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        // Chuyển đổi và định dạng cho borrowDate
+        if (borrowDateFindText.getText() != null && !borrowDateFindText.getText().isEmpty()) {
+            LocalDate createdDate = LocalDate.parse(borrowDateFindText.getText(), inputFormatter);
+            createdDate.format(outputFormatter);
+            findCriteria.put("creation_date", createdDate.toString());
         }
         if(!borrowerFindText.getText().isEmpty()){
             findCriteria.put("fullname",borrowerFindText.getText());

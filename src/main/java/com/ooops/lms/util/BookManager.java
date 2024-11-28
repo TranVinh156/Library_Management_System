@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.enums.BookIssueStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 
@@ -31,7 +32,7 @@ public class BookManager {
     private List<BookIssue> borrowedBooks;
     private List<BookIssue> borrowingBooks;
 
-    private static final LRUCache<String, Image> bookImageCache = new LRUCache<>(50);
+    private static final LRUCache<String, Image> bookImageCache = new LRUCache<>(70);
 
     private BookManager() {
         try {
@@ -65,6 +66,8 @@ public class BookManager {
         if (reservedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            criteria.put("BookReservationStatus", BookReservationStatus.WAITING);
+
             reservedBooks = BookReservationDAO.getInstance().searchByCriteria(criteria);
         }
         return reservedBooks;
@@ -112,29 +115,6 @@ public class BookManager {
         Collections.sort(books, comparator);
     }
 
-    private void sortBooksByRateDescending() {
-        Collections.sort(highRankBooks, new Comparator<Book>() {
-            @Override
-            public int compare(Book book1, Book book2) {
-                int rate1 = book1.getRate();
-                int rate2 = book2.getRate();
-                return Integer.compare(rate2, rate1);
-            }
-        });
-    }
-
-    public Image getBookImage(String url) {
-        // Kiểm tra trong cache
-        if (bookImageCache.containsKey(url)) {
-            return bookImageCache.get(url); // Lấy từ cache
-        }
-
-        // Nếu không có, tải ảnh và lưu vào cache
-        Image image = new Image(url, true); // `true` để tải ảnh không đồng bộ
-        bookImageCache.put(url, image);
-        return image;
-    }
-
     public Book isContainInAllBooks(Book book) {
         Book findBook;
         try {
@@ -164,13 +144,30 @@ public class BookManager {
     }
 
     public void addReservedBook(BookReservation bookReservation) {
+        reservedBooks.add(bookReservation);
+    }
+    public void deleteReservedBook(BookReservation bookReservation) {
+        int index = findBookReserved(bookReservation.getBookItem().getBarcode());
+
+        if(index!=-1) {
+            reservedBooks.remove(index);
+        }
+    }
+
+    private int findBookReserved(long barCode) {
         try {
-            getReservedBooks();
+            reservedBooks = BookManager.getInstance().getReservedBooks();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        reservedBooks.add(bookReservation);
+        for (int i = 0;i<reservedBooks.size();i++) {
+            if (reservedBooks.get(i).getBookItem().getBarcode() == barCode) {
+                return i;
+            }
+        }
+        return -1;
     }
+
     public void addMarkedBook(BookMark bookMark) {
         try {
             getMarkedBooks();
@@ -187,34 +184,18 @@ public class BookManager {
             throw new RuntimeException(e);
         }
         int index = findBookMark(bookMark.getBook().getISBN());
-        if(index!=-1) {
+        if (index != -1) {
             markedBooks.remove(index);
         }
     }
+
     private int findBookMark(long ISBN) {
-        for (int i = 0;i<markedBooks.size();i++) {
+        for (int i = 0; i < markedBooks.size(); i++) {
             if (markedBooks.get(i).getBook().getISBN() == ISBN) {
                 return i;
             }
         }
         return -1;
-    }
-
-
-    public List<Book> searchBookByAPI(String searchText) {
-        // Tạo Task để tìm kiếm sách bất đồng bộ
-        Task<List<Book>> fetchBooksTask = new Task<>() {
-            @Override
-            protected List<Book> call() throws Exception {
-                // Thực hiện tìm kiếm sách trên một luồng riêng
-                return BookInfoFetcher.searchBooksByKeyword(searchText);
-            }
-        };
-        AtomicReference<List<Book>> bookList = new AtomicReference<>(new ArrayList<>());
-        fetchBooksTask.setOnSucceeded(event -> {
-            bookList.set(fetchBooksTask.getValue());
-        });
-        return bookList.get();
     }
 
 
@@ -224,20 +205,17 @@ public class BookManager {
             protected Image call() throws Exception {
                 String imagePath = book.getImagePath();
 
-                // Kiểm tra ảnh trong cache
                 if (bookImageCache.containsKey(imagePath)) {
                     return bookImageCache.get(imagePath);
                 }
 
                 try {
-                    // Tải ảnh mới
                     Image image = new Image(imagePath, true);
                     bookImageCache.put(imagePath, image); // Lưu vào cache
                     return image;
                 } catch (Exception e) {
                     System.out.println("Failed to load image. Path length: " + imagePath.length());
 
-                    // Tải ảnh mặc định
                     File file = new File("bookImage/default.png");
                     Image defaultImage = new Image(file.toURI().toString());
                     bookImageCache.put(imagePath, defaultImage); // Lưu ảnh mặc định vào cache với cùng key

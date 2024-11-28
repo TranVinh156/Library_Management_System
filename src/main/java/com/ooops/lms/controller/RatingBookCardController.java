@@ -11,10 +11,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class RatingBookCardController {
@@ -27,7 +24,6 @@ public class RatingBookCardController {
     private Label bookNameText,authorNameText,statusText;
     @FXML
     private HBox ratingCardBox;
-
 
     public void setData(BookItem bookItem) {
         this.bookItem =bookItem;
@@ -53,6 +49,10 @@ public class RatingBookCardController {
         }
     }
 
+    /**
+     * hiển th report.
+     * @param mouseEvent
+     */
     public void onShowReportMouseClicked(MouseEvent mouseEvent) {
         try {
             RatingBookController ratingBookController= FXMLLoaderUtil.getInstance().getController(RATING_BOOK_FXML);
@@ -61,7 +61,14 @@ public class RatingBookCardController {
             throw new RuntimeException(e);
         }
     }
-    public void setColorGreen() {
+
+    /**
+     * hiển thị màu xanh cho các rate đã đánh giá.
+     * @param comment
+     */
+    public void setColorGreen(Comment comment) {
+        this.comment = comment;
+        statusText.setText("đã đánh giá");
         ratingCardBox.setStyle("-fx-background-color: #AFFF84;-fx-background-radius: 20;");
     }
 

@@ -92,7 +92,7 @@ public class AdminReservationTableController extends BaseTableController<BookRes
         if (!memeberIDFindText.getText().isEmpty()) {
             findCriteria.put("member_ID", memeberIDFindText.getText());
         }
-        if (!statusFindBox.getItems().isEmpty() && statusFindBox.getValue() != "None" && statusFindBox.getValue() != null) {
+        if (!statusFindBox.getItems().isEmpty() || statusFindBox.getValue() != "None" || statusFindBox.getValue() != null) {
             findCriteria.put("BookReservationStatus", statusFindBox.getValue());
         }
 
@@ -106,10 +106,6 @@ public class AdminReservationTableController extends BaseTableController<BookRes
     @FXML
     protected void searchCriteria() {
         getCriteria();
-        if (findCriteria.isEmpty()) {
-            loadData();
-            return;
-        }
         try {
             itemsList.clear();
             itemsList.addAll(BookReservationDAO.getInstance().searchByCriteria(findCriteria));

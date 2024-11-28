@@ -13,8 +13,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0" styleClass="background" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.UserMenuController">
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0" styleClass="background" stylesheets="@../../../../style/UserMenuStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ooops.lms.controller.UserMenuController">
    <children>
       <BorderPane prefHeight="594.0" prefWidth="950.0">
          <top>
@@ -180,7 +181,7 @@
                <children>
                   <VBox fx:id="menuBarPlus" prefHeight="605.0" prefWidth="0.0" styleClass="sideBackground" visible="false" HBox.hgrow="NEVER">
                      <children>
-                        <VBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="236.0" prefWidth="179.0">
+                        <VBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="236.0" prefWidth="179.0">
                            <children>
                               <Button fx:id="dashboardButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="43.0" prefWidth="181.0" styleClass="menu-bar-button" text="Dashboard" />
                               <Button fx:id="bookmarkButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBookmarkButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Đánh dấu" />
@@ -190,7 +191,7 @@
                         <HBox prefHeight="306.0" prefWidth="181.0" VBox.vgrow="ALWAYS" />
                         <VBox prefHeight="0.0" prefWidth="179.0">
                            <children>
-                              <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="161.0">
+                              <VBox alignment="BOTTOM_CENTER" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="161.0">
                                  <children>
                                     <Button fx:id="settingButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="225.0" styleClass="menu-bar-button" text="Cài đặt" />
                                     <Button fx:id="logoutButtonPlus" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="20.0" prefWidth="181.0" styleClass="menu-bar-button" text="Logout" />
@@ -205,7 +206,22 @@
                   </VBox>
                   <StackPane prefHeight="605.0" prefWidth="891.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="contentBox" alignment="CENTER" prefHeight="605.0" prefWidth="827.0" />
+                        <AnchorPane>
+                           <children>
+                              <VBox fx:id="contentBox" alignment="CENTER" prefHeight="605.0" prefWidth="827.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <ImageView fx:id="talkImage" fitHeight="169.0" fitWidth="175.0" layoutX="-33.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="35.33333333333337">
+                                 <image>
+                                    <Image url="@../../../../image/customer/menu/chat.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="pullMenuBarImage" fitHeight="58.0" fitWidth="30.0" onMouseClicked="#onCharacterMouseClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-40.0">
+                                 <image>
+                                    <Image url="@../../../../image/customer/menu/animation2.gif" />
+                                 </image>
+                              </ImageView>
+                              <Text fx:id="talkText" layoutX="-20.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="aeyegfiagfiaufgiuadhfiuagfufdhfiuegfdsuhfiusegfdzuhgsfuiefgvbdusfgvudsgfivdsugbids" visible="false" wrappingWidth="142.13671875" AnchorPane.bottomAnchor="94.79999999999995" />
+                           </children>
+                        </AnchorPane>
                         <AnchorPane fx:id="suggestionContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" visible="false">
                            <children>
                               <ListView fx:id="suggestionList" layoutX="323.0" layoutY="-21.0" prefHeight="28.0" prefWidth="292.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="-21.0" />

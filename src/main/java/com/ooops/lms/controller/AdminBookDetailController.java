@@ -7,8 +7,10 @@ import com.ooops.lms.Command.Command;
 import com.ooops.lms.SuggestionTable.SuggestionRowClickListener;
 import com.ooops.lms.SuggestionTable.SuggestionTable;
 import com.ooops.lms.database.dao.BookItemDAO;
+import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookItem;
+import com.ooops.lms.model.Category;
 import javafx.animation.PauseTransition;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -22,14 +24,24 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class AdminBookDetailController extends BaseDetailController<Book> {
 
@@ -120,7 +132,9 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected void loadItemDetails() {
-        getTitlePageStack().push(item.getISBN() + "");
+        if (!getTitlePageStack().peek().equals(item.getISBN() + "")) {
+            getTitlePageStack().push(item.getISBN() + "");
+        }
         isSettingItem = true;
         isSettingItem2 = true;
 
@@ -140,7 +154,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
             protected Image call() throws Exception {
                 try {
                     Image image = ImageCache.getImageLRUCache().get(item.getImagePath());
-                    if(image != null) {
+                    if (image != null) {
                         System.out.println("tai anh trong cache");
                         return image;
                     } else {
@@ -183,6 +197,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
         //Nếu như mà là mở addMode thì các trường thông tin set về rỗng
         if (addMode) {
+            item = new Book();
             copyBookTableVbox.getChildren().clear();
             deleteButton.setVisible(!addMode);
             saveButton.setVisible(!addMode);
@@ -195,7 +210,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
             numberOfBorrowText.setText(null);
             numberOfLostText.setText(null);
             bookContentText.setText(null);
-            bookImage.setImage(defaultBookImage);
+            bookImage.setImage(null);
         }
     }
 
@@ -255,17 +270,26 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected boolean getNewItemInformation() throws Exception {
-        if (item == null) {
-            item = new Book();
-        }
-
         item.setISBN(Long.parseLong(ISBNText.getText().trim()));
         item.setTitle(bookNameText.getText().trim());
         item.setPlaceAt(locationText.getText().trim());
         item.setQuantity(Integer.parseInt(numberOfBookText.getText().trim()));
         item.setDescription(bookContentText.getText());
+        //Xử lý authors thành List
+        String authorList = authorNameText.getText();
+        List<Author> authors = Arrays.stream(authorList.split("\\s*,\\s*"))
+                .map(name -> new Author(name)) // Tạo đối tượng Author
+                .collect(Collectors.toList());
+        item.setAuthors(authors);
+        //Xử lý cat
+        String catList = categoryText.getText();
+        List<Category> cats = Arrays.stream(catList.split("\\s*,\\s*"))
+                .map(name -> new Category(name)) // Tạo đối tượng Author
+                .collect(Collectors.toList());
+        item.setCategories(cats);
         return true;
     }
+
     @Override
     protected String getType() {
         return "sách";
@@ -309,10 +333,13 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         // Listener cho ISBN TextField
         ISBNText.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!isSettingItem && addMode) {
-                if(newValue != null && !newValue.isEmpty()) {
+                if (newValue != null && !newValue.isEmpty()) {
                     suggestionTable.updateSuggestionPanePosition(ISBNText);
+                    pauseTransition.playFromStart();
                     String isbnNumbers = newValue.replaceAll("[^0-9]", "");
-                    suggestionTable.loadFindData("bookISBNAPI", isbnNumbers);
+                    pauseTransition.setOnFinished(event -> {
+                        suggestionTable.loadFindData("bookISBNAPI", isbnNumbers);
+                    });
                 }
             }
             isSettingItem = false;
@@ -320,15 +347,16 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
         bookNameText.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!isSettingItem2 && addMode) {
-                suggestionTable.updateSuggestionPanePosition(bookNameText);
-                // Reset và restart pause transition mỗi khi có thay đổi text
+                if (newValue != null && !newValue.isEmpty()) {
+                    suggestionTable.updateSuggestionPanePosition(bookNameText);
+                    // Reset và restart pause transition mỗi khi có thay đổi text
+                    pauseTransition.playFromStart();
 
-                //suggestionTable.loadFindData("bookNameAPI", newValue);
-                pauseTransition.setOnFinished(event -> {
-                    suggestionTable.loadFindData("bookNameAPI", bookNameText.getText());
-                });
-
-                pauseTransition.playFromStart();
+                    //suggestionTable.loadFindData("bookNameAPI", newValue);
+                    pauseTransition.setOnFinished(event -> {
+                        suggestionTable.loadFindData("bookNameAPI", bookNameText.getText());
+                    });
+                }
             }
             isSettingItem2 = false;
         });
@@ -341,12 +369,17 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @FXML
     public void onChoiceImageButtonAction(ActionEvent event) {
-        item.setImagePath(getImagePath(bookImage));
-
-        //Nếu như có chọn ảnh thì set ảnh cho bookImage
-        if (item.getImagePath() != null) {
-            Image image = new Image(item.getImagePath());
-            bookImage.setImage(image);
+        if (ISBNText.getText().isEmpty() || ISBNText.getText().equals("") || ISBNText.getText() == null) {
+            CustomerAlter.showMessage("Vui lòng nhập ISBN cho quyển sách trước");
+        } else {
+            item.setISBN(Long.parseLong(ISBNText.getText().trim()));
+            item.setImagePath(getImagePath(item));
+            //Nếu như có chọn ảnh thì set ảnh cho bookImage
+            if (item.getImagePath() != null) {
+                Image image = new Image(item.getImagePath());
+                ImageCache.getImageLRUCache().put(item.getImagePath(), image);
+                bookImage.setImage(image);
+            }
         }
     }
 

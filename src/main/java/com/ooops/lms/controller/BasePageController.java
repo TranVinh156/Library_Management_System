@@ -24,23 +24,29 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
 
 
     protected abstract String getDetailFXMLPath();
+
     protected abstract String getTableFXMLPath();
 
     protected boolean page1 = true;
 
+    /**
+     * Hàm khởi tạo.
+     * Đặt detailPane vào vị trí detail, Table vào vị trí Table.
+     * Sau đó loadData cho Table.
+     */
     @FXML
     public void initialize() {
         try {
-            detailLoader = loadFXML(getDetailFXMLPath(),BaseDetailController.class);
-            detailPane = loadPane(detailLoader,BaseDetailController.class);
+            detailLoader = loadFXML(getDetailFXMLPath(), BaseDetailController.class);
+            detailPane = loadPane(detailLoader, BaseDetailController.class);
             detailController = detailLoader.getController();
             detailController.setMainController(this);
-            if(detailLoader == null){
+            if (detailLoader == null) {
                 System.out.println("detailLoader is null");
             }
 
-            tableLoader = loadFXML(getTableFXMLPath(),BaseTableController.class);
-            tablePane = loadPane(tableLoader,BaseTableController.class);
+            tableLoader = loadFXML(getTableFXMLPath(), BaseTableController.class);
+            tablePane = loadPane(tableLoader, BaseTableController.class);
             tableController = tableLoader.getController();
             tableController.setMainController(this);
 
@@ -53,10 +59,11 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
         }
     }
 
-    protected abstract void setupControllers();
-
-    protected abstract void setupViews();
-
+    /**
+     * Load Detail cho item.
+     *
+     * @param item
+     */
     public void loadDetail(T item) {
         if (detailController.hasUnsavedChanges()) {
             boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang thêm/sửa sẽ bị mất");
@@ -71,10 +78,14 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
     protected void loadDetailItem(T item) {
         detailController.loadStartStatus();
         detailController.setItem(item);
-        if(page1) {
+        if (page1) {
             alterPage();
         }
     }
+
+    /**
+     * Dùng để tạo một form để thêm Item
+     */
     public void loadAddPane() {
         getTitlePageStack().push("Add");
         if (detailController.hasUnsavedChanges()) {
@@ -86,26 +97,36 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
             loadAddNewItem();
         }
     }
+
     protected void loadAddNewItem() {
         detailController.loadStartStatus();
         detailController.setAddMode(true);
-        if(page1) {
+        if (page1) {
             alterPage();
         }
+    }
+
+    /**
+     * Load lại Data trong Table và đặt lại tiêu đề cho trang.
+     */
+    public void loadData() {
+        setTitlePage();
+        tableController.loadData();
+    }
+
+    /**
+     * Set tiêu đề cho Page.
+     */
+    protected void setTitlePage() {
+        titlePage.setText(String.join(" / ", getTitlePageStack()));
     }
 
     public abstract void alterPage();
 
     public abstract void startPage();
 
-    public void loadData() {
-        setTitlePage();
-        tableController.loadData();
-    }
+    protected abstract void setupControllers();
 
-    protected void setTitlePage(){
-        titlePage.setText(String.join(" / ", getTitlePageStack()));
-    }
-
+    protected abstract void setupViews();
 
 }

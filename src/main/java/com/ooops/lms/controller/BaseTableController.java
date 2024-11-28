@@ -78,59 +78,19 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
         }
     }
 
-    protected void searchCriteria() {
-        getCriteria();
-        try {
-            //itemsList.clear();
-            //itemsList.addAll((Collection<? extends T>) BookDAO.getInstance().searchByCriteria(findCriteria));
-            if (isBookType()) {
-                itemsList.addAll((Collection<? extends T>) BookDAO.getInstance().searchByCriteria(findCriteria));
-            } else if (isMemberType()) {
-                itemsList.addAll((Collection<? extends T>) MemberDAO.getInstance().searchByCriteria(findCriteria));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(itemsList.size());
-        loadRows();
-    }
-
-    private boolean isBookType() {
-        try {
-            // Get the actual type parameter using reflection
-            Class<?> typeClass = getTypeParameterClass();
-            return Book.class.isAssignableFrom(typeClass);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean isMemberType() {
-        try {
-            Class<?> typeClass = getTypeParameterClass();
-            return Member.class.isAssignableFrom(typeClass);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private Class<T> getTypeParameterClass() {
-        // This is a simple implementation. You might want to make it more robust
-        try {
-            String className = getClass().getGenericSuperclass().getTypeName();
-            String typeParam = className.substring(className.indexOf('<') + 1, className.indexOf(','));
-            return (Class<T>) Class.forName(typeParam);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
+    /**
+     * Làm cho Vbox nằm trong scrollPane resize theo scrollPane
+     */
     protected void setVboxFitWithScrollPane() {
         childFitWidthParent(tableVbox, scrollPane);
         childFitHeightParent(tableVbox, scrollPane);
     }
 
+    /**
+     * Sau khi lấy set mainController (PageController) thì mới tiến hành load các hàng vào bảng.
+     *
+     * @param mainController
+     */
     public void setMainController(BasePageController mainController) {
         this.mainController = mainController;
         setScrollListener();
@@ -138,12 +98,18 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
         setVboxFitWithScrollPane();
     }
 
+    /**
+     * Lấy mainController (PageController) của fxml này.
+     *
+     * @return
+     */
     public BasePageController getMainController() {
         return mainController;
     }
 
-    protected abstract void getCriteria();
-
+    /**
+     * Thêm lắng nghe scrollPane, nếu lướt thì tải thêm (loadMoreRows).
+     */
     private void setScrollListener() {
         scrollPane.addEventFilter(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
             @Override
@@ -173,6 +139,11 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
         }
     }
 
+    /**
+     * Tải các hàng vào Table.
+     *
+     * @param item
+     */
     protected void loadRow(T item) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(getRowFXML()));
@@ -187,5 +158,15 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
             e.printStackTrace();
         }
     }
+
+    /**
+     * Lấy các tiêu chí tìm kiếm.
+     */
+    protected abstract void getCriteria();
+
+    /**
+     * Sau khi lấy tiêu chí thì đặt vào DAO phù hợp gọi loadRows để trả về các kết quả tìm kiếm dc vào bảng.
+     */
+    protected abstract void searchCriteria();
 }
 

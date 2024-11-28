@@ -1,25 +1,24 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Command.UserCommand;
-import com.ooops.lms.bookapi.BookInfoFetcher;
+import com.ooops.lms.animation.Animation;
+import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.Book;
+import com.ooops.lms.model.Category;
 import com.ooops.lms.util.FXMLLoaderUtil;
+import com.ooops.lms.util.Sound;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
 public class AdvancedSearchController {
     @FXML
@@ -28,8 +27,11 @@ public class AdvancedSearchController {
     private TextField searchText;
     @FXML
     private ChoiceBox<String> categoryChoiceBox;
+    @FXML
+    HBox categoryBox;
 
-    private ScrollPane scrollPane1=new ScrollPane(),scrollPane2=new ScrollPane();
+    private ScrollPane scrollPane1 = new ScrollPane(), scrollPane2 = new ScrollPane();
+    private Map<String, Object> criteria = new HashMap<>();
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
 
@@ -38,11 +40,14 @@ public class AdvancedSearchController {
     private VBox test = new VBox();
     private HBox row1Box = new HBox(), row2Box = new HBox();
 
+    /**
+     * hàm khởi tạo cho AdvancedSearch
+     */
     public void initialize() {
         categoryChoiceBox.getItems().addAll("title", "category_name", "author_name");
         categoryChoiceBox.setValue("title");
-        scrollPane1.setStyle("-fx-background-color: transparent;");
-        scrollPane2.setStyle("-fx-background-color: transparent;");
+        scrollPane1.getStyleClass().add("real-transparent-scrollpane");
+        scrollPane2.getStyleClass().add("real-transparent-scrollpane");
 
         scrollPane1.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -50,12 +55,64 @@ public class AdvancedSearchController {
         scrollPane2.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane2.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+        try {
+            List<Category> categoryList = BookDAO.getInstance().selectAllCategory();
+            for (int i = 0; i < categoryList.size(); i++) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/com/ooops/lms/library_management_system/Category-view.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
+                    CategoryController categoryController = fxmlLoader.getController();
+                    categoryController.setData(categoryList.get(i).getCatagoryName(),this);
+                    categoryBox.getChildren().add(anchorPane);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        Sound.getInstance().playSound("cacBanYeuOi.mp3");
+        Animation.getInstance().showMessage("Bạn yêu ơi, vì 1 sách có 1 thể thoi nên nó sẽ tìm thể loại cuối bạn chọn nhé! Mình lười code chỉ được chọn 1 cho bạn yêu quá");
     }
 
     /**
-     * quay lại
+     * từ thanh tìm kiếm truyền vào tìm kiếm cụ thể.
+     * @param keyword từ khoá truyền vào
+     */
+    public void setSearchText(String keyword) {
+        searchText.setText(keyword);
+        onSearchButtonAction(new ActionEvent());
+    }
+
+    /**
+     * thêm điều kiện.
+     * @param category điều kiện
+     */
+    public void addCategoryCriteria(String category) {
+        criteria.put("category_name",category);
+    }
+
+    /**
+     * xoá điều kiện.
+     * @param category điều kiện
+     */
+    public void deleteCategoryCriteria(String category) {
+        Iterator<Map.Entry<String, Object>> iterator = criteria.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            if (entry.getValue() == category) {
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
+    /**
+     * quay lại dashboard
      *
-     * @param event ấn vao
+     * @param event ấn vào để quay dashboard
      */
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
@@ -65,19 +122,14 @@ public class AdvancedSearchController {
     }
 
     /**
-     * tìm sách
+     * tìm sách theo điều kiện
      *
-     * @param event tim
+     * @param event tìm sách theo điều kiện
      */
     public void onSearchButtonAction(ActionEvent event) {
         String keyword = searchText.getText();
         String category = categoryChoiceBox.getValue();
 
-        if (category == null || keyword.isEmpty()) {
-            UserCommand searchCommand = new UserCommand("getAllBooks", null);
-        }
-
-        Map<String, Object> criteria = new HashMap<>();
         criteria.put(category, keyword);
         UserCommand searchCommand = new UserCommand("searchBookByCategory", criteria);
 
@@ -87,7 +139,7 @@ public class AdvancedSearchController {
         } else {
             System.out.println("Không thấy sách");
         }
-
+        deleteCategoryCriteria(searchText.getText());
         showFindedBook();
     }
 
@@ -125,6 +177,11 @@ public class AdvancedSearchController {
         return test;
     }
 
+    /**
+     * tải lên các sách tìm được.
+     * @param index thứ tự của sách
+     * @param rowBox hàng chứa sách
+     */
     private void loadBookCard(int index, HBox rowBox) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();

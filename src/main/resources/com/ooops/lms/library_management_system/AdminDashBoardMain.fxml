@@ -51,7 +51,7 @@
                         </AnchorPane>
                         <AnchorPane layoutX="273.0" layoutY="111.0" prefHeight="94.0" prefWidth="215.0" styleClass="pane-main" AnchorPane.topAnchor="111.0">
                            <children>
-                              <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số sách cho mượn" />
+                              <Label layoutX="15.0" layoutY="62.0" styleClass="black-text-Cabin" text="Số sách đang cho mượn" />
                               <Label fx:id="totalBorrowLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;" styleClass="black-text-Cabin" text="390499534" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
                               <Rectangle fill="#8d6f5e" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
                            </children>
@@ -106,7 +106,7 @@
                            <children>
                               <AnchorPane layoutX="-4.0" prefHeight="277.0" prefWidth="298.0" styleClass="pane-main" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="42.0" prefWidth="245.0" style="-fx-background-color: transparent;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="17.599999999999994" AnchorPane.topAnchor="0.0">
+                                    <HBox alignment="CENTER" prefHeight="42.0" prefWidth="298.0" style="-fx-background-color: D9D9D9;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                              <children>
@@ -123,13 +123,15 @@
                                                 <Label styleClass="black-text-Cabin" text="Status" />
                                              </children>
                                           </HBox>
+                                          <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="16.0" />
                                        </children>
                                     </HBox>
-                                    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="20.0" layoutY="42.0" prefHeight="228.0" prefWidth="302.0" style="-fx-background-color: transparent;" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="42.0">
+                                    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="20.0" layoutY="70.4" prefHeight="220.0" prefWidth="298.0" style="-fx-background-color: transparent;" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                                        <content>
                                           <VBox fx:id="recentIssuelVbox" prefHeight="227.0" prefWidth="286.0" />
                                        </content>
                                     </ScrollPane>
+                                    <Label layoutX="10.0" layoutY="5.0" styleClass="black-text-Cabin" text="Các vấn đề chờ xử lý" />
                                  </children>
                               </AnchorPane>
                            </children>

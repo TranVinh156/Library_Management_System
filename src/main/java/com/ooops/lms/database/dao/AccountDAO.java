@@ -2,10 +2,13 @@ package com.ooops.lms.database.dao;
 
 import com.ooops.lms.database.Database;
 import com.ooops.lms.email.EmailUtil;
+import com.ooops.lms.faceid.FaceidLogin;
+import com.ooops.lms.faceid.FaceidRecognizer;
 import com.ooops.lms.model.Member;
 import com.ooops.lms.model.datatype.Person;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.*;
 
 public class AccountDAO {
     private static Database database;
@@ -37,10 +41,14 @@ public class AccountDAO {
     // Lấy thông tin tài khoản admin
     private static final String GET_ACCOUNT_ADMIN =
             "Select * from Admins where username = ? and password = ?";
+    private static final String GET_ACCOUNT_ADMIN_BY_ID =
+            "Select * from Admins where admin_ID = ?";
 
     // lấy thông tin tài khoản user
     private static final String GET_ACCOUNT_USER =
-            "Select * from Users where username = ? and password = ?";
+            "Select * from Users where username = ? and password = ? and AccountStatus != 'CLOSED'";
+    private static final String GET_ACCOUNT_USER_BY_ID =
+            "Select * from Users where user_id = ?";
 
     // Thêm tài khoản user
     private static final String INSERT_USER =
@@ -284,4 +292,37 @@ public class AccountDAO {
         }
     }
 
+    public int userLoginByFaceID() {
+        try {
+            Integer userID = FaceidLogin.loginFace(FaceidLogin.USER);
+            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER_BY_ID)) {
+                preparedStatement.setInt(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getInt("member_ID");
+                } else {
+                    return 0;
+                }
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int adminLoginByFaceID() {
+        try {
+            Integer userID = FaceidLogin.loginFace(FaceidLogin.ADMIN);
+            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER_BY_ID)) {
+                preparedStatement.setInt(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getInt("admin_ID");
+                } else {
+                    return 0;
+                }
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 }

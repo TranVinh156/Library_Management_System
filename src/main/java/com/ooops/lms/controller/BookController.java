@@ -1,6 +1,7 @@
 package com.ooops.lms.controller;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.animation.Animation;
 import com.ooops.lms.database.dao.*;
 import com.ooops.lms.model.*;
 import com.ooops.lms.model.enums.BookItemStatus;
@@ -9,6 +10,7 @@ import com.ooops.lms.util.FXMLLoaderUtil;
 import com.ooops.lms.util.ThemeManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ooops.lms.controller.BookSuggestionCardController.executor;
+
 public class BookController {
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
     private static final String HISTORY_FXML = "/com/ooops/lms/library_management_system/History-view.fxml";
@@ -43,24 +47,23 @@ public class BookController {
     private Book book;
 
     @FXML
-    VBox bookBox;
+    VBox bookBox,commentsVBox;
     @FXML
     private ChoiceBox<String> starChoiceBox;
     @FXML
-    private Label authorNameLabel;
+    private Label authorNameLabel,bookNameLabel;
     @FXML
     private ImageView bookImage, starImage;
     @FXML
-    private Label bookNameLabel;
-    @FXML
     private Text contentText;
-    @FXML
-    private VBox commentsVBox;
     @FXML
     HBox categoryHbox;
     @FXML
     Button bookmarkButton;
 
+    /**
+     * hàm khởi tạo.
+     */
     public void initialize() {
         starChoiceBox.getItems().addAll("tất cả", "5 sao", "4 sao", "3 sao", "2 sao", "1 sao");
         starChoiceBox.setValue("tất cả");
@@ -76,8 +79,15 @@ public class BookController {
         ThemeManager.getInstance().addPane(bookBox);
     }
 
+    /**
+     * thiết lập dữ liệu cho sách.
+     */
     public void setData() {
-        bookImage.setImage(new Image(book.getImagePath()));
+        Task<Image> loadImageTask = BookManager.getInstance().createLoadImageTask(book);
+
+        loadImageTask.setOnSucceeded(event -> bookImage.setImage(loadImageTask.getValue()));
+
+        executor.submit(loadImageTask);
 
         bookNameLabel.setText(book.getTitle());
         String author = "";
@@ -89,7 +99,6 @@ public class BookController {
         starImage.setImage(starImage(book.getRate()));
         contentText.setText(book.getDescription());
 
-        //comment
         List<Comment> comments = new ArrayList<>();
         try {
             Map<String, Object> criteria = new HashMap<>();
@@ -104,7 +113,7 @@ public class BookController {
                 fxmlLoader.setLocation(getClass().getResource(COMMENT_FXML));
                 VBox cardBox = fxmlLoader.load();
                 CommentController cardController = fxmlLoader.getController();
-                cardController.setData(comments.get(i),authorNameLabel.getStyleClass().toString());
+                cardController.setData(comments.get(i));
                 commentsVBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -117,13 +126,16 @@ public class BookController {
             label.getStyleClass().add("label-4");
             categoryHbox.getChildren().add(label);
         }
-
         //mark
-        if(BookManager.getInstance().isContainedInMarkedBookList(book.getISBN())){
+        if (BookManager.getInstance().isContainedInMarkedBookList(book.getISBN())) {
             bookmarkButton.setText("Huỷ Đánh Dấu");
         }
     }
 
+    /**
+     * hiển thị các comment.
+     * @param star rate của comment
+     */
     private void showComment(int star) {
         commentsVBox.getChildren().clear();
         List<Comment> comments = new ArrayList<>();
@@ -135,13 +147,13 @@ public class BookController {
             throw new RuntimeException(e);
         }
         for (int i = 0; i < comments.size(); i++) {
-            if (comments.get(i).getRate() == star) {
+            if (star == 0 || comments.get(i).getRate() == star) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource(COMMENT_FXML));
                     VBox cardBox = fxmlLoader.load();
                     CommentController cardController = fxmlLoader.getController();
-                    cardController.setData(comments.get(i),authorNameLabel.getStyleClass().toString());
+                    cardController.setData(comments.get(i));
                     commentsVBox.getChildren().add(cardBox);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -150,6 +162,10 @@ public class BookController {
         }
     }
 
+    /**
+     * quay về dashboard.
+     * @param event khi ấn vào
+     */
     public void onBackButtonAction(ActionEvent event) {
         VBox content = (VBox) FXMLLoaderUtil.getInstance().loadFXML(DASHBOARD_FXML);
         if (content != null) {
@@ -161,20 +177,19 @@ public class BookController {
         }
     }
 
+    /**
+     * đặt trước sách.
+     * @param actionEvent khi ấn vào
+     */
     public void onReserveBookButtonAction(ActionEvent actionEvent) {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đặt trước sách chứ gì?");
         if (confirmYes) {
             try {
-                HistoryController historyController =
-                        FXMLLoaderUtil.getInstance().getController(HISTORY_FXML);
-                if (historyController != null) {
-                    historyController.addReservedBook(this.book);
-                }
                 Map<String, Object> criteria = new HashMap<>();
                 criteria.put("ISBN", book.getISBN());
                 criteria.put("BookItemStatus", "AVAILABLE");
                 List<BookItem> bookItems = BookItemDAO.getInstance().searchByCriteria(criteria);
-                if(bookItems.size()>0) {
+                if (bookItems.size() > 0) {
                     BookItem bookItem = BookItemDAO.getInstance().find(bookItems.get(0).getBarcode());
                     bookItem.setStatus(BookItemStatus.RESERVED);
                     BookItemDAO.getInstance().update(bookItem);
@@ -186,12 +201,13 @@ public class BookController {
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                    CustomerAlter.showMessage("Đã ghi nhận, vui lòng n mượn trong 3 ngày");
-                    BookManager.getInstance().addReservedBook(bookReservation);
-                    SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
-                    if (settingController != null) {
-                        settingController.updateReservedBookSize();
+                    HistoryController historyController =
+                            FXMLLoaderUtil.getInstance().getController(HISTORY_FXML);
+                    if (historyController != null) {
+                        historyController.addReservedBook(bookReservation);
                     }
+                    Animation.getInstance().showMessage("Đã ghi nhận, vui lòng mượn trong 3 ngày");
+
                 } else {
                     CustomerAlter.showMessage("Hết mất sách cho cậu mượn rùi T.T");
                 }
@@ -203,14 +219,21 @@ public class BookController {
 
     }
 
+    /**
+     * đánh dấu sách.
+     * @param actionEvent khi ấn vào
+     */
     public void onBookmarkButtonAction(ActionEvent actionEvent) {
-        if(bookmarkButton.getText().equals("Đánh dấu")) {
+        if (bookmarkButton.getText().equals("Đánh dấu")) {
             markedBook();
-        }else {
+        } else {
             cancelMarkedBook();
         }
     }
 
+    /**
+     * huỷ đánh dấu.
+     */
     private void cancelMarkedBook() {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn huỷ đánh dấu sách này à?");
         if (confirmYes) {
@@ -239,6 +262,9 @@ public class BookController {
         }
     }
 
+    /**
+     * đánh dấu sách.
+     */
     private void markedBook() {
         boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đánh dấu sách này à?");
         if (confirmYes) {
@@ -253,6 +279,7 @@ public class BookController {
                 List<BookItem> bookItem = BookItemDAO.getInstance().searchByCriteria(criteria);
                 BookMark bookMark = new BookMark(UserMenuController.getMember()
                         , bookItem.getFirst());
+                bookMark.getBook().setRate(book.getRate());
                 try {
                     BookMarkDAO.getInstance().add(bookMark);
                 } catch (SQLException e) {
@@ -267,15 +294,25 @@ public class BookController {
         }
     }
 
+    /**
+     * từ rate sang Image.
+     * @param numOfStar số rate
+     * @return ảnh của rate
+     */
     private Image starImage(int numOfStar) {
+        System.out.println(numOfStar);
         String imagePath = "/image/book/" + numOfStar + "Star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {
             System.out.println("Image not found: " + imagePath);
-            return new Image(getClass().getResourceAsStream("/image/book/1Star.png"));
+            return new Image(getClass().getResourceAsStream("/image/book/5Star.png"));
         }
         return new Image(getClass().getResourceAsStream(imagePath));
     }
 
+    /**
+     * trả về sách.
+     * @return sách
+     */
     public Book getBook() {
         return book;
     }
@@ -285,16 +322,32 @@ public class BookController {
         setData();
     }
 
+    /**
+     * từ rate choiceBox sang int
+     * @param rate rate
+     * @return số rate
+     */
     private int fromRateToInt(String rate) {
         char firstChar = rate.charAt(0);
+        if (Character.isAlphabetic(firstChar)) {
+            return 0;
+        }
         return Character.getNumericValue(firstChar);
     }
 
+    /**
+     * mở preview.
+     * @param mouseEvent
+     */
     public void onOpenPreviewMouseClicked(MouseEvent mouseEvent) {
         System.out.println(book.getPreview());
         openWebLink(book.getPreview());
     }
 
+    /**
+     * mở web .
+     * @param url link
+     */
     private void openWebLink(String url) {
         try {
             // Kiểm tra nếu hệ thống hỗ trợ Desktop API

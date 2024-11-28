@@ -47,6 +47,11 @@ public class BookRankingCardController {
     @FXML
     private ImageView starImage;
 
+    /**
+     * thiết lập dữ liệu cho card.
+     * @param book sách
+     * @param rank hạng
+     */
     public void setData(Book book,String rank) {
         this.book = book;
         bookNameLabel.setText("book name");
@@ -68,6 +73,10 @@ public class BookRankingCardController {
         executor.submit(loadImageTask);
     }
 
+    /**
+     * chọn đọc sách.
+     * @param actionEvent khi ấn vào
+     */
     public void onReadButtonAction(ActionEvent actionEvent) {
         try {
             // Load FXML
@@ -92,13 +101,17 @@ public class BookRankingCardController {
         }
     }
 
+    /**
+     * từ rate sang Inage.
+     * @param numOfStar rate
+     * @return Image
+     */
     private Image starImage(int numOfStar) {
         String imagePath = "/image/book/" + numOfStar + "Star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {
             System.out.println("Image not found: " + imagePath);
             return new Image(getClass().getResourceAsStream("/image/book/1Star.png"));
         }
-
         return new Image(getClass().getResourceAsStream(imagePath));
     }
 }

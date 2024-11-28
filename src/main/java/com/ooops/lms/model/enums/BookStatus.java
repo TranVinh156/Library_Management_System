@@ -2,7 +2,7 @@ package com.ooops.lms.model.enums;
 
 public enum BookStatus {
     AVAILABLE("Có sẵn"),
-    UNAVAILAVBLE("Hết hàng");
+    UNAVAILABLE("Hết hàng");
 
     private final String displayName;
     BookStatus(String displayName) {

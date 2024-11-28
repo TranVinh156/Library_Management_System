@@ -1,6 +1,7 @@
 package com.ooops.lms.Command;
 
 import com.ooops.lms.Alter.CustomerAlter;
+import com.ooops.lms.controller.AdminMenuController;
 import com.ooops.lms.controller.BasicController;
 import com.ooops.lms.database.dao.AccountDAO;
 import com.ooops.lms.model.enums.Role;
@@ -18,6 +19,7 @@ public class LoginCommand extends BasicController implements Command {
     private String username;
     private Stage stage;
     private int resultMemberID;
+    private int adminID;
 
     public LoginCommand(Stage stage, Role role, String username, String password) {
         this.role = role;
@@ -53,6 +55,7 @@ public class LoginCommand extends BasicController implements Command {
             }
         } else if (role.equals(Role.ADMIN)) {
             if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
+                this.adminID = AccountDAO.getInstance().validateAdminLogin(username,password);
                 return CustomerAlter.showAlter("Hế lô chào mừng bạn tới với chúng tớ nhé");
             }
         }
@@ -65,6 +68,10 @@ public class LoginCommand extends BasicController implements Command {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ooops/lms/library_management_system/AdminMenu.fxml"));
                 Parent root = fxmlLoader.load();
+
+                AdminMenuController controller = fxmlLoader.getController();
+                controller.setAdminID(adminID);
+
                 Scene scene = new Scene(root);
                 this.stage.setResizable(true);
                 stage.setWidth(stage.getWidth());
@@ -92,21 +99,5 @@ public class LoginCommand extends BasicController implements Command {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void loadView(String fxmlPath) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(fxmlLoader.load());
-            //stage.setResizable(false);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int getResultMemberID() {
-        return resultMemberID;
     }
 }

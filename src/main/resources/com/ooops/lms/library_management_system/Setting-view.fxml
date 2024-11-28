@@ -3,7 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -12,14 +17,43 @@
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" prefHeight="329.0" prefWidth="567.0" styleClass="background-part" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" prefHeight="330.0" prefWidth="527.0" spacing="5.0" styleClass="background-part" HBox.hgrow="ALWAYS">
                <children>
+                  <AnchorPane prefHeight="60.0" prefWidth="527.0" VBox.vgrow="NEVER">
+                     <children>
+                        <Button layoutX="474.0" layoutY="8.0" mnemonicParsing="false" onAction="#onGameButtonAction" prefHeight="44.0" prefWidth="64.0" styleClass="button-transparent" AnchorPane.rightAnchor="8.0">
+                           <graphic>
+                              <ImageView fitHeight="37.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../image/customer/general/gameImage.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </AnchorPane>
                   <Circle fx:id="avaImage" fill="#d9b2ff" radius="77.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Label fx:id="nameLabel" styleClass="label-2" text="UserName" textFill="#ff2de6" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="Cambria Bold" size="32.0" />
-                     </font>
-                  </Label>
+                  <HBox alignment="CENTER" prefHeight="62.0" prefWidth="527.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="nameLabel" styleClass="label-2" text="UserName" textFill="#ff2de6">
+                           <font>
+                              <Font name="Cambria Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#onFaceIDButtonAction" styleClass="button-transparent">
+                           <graphic>
+                              <ImageView fitHeight="34.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../image/customer/general/face.gif" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Thiết lập FaceID" />
+                           </tooltip>
+                        </Button>
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER" prefHeight="32.0" prefWidth="848.0" spacing="50.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label styleClass="label-2" text="Đang mượn" HBox.hgrow="ALWAYS">
@@ -39,7 +73,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="848.0" spacing="130.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="TOP_CENTER" prefHeight="87.0" prefWidth="527.0" spacing="130.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label fx:id="borrowingLabel" styleClass="label-1" text="0" HBox.hgrow="ALWAYS">
                            <font>
@@ -60,38 +94,82 @@
                   </HBox>
                </children>
                <padding>
-                  <Insets top="30.0" />
+                  <Insets bottom="20.0" />
                </padding>
             </VBox>
          </children>
       </HBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="background" VBox.vgrow="ALWAYS">
+      <StackPane prefHeight="268.0" prefWidth="527.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInfomationButtonAction" styleClass="button-2" text="Thông tin cá nhân">
+            <VBox alignment="TOP_CENTER" prefHeight="242.0" prefWidth="527.0" spacing="10.0" styleClass="background">
+               <children>
+                  <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInfomationButtonAction" styleClass="button-2" text="Thông tin cá nhân">
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onHistoryButtonAction" styleClass="button-2" text="Lịch sử mượn sách">
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onReportButtonAction" styleClass="button-2" text="Báo cáo của em">
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInterfaceSettingButtonAction" styleClass="button-2" text="Tính năng gì đó">
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </Button>
+               </children>
                <padding>
-                  <Insets bottom="5.0" left="20.0" top="5.0" />
+                  <Insets left="50.0" right="50.0" top="20.0" />
                </padding>
-            </Button>
-            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onHistoryButtonAction" styleClass="button-2" text="Lịch sử mượn sách">
-               <padding>
-                  <Insets bottom="5.0" left="20.0" top="5.0" />
-               </padding>
-            </Button>
-            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onReportButtonAction" styleClass="button-2" text="Báo cáo của em">
-               <padding>
-                  <Insets bottom="5.0" left="20.0" top="5.0" />
-               </padding>
-            </Button>
-            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInterfaceSettingButtonAction" styleClass="button-2" text="Tính năng gì đó">
-               <padding>
-                  <Insets bottom="5.0" left="20.0" top="5.0" />
-               </padding>
-            </Button>
+            </VBox>
+            <AnchorPane fx:id="faceIDPane" prefHeight="391.0" prefWidth="527.0" visible="false">
+               <children>
+                  <StackPane layoutX="76.0" layoutY="-196.66666666666666" prefHeight="366.0" prefWidth="381.0" AnchorPane.leftAnchor="71.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="-197.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="343.0" prefWidth="373.0" spacing="30.0" styleClass="faceID-pane">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" prefHeight="0.0" prefWidth="341.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onCloseFaceIDButtonAction" styleClass="button-transparent">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../image/customer/book/x.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                              </VBox>
+                              <ImageView fx:id="cameraImage" fitHeight="176.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../image/customer/general/girl.gif" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="faceIDButton" mnemonicParsing="false" onAction="#onSetFaceIDButtonAction" styleClass="button-1" text="Thiết lập FaceID" />
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
          </children>
-         <padding>
-            <Insets left="50.0" right="50.0" top="20.0" />
-         </padding>
-      </VBox>
+      </StackPane>
    </children>
    <padding>
       <Insets right="40.0" />

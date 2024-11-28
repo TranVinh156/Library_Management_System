@@ -11,7 +11,6 @@ module com.ooops.lms.library_management_system {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.desktop;
     requires annotations;
     requires java.mail;
     requires com.google.zxing.javase;
@@ -19,7 +18,6 @@ module com.ooops.lms.library_management_system {
     requires opencv;
     requires java.net.http;
     requires com.google.gson;
-    requires java.sql;
     requires mysql.connector.j;
     requires org.json;
     requires com.google.api.services.books;
@@ -30,6 +28,10 @@ module com.ooops.lms.library_management_system {
     requires com.google.api.client.json.jackson2;
     requires org.checkerframework.checker.qual;
     requires javafx.media;
+    requires java.desktop;
+    requires java.sql;
+    requires org.apache.httpcomponents.httpclient;
+    requires org.apache.httpcomponents.httpcore;
 
     opens com.ooops.lms.library_management_system to javafx.fxml;
     opens com.ooops.lms.controller to javafx.fxml;
@@ -44,4 +46,5 @@ module com.ooops.lms.library_management_system {
     opens com.ooops.lms.Alter to javafx.fxml;
     exports com.ooops.lms.SuggestionTable;
     opens com.ooops.lms.SuggestionTable to javafx.fxml;
+    exports com.ooops.lms.Settings;
 }

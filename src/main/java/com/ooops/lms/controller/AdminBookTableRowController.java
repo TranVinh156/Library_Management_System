@@ -50,7 +50,7 @@ public class AdminBookTableRowController extends BaseRowController<Book, AdminBo
         if(item.getstatus() == null) {
             System.out.println(item.getISBN() +" is null status");
         }
-        statusLabel.setText(item.getstatus().getDisplayName());
+        statusLabel.setText(item.getstatus()+"");
         if(item.getstatus().equals(BookStatus.AVAILABLE)) {
             statusLabel.setStyle(("-fx-text-fill: green;"));
         }
@@ -59,41 +59,5 @@ public class AdminBookTableRowController extends BaseRowController<Book, AdminBo
         }
     }
 
-    public String getCategories(List<Category> categories) {
-        if (categories == null || categories.isEmpty()) {
-            return "Không có danh mục"; // Trả về thông báo nếu không có danh mục
-        }
 
-        StringBuilder result = new StringBuilder(); // Sử dụng StringBuilder để xây dựng chuỗi
-
-        for (int i = 0; i < categories.size(); i++) {
-            // Giả sử mỗi Category có phương thức getName()
-            result.append(categories.get(i).getCatagoryName());
-
-            // Nếu không phải là phần tử cuối cùng, thêm dấu phẩy
-            if (i < categories.size() - 1) {
-                result.append(", ");
-            }
-        }
-
-        return result.toString(); // Chuyển đổi StringBuilder thành String
-    }
-
-    public String getAuthors(List<Author> authors) {
-        if (authors == null || authors.isEmpty()) {
-            return "Không có danh mục"; // Trả về thông báo nếu không có danh mục
-        }
-
-        StringBuilder result = new StringBuilder(); // Sử dụng StringBuilder để xây dựng chuỗi
-
-        for (int i = 0; i < authors.size(); i++) {
-            result.append(authors.get(i).getAuthorName());
-
-            if (i < authors.size() - 1) {
-                result.append(", ");
-            }
-        }
-
-        return result.toString(); // Chuyển đổi StringBuilder thành String
-    }
 }

@@ -157,7 +157,7 @@
 }
 
 .button-book1 {
-    -fx-background-color: #000000;
+    -fx-background-color: #303030;
     -fx-text-fill: #ffffff;
 }
 
@@ -216,4 +216,30 @@
 .musicNameIn{
     -fx-background-color: linear-gradient(white, #C8C8C8,white);
     -fx-background-radius:20;
+}
+.real-transparent-scrollpane {
+    -fx-background-color: transparent;
+    -fx-background-radius:0;
+}
+.real-transparent-scrollpane .viewport {
+    -fx-background-color: transparent; /* Đặt màu nền bên trong ScrollPane */
+    -fx-background-radius: 0; /* Bo tròn các góc bên trong */
+    -fx-border-radius: 0;
+}
+.button-3 {
+    -fx-padding:4 15 8 15;
+            -fx-background-insets: 0,0 0 5 0,0 0 6 0,0 0 7 0;
+            -fx-background-radius: 15;
+            -fx-background-color: #D9D9D9;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5),4,0,0,1);
+            -fx-font-weight: bold;
+            -fx-font-size: 1.3em;
+            -fx-text-fill: white;
+}
+
+.faceID-pane {
+    -fx-background-radius : 20;
+    -fx-border-radius : 20;
+    -fx-border-color : black;
+    -fx-background-color: linear-gradient(white, #C8C8C8,white);
 }

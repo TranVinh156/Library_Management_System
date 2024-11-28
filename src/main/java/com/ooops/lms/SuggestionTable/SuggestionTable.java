@@ -149,16 +149,58 @@ public class SuggestionTable {
                     suggestList.addAll(BookItemDAO.getInstance().searchByCriteria(searchCriteria));
                     break;
                 case "bookNameAPI":
-                    List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
-                    suggestList.addAll(listbook);
-                    break;
+                    System.out.println("dhgfd");
+                    Task<List<Book>> fetchBooksTask = new Task<>() {
+                        @Override
+                        protected List<Book> call() throws Exception {
+                            try {
+                                System.out.println("Starting API call...");
+                                List<Book> results = BookInfoFetcher.searchBooksByKeyword(value);
+                                System.out.println("API call completed. Found " + (results != null ? results.size() : 0) + " books");
+                                return results;
+                            } catch (Exception e) {
+                                System.out.println("Error in API call: " + e.getMessage());
+                                e.printStackTrace();
+                                throw e;
+                            }
+                        }
+                    };
+
+                    fetchBooksTask.setOnSucceeded(event -> {
+                        try {
+                            List<Book> books = fetchBooksTask.getValue();
+                            System.out.println("Task succeeded. Adding " + (books != null ? books.size() : 0) + " books to suggestList");
+                            if (books != null) {
+                                suggestList.addAll(books);
+                                Platform.runLater(() -> scrollPane.setVisible(true));
+                                loadSuggestionRowsAsync();
+                            } else {
+                                Platform.runLater(() -> {
+                                    scrollPane.setVisible(false);
+                                    scrollPane.setLayoutX(0);
+                                    scrollPane.setLayoutY(0);
+                                });
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error in onSucceeded: " + e.getMessage());
+
+                            e.printStackTrace();
+                        }
+                    });
+                    //List<Book> listbook = BookInfoFetcher.searchBooksByKeyword(value);
+                    //suggestList.addAll(listbook);
+                    new Thread(fetchBooksTask).start();
+                    return;
                 case "bookISBNAPI":
                     Book book = BookInfoFetcher.searchBookByISBN(value);
-                    suggestList.addAll((Collection<?>) book);
+                    if(book!= null) {
+                        suggestList.add(book);
+                    }
                     break;
                 default:
                     break;
             }
+            System.out.println(suggestList.size());
             if (!suggestList.isEmpty()) {
                 long startTime = System.currentTimeMillis();
                 Platform.runLater(() -> scrollPane.setVisible(true));

@@ -52,8 +52,8 @@ public class BookInfoFetcher {
                     return response.toString();
                 }
             } else {
-                CustomerAlter.showMessage("HTTP error: " + responseCode);
-                //throw new Exception("HTTP error: " + responseCode);
+//                CustomerAlter.showMessage("HTTP error: " + responseCode);
+                throw   new Exception("HTTP error: " + responseCode);
             }
         }
     }
@@ -133,7 +133,7 @@ public class BookInfoFetcher {
                     books.add(book);
                 }
             } else {
-                CustomerAlter.showMessage("No book information found for title: " + title);
+
                 //System.out.println("No book information found for title: " + title);
             }
         } catch (Exception e) {
@@ -196,7 +196,7 @@ public class BookInfoFetcher {
                 book.setPreview(webReaderLink);
                 return book;
             } else {
-                CustomerAlter.showMessage("No book information found for ISBN: " + isbn);
+
             }
         } catch (Exception e) {
             return null;

@@ -6,6 +6,8 @@ import javafx.scene.media.MediaPlayer;
 public class Sound {
     private static Sound instance = null;
 
+    private boolean isOnSound = true;
+
     public static Sound getInstance() {
         if (instance == null) {
             instance = new Sound();
@@ -13,25 +15,35 @@ public class Sound {
         return instance;
     }
 
+    private MediaPlayer mediaPlayer;
+
+    public void turnOnSound() {
+        isOnSound = true;
+    }
+
+    public void turnOffSound() {
+        isOnSound = false;
+    }
+
     public void playSound(String soundName) {
+        if (!isOnSound) {
+            return;
+        }
+        if (mediaPlayer != null) {
+            mediaPlayer.dispose();
+        }
         String audioFilePath = getClass().getResource("/sound/" + soundName).toExternalForm();
-
-        // Tạo Media và MediaPlayer
         Media media = new Media(audioFilePath);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer = new MediaPlayer(media);
 
-        // Phát âm thanh
-        mediaPlayer.setOnReady(() -> {
-            System.out.println("Phát âm thanh...");
-            mediaPlayer.play();
-        });
+        mediaPlayer.setOnReady(() -> mediaPlayer.play());
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
+        mediaPlayer.setOnError(() -> System.err.println("Lỗi: " + mediaPlayer.getError()));
+    }
 
-        mediaPlayer.setOnEndOfMedia(() -> {
-            System.out.println("Kết thúc phát âm thanh.");
-        });
-
-        mediaPlayer.setOnError(() -> {
-            System.err.println("Lỗi phát âm thanh: " + mediaPlayer.getError());
-        });
+    public void closeSound() {
+        if (mediaPlayer != null) {
+            mediaPlayer.dispose();
+        }
     }
 }
