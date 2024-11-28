@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.ooops.lms.database.dao.BookDAO;
 import com.ooops.lms.model.enums.BookIssueStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 
@@ -65,6 +66,8 @@ public class BookManager {
         if (reservedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            criteria.put("BookReservationStatus", BookReservationStatus.WAITING);
+
             reservedBooks = BookReservationDAO.getInstance().searchByCriteria(criteria);
         }
         return reservedBooks;
@@ -202,20 +205,17 @@ public class BookManager {
             protected Image call() throws Exception {
                 String imagePath = book.getImagePath();
 
-                // Kiểm tra ảnh trong cache
                 if (bookImageCache.containsKey(imagePath)) {
                     return bookImageCache.get(imagePath);
                 }
 
                 try {
-                    // Tải ảnh mới
                     Image image = new Image(imagePath, true);
                     bookImageCache.put(imagePath, image); // Lưu vào cache
                     return image;
                 } catch (Exception e) {
                     System.out.println("Failed to load image. Path length: " + imagePath.length());
 
-                    // Tải ảnh mặc định
                     File file = new File("bookImage/default.png");
                     Image defaultImage = new Image(file.toURI().toString());
                     bookImageCache.put(imagePath, defaultImage); // Lưu ảnh mặc định vào cache với cùng key

@@ -51,18 +51,9 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="266.0" prefWidth="269.0" styleClass="musicRadioSmall">
                            <children>
-                              <ImageView fitHeight="193.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../image/customer/music/Disk.gif" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                        <ImageView fitHeight="61.0" fitWidth="268.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../image/customer/music/MusicBapBung.gif" />
-                           </image>
-                        </ImageView>
+                              <ImageView fx:id="diskImage" fitHeight="197.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true" />
+                           </children></VBox>
+                        <ImageView fx:id="musicImage" fitHeight="61.0" fitWidth="268.0" pickOnBounds="true" preserveRatio="true" />
                         <HBox alignment="CENTER" prefHeight="112.0" prefWidth="320.0" spacing="10.0" VBox.vgrow="ALWAYS">
                            <children>
                               <Button mnemonicParsing="false" onAction="#onPreviousButtonAction" styleClass="button-transparent">
@@ -118,11 +109,7 @@
                         </VBox>
                         <AnchorPane prefHeight="400.0" prefWidth="317.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <ImageView fx:id="musicDanceImage" fitHeight="114.0" fitWidth="133.0" layoutX="143.0" layoutY="277.0" onMouseClicked="#onDanceMouseClicked" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../image/customer/music/Feel.gif" />
-                                 </image>
-                              </ImageView>
+                              <ImageView fx:id="musicDanceImage" fitHeight="114.0" fitWidth="133.0" layoutX="143.0" layoutY="277.0" onMouseClicked="#onDanceMouseClicked" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fitHeight="238.0" fitWidth="374.0" layoutX="-116.0" layoutY="85.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" rotate="-36.9">
                                  <image>
                                     <Image url="@../../../../image/customer/music/headphone.png" />
