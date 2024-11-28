@@ -123,6 +123,7 @@ public class TicTacToeController {
             if (!b.getText().equals("")) cnt++;
         }
         if (cnt == 9 && !OWin && !XWin) {
+            Sound.getInstance().playSound("jack.mp3");
             CustomerAlter.showMessage("Chúng ta huề");
         }
     }
@@ -389,8 +390,10 @@ public class TicTacToeController {
         }
 
         if (playModeLabel.getText().equals(PLAY_WITH_COMPUTER)) {
+            Sound.getInstance().playSound("clap.mp3");
             CustomerAlter.showMessage("Tao nhường mày thắng");
         } else {
+            Sound.getInstance().playSound("clap.mp3");
             CustomerAlter.showMessage("X thắng");
         }
 
@@ -410,8 +413,10 @@ public class TicTacToeController {
             button.setDisable(true); // Không cho ấn thêm
         }
         if (playModeLabel.getText().equals(PLAY_WITH_COMPUTER)) {
+            Sound.getInstance().playSound("loser.mp3");
             CustomerAlter.showMessage("tao thắng");
         } else {
+            Sound.getInstance().playSound("clap.mp3");
             CustomerAlter.showMessage("O thắng");
         }
     }
