@@ -30,13 +30,19 @@ def remove_user_from_model(user_id, model_path, save_path = TRAINING_DATA_PATH):
         if not os.path.isdir(folder_path):
             continue
 
-        for file in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, file)
-            img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
-            if img is not None:
-                if folder != user_id:  # Chỉ giữ lại dữ liệu không thuộc user_id cần xóa
-                    faces.append(img)
-                    labels.append(int(folder))
+        try:
+            folder_id = int(folder)  # Chuyển đổi tên thư mục sang số nguyên
+            if 50000000 <= folder_id < 55000000:  # Kiểm tra nếu folder_id nằm trong khoảng yêu cầu
+                for file in os.listdir(folder_path):
+                    file_path = os.path.join(folder_path, file)
+                    img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+                    if img is not None:
+                        if folder != user_id:  # Chỉ giữ lại dữ liệu không thuộc user_id cần xóa
+                            faces.append(img)
+                            labels.append(folder_id)
+        except ValueError:
+        # Bỏ qua nếu tên thư mục không thể chuyển đổi thành số nguyên
+            continue
 
     user_path = os.path.join(save_path, user_id)
     if os.path.exists(user_path):
