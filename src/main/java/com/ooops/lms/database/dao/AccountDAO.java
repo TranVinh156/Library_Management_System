@@ -292,13 +292,9 @@ public class AccountDAO {
         }
     }
 
-    public int userLoginByFaceID() throws Exception {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Callable<Integer> loginTask = () -> FaceidLogin.loginFace(FaceidLogin.USER);
-
-        Future<Integer> future = executorService.submit(loginTask);
+    public int userLoginByFaceID() {
         try {
-            Integer userID = future.get();
+            Integer userID = FaceidLogin.loginFace(FaceidLogin.USER);
             try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER_BY_ID)) {
                 preparedStatement.setInt(1, userID);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -308,23 +304,15 @@ public class AccountDAO {
                     return 0;
                 }
             }
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             return 0;
-        } catch (InterruptedException e) {
-            return 0;
-        } finally {
-            executorService.shutdown();
         }
     }
 
-    public int adminLoginByFaceID() throws SQLException, IOException {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Callable<Integer> loginTask = () -> FaceidLogin.loginFace(FaceidLogin.ADMIN);
-
-        Future<Integer> future = executorService.submit(loginTask);
+    public int adminLoginByFaceID() {
         try {
-            Integer userID = future.get();
-            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_ADMIN_BY_ID)) {
+            Integer userID = FaceidLogin.loginFace(FaceidLogin.ADMIN);
+            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER_BY_ID)) {
                 preparedStatement.setInt(1, userID);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
@@ -333,12 +321,8 @@ public class AccountDAO {
                     return 0;
                 }
             }
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             return 0;
-        } catch (InterruptedException e) {
-            return 0;
-        } finally {
-            executorService.shutdown();
         }
     }
 }
