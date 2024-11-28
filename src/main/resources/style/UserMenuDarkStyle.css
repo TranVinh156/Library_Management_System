@@ -157,7 +157,7 @@
 }
 
 .button-book1 {
-    -fx-background-color: #000000;
+    -fx-background-color: #303030;
     -fx-text-fill: #ffffff;
 }
 
@@ -235,4 +235,11 @@
             -fx-font-weight: bold;
             -fx-font-size: 1.3em;
             -fx-text-fill: white;
+}
+
+.faceID-pane {
+    -fx-background-radius : 20;
+    -fx-border-radius : 20;
+    -fx-border-color : black;
+    -fx-background-color: linear-gradient(white, #C8C8C8,white);
 }
