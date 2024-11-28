@@ -86,7 +86,7 @@
 }
 .menu-bar-button:hover {
     -fx-background-color: #EFBF04;
-    -fx-border-color: #EFBF04;
+    -fx-border-color: #ffffff;
     -fx-border-width: 0px 5px 0px 0px;
 }
 

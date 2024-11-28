@@ -10,6 +10,7 @@ import com.ooops.lms.model.BookItem;
 import com.ooops.lms.model.BookReservation;
 import com.ooops.lms.model.enums.BookIssueStatus;
 import com.ooops.lms.model.enums.BookItemStatus;
+import com.ooops.lms.model.enums.BookReservationStatus;
 import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import javafx.event.ActionEvent;
@@ -180,7 +181,8 @@ public class HistoryController implements Initializable {
                     bookItem.setStatus(BookItemStatus.AVAILABLE);
                     BookItemDAO.getInstance().update(bookItem);
                     BookReservation bookReservation = BookReservationDAO.getInstance().find(bookReservations.getFirst().getReservationId());
-                    BookReservationDAO.getInstance().delete(bookReservation);
+                    bookReservation.setStatus(BookReservationStatus.CANCELED);
+                    BookReservationDAO.getInstance().update(bookReservation);
                     bookReservationList.remove(index);
                     SettingController settingController = FXMLLoaderUtil.getInstance().getController(SETTING_FXML);
                     settingController.updateReservedBookSize();
