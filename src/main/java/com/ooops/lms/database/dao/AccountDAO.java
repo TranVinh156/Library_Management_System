@@ -312,7 +312,7 @@ public class AccountDAO {
     public int adminLoginByFaceID() {
         try {
             Integer userID = FaceidLogin.loginFace(FaceidLogin.ADMIN);
-            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER_BY_ID)) {
+            try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_ADMIN_BY_ID)) {
                 preparedStatement.setInt(1, userID);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
