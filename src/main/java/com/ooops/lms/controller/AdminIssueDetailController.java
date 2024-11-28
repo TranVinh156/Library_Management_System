@@ -62,6 +62,7 @@ public class AdminIssueDetailController extends BaseDetailController<Report> {
         emailLabel.setText(item.getMember().getPerson().getEmail());
         titelLabel.setText(item.getTitle());
         detailIssueText.setText(item.getContent());
+        phoneNumberLabel.setText(item.getMember().getPerson().getPhone());
     }
 
     @Override
