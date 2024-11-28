@@ -32,7 +32,14 @@ def remove_user_from_model(user_id, model_path, save_path = TRAINING_DATA_PATH):
 
         try:
             folder_id = int(folder)  # Chuyển đổi tên thư mục sang số nguyên
-            if 50000000 <= folder_id < 55000000:  # Kiểm tra nếu folder_id nằm trong khoảng yêu cầu
+
+            if model_path == "face/admin.yml" and folder_id > 55000000:
+                valid_folder = True
+            elif model_path == "face/user.yml" and 50000000 <= folder_id < 55000000:
+                valid_folder = True
+            else:
+                valid_folder = False
+            if valid_folder:  # Kiểm tra nếu folder_id nằm trong khoảng yêu cầu
                 for file in os.listdir(folder_path):
                     file_path = os.path.join(folder_path, file)
                     img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
