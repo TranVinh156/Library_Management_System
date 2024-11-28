@@ -167,6 +167,8 @@ public class HistoryController implements Initializable {
         }
         Map<String,Object> criteria = new HashMap<>();
         criteria.put("barcode",bookItem.getBarcode());
+        criteria.put("BookReservationStatus",BookReservationStatus.WAITING);
+
         int index = findBookReserved(bookItem.getBarcode());
 
         try {
