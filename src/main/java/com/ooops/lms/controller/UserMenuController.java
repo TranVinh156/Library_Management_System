@@ -9,6 +9,8 @@ import com.ooops.lms.model.Author;
 import com.ooops.lms.model.Book;
 import com.ooops.lms.model.BookMark;
 import com.ooops.lms.model.Member;
+import com.ooops.lms.userInfo.UserInfo;
+import com.ooops.lms.userInfo.UserInfoManagement;
 import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import com.ooops.lms.util.Sound;
@@ -54,7 +56,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 
-public class UserMenuController implements Initializable {
+public class UserMenuController {
     @FXML
     private VBox contentBox;
 
@@ -71,7 +73,7 @@ public class UserMenuController implements Initializable {
     Label userNameLabel;
 
     @FXML
-    ImageView avatarImage,pauseImage,pullMenuBarImage,talkImage;
+    ImageView avatarImage, pauseImage, pullMenuBarImage, talkImage;
 
     @FXML
     TextField searchText;
@@ -97,7 +99,8 @@ public class UserMenuController implements Initializable {
     private Button[] buttons;
     private ObservableList<HBox> filteredSuggestions;
 
-    private int memberID = 0;
+    private static UserInfo userInfo;
+    private int memberID;
     private static Member member;
 
     private static final String DASHBOARD_FXML = "/com/ooops/lms/library_management_system/DashBoard-view.fxml";
@@ -109,10 +112,16 @@ public class UserMenuController implements Initializable {
     private static final String SUGGEST_CARD_FXML = "/com/ooops/lms/library_management_system/BookSuggestionCard-view.fxml";
     private static final String MUSIC_FXML = "/com/ooops/lms/library_management_system/Music-view.fxml";
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void setInfo() {
         setupHoverMenuBar();
-        //set up loader and add dashboard
+
+        userInfo = UserInfoManagement.getInstance().findUserById(Integer.toString(memberID));
+        if (userInfo == null) {
+            userInfo = new UserInfo(Integer.toString(memberID), "default", false);
+            UserInfoManagement.getInstance().writeUserInfoToFile(userInfo);
+        }
+        ThemeManager.getInstance().changeTheme(userInfo.getColor());
+
         fxmlLoaderUtil = FXMLLoaderUtil.getInstance(contentBox);
         fxmlLoaderUtil.addUserMenuController(this);
         VBox content = (VBox) fxmlLoaderUtil.loadFXML(DASHBOARD_FXML);
@@ -121,15 +130,15 @@ public class UserMenuController implements Initializable {
             contentBox.getChildren().clear();
             contentBox.getChildren().add(content);
         }
-        //theme
+
         ThemeManager.getInstance().addPane(stackPane);
-        //search book
+
         searchBookSuggestion();
 
         buttons = new Button[]{
                 dashboardButton, bookmarkButton, bookRankingButton, settingButton};
         ThemeManager.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
-        Animation.getInstance().setAll(pullMenuBarImage,talkImage,talkText);
+        Animation.getInstance().setAll(pullMenuBarImage, talkImage, talkText);
     }
 
     public void setMusicNameText(String musicNameText) {
@@ -149,7 +158,7 @@ public class UserMenuController implements Initializable {
         if (content != null) {
             fxmlLoaderUtil.updateContentBox(content);
             try {
-                AdvancedSearchController advancedSearchController =FXMLLoaderUtil.getInstance().getController(ADVANCED_SEARCH_FXML);
+                AdvancedSearchController advancedSearchController = FXMLLoaderUtil.getInstance().getController(ADVANCED_SEARCH_FXML);
                 advancedSearchController.setSearchText(searchText.getText());
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -186,9 +195,9 @@ public class UserMenuController implements Initializable {
     }
 
     public void onContinueButtonAction(ActionEvent actionEvent) {
-        FXMLLoaderUtil.getInstance().musicAction("pause",actionEvent);
+        FXMLLoaderUtil.getInstance().musicAction("pause", actionEvent);
         Image image = FXMLLoaderUtil.getInstance().getPauseImage();
-        if(image!= null) {
+        if (image != null) {
             setPauseImage(image);
         }
     }
@@ -198,12 +207,12 @@ public class UserMenuController implements Initializable {
     }
 
     public void onNextButtonAction(ActionEvent actionEvent) {
-        FXMLLoaderUtil.getInstance().musicAction("next",actionEvent);
+        FXMLLoaderUtil.getInstance().musicAction("next", actionEvent);
 
     }
 
     public void onPreviousButtonAction(ActionEvent actionEvent) {
-        FXMLLoaderUtil.getInstance().musicAction("previous",actionEvent);
+        FXMLLoaderUtil.getInstance().musicAction("previous", actionEvent);
 
     }
 
@@ -239,11 +248,12 @@ public class UserMenuController implements Initializable {
 
     /**
      * tìm sách ở api.
+     *
      * @param keyword
      * @param filteredSuggestions
      */
     private void fetchBooksFromApi(String keyword, ObservableList<HBox> filteredSuggestions) {
-        if(keyword.isEmpty()) {
+        if (keyword.isEmpty()) {
             return;
         }
         Task<List<Book>> fetchBooksTask = new Task<>() {
@@ -273,7 +283,7 @@ public class UserMenuController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (i == 6) break; // Giới hạn hiển thị tối đa 6 gợi ý
+            if (i == 6) break;
         }
 
         adjustSuggestionListHeight(filteredSuggestions);
@@ -316,7 +326,7 @@ public class UserMenuController implements Initializable {
     private void setupHoverMenuBar() {
         menuBar.setOnMouseEntered(event -> {
             Animation.getInstance().changeImage1();
-            Animation.getInstance().enlargeVBox(menuBarPlus,100,350);
+            Animation.getInstance().enlargeVBox(menuBarPlus, 100, 350);
         });
 
         menuBarPlus.setOnMouseExited(event -> {
@@ -335,6 +345,7 @@ public class UserMenuController implements Initializable {
             pause.play();
         });
     }
+
     public void showInfo() {
         userNameLabel.setText(member.getPerson().getFirstName());
 
@@ -353,7 +364,7 @@ public class UserMenuController implements Initializable {
 
     private void findMember() {
         try {
-                    member = MemberDAO.getInstance().find(memberID);
+            member = MemberDAO.getInstance().find(memberID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -368,6 +379,7 @@ public class UserMenuController implements Initializable {
         this.memberID = memberID;
         System.out.println("MemberID được thiết lập: " + memberID);
         findMember();
+        setInfo();
     }
 
     public static Member getMember() {
@@ -388,5 +400,9 @@ public class UserMenuController implements Initializable {
 
     public void onCharacterMouseClicked(MouseEvent mouseEvent) {
         Sound.getInstance().playSound("anime.mp3");
+    }
+
+    public static UserInfo getUserInfo() {
+        return userInfo;
     }
 }

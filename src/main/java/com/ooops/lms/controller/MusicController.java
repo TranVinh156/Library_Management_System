@@ -2,8 +2,10 @@ package com.ooops.lms.controller;
 
 import com.ooops.lms.model.Music;
 import com.ooops.lms.music.MusicInfoFetcher;
+import com.ooops.lms.util.BookManager;
 import com.ooops.lms.util.FXMLLoaderUtil;
 import com.ooops.lms.util.Sound;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -21,6 +23,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class MusicController {
     @FXML
     private Text musicNameLabel;
     @FXML
-    private ImageView musicDanceImage, pauseImage;
+    private ImageView musicDanceImage, pauseImage,musicImage,diskImage;
     @FXML
     WebView webView;
     private Image pause, play;
@@ -49,6 +52,8 @@ public class MusicController {
     private WebEngine webEngine;
     private ObservableList<HBox> filteredSuggestions = FXCollections.observableArrayList();
 
+    private ImageView[] imageViews;
+
     public void initialize() {
         webEngine = webView.getEngine();
         String htmlPath = getClass().getResource("/html/youtubeMusic.html").toExternalForm();
@@ -59,6 +64,49 @@ public class MusicController {
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
+        imageViews = new ImageView[]{
+                diskImage,
+                musicImage,
+                musicDanceImage
+        };
+        loadGifsInBackground();
+    }
+
+    /**
+     * load gif
+     */
+    private void loadGifsInBackground() {
+        Task<Void> loadGifsTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                List<String> gifPaths = List.of(
+                        "/image/customer/music/Disk.gif",
+                        "/image/customer/music/MusicBapBung.gif",
+                        "/image/customer/music/Feel.gif");
+
+                for (int i = 0; i < gifPaths.size(); i++) {
+                    final int index = i;
+                    URL resourceUrl = getClass().getResource(gifPaths.get(i));
+
+                    Image gifImage = new Image(resourceUrl.toExternalForm());
+
+                    Platform.runLater(() -> {
+                        if (index < imageViews.length) {
+                            imageViews[index].setImage(gifImage);
+                            System.out.println("helo");
+                        }
+                    });
+
+                    Thread.sleep(300);
+                }
+
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(loadGifsTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     /**

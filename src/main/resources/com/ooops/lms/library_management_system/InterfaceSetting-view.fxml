@@ -46,11 +46,7 @@
                <children>
                   <VBox fx:id="j97VBox" alignment="CENTER" prefHeight="196.0" prefWidth="0.0" spacing="10.0" visible="false">
                      <children>
-                        <ImageView fx:id="j97Image" fitHeight="1.0" fitWidth="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../image/customer/general/jack.jpg" />
-                           </image>
-                        </ImageView>
+                        <ImageView fx:id="j97Image" fitHeight="1.0" fitWidth="1.0" pickOnBounds="true" preserveRatio="true" />
                         <Button fx:id="j97Button" mnemonicParsing="false" onAction="#onJ97ButtonAction" prefHeight="35.0" prefWidth="147.0" styleClass="button-1" text="lấy làm avatar" />
                      </children>
                   </VBox>
@@ -73,10 +69,12 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
+                  <ImageView fx:id="j97Gif1" fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true" visible="false" />
                   <Circle fill="#ffe2b1" onMouseClicked="#onBeigeColorMouseClicked" radius="32.0" stroke="#ffe2b1" strokeType="INSIDE" />
                   <Circle onMouseClicked="#onBlackColorMouseClicked" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
                   <Circle fill="#ff7595" onMouseClicked="#onPinkColorMouseClicked" radius="32.0" stroke="#ff7595" strokeType="INSIDE" />
                   <Circle fill="GOLD" onMouseClicked="#onGoldColorMouseClicked" radius="32.0" stroke="GOLD" strokeType="INSIDE" />
+                  <ImageView fx:id="j97Gif2" fitHeight="84.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" visible="false" />
                </children>
             </HBox>
          </children>
