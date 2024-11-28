@@ -9,20 +9,27 @@ Mục lục
 # Tác giả <a name="author"></a>
 
 Group Ooops:
-- Trần Văn Vinh 
+- Trần Văn Vinh 23021749
 - Phạm Việt Hà 23021541
-- Nguyễn Đoàn Hoài Thương
+- Nguyễn Đoàn Hoài Thương 23021733
 
 # Giới thiệu <a name="introduction"></a>
 Ứng dụng giúp độc giả có thể dễ dàng hơn trong việc đặt trước, mượn, trả sách và thủ thư dễ dàng quản lý sách, các đơn mượn, đặt, độc giả. Độc giả có thể dễ dàng báo cáo các vấn đề tới thủ thư và thủ thư cũng dễ dàng giải quyết các báo cáo đấy.
 
 # Tính năng nổi bật <a name="features"></a>
 User:
-- Tìm sách, bọn tớ có tìm kiếm nhanh, tìm kiếm nâng cao kết hợp với GoogleBook API, bạn có thể dễ dàng tra quyển sách dù quyển sách đấy không có bản cứng ở thư viện. Khi tìm thấy sách bạn có thể dễ dàng đọc trước qua bản pdf của GoogleBook (nếu có).
+- Cung cấp cho người đọc những quyển sách cũng hay, đề xuất sách thịnh hành, được yêu thích, xếp hạng các sách theo rate.
+- Tìm sách, bọn tớ có tìm kiếm nhanh qua api, tìm kiếm nâng cao, bạn có thể dễ dàng tra quyển sách dù quyển sách đấy không có bản cứng ở thư viện. Khi tìm thấy sách bạn có thể dễ dàng đọc trước qua bản pdf của GoogleBook (nếu có).
 - Đặt trước sách: Bạn có thể dễ dàng đặt mượn sách trước, hẹn thời gian với thủ thư sắp xếp hợp lý thời gian để có thể đi nhận sách.
 - BookMark: Cậu có thể lưu lại những quyển ưa thích của cậu vào bộ sưu tập của chính cậu nè.
 - Comment: Cậu có thể góp ý cho những quyển sách nào cậu đã mượn cũng như có thể thấy được góp ý của người khác về quyển sách nhé.
-- Chịu chị Thương có gì liệt kê ra nha chị
+- Thông tin người dùng : có thể sửa thông tên, thay đổi ảnh đại diện.
+- Lịch sử mượn sách : hiển thị các sách đã mượn, đang mượn, đặt trước sách.
+- Đánh giá : Cậu có thể đánh giá sách, đánh giá app.
+- Báo cáo sự cố : Cậu gặp sự cố gì, hãy báo cáo cho admin qua đây.
+- Cài đặt màu sắc : chọn màu sắc yêu thích cho giao diện của bạn (có J97).
+- Game : nếu chán các bạn có thể chơi TicTacToe.
+- Âm nhạc : vừa nghe nhạc vừa xem sách cùng bọn mình nhé.
 
 Admin:
 - Quản lý độc giả: Dễ dàng đọc ,thêm, sửa, xóa độc giả mới vào CSDL. Và khi bạn thêm độc giả vào, độc giả đấy cũng đồng thời được cung cấp tài khoản và sẽ được bọn tớ gửi mail.
